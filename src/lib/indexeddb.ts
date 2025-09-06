@@ -232,3 +232,4 @@ export const dbManager = new IndexedDBManager();
 dbManager.init().catch(console.error);
 
 export type { Asset, HistoryEntry };
+

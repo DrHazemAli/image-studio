@@ -6,7 +6,7 @@ This document provides comprehensive technical documentation for the Azure Image
 
 ## 🔗 API Overview
 
-Azure Image Studio is a community-developed platform that integrates with multiple Azure AI services to provide image generation and editing capabilities. This independent project uses a flexible configuration system to support various AI models and endpoints.
+forAzure Image Studio is a community-developed platform that integrates with multiple Azure AI services to provide image generation and editing capabilities. This independent project uses a flexible configuration system to support various AI models and endpoints.
 
 **Note**: This is not an official Microsoft or Azure product, but rather a community project that utilizes Azure's AI services.
 
