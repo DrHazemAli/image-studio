@@ -1,0 +1,217 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+.dark {
+  --background: #000000;
+  --foreground: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --background: #000000;
+    --foreground: #ffffff;
+  }
+}
+
+body {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  transition: all 0.3s ease;
+}
+
+.dark body {
+  background: linear-gradient(135deg, #000000 0%, #111111 50%, #000000 100%);
+}
+
+/* Studio specific dark backgrounds */
+.dark .studio-bg {
+  background: #000000;
+}
+
+.dark .studio-panel {
+  background: rgba(0, 0, 0, 0.95);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark .studio-toolbar {
+  background: rgba(0, 0, 0, 0.9);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Console specific styles */
+.console-card {
+  background: white;
+  border-color: #e5e7eb;
+}
+
+.dark .console-card {
+  background: #111827;
+  border-color: #374151;
+}
+
+.console-header {
+  background: #f9fafb;
+  border-color: #e5e7eb;
+}
+
+.dark .console-header {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+/* Console tabs */
+.console-tabs {
+  border-bottom: 1px solid;
+  padding: 0;
+  margin: 0;
+}
+
+.console-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  min-width: 80px;
+  justify-content: center;
+}
+
+.console-tab:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.dark .console-tab:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.console-tab-active {
+  border-bottom-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.dark .console-tab-active {
+  border-bottom-color: #60a5fa;
+  background: rgba(96, 165, 250, 0.1);
+}
+
+.console-tab-inactive {
+  color: #6b7280;
+}
+
+.dark .console-tab-inactive {
+  color: #9ca3af;
+}
+
+.console-tab-active .console-tab-text {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.dark .console-tab-active .console-tab-text {
+  color: #f9fafb;
+  font-weight: 600;
+}
+
+.console-tab-text {
+  transition: color 0.2s ease;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Glass morphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.animate-slideIn {
+  animation: slideIn 0.3s ease-out;
+}
+
+.animate-pulse-slow {
+  animation: pulse 2s ease-in-out infinite;
+}

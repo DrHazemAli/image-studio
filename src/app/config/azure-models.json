@@ -1,0 +1,208 @@
+{
+  "imageModels": {
+    "generation": {
+      "openai": [
+        {
+          "id": "gpt-image-1",
+          "name": "GPT-Image-1",
+          "description": "Latest model with enhanced capabilities including image editing and inpainting",
+          "provider": "Azure OpenAI",
+          "apiVersion": "2025-04-01-preview",
+          "capabilities": [
+            "text-to-image",
+            "image-editing",
+            "inpainting",
+            "outpainting",
+            "image-to-image"
+          ],
+          "supportedSizes": ["1024x1024", "1024x1536", "1536x1024"],
+          "supportedFormats": ["png", "jpeg"],
+          "qualityLevels": ["low", "medium", "high"],
+          "maxImages": 10,
+          "requiresApproval": true,
+          "features": {
+            "textRendering": true,
+            "preciseInstructions": true,
+            "imageInput": true,
+            "streaming": true,
+            "compression": true
+          }
+        },
+        {
+          "id": "dalle-3",
+          "name": "DALL-E 3",
+          "description": "High-quality image generation with natural and vivid styles",
+          "provider": "Azure OpenAI",
+          "apiVersion": "2024-10-21",
+          "capabilities": [
+            "text-to-image"
+          ],
+          "supportedSizes": ["1024x1024", "1792x1024", "1024x1792"],
+          "supportedFormats": ["png", "jpeg"],
+          "styleOptions": ["natural", "vivid"],
+          "qualityLevels": ["standard", "hd"],
+          "maxImages": 1,
+          "requiresApproval": false,
+          "features": {
+            "highQuality": true,
+            "styleControl": true,
+            "contentFiltering": true
+          }
+        }
+      ],
+      "blackForestLabs": [
+        {
+          "id": "flux-1-1-pro",
+          "name": "FLUX 1.1 Pro",
+          "description": "Advanced text-to-image generation with superior quality",
+          "provider": "Black Forest Labs",
+          "apiVersion": "2024-12-01",
+          "capabilities": [
+            "text-to-image"
+          ],
+          "supportedSizes": ["512x512", "768x768", "1024x1024", "1024x1792", "1792x1024"],
+          "supportedFormats": ["png", "jpeg"],
+          "maxTokens": 5000,
+          "maxImages": 1,
+          "requiresApproval": false,
+          "features": {
+            "highResolution": true,
+            "fastGeneration": true,
+            "photorealistic": true
+          }
+        },
+        {
+          "id": "flux-1-kontext-pro",
+          "name": "FLUX 1 Kontext Pro",
+          "description": "Context-aware image generation and editing with image input support",
+          "provider": "Black Forest Labs",
+          "apiVersion": "2024-12-01",
+          "capabilities": [
+            "text-to-image",
+            "image-to-image",
+            "context-aware-editing",
+            "style-transfer"
+          ],
+          "supportedSizes": ["512x512", "768x768", "1024x1024", "1024x1792", "1792x1024"],
+          "supportedFormats": ["png", "jpeg"],
+          "maxTokens": 5000,
+          "maxImages": 1,
+          "imageInput": true,
+          "requiresApproval": false,
+          "features": {
+            "contextAware": true,
+            "imageInput": true,
+            "styleTransfer": true,
+            "editingCapabilities": true
+          }
+        }
+      ]
+    }
+  },
+  "endpoints": [
+    {
+      "id": "primary-openai",
+      "name": "Azure OpenAI Primary",
+      "baseUrl": "https://ai-hazem5051ai732443155478.services.ai.azure.com",
+      "type": "openai",
+      "deployments": [
+        {
+          "modelId": "gpt-image-1",
+          "deploymentName": "gpt-image-1",
+          "enabled": false,
+          "note": "Requires approval from Azure"
+        },
+        {
+          "modelId": "dalle-3",
+          "deploymentName": "dalle-3",
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "id": "primary-foundry",
+      "name": "Azure AI Foundry",
+      "baseUrl": "https://ai-foundry.azure.com",
+      "type": "foundry",
+      "deployments": [
+        {
+          "modelId": "flux-1-1-pro",
+          "deploymentName": "FLUX-1.1-pro",
+          "enabled": true
+        },
+        {
+          "modelId": "flux-1-kontext-pro",
+          "deploymentName": "FLUX-1-Kontext-pro",
+          "enabled": true
+        }
+      ]
+    }
+  ],
+  "tools": {
+    "generation": {
+      "icon": "magic-wand",
+      "name": "Generate",
+      "description": "Create new images from text descriptions",
+      "supportedModels": ["gpt-image-1", "dalle-3", "flux-1-1-pro", "flux-1-kontext-pro"]
+    },
+    "editing": {
+      "icon": "pencil",
+      "name": "Edit",
+      "description": "Modify existing images with AI assistance",
+      "supportedModels": ["gpt-image-1", "flux-1-kontext-pro"]
+    },
+    "inpainting": {
+      "icon": "brush",
+      "name": "Inpaint",
+      "description": "Fill in selected areas of images",
+      "supportedModels": ["gpt-image-1"]
+    },
+    "outpainting": {
+      "icon": "expand",
+      "name": "Outpaint",
+      "description": "Extend images beyond their borders",
+      "supportedModels": ["gpt-image-1"]
+    },
+    "styleTransfer": {
+      "icon": "palette",
+      "name": "Style Transfer",
+      "description": "Apply artistic styles to images",
+      "supportedModels": ["flux-1-kontext-pro"]
+    },
+    "upscale": {
+      "icon": "zoom-in",
+      "name": "Upscale",
+      "description": "Increase image resolution",
+      "supportedModels": ["gpt-image-1", "flux-1-1-pro"]
+    }
+  },
+  "presets": {
+    "photorealistic": {
+      "name": "Photorealistic",
+      "description": "Realistic photography style",
+      "recommendedModel": "flux-1-1-pro",
+      "settings": {
+        "style": "natural",
+        "quality": "hd"
+      }
+    },
+    "artistic": {
+      "name": "Artistic",
+      "description": "Creative and stylized artwork",
+      "recommendedModel": "dalle-3",
+      "settings": {
+        "style": "vivid",
+        "quality": "hd"
+      }
+    },
+    "contextual": {
+      "name": "Contextual Editing",
+      "description": "Smart editing based on image content",
+      "recommendedModel": "flux-1-kontext-pro",
+      "settings": {
+        "quality": "high",
+        "contextAware": true
+      }
+    }
+  }
+}
