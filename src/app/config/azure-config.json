@@ -21,6 +21,14 @@
           "maxSize": "1024x1024",
           "supportedFormats": ["png", "jpeg"],
           "description": "High-quality image generation with FLUX 1.1 Pro model"
+        },
+        {
+          "id": "FLUX.1-Kontext-pro",
+          "name": "FLUX 1 Kontext Pro",
+          "deploymentName": "FLUX.1-Kontext-pro",
+          "maxSize": "1024x1024",
+          "supportedFormats": ["png", "jpeg"],
+          "description": "High-quality image generation with FLUX 1 Kontext Pro model"
         }
       ]
     }

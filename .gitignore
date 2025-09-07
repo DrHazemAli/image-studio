@@ -117,3 +117,6 @@ coverage/
 # Misc
 *.tgz
 *.tar.gz
+
+# Internal
+internal/

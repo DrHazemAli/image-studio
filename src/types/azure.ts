@@ -36,6 +36,15 @@ export interface ImageGenerationRequest {
   size: string;
 }
 
+export interface ImageEditRequest {
+  prompt: string;
+  image: string; // base64 encoded image
+  mask?: string; // base64 encoded mask (optional for some models)
+  output_format?: string;
+  n?: number;
+  size?: string;
+}
+
 export interface ImageGenerationResponse {
   data: Array<{
     b64_json: string;

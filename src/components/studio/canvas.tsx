@@ -11,6 +11,7 @@ interface CanvasProps {
   currentImage?: string | null;
   onImageLoad?: (imageData: string) => void;
   isGenerating?: boolean;
+  isInpaintMode?: boolean;
 }
 
 interface Layer {
@@ -22,7 +23,7 @@ interface Layer {
   blendMode: string;
 }
 
-export function Canvas({ activeTool, currentImage, onImageLoad, isGenerating = false }: CanvasProps) {
+export function Canvas({ activeTool, currentImage, onImageLoad, isGenerating = false, isInpaintMode = false }: CanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [zoom, setZoom] = useState(100);
@@ -178,6 +179,66 @@ export function Canvas({ activeTool, currentImage, onImageLoad, isGenerating = f
                     <p className="text-sm font-medium">Generation Mode</p>
                     <p className="text-xs opacity-70">Click to place generated image</p>
                   </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Inpaint Mode Overlay */}
+            {activeTool === 'inpaint' && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="absolute inset-0 border-2 border-dashed border-purple-500 rounded-lg"
+              >
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-purple-500/10 backdrop-blur-sm rounded-lg p-4">
+                  <div className="text-center text-purple-600 dark:text-purple-400">
+                    <ZoomInIcon className="w-8 h-8 mx-auto mb-2" />
+                    <p className="text-sm font-medium">Inpaint Mode</p>
+                    <p className="text-xs opacity-70">Select area to edit with AI</p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Inpaint Processing Animation */}
+            {isInpaintMode && isGenerating && currentImage && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ 
+                  opacity: [0, 0.8, 0.4, 0.8, 0.2, 0.6, 0.1],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-lg backdrop-blur-sm"
+              >
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+                  <motion.div
+                    animate={{ 
+                      scale: [1, 1.1, 0.9, 1.05, 0.95, 1],
+                      rotate: [0, 5, -5, 2, -2, 0]
+                    }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="text-purple-600 dark:text-purple-400"
+                  >
+                    <ZoomInIcon className="w-12 h-12 mx-auto mb-2" />
+                  </motion.div>
+                  <motion.p 
+                    className="text-lg font-semibold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent"
+                    animate={{ opacity: [0.7, 1, 0.5, 1, 0.6] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  >
+                    ✨ AI is editing your image... ✨
+                  </motion.p>
+                  <motion.p 
+                    className="text-sm text-gray-500 dark:text-gray-400 mt-1"
+                    animate={{ opacity: [0.5, 0.8, 0.3, 0.9, 0.4] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  >
+                    Your enhanced image will appear soon
+                  </motion.p>
                 </div>
               </motion.div>
             )}

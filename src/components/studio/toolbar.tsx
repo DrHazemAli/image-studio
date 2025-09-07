@@ -341,7 +341,7 @@ export function Toolbar({ activeTool, onToolChange }: ToolbarProps) {
                         {isActive && (
                           <motion.div
                             layoutId="activeIndicator"
-                            className="absolute -right-1 top-1/2 -translate-y-1/2 w-1 h-6 bg-white rounded-full"
+                            className="absolute -right-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-white !rounded-full"
                             transition={{ type: "spring", stiffness: 300, damping: 30 }}
                           />
                         )}

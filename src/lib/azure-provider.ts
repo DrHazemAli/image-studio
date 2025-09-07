@@ -1,4 +1,4 @@
-import { AzureConfig, AzureEndpoint, AzureDeployment, ImageGenerationRequest, ImageGenerationResponse } from '@/types/azure';
+import { AzureConfig, AzureEndpoint, AzureDeployment, ImageGenerationRequest, ImageEditRequest, ImageGenerationResponse } from '@/types/azure';
 
 export class AzureImageProvider {
   private config: AzureConfig;
@@ -102,6 +102,109 @@ export class AzureImageProvider {
           'Authorization': `Bearer ${this.apiKey}`
         },
         body: JSON.stringify(requestPayload)
+      });
+
+      onProgress?.(70);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Azure API error: ${response.status} ${response.statusText} - ${errorText}`);
+      }
+
+      const data: ImageGenerationResponse = await response.json();
+      
+      onProgress?.(100);
+
+      const responseLog = {
+        status: response.status,
+        statusText: response.statusText,
+        body: {
+          ...data,
+          data: data.data.map(item => ({
+            ...item,
+            b64_json: '[BASE64_DATA_TRUNCATED]'
+          }))
+        },
+        timestamp: new Date().toISOString()
+      };
+
+      return {
+        response: data,
+        requestLog,
+        responseLog
+      };
+
+    } catch (error) {
+      onProgress?.(0);
+      throw error;
+    }
+  }
+
+  async editImage(
+    deploymentId: string,
+    request: ImageEditRequest,
+    onProgress?: (progress: number) => void
+  ): Promise<{
+    response: ImageGenerationResponse;
+    requestLog: Record<string, unknown>;
+    responseLog: Record<string, unknown>;
+  }> {
+    const deploymentInfo = this.getDeploymentById(deploymentId);
+    if (!deploymentInfo) {
+      throw new Error(`Deployment with ID "${deploymentId}" not found`);
+    }
+
+    const { endpoint, deployment } = deploymentInfo;
+    
+    // Use the edits endpoint for image editing/inpainting
+    const url = `${endpoint.baseUrl}/openai/deployments/${deployment.deploymentName}/images/edits?api-version=${endpoint.apiVersion}`;
+    
+    // Create FormData for multipart/form-data request
+    const formData = new FormData();
+    
+    // Convert base64 image to blob
+    const imageBlob = new Blob([Buffer.from(request.image.split(',')[1], 'base64')], { type: 'image/png' });
+    formData.append('image', imageBlob, 'image.png');
+    
+    // Add mask if provided
+    if (request.mask) {
+      const maskBlob = new Blob([Buffer.from(request.mask.split(',')[1], 'base64')], { type: 'image/png' });
+      formData.append('mask', maskBlob, 'mask.png');
+    }
+    
+    // Add other parameters
+    formData.append('prompt', request.prompt);
+    if (request.output_format) formData.append('response_format', request.output_format);
+    if (request.n) formData.append('n', request.n.toString());
+    if (request.size) formData.append('size', request.size);
+
+    const requestLog = {
+      url,
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer [REDACTED]`
+      },
+      body: {
+        prompt: request.prompt,
+        hasImage: true,
+        hasMask: !!request.mask,
+        output_format: request.output_format,
+        n: request.n,
+        size: request.size
+      },
+      timestamp: new Date().toISOString()
+    };
+
+    onProgress?.(10);
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.apiKey}`
+          // Don't set Content-Type for FormData, let the browser set it
+        },
+        body: formData
       });
 
       onProgress?.(70);

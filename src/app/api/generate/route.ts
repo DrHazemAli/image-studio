@@ -14,11 +14,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { deploymentId, prompt, size, outputFormat, count } = await request.json();
+    const { deploymentId, prompt, size, outputFormat, count, mode, image, mask } = await request.json();
 
     if (!deploymentId || !prompt) {
       return NextResponse.json(
         { error: 'Missing required parameters' },
+        { status: 400 }
+      );
+    }
+
+    // Validate image editing mode requirements
+    if (mode === 'edit' && !image) {
+      return NextResponse.json(
+        { error: 'Image is required for editing mode' },
         { status: 400 }
       );
     }
@@ -34,15 +42,33 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await provider.generateImage(
-      deploymentId,
-      {
-        prompt,
-        output_format: outputFormat || 'png',
-        n: count || 1,
-        size: size || '1024x1024'
-      }
-    );
+    let result;
+    
+    if (mode === 'edit') {
+      // Use image editing for inpainting mode
+      result = await provider.editImage(
+        deploymentId,
+        {
+          prompt,
+          image,
+          mask,
+          output_format: outputFormat || 'png',
+          n: count || 1,
+          size: size || '1024x1024'
+        }
+      );
+    } else {
+      // Use regular text-to-image generation
+      result = await provider.generateImage(
+        deploymentId,
+        {
+          prompt,
+          output_format: outputFormat || 'png',
+          n: count || 1,
+          size: size || '1024x1024'
+        }
+      );
+    }
 
     return NextResponse.json({
       success: true,

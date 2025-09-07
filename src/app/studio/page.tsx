@@ -10,7 +10,9 @@ import { GenerationPanel } from '@/components/studio/generation-panel';
 import { AssetsPanel } from '@/components/studio/assets-panel';
 import { HistoryPanel } from '@/components/studio/history-panel';
 import { ConsoleSidebar } from '@/components/ui/console-sidebar';
+import { SizeModal } from '@/components/studio/size-modal';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import type { ModelInfo } from '@/app/api/models/route';
 import { dbManager, type Asset, type HistoryEntry } from '@/lib/indexeddb';
 import { 
   HamburgerMenuIcon, 
@@ -49,7 +51,12 @@ export default function StudioPage() {
   const [responseLog, setResponseLog] = useState<unknown>(null);
   const [projectName, ] = useState('Untitled Project');
   const [error, setError] = useState<string | null>(null);
-  const [currentModel, setCurrentModel] = useState('dalle-3');
+  const [currentModel, setCurrentModel] = useState('flux-kontext-pro');
+  const [isInpaintMode, setIsInpaintMode] = useState(false);
+  const [currentSize, setCurrentSize] = useState('1024x1024');
+  const [showSizeModal, setShowSizeModal] = useState(false);
+  const [attachedImage, setAttachedImage] = useState<string | null>(null);
+  const [models, setModels] = useState<ModelInfo[]>([]);
 
   // Handle tool changes
   const handleToolChange = useCallback((tool: Tool) => {
@@ -59,6 +66,11 @@ export default function StudioPage() {
     switch (tool) {
       case 'generate':
         setShowPromptBox(true);
+        setIsInpaintMode(false);
+        break;
+      case 'inpaint':
+        setShowPromptBox(true);
+        setIsInpaintMode(true);
         break;
       case 'assets':
         setShowAssetsPanel(true);
@@ -71,6 +83,42 @@ export default function StudioPage() {
         break;
     }
   }, []);
+
+  // Handle image attachment
+  const handleImageUpload = useCallback((file: File) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const imageData = event.target?.result as string;
+      setAttachedImage(imageData);
+    };
+    reader.readAsDataURL(file);
+  }, []);
+
+  // Fetch models on component mount
+  useEffect(() => {
+    const fetchModels = async () => {
+      try {
+        const response = await fetch('/api/models');
+        const data = await response.json();
+        setModels(data.models);
+        setCurrentModel(data.defaultModel);
+        setCurrentSize(data.defaultSize);
+      } catch (error) {
+        console.error('Failed to fetch models:', error);
+        // Fallback to default values if API fails
+        setCurrentModel('FLUX.1-Kontext-pro');
+        setCurrentSize('1024x1024');
+      }
+    };
+
+    fetchModels();
+  }, []);
+
+  // Get model name helper
+  const getModelName = useCallback((modelId: string) => {
+    const model = models.find(m => m.id === modelId);
+    return model ? model.name : modelId;
+  }, [models]);
 
   // Handle image generation
   const handleGenerate = useCallback(async (params: GenerationParams) => {
@@ -98,7 +146,10 @@ export default function StudioPage() {
           quality: params.quality,
           style: params.style,
           seed: params.seed,
-          negativePrompt: params.negativePrompt
+          negativePrompt: params.negativePrompt,
+          mode: isInpaintMode ? 'edit' : 'generate',
+          image: isInpaintMode ? attachedImage : undefined,
+          mask: undefined // Could be added later for mask support
         })
       });
 
@@ -165,7 +216,7 @@ export default function StudioPage() {
       setIsGenerating(false);
       setTimeout(() => setGenerationProgress(0), 2000);
     }
-  }, []);
+  }, [isInpaintMode, attachedImage]);
 
   // Migrate from localStorage to IndexedDB on mount
   useEffect(() => {
@@ -199,46 +250,89 @@ export default function StudioPage() {
         }
       }
 
-      // Tool shortcuts
-      if (!event.metaKey && !event.ctrlKey && !event.altKey) {
+      // Tool shortcuts - require Cmd key
+      if (event.metaKey || event.ctrlKey) {
         switch (event.key) {
           case 'v':
+            event.preventDefault();
             setActiveTool('select');
             break;
           case 'm':
+            event.preventDefault();
             setActiveTool('move');
             break;
           case 'h':
+            event.preventDefault();
             setActiveTool('hand');
             break;
           case 'z':
+            event.preventDefault();
             setActiveTool('zoom');
             break;
           case 'g':
+            event.preventDefault();
             setActiveTool('generate');
             setShowPromptBox(true);
             break;
           case 'a':
+            event.preventDefault();
             setActiveTool('assets');
             setShowAssetsPanel(true);
             break;
           case 'e':
+            event.preventDefault();
             setActiveTool('edit');
             break;
           case 'b':
+            event.preventDefault();
             setActiveTool('brush');
             break;
-          case 't':
-            setActiveTool('text');
+          case 'T':
+            if (event.shiftKey) {
+              event.preventDefault();
+              setActiveTool('text');
+            }
             break;
           case 'c':
+            event.preventDefault();
             setActiveTool('crop');
             break;
+          case 'i':
+            event.preventDefault();
+            setActiveTool('inpaint');
+            setShowPromptBox(true);
+            break;
           case 'p':
+            event.preventDefault();
             setActiveTool('prompt');
             setShowPromptBox(prev => !prev);
             break;
+          case 'u':
+            event.preventDefault();
+            setActiveTool('shape');
+            break;
+          case 'y':
+            event.preventDefault();
+            setActiveTool('history');
+            setShowHistoryPanel(true);
+            break;
         }
+      }
+
+      // Special tool shortcuts that don't use Cmd
+      if (event.shiftKey && event.key === 'E' && !event.metaKey && !event.ctrlKey) {
+        event.preventDefault();
+        setActiveTool('eraser');
+      }
+
+      if (event.altKey && !event.metaKey && !event.ctrlKey && !event.shiftKey) {
+        event.preventDefault();
+        setActiveTool('eyedropper');
+      }
+
+      if (event.shiftKey && event.altKey && event.key === 'B' && !event.metaKey && !event.ctrlKey) {
+        event.preventDefault();
+        setActiveTool('blend');
       }
     };
 
@@ -329,6 +423,7 @@ export default function StudioPage() {
                   currentImage={currentImage}
                   onImageLoad={setCurrentImage}
                   isGenerating={isGenerating}
+                  isInpaintMode={isInpaintMode}
                 />
 
           {/* Console Sidebar */}
@@ -481,12 +576,31 @@ export default function StudioPage() {
             error={error}
             generatedImages={[]}
             onShowImages={() => setShowAssetsPanel(true)}
-            size="1024x1024"
             count={1}
             currentModel={currentModel}
             onModelChange={setCurrentModel}
+            isInpaintMode={isInpaintMode}
+            size={currentSize}
+            onSizeChange={setCurrentSize}
+            attachedImage={attachedImage}
+            onAttachedImageRemove={() => setAttachedImage(null)}
+            onShowSizeModal={() => setShowSizeModal(true)}
+            onImageUpload={handleImageUpload}
+            models={models}
+            getModelName={getModelName}
           />
         )}
+
+        {/* Size Modal */}
+        <SizeModal
+          isOpen={showSizeModal}
+          onClose={() => setShowSizeModal(false)}
+          currentSize={currentSize}
+          currentModel={currentModel}
+          onSizeChange={setCurrentSize}
+          getModelName={getModelName}
+          models={models}
+        />
 
       
       </div>
