@@ -12,9 +12,36 @@
 [![Version](https://img.shields.io/badge/Version-1.0.0-green?style=for-the-badge)](https://github.com/DrHazemAli/azure-image-studio)
 [![Community Project](https://img.shields.io/badge/Type-Community%20Project-orange?style=for-the-badge)](https://github.com/DrHazemAli/azure-image-studio)
 [![Microsoft MVP](https://img.shields.io/badge/Author-Microsoft%20MVP-purple?style=for-the-badge)](https://github.com/DrHazemAli)
-[![Code Coverage](https://img.shields.io/badge/Code%20Coverage-85%25-brightgreen?style=for-the-badge)](https://github.com/DrHazemAli/azure-image-studio)
+[![Code Coverage](https://img.shields.io/badge/Code%20Coverage-85%25-brightgreen?style=for-the-badge)](CODE_COVERAGE.md)
 
 </div>
+
+<div align="center">
+
+[![GitHub stars](https://img.shields.io/github/stars/DrHazemAli/azure-image-studio?style=social)](https://github.com/DrHazemAli/azure-image-studio/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/DrHazemAli/azure-image-studio?style=social)](https://github.com/DrHazemAli/azure-image-studio/network/members)
+[![GitHub issues](https://img.shields.io/github/issues/DrHazemAli/azure-image-studio)](https://github.com/DrHazemAli/azure-image-studio/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/DrHazemAli/azure-image-studio)](https://github.com/DrHazemAli/azure-image-studio/pulls)
+
+</div>
+
+## 📋 Table of Contents
+
+- [🚀 Overview](#-overview)
+- [✨ Features](#-features)
+- [🏗️ Architecture](#️-architecture)
+- [🚀 Quick Start](#-quick-start)
+- [⚙️ Configuration](#️-configuration)
+- [🎨 Usage](#-usage)
+- [📁 Project Structure](#-project-structure)
+- [🗺️ What's Coming Next](#️-whats-coming-next)
+- [📚 Documentation](#-documentation)
+- [🤝 Contributing](#-contributing)
+- [👥 Contributors](#-contributors)
+- [📞 Support](#-support)
+- [📄 License](#-license)
+- [👨‍💻 Author](#️-author)
+- [🙏 Acknowledgments](#-acknowledgments)
 
 ## 🚀 Overview
 
@@ -64,7 +91,7 @@ Azure Image Studio is a community-developed, production-ready platform that inte
 - **Real-time Progress**: Live generation progress tracking
 - **Keyboard Shortcuts**: Professional keyboard shortcuts for all tools
 
-## 🏗️ **Architecture**
+## 🏗️ Architecture
 
 ### **Frontend Stack**
 - **Next.js 15.5.2** - React framework with App Router
@@ -157,18 +184,6 @@ The CLI includes powerful project management capabilities:
 - **Metadata Tracking**: Complete generation history and settings for each project
 - **Collaboration**: Share projects with team members or clients
 
-## 🗺️ What's Coming Next
-
-We're actively developing exciting new features:
-
-1. **Project Sharing** - Share projects with team members, clients, and the community
-2. **Cloud Storage with Azure** - Seamless cloud-based asset management and cross-device access
-3. **Prompt Enhancement using GPT models** - AI-powered prompt optimization and style suggestions
-
-For detailed information about our development timeline and planned features, see our [Development Roadmap](docs/Roadmap.md).
-
-> 📚 **Need detailed setup instructions?** Check out our comprehensive [Getting Started Guide](docs/Getting-Started.md)
-
 ## ⚙️ Configuration
 
 ### Azure Configuration
@@ -235,6 +250,35 @@ azure-image-studio/
     └── Architecture.md    # System design overview
 ```
 
+## 🗺️ What's Coming Next
+
+We're actively developing exciting new features:
+
+1. **Project Sharing** - Share projects with team members, clients, and the community
+2. **Cloud Storage with Azure** - Seamless cloud-based asset management and cross-device access
+3. **Prompt Enhancement using GPT models** - AI-powered prompt optimization and style suggestions
+
+For detailed information about our development timeline and planned features, see our [Development Roadmap](docs/Roadmap.md).
+
+> 📚 **Need detailed setup instructions?** Check out our comprehensive [Getting Started Guide](docs/Getting-Started.md)
+
+## 📚 Documentation
+
+### Web Application
+- 🚀 **[Getting Started](docs/Getting-Started.md)** - Complete setup and configuration guide
+- 📖 **[User Guide](docs/User-Guide.md)** - Detailed usage instructions for all features
+- 🔧 **[API Documentation](docs/API-Documentation.md)** - Technical reference and examples
+- 🏗️ **[Architecture Guide](docs/Architecture.md)** - System design and technical details
+
+### Command-Line Interface
+- 🖥️ **[CLI Documentation](cli/README.md)** - Command-line interface guide
+- 📖 **[CLI User Guide](cli/docs/CLI-User-Guide.md)** - Comprehensive CLI usage guide
+- 🔧 **[CLI API Documentation](cli/docs/CLI-API-Documentation.md)** - CLI technical reference
+
+### Development & Planning
+- 🗺️ **[Development Roadmap](docs/Roadmap.md)** - Current status, planned features, and development timeline
+- 🧪 **[Code Coverage & Testing](CODE_COVERAGE.md)** - Testing strategy, coverage reports, and quality metrics
+
 ## 🤝 Contributing
 
 This is a **community-driven project**! We welcome contributions from developers of all skill levels. This project is not affiliated with Microsoft or Azure, but rather is an independent community effort that integrates with Azure AI services.
@@ -251,6 +295,22 @@ This is a **community-driven project**! We welcome contributions from developers
 - Use meaningful commit messages
 - Add tests for new features
 - Update documentation as needed
+
+## 👥 Contributors
+
+<div align="center">
+
+### Thank you to all our amazing contributors! 🎉
+
+[![Contributors](https://contrib.rocks/image?repo=DrHazemAli/azure-image-studio)](https://github.com/DrHazemAli/azure-image-studio/graphs/contributors)
+
+</div>
+
+## 📞 Support
+
+- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
+- 💡 **Feature Requests**: [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
+- 📧 **Contact**: [GitHub Profile](https://github.com/DrHazemAli)
 
 ## 📄 License
 
@@ -270,80 +330,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Next.js team** - For the amazing framework
 - **Radix UI** - For accessible components
 - **The open-source community** - For inspiration and contributions
-
-## 📚 Documentation
-
-### Web Application
-- 🚀 **[Getting Started](docs/Getting-Started.md)** - Complete setup and configuration guide
-- 📖 **[User Guide](docs/User-Guide.md)** - Detailed usage instructions for all features
-- 🔧 **[API Documentation](docs/API-Documentation.md)** - Technical reference and examples
-- 🏗️ **[Architecture Guide](docs/Architecture.md)** - System design and technical details
-
-### Command-Line Interface
-- 🖥️ **[CLI Documentation](cli/README.md)** - Command-line interface guide
-- 📖 **[CLI User Guide](cli/docs/CLI-User-Guide.md)** - Comprehensive CLI usage guide
-- 🔧 **[CLI API Documentation](cli/docs/CLI-API-Documentation.md)** - CLI technical reference
-
-### Development & Planning
-- 🗺️ **[Development Roadmap](docs/Roadmap.md)** - Current status, planned features, and development timeline
-
-## 👥 Contributors
-
-<div align="center">
-
-### Thank you to all our amazing contributors! 🎉
-
-[![Contributors](https://contrib.rocks/image?repo=DrHazemAli/azure-image-studio)](https://github.com/DrHazemAli/azure-image-studio/graphs/contributors)
-
-</div>
-
-## 📊 Project Statistics
-
-<div align="center">
-
-[![GitHub stars](https://img.shields.io/github/stars/DrHazemAli/azure-image-studio?style=social)](https://github.com/DrHazemAli/azure-image-studio/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/DrHazemAli/azure-image-studio?style=social)](https://github.com/DrHazemAli/azure-image-studio/network/members)
-[![GitHub issues](https://img.shields.io/github/issues/DrHazemAli/azure-image-studio)](https://github.com/DrHazemAli/azure-image-studio/issues)
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/DrHazemAli/azure-image-studio)](https://github.com/DrHazemAli/azure-image-studio/pulls)
-
-</div>
-
-## 🧪 Code Quality & Testing
-
-### Code Coverage
-We maintain high code quality standards with comprehensive testing:
-
-- **Code Coverage**: 85%+ across all modules
-- **Unit Tests**: Comprehensive test suite for utilities and components
-- **Integration Tests**: API endpoint testing and Azure service integration
-- **E2E Tests**: End-to-end testing for critical user workflows
-- **Type Safety**: 100% TypeScript coverage with strict type checking
-
-### Quality Metrics
-- **ESLint**: Code quality and consistency enforcement
-- **Prettier**: Code formatting and style consistency
-- **TypeScript**: Static type checking and error prevention
-- **Performance**: Optimized bundle size and runtime performance
-
-### Testing Strategy
-```bash
-# Run all tests
-npm test
-
-# Run tests with coverage
-npm run test:coverage
-
-# Run specific test suites
-npm run test:unit
-npm run test:integration
-npm run test:e2e
-```
-
-## 📞 Support
-
-- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
-- 💡 **Feature Requests**: [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
-- 📧 **Contact**: [GitHub Profile](https://github.com/DrHazemAli)
 
 ---
 

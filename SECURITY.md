@@ -201,8 +201,3 @@ For security-related questions or concerns:
 ## 🙏 Acknowledgments
 
 We appreciate the security research community and responsible disclosure practices. Thank you for helping keep Azure Image Studio secure for all users.
-
----
-
-**Last Updated**: January 2024  
-**Next Review**: February 2024
