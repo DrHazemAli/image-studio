@@ -253,8 +253,6 @@ export default function CanvasViewport({
       
       // Check if the canvas is properly initialized
       try {
-        console.log('Updating canvas dimensions to:', canvasWidth, 'x', canvasHeight);
-        
         fabricCanvasRef.current.setDimensions({
           width: canvasWidth,
           height: canvasHeight
