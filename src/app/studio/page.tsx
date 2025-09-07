@@ -12,11 +12,14 @@ import { HistoryPanel } from '@/components/studio/history-panel';
 import { ConsoleSidebar } from '@/components/ui/console-sidebar';
 import { SizeModal } from '@/components/studio/size-modal';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { StudioLoading } from '@/components/studio/studio-loading';
 import type { ModelInfo } from '@/app/api/models/route';
 import { dbManager, type Asset, type HistoryEntry } from '@/lib/indexeddb';
+import { ProjectManager } from '@/lib/project-manager';
 import { 
   HamburgerMenuIcon, 
   DownloadIcon, 
+  UploadIcon,
   Share1Icon,
   LayersIcon,
   InfoCircledIcon,
@@ -38,6 +41,7 @@ interface GenerationParams {
 }
 
 export default function StudioPage() {
+  const [isLoading, setIsLoading] = useState(true);
   const [activeTool, setActiveTool] = useState<Tool>('select');
   const [showGenerationPanel, setShowGenerationPanel] = useState(false);
   const [showPromptBox, setShowPromptBox] = useState(true);
@@ -50,7 +54,9 @@ export default function StudioPage() {
   const [generationProgress, setGenerationProgress] = useState(0);
   const [requestLog, setRequestLog] = useState<unknown>(null);
   const [responseLog, setResponseLog] = useState<unknown>(null);
-  const [projectName, ] = useState('Untitled Project');
+  const [projectName, setProjectName] = useState('Untitled Project');
+  const [isEditingProjectName, setIsEditingProjectName] = useState(false);
+  const [tempProjectName, setTempProjectName] = useState('Untitled Project');
   const [error, setError] = useState<string | null>(null);
   const [currentModel, setCurrentModel] = useState('flux-kontext-pro');
   const [isInpaintMode, setIsInpaintMode] = useState(false);
@@ -95,6 +101,15 @@ export default function StudioPage() {
     reader.readAsDataURL(file);
   }, []);
 
+  // Loading timer - show loading screen for 5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   // Fetch models on component mount
   useEffect(() => {
     const fetchModels = async () => {
@@ -120,6 +135,94 @@ export default function StudioPage() {
     const model = models.find(m => m.id === modelId);
     return model ? model.name : modelId;
   }, [models]);
+
+  // Handle project name editing
+  const handleProjectNameEdit = useCallback(() => {
+    setTempProjectName(projectName);
+    setIsEditingProjectName(true);
+  }, [projectName]);
+
+  const handleProjectNameSave = useCallback(() => {
+    if (tempProjectName.trim()) {
+      setProjectName(tempProjectName.trim());
+    }
+    setIsEditingProjectName(false);
+  }, [tempProjectName]);
+
+  const handleProjectNameCancel = useCallback(() => {
+    setTempProjectName(projectName);
+    setIsEditingProjectName(false);
+  }, [projectName]);
+
+  const handleProjectNameKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleProjectNameSave();
+    } else if (e.key === 'Escape') {
+      handleProjectNameCancel();
+    }
+  }, [handleProjectNameSave, handleProjectNameCancel]);
+
+  // Handle project export
+  const handleExportProject = useCallback(async () => {
+    try {
+      const projectData = await ProjectManager.exportProject(
+        projectName,
+        currentModel,
+        currentSize,
+        isInpaintMode,
+        currentImage,
+        generatedImage,
+        attachedImage,
+        {
+          description: `Project exported from Azure Image Studio`,
+          tags: ['azure', 'image-studio'],
+          author: 'Azure Image Studio User'
+        }
+      );
+      
+      ProjectManager.downloadProject(projectData);
+    } catch (error) {
+      console.error('Export failed:', error);
+      setError('Failed to export project');
+    }
+  }, [projectName, currentModel, currentSize, isInpaintMode, currentImage, generatedImage, attachedImage]);
+
+  // Handle project import
+  const handleImportProject = useCallback(() => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = async (event) => {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+
+      try {
+        const projectData = await ProjectManager.readProjectFromFile(file);
+        const result = await ProjectManager.importProject(projectData);
+        
+        if (result.success && result.data) {
+          // Update studio state with imported data
+          setProjectName(result.data.projectName);
+          setCurrentModel(result.data.settings.currentModel);
+          setCurrentSize(result.data.settings.currentSize);
+          setIsInpaintMode(result.data.settings.isInpaintMode);
+          setCurrentImage(result.data.canvas.currentImage);
+          setGeneratedImage(result.data.canvas.generatedImage);
+          setAttachedImage(result.data.canvas.attachedImage);
+          
+          // Show success message
+          setError(null);
+          console.log(result.message);
+        } else {
+          setError(result.message);
+        }
+      } catch (error) {
+        console.error('Import failed:', error);
+        setError('Failed to import project');
+      }
+    };
+    input.click();
+  }, []);
 
   // Handle image generation
   const handleGenerate = useCallback(async (params: GenerationParams) => {
@@ -240,15 +343,15 @@ export default function StudioPage() {
         switch (event.key) {
           case 's':
             event.preventDefault();
-            // TODO: Save project
+            handleExportProject();
             break;
           case 'o':
             event.preventDefault();
-            // TODO: Open project
+            handleImportProject();
             break;
           case 'e':
             event.preventDefault();
-            // TODO: Export image
+            handleExportProject();
             break;
         }
       }
@@ -341,11 +444,23 @@ export default function StudioPage() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [handleExportProject, handleImportProject]);
 
   return (
     <Theme>
-      <div className="h-screen overflow-hidden studio-bg bg-gray-50 dark:bg-black flex flex-col">
+      {/* Loading Screen */}
+      <StudioLoading isVisible={isLoading} />
+      
+      {/* Main Studio Interface */}
+      <AnimatePresence>
+        {!isLoading && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="h-screen overflow-hidden studio-bg bg-gray-50 dark:bg-black flex flex-col"
+          >
         {/* Top Menu Bar */}
         <motion.header
           initial={{ y: -60 }}
@@ -361,9 +476,25 @@ export default function StudioPage() {
                 <h1 className="font-bold text-gray-900 dark:text-white">
                   Azure Image Studio
                 </h1>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
-                  {projectName}
-                </p>
+                {isEditingProjectName ? (
+                  <input
+                    type="text"
+                    value={tempProjectName}
+                    onChange={(e) => setTempProjectName(e.target.value)}
+                    onBlur={handleProjectNameSave}
+                    onKeyDown={handleProjectNameKeyDown}
+                    className="text-xs text-gray-500 dark:text-gray-400 bg-transparent border-b border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 outline-none min-w-0"
+                    autoFocus
+                  />
+                ) : (
+                  <p 
+                    className="text-xs text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                    onClick={handleProjectNameEdit}
+                    title="Click to rename project"
+                  >
+                    {projectName}
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -381,10 +512,21 @@ export default function StudioPage() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={handleExportProject}
               className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              title="Export"
+              title="Export Project (Cmd+S)"
             >
               <DownloadIcon className="w-4 h-4" />
+            </motion.button>
+
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleImportProject}
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              title="Import Project (Cmd+O)"
+            >
+              <UploadIcon className="w-4 h-4" />
             </motion.button>
 
             <motion.button
@@ -496,8 +638,7 @@ export default function StudioPage() {
 
           </div>
           <div className="flex items-center gap-4">
-
-
+          
          
           <div className="flex items-center gap-4">
             <span>Azure Image Studio v1.0</span>
@@ -606,8 +747,9 @@ export default function StudioPage() {
           models={models}
         />
 
-      
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Theme>
   );
 }

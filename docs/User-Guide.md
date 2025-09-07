@@ -16,7 +16,7 @@ This comprehensive guide will help you master Azure Image Studio's features and 
 
 The studio is divided into several key areas:
 
-- **🎨 Canvas**: Main workspace for image editing and generation
+- **🎨 Canvas**: Main workspace for image editing and generation with Fabric.js
 - **🛠️ Toolbar**: Tool selection and navigation controls
 - **📝 Prompt Box**: AI generation interface
 - **📁 Assets Panel**: Asset management and organization
@@ -27,7 +27,7 @@ The studio is divided into several key areas:
 
 ### Navigation Tools
 
-#### Select Tool (`Cmd+V`)
+#### Select Tool (`Cmd+1`)
 - **Purpose**: Select and manipulate objects on the canvas
 - **Usage**: Click and drag to select areas
 - **Features**: Move, resize, and transform selected elements
@@ -42,7 +42,7 @@ The studio is divided into several key areas:
 - **Usage**: Click and drag to move the view
 - **Features**: Smooth navigation with mouse or trackpad
 
-#### Zoom Tool (`Cmd+Z`)
+#### Zoom Tool (`Cmd+2`)
 - **Purpose**: Zoom in and out of the canvas
 - **Usage**: Click to zoom in, Shift+click to zoom out
 - **Features**: Precise zoom control and fit-to-screen
@@ -87,18 +87,6 @@ The studio is divided into several key areas:
   - Intelligent content filling
   - Seamless blending
 
-#### Outpaint Tool (`Cmd+O`)
-- **Purpose**: Extend images beyond their borders
-- **Usage**:
-  1. Select the Outpaint tool
-  2. Drag to extend the canvas
-  3. Enter a description of the extension
-  4. Click "Outpaint"
-- **Features**:
-  - Extend in any direction
-  - Maintain image consistency
-  - Adjustable extension size
-
 ### Drawing Tools
 
 #### Brush Tool (`Cmd+B`)
@@ -139,7 +127,7 @@ The studio is divided into several key areas:
 
 ### Transform Tools
 
-#### Crop Tool (`Cmd+C`)
+#### Crop Tool (`Cmd+4`)
 - **Purpose**: Crop and resize images
 - **Usage**: Select area and press Enter
 - **Features**:
@@ -147,13 +135,13 @@ The studio is divided into several key areas:
   - Free-form cropping
   - Preview before applying
 
-#### Transform Tool (`Cmd+T`)
-- **Purpose**: Scale, rotate, and skew objects
-- **Usage**: Select object and use transform handles
+#### Filters Tool
+- **Purpose**: Apply image filters and effects
+- **Usage**: Select filter and adjust parameters
 - **Features**:
-  - Free transform
-  - Constrained scaling
-  - Rotation controls
+  - Multiple filter types
+  - Adjustable intensity
+  - Real-time preview
 
 ## 🤖 AI Generation
 
@@ -196,12 +184,6 @@ The studio is divided into several key areas:
 2. **Enter Prompt**: Describe the images you want
 3. **Configure Settings**: Set parameters for all images
 4. **Generate Batch**: Create multiple variations
-
-#### Variations
-1. **Generate Base Image**: Create your initial image
-2. **Select Variation Tool**: Choose variation generation
-3. **Adjust Parameters**: Control variation strength
-4. **Generate Variations**: Create similar but different versions
 
 ## 📁 Asset Management
 
@@ -393,6 +375,7 @@ This guide covers the essential features and workflows of Azure Image Studio. Fo
 - [Getting Started](Getting-Started.md) - Initial setup and configuration
 - [API Documentation](API-Documentation.md) - Technical reference
 - [Architecture Guide](Architecture.md) - System design overview
-- [Roadmap](Roadmap.md) - Current and planned features
+- [CLI Documentation](../cli/README.md) - Command-line interface guide
+- [CLI User Guide](../cli/docs/CLI-User-Guide.md) - Comprehensive CLI usage guide
 
 Happy creating! 🎨

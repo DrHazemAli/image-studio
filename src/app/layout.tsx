@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Azure Image Generator",
-  description: "AI-powered image generation using Azure OpenAI services",
+  title: "Azure Image Studio",
+  description: "AI-powered image generation and editing using Azure OpenAI services",
 };
 
 export default function RootLayout({

@@ -3,7 +3,7 @@
     {
       "id": "primary",
       "name": "Primary Endpoint",
-      "baseUrl": "https://ai-hazem5051ai732443155478.services.ai.azure.com",
+      "baseUrl": "<AZURE_API_BASE_URL>",
       "apiVersion": "2025-04-01-preview",
       "deployments": [
         {

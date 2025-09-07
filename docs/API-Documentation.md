@@ -6,7 +6,7 @@ This document provides comprehensive technical documentation for the Azure Image
 
 ## 🔗 API Overview
 
-forAzure Image Studio is a community-developed platform that integrates with multiple Azure AI services to provide image generation and editing capabilities. This independent project uses a flexible configuration system to support various AI models and endpoints.
+Azure Image Studio is a community-developed platform that integrates with multiple Azure AI services to provide image generation and editing capabilities. This independent project uses a flexible configuration system to support various AI models and endpoints.
 
 **Note**: This is not an official Microsoft or Azure product, but rather a community project that utilizes Azure's AI services.
 
@@ -45,6 +45,9 @@ Frontend (Next.js) → API Routes → Azure Provider → Azure AI Services
   quality?: string;            // Quality level
   seed?: number;               // Random seed for reproducibility
   negativePrompt?: string;     // Negative prompt (for supported models)
+  mode?: string;               // Generation mode: "generate" or "edit"
+  image?: string;              // Base64 image (for edit mode)
+  mask?: string;               // Base64 mask (for inpainting)
 }
 ```
 
@@ -55,7 +58,8 @@ Frontend (Next.js) → API Routes → Azure Provider → Azure AI Services
   data: {
     created: number;
     data: Array<{
-      url: string;
+      b64_json: string;
+      url?: string;
       revised_prompt?: string;
     }>;
   };
@@ -108,6 +112,39 @@ const response = await fetch('/api/generate', {
 }
 ```
 
+### Models
+
+**Endpoint**: `GET /api/models`
+
+**Description**: Get available models and their capabilities
+
+**Response**:
+```typescript
+{
+  models: Array<{
+    id: string;
+    name: string;
+    description: string;
+    provider: string;
+    capabilities: string[];
+    supportedSizes: Array<{
+      size: string;
+      label: string;
+      aspect: string;
+      description: string;
+    }>;
+    supportedFormats: string[];
+    qualityLevels?: string[];
+    styleOptions?: string[];
+    maxImages: number;
+    requiresApproval: boolean;
+    enabled: boolean;
+  }>;
+  defaultModel: string;
+  defaultSize: string;
+}
+```
+
 ## 🔧 Azure Provider
 
 ### AzureImageProvider Class
@@ -125,6 +162,12 @@ class AzureImageProvider {
   generateImage(
     deploymentId: string, 
     params: GenerationParams
+  ): Promise<GenerationResult>;
+  
+  // Edit images
+  editImage(
+    deploymentId: string,
+    params: EditParams
   ): Promise<GenerationResult>;
   
   // Get available models
@@ -157,6 +200,19 @@ interface GenerationParams {
   quality?: string;
   seed?: number;
   negative_prompt?: string;
+}
+```
+
+### Edit Parameters
+
+```typescript
+interface EditParams {
+  prompt: string;
+  image: string; // Base64 encoded image
+  mask?: string; // Base64 encoded mask (optional)
+  output_format?: string;
+  n?: number;
+  size?: string;
 }
 ```
 
@@ -299,7 +355,9 @@ interface GenerationParams {
           "provider": "Azure OpenAI",
           "apiVersion": "2024-10-21",
           "capabilities": ["text-to-image"],
-          "supportedSizes": ["1024x1024", "1792x1024", "1024x1792"],
+          "supportedSizes": [
+            { "size": "1024x1024", "label": "Square (1:1)", "aspect": "1:1" }
+          ],
           "supportedFormats": ["png", "jpeg"],
           "styleOptions": ["natural", "vivid"],
           "qualityLevels": ["standard", "hd"],
@@ -308,22 +366,7 @@ interface GenerationParams {
         }
       ]
     }
-  },
-  "endpoints": [
-    {
-      "id": "primary-openai",
-      "name": "Azure OpenAI Primary",
-      "baseUrl": "https://your-endpoint.openai.azure.com",
-      "type": "openai",
-      "deployments": [
-        {
-          "modelId": "dalle-3",
-          "deploymentName": "your-dalle-3-deployment",
-          "enabled": true
-        }
-      ]
-    }
-  ]
+  }
 }
 ```
 
@@ -412,7 +455,7 @@ const generateImage = async (prompt) => {
   });
   
   const result = await response.json();
-  return result.data.data[0].url;
+  return result.data.data[0].b64_json;
 };
 ```
 
@@ -428,12 +471,13 @@ const editImage = async (imageData, prompt) => {
       deploymentId: 'flux-1-kontext-pro',
       prompt: prompt,
       image: imageData,
-      size: '1024x1024'
+      size: '1024x1024',
+      mode: 'edit'
     })
   });
   
   const result = await response.json();
-  return result.data.data[0].url;
+  return result.data.data[0].b64_json;
 };
 ```
 
@@ -454,7 +498,7 @@ const generateBatch = async (prompt, count) => {
   });
   
   const result = await response.json();
-  return result.data.data.map(item => item.url);
+  return result.data.data.map(item => item.b64_json);
 };
 ```
 

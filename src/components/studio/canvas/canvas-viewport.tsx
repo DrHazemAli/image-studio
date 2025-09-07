@@ -5,15 +5,19 @@ import { Canvas as FabricCanvas, FabricObject } from 'fabric';
 import { Tool } from '../toolbar';
 
 interface CanvasViewportProps {
-  canvasRef: React.RefObject<HTMLCanvasElement>;
+  canvasRef: React.RefObject<HTMLCanvasElement | null>;
   fabricCanvasRef: React.RefObject<FabricCanvas | null>;
-  containerRef: React.RefObject<HTMLDivElement>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
   canvasInitializedRef: React.RefObject<boolean>;
   resizeTimeoutRef: React.RefObject<NodeJS.Timeout | null>;
   zoom: number;
   pan: { x: number; y: number };
   isDragging: boolean;
   dragStart: { x: number; y: number };
+  isDrawing: boolean;
+  brushSize: number;
+  brushColor: string;
+  isLoadingImage: boolean;
   // Removed unused props
   imageLoaded: boolean;
   canvasWidth: number;
@@ -28,6 +32,10 @@ interface CanvasViewportProps {
   onPanChange: (pan: { x: number; y: number }) => void;
   onIsDraggingChange: (isDragging: boolean) => void;
   onDragStartChange: (dragStart: { x: number; y: number }) => void;
+  onIsDrawingChange: (isDrawing: boolean) => void;
+  onBrushSizeChange: (brushSize: number) => void;
+  onBrushColorChange: (brushColor: string) => void;
+  onImageLoadedChange: (imageLoaded: boolean) => void;
   // Removed unused callback props
   onCanvasWidthChange: (width: number) => void;
   onCanvasHeightChange: (height: number) => void;
@@ -49,6 +57,10 @@ export default function CanvasViewport({
   pan,
   isDragging,
   dragStart,
+  isDrawing,
+  brushSize,
+  brushColor,
+  isLoadingImage,
   // Removed unused parameters
   imageLoaded,
   canvasWidth,
@@ -63,6 +75,10 @@ export default function CanvasViewport({
   onPanChange,
   onIsDraggingChange,
   onDragStartChange,
+  onIsDrawingChange,
+  onBrushSizeChange,
+  onBrushColorChange,
+  onImageLoadedChange,
   // Removed unused callback parameters
   onCanvasWidthChange,
   onCanvasHeightChange,
@@ -203,7 +219,12 @@ export default function CanvasViewport({
       onContainerSizeChange(newSize);
       console.log('Container resized to:', newSize.width, 'x', newSize.height);
     }
-  }, [containerSize.width, containerSize.height, onContainerSizeChange]);
+  }, [containerSize.width, containerSize.height, onContainerSizeChange, containerRef]);
+
+  // Memoized resize handle handlers
+  const createResizeHandler = useCallback((handle: string) => {
+    return (e: React.MouseEvent) => handleResizeStart(e, handle);
+  }, [handleResizeStart]);
 
   // Initialize Fabric.js canvas
   useEffect(() => {
@@ -417,25 +438,25 @@ export default function CanvasViewport({
           <div
             className="absolute w-3 h-3 bg-blue-500 border border-white rounded-full cursor-nw-resize hover:bg-blue-600 transition-colors"
             style={{ top: -6, left: -6, pointerEvents: 'auto' }}
-            onMouseDown={(e) => handleResizeStart(e, 'nw')}
+            onMouseDown={createResizeHandler('nw')}
             title="Resize from top-left"
           />
           <div
             className="absolute w-3 h-3 bg-blue-500 border border-white rounded-full cursor-ne-resize hover:bg-blue-600 transition-colors"
             style={{ top: -6, right: -6, pointerEvents: 'auto' }}
-            onMouseDown={(e) => handleResizeStart(e, 'ne')}
+            onMouseDown={createResizeHandler('ne')}
             title="Resize from top-right"
           />
           <div
             className="absolute w-3 h-3 bg-blue-500 border border-white rounded-full cursor-sw-resize hover:bg-blue-600 transition-colors"
             style={{ bottom: -6, left: -6, pointerEvents: 'auto' }}
-            onMouseDown={(e) => handleResizeStart(e, 'sw')}
+            onMouseDown={createResizeHandler('sw')}
             title="Resize from bottom-left"
           />
           <div
             className="absolute w-3 h-3 bg-blue-500 border border-white rounded-full cursor-se-resize hover:bg-blue-600 transition-colors"
             style={{ bottom: -6, right: -6, pointerEvents: 'auto' }}
-            onMouseDown={(e) => handleResizeStart(e, 'se')}
+            onMouseDown={createResizeHandler('se')}
             title="Resize from bottom-right"
           />
 
@@ -443,25 +464,25 @@ export default function CanvasViewport({
           <div
             className="absolute w-3 h-3 bg-blue-500 border border-white rounded-full cursor-n-resize hover:bg-blue-600 transition-colors"
             style={{ top: -6, left: '50%', transform: 'translateX(-50%)', pointerEvents: 'auto' }}
-            onMouseDown={(e) => handleResizeStart(e, 'n')}
+            onMouseDown={createResizeHandler('n')}
             title="Resize from top"
           />
           <div
             className="absolute w-3 h-3 bg-blue-500 border border-white rounded-full cursor-s-resize hover:bg-blue-600 transition-colors"
             style={{ bottom: -6, left: '50%', transform: 'translateX(-50%)', pointerEvents: 'auto' }}
-            onMouseDown={(e) => handleResizeStart(e, 's')}
+            onMouseDown={createResizeHandler('s')}
             title="Resize from bottom"
           />
           <div
             className="absolute w-3 h-3 bg-blue-500 border border-white rounded-full cursor-w-resize hover:bg-blue-600 transition-colors"
             style={{ left: -6, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'auto' }}
-            onMouseDown={(e) => handleResizeStart(e, 'w')}
+            onMouseDown={createResizeHandler('w')}
             title="Resize from left"
           />
           <div
             className="absolute w-3 h-3 bg-blue-500 border border-white rounded-full cursor-e-resize hover:bg-blue-600 transition-colors"
             style={{ right: -6, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'auto' }}
-            onMouseDown={(e) => handleResizeStart(e, 'e')}
+            onMouseDown={createResizeHandler('e')}
             title="Resize from right"
           />
         </div>

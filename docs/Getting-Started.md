@@ -12,12 +12,14 @@ Azure Image Studio is a community-developed, production-ready platform that inte
 
 ### Current Active Features
 
-The platform currently supports two main feature categories:
+The platform currently supports comprehensive image generation and editing capabilities:
 
 - **🎨 Image Generation**: Create images from text descriptions using various AI models
 - **✏️ Image Editing**: Modify and enhance existing images with AI-powered tools
-
-For detailed information about current and planned features, see our [Roadmap](Roadmap.md).
+- **🖼️ Canvas Tools**: Professional editing tools including crop, resize, filters, shapes, and text
+- **📁 Asset Management**: Built-in asset library with IndexedDB storage
+- **📚 History Tracking**: Complete generation and editing history
+- **🖥️ Real-time Console**: API request/response logging and debugging
 
 ## 📋 Prerequisites
 
@@ -87,34 +89,28 @@ Edit the configuration files in `src/app/config/`:
 **`azure-models.json`** - Detailed model specifications and capabilities:
 ```json
 {
-  "endpoints": [
-    {
-      "id": "primary-openai",
-      "name": "Azure OpenAI Primary",
-      "baseUrl": "https://your-openai-endpoint.openai.azure.com",
-      "type": "openai",
-      "deployments": [
+  "imageModels": {
+    "generation": {
+      "openai": [
         {
-          "modelId": "dalle-3",
-          "deploymentName": "your-dalle-3-deployment",
-          "enabled": true
-        }
-      ]
-    },
-    {
-      "id": "primary-foundry",
-      "name": "Azure AI Foundry",
-      "baseUrl": "https://ai-foundry.azure.com",
-      "type": "foundry",
-      "deployments": [
-        {
-          "modelId": "flux-1-1-pro",
-          "deploymentName": "your-flux-deployment",
-          "enabled": true
+          "id": "dalle-3",
+          "name": "DALL-E 3",
+          "description": "High-quality image generation with natural and vivid styles",
+          "provider": "Azure OpenAI",
+          "apiVersion": "2024-10-21",
+          "capabilities": ["text-to-image"],
+          "supportedSizes": [
+            { "size": "1024x1024", "label": "Square (1:1)", "aspect": "1:1" }
+          ],
+          "supportedFormats": ["png", "jpeg"],
+          "styleOptions": ["natural", "vivid"],
+          "qualityLevels": ["standard", "hd"],
+          "maxImages": 1,
+          "requiresApproval": false
         }
       ]
     }
-  ]
+  }
 }
 ```
 
@@ -196,7 +192,7 @@ The platform automatically detects available models based on your configuration.
 
 - Check the [User Guide](User-Guide.md) for detailed usage instructions
 - Review the [API Documentation](API-Documentation.md) for technical details
-- See our [Roadmap](Roadmap.md) for current feature status
+- See our [Architecture Guide](Architecture.md) for system design overview
 
 ## 🎯 Next Steps
 
@@ -207,10 +203,12 @@ The platform automatically detects available models based on your configuration.
 
 ## 📚 Additional Resources
 
-- [Roadmap](Roadmap.md) - Current and planned features
 - [User Guide](User-Guide.md) - Detailed usage instructions
 - [API Documentation](API-Documentation.md) - Technical reference
 - [Architecture Guide](Architecture.md) - System design overview
+- [CLI Documentation](../cli/README.md) - Command-line interface guide
+- [CLI User Guide](../cli/docs/CLI-User-Guide.md) - Comprehensive CLI usage guide
+- [CLI API Documentation](../cli/docs/CLI-API-Documentation.md) - CLI technical reference
 
 ---
 

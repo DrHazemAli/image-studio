@@ -1,12 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   FrameIcon, 
   Cross2Icon,
   CheckIcon,
-  Cross1Icon,
   ImageIcon,
   TrashIcon
 } from '@radix-ui/react-icons';
@@ -35,6 +34,21 @@ export default function ResizeCanvasModal({
   currentCanvasWidth,
   currentCanvasHeight
 }: ResizeCanvasModalProps) {
+  const handleResizeCanvas = useCallback(() => {
+    onResizeCanvas();
+    onClose();
+  }, [onResizeCanvas, onClose]);
+
+  const handleResizeCanvasAndImage = useCallback(() => {
+    onResizeCanvasAndImage();
+    onClose();
+  }, [onResizeCanvasAndImage, onClose]);
+
+  const handleDiscard = useCallback(() => {
+    onDiscard();
+    onClose();
+  }, [onDiscard, onClose]);
+
   // Only log when modal is actually open to reduce noise
   if (isOpen) {
     console.log('ResizeCanvasModal render:', { isOpen, imageWidth, imageHeight, currentCanvasWidth, currentCanvasHeight });
@@ -44,20 +58,6 @@ export default function ResizeCanvasModal({
   if (!isOpen) {
     return null;
   }
-  const handleResizeCanvas = () => {
-    onResizeCanvas();
-    onClose();
-  };
-
-  const handleResizeCanvasAndImage = () => {
-    onResizeCanvasAndImage();
-    onClose();
-  };
-
-  const handleDiscard = () => {
-    onDiscard();
-    onClose();
-  };
 
   return (
     <AnimatePresence>
@@ -95,7 +95,7 @@ export default function ResizeCanvasModal({
             {/* Content */}
             <div className="p-6">
               <p className="text-gray-600 dark:text-gray-300 mb-6">
-                The image dimensions don't match your current canvas size. Choose how you'd like to proceed:
+                The image dimensions don&apos;t match your current canvas size. Choose how you&apos;d like to proceed:
               </p>
 
               {/* Size Comparison */}

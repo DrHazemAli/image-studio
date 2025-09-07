@@ -3,6 +3,7 @@
 import MainCanvas from './canvas/main-canvas';
 
 interface CanvasProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   activeTool: any;
   currentImage?: string | null;
   onImageLoad?: (imageData: string) => void;

@@ -6,7 +6,11 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "cli": "cd cli && npm run dev",
+    "cli:build": "cd cli && npm run build",
+    "cli:install": "cd cli && npm install",
+    "cli:test": "cd cli && npm test"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.15",

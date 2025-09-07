@@ -1,196 +1,155 @@
-# Azure Image Studio Documentation
+# Documentation - Azure Image Studio
 
-Welcome to the comprehensive documentation for Azure Image Studio - a community-developed, production-ready platform for AI-powered image generation and editing using Azure AI services.
+Welcome to the comprehensive documentation for Azure Image Studio, a community-built platform that leverages Azure AI services for professional image generation and editing.
 
+> ⚠️ **Important**: This is a **community project** and is not affiliated with or endorsed by Microsoft or Azure. It's an independent project that uses Azure AI services.
 
 ## 📚 Documentation Overview
 
-This documentation suite provides everything you need to understand, configure, and use Azure Image Studio effectively.
+This documentation provides complete guidance for using, configuring, and understanding Azure GenAI Image Studio. Whether you're a new user, developer, or system administrator, you'll find the information you need here.
 
-### 🚀 Quick Start
+## 🚀 Quick Start
 
-- **[Getting Started](Getting-Started.md)** - Set up and configure the platform
-- **[User Guide](User-Guide.md)** - Learn how to use all features
-- **[Roadmap](Roadmap.md)** - Current features and development plans
+### For New Users
+1. **[Getting Started](Getting-Started.md)** - Complete setup and configuration guide
+2. **[User Guide](User-Guide.md)** - Detailed usage instructions for all features
 
-### 🔧 Technical Documentation
-
-- **[API Documentation](API-Documentation.md)** - Complete API reference
-- **[Architecture Guide](Architecture.md)** - System design and technical details
-
-## 🎯 What is Azure Image Studio?
-
-Azure Image Studio is a community-developed, comprehensive, production-ready platform that integrates with Azure AI services to provide professional-grade image generation and editing capabilities. This independent project is built with modern web technologies and offers both a simple generation interface and a full-featured studio environment for advanced image manipulation.
-
-**Note**: This is not an official Microsoft or Azure product, but rather a community project that utilizes Azure's AI services.
-
-### ✨ Key Features
-
-- **🎨 Image Generation**: Create images from text descriptions using various AI models
-- **✏️ Image Editing**: Modify and enhance existing images with AI-powered tools
-- **🤖 Multiple AI Models**: Support for DALL-E 3, FLUX 1.1 Pro, FLUX 1 Kontext Pro, and GPT-Image-1
-- **🛠️ Professional Studio**: Full-featured editing workspace with advanced tools
-- **📁 Asset Management**: Built-in asset organization and project management
-- **📚 History Tracking**: Complete generation and editing history
-- **🎯 Modern UI**: Beautiful, responsive interface with dark/light themes
-
-## 🏗️ Architecture
-
-### Technology Stack
-
-- **Frontend**: Next.js 15.5.2, React 19.1.0, TypeScript 5.0
-- **Styling**: Tailwind CSS 4.0, Radix UI components
-- **Animations**: Framer Motion
-- **Backend**: Next.js API routes, Azure AI integration
-- **Storage**: IndexedDB for local data, Azure AI services for generation
-
-### Supported Models
-
-| Model | Provider | Capabilities | Status |
-|-------|----------|--------------|--------|
-| DALL-E 3 | Azure OpenAI | Text-to-image | ✅ Active |
-| GPT-Image-1 | Azure OpenAI | Text-to-image, Editing, Inpainting | ⚠️ Requires Approval |
-| FLUX 1.1 Pro | Azure AI Foundry | Text-to-image | ✅ Active |
-| FLUX 1 Kontext Pro | Azure AI Foundry | Text-to-image, Image-to-image, Editing | ✅ Active |
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- Azure subscription with AI services access
-- Azure OpenAI Service account
-- Azure AI Foundry access (for FLUX models)
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/DrHazemAli/azure-image-studio.git
-   cd azure-image-studio
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Configure Azure services**
-   - Set up your Azure API key in `.env.local`
-   - Configure endpoints in `src/app/config/azure-config.json`
-   - Set up model deployments in `src/app/config/azure-models.json`
-
-4. **Start the development server**
-   ```bash
-   npm run dev
-   ```
-
-5. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+### For Developers
+1. **[API Documentation](API-Documentation.md)** - Technical reference and examples
+2. **[Architecture Guide](Architecture.md)** - System design and technical details
 
 ## 📖 Documentation Structure
 
-### For Users
+### 🎯 User Documentation
 
-- **[Getting Started](Getting-Started.md)** - Complete setup guide with configuration details
-- **[User Guide](User-Guide.md)** - Comprehensive guide to all features and workflows
-- **[Roadmap](Roadmap.md)** - Current active features and development roadmap
+#### [Getting Started](Getting-Started.md)
+Complete setup and configuration guide covering:
+- Prerequisites and system requirements
+- Installation and setup process
+- Azure service configuration
+- Basic usage instructions
+- Troubleshooting common issues
 
-### For Developers
+#### [User Guide](User-Guide.md)
+Comprehensive user manual covering:
+- Studio interface overview
+- Canvas tools and navigation
+- AI generation workflows
+- Asset management
+- History tracking
+- Advanced features and tips
 
-- **[API Documentation](API-Documentation.md)** - Complete API reference with examples
-- **[Architecture Guide](Architecture.md)** - System design, components, and technical details
+### 🔧 Technical Documentation
 
-## 🎨 Current Active Features
+#### [API Documentation](API-Documentation.md)
+Technical reference for developers covering:
+- API endpoints and methods
+- Request/response formats
+- Azure provider integration
+- Model specifications
+- Error handling and codes
+- Usage examples and best practices
 
-### Image Generation
-- Text-to-image generation with multiple AI models
-- Quality and style control options
-- Batch generation capabilities
-- Real-time progress tracking
+#### [Architecture Guide](Architecture.md)
+System design and technical details covering:
+- High-level architecture overview
+- Component structure and relationships
+- Data flow and storage
+- Performance considerations
+- Security architecture
+- Development and deployment
 
-### Image Editing
-- AI-powered image modification
-- Context-aware editing
-- Style transfer capabilities
-- Inpainting and outpainting tools
+## 🎨 Platform Features
 
-### Studio Interface
-- Professional canvas workspace
-- Comprehensive tool set
-- Asset management system
-- History tracking and replay
+### Current Capabilities
 
-## 🔧 Configuration
+#### AI-Powered Generation
+- **Text-to-Image**: Create images from natural language descriptions
+- **Image Editing**: Modify existing images with AI assistance
+- **Inpainting/Outpainting**: Fill or extend image areas intelligently
+- **Style Transfer**: Apply artistic styles to images
+- **Batch Generation**: Create multiple images simultaneously
 
-### Environment Variables
+#### Professional Studio
+- **Advanced Canvas**: Full-featured editing workspace with Fabric.js
+- **Tool System**: Comprehensive set of editing and generation tools
+- **Layer Management**: Professional layer-based editing system
+- **Asset Library**: Built-in asset management with IndexedDB
+- **History Tracking**: Complete generation and editing history
+- **Real-time Console**: API request/response logging and debugging
 
-```bash
-# .env.local
-AZURE_API_KEY=your_azure_api_key_here
-```
+#### Supported AI Models
+- **DALL-E 3**: High-quality image generation with style control
+- **FLUX 1.1 Pro**: Advanced photorealistic generation
+- **FLUX 1 Kontext Pro**: Context-aware generation and editing
+- **GPT-Image-1**: Enhanced capabilities with editing support (requires approval)
 
-### Model Configuration
+## 🛠️ Technology Stack
 
-Each model requires specific endpoint configuration:
+### Frontend
+- **Next.js 15.5.2** - React framework with App Router
+- **React 19.1.0** - Latest React with concurrent features
+- **TypeScript 5.0** - Type-safe development
+- **Tailwind CSS 4.0** - Utility-first styling
+- **Radix UI** - Accessible component primitives
+- **Framer Motion** - Smooth animations and transitions
+- **Fabric.js** - Advanced canvas manipulation
 
-- **Azure OpenAI Models**: Configure in `azure-config.json`
-- **FLUX Models**: Configure in `azure-models.json`
-- **Endpoints**: Each model needs its own endpoint URL
-- **Deployments**: Model-specific deployment names
+### Backend
+- **Azure OpenAI Service** - AI model integration
+- **Azure AI Foundry** - FLUX model integration
+- **RESTful API** - Clean API architecture
+- **Configuration Management** - Flexible model and endpoint configuration
+- **Error Handling** - Comprehensive error management
 
-## 🚨 Troubleshooting
+## 🚀 Getting Help
 
-### Common Issues
+### Self-Service Resources
+- **Documentation**: Comprehensive guides and references
+- **Console Logs**: Real-time API logging and debugging
+- **Error Messages**: Detailed error information and solutions
+- **Configuration Validation**: Built-in configuration checking
 
-- **Configuration Errors**: Check endpoint URLs and deployment names
-- **API Key Issues**: Verify `AZURE_API_KEY` is set correctly
-- **Model Availability**: Ensure models are enabled and accessible
-- **Rate Limits**: Monitor API usage and implement backoff strategies
+### Community Support
+- **GitHub Issues**: Report bugs and request features
+- **GitHub Discussions**: Community discussions and Q&A
+- **GitHub Repository**: Source code and project information
 
-### Getting Help
+### Contact Information
+- **Author**: Hazem Ali (Microsoft MVP)
+- **GitHub**: [@DrHazemAli](https://github.com/DrHazemAli)
+- **LinkedIn**: [Hazem Ali](https://linkedin.com/in/hazemali)
 
-- Check the [User Guide](User-Guide.md) for detailed usage instructions
-- Review the [API Documentation](API-Documentation.md) for technical issues
-- See our [GitHub repository](https://github.com/DrHazemAli/azure-image-studio) for updates and support
+## 📋 Project Information
 
-## 🤝 Contributing
+### Version
+- **Current Version**: 1.0.0
+- **Last Updated**: September 7, 2025
 
-This is a **community-driven project**! We welcome contributions from developers of all skill levels. This project is not affiliated with Microsoft or Azure, but rather is an independent community effort that integrates with Azure AI services.
+### License
+- **License**: MIT License
+- **Open Source**: Yes, community-driven project
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+### Community
+- **Type**: Community project (not affiliated with Microsoft)
+- **Maintainer**: Microsoft Communities & MVPs
+- **Contributions**: Welcome from developers of all skill levels
 
-See our [Contributing Guidelines](https://github.com/DrHazemAli/azure-image-studio/blob/main/CONTRIBUTING.md) for more details.
+## 🔗 Quick Links
 
-## 📄 License
+### Essential Documentation
+- [Getting Started](Getting-Started.md) - Setup and configuration
+- [User Guide](User-Guide.md) - Usage instructions
+- [API Documentation](API-Documentation.md) - Technical reference
+- [Architecture Guide](Architecture.md) - System design
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/DrHazemAli/azure-image-studio/blob/main/LICENSE) file for details.
-
-## 👨‍💻 Author
-
-**Hazem Ali** - Microsoft MVP
-- GitHub: [@DrHazemAli](https://github.com/DrHazemAli)
-- LinkedIn: [Hazem Ali](https://linkedin.com/in/hazemali)
-
-## 🙏 Acknowledgments
-
-- **Microsoft Azure AI Services** - For providing the AI infrastructure (this project is not affiliated with Microsoft)
-- **OpenAI** - For the powerful AI models available through Azure
-- **Next.js team** - For the amazing framework
-- **Radix UI** - For accessible components
-- **The open-source community** - For inspiration and contributions
+### External Resources
+- [GitHub Repository](https://github.com/DrHazemAli/azure-image-studio)
+- [GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
+- [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
 
 ---
 
-**Ready to start creating?** Check out our [Getting Started Guide](Getting-Started.md) and begin generating amazing images with AI!
+**Ready to get started?** Begin with the [Getting Started Guide](Getting-Started.md) to set up your environment and start creating amazing images with AI!
 
-<div align="center">
-
-**⭐ Star this repository if you find it helpful!**
-
-Made with ❤️ by [Hazem Ali](https://github.com/DrHazemAli)
-
-</div>
+Made with ❤️ by the Azure Image Studio community.

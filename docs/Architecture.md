@@ -21,6 +21,7 @@ Azure Image Studio is a community-developed, modern, scalable web application th
 │ • TypeScript    │    │ • Azure Provider│    │ • AI Foundry    │
 │ • Tailwind CSS  │    │ • Configuration │    │ • FLUX Models   │
 │ • Radix UI      │    │ • Error Handling│    │ • DALL-E 3      │
+│ • Fabric.js     │    │ • IndexedDB     │    │ • GPT-Image-1   │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
@@ -55,7 +56,8 @@ src/
 ├── app/                    # Next.js App Router
 │   ├── api/               # API routes
 │   │   ├── config/        # Configuration endpoint
-│   │   └── generate/      # Image generation endpoint
+│   │   ├── generate/      # Image generation endpoint
+│   │   └── models/        # Models endpoint
 │   ├── config/            # Configuration files
 │   │   ├── azure-config.json
 │   │   └── azure-models.json
@@ -65,17 +67,40 @@ src/
 │   └── page.tsx           # Home page
 ├── components/            # React components
 │   ├── studio/            # Studio-specific components
+│   │   ├── canvas/        # Canvas components
+│   │   │   ├── main-canvas.tsx
+│   │   │   ├── canvas-viewport.tsx
+│   │   │   ├── canvas-info.tsx
+│   │   │   ├── file-upload-area.tsx
+│   │   │   ├── layers-toggle.tsx
+│   │   │   ├── resize-canvas-modal.tsx
+│   │   │   ├── tool-options-panel.tsx
+│   │   │   └── zoom-controls.tsx
+│   │   ├── tools/         # Tool components
+│   │   │   ├── crop-tool.tsx
+│   │   │   ├── filters-tool.tsx
+│   │   │   ├── image-resize-tool.tsx
+│   │   │   ├── layer-manager.tsx
+│   │   │   ├── shapes-tool.tsx
+│   │   │   ├── text-tool.tsx
+│   │   │   └── tools-panel.tsx
 │   │   ├── canvas.tsx     # Main canvas component
 │   │   ├── toolbar.tsx    # Tool selection
 │   │   ├── generation-panel.tsx
 │   │   ├── assets-panel.tsx
 │   │   ├── history-panel.tsx
-│   │   └── enhanced-prompt-box.tsx
+│   │   ├── enhanced-prompt-box.tsx
+│   │   ├── glassy-prompt.tsx
+│   │   ├── loading-indicator.tsx
+│   │   ├── resize-dialog.tsx
+│   │   ├── size-modal.tsx
+│   │   └── context-menu.tsx
 │   └── ui/                # Reusable UI components
 │       ├── generation-form.tsx
 │       ├── model-selector.tsx
 │       ├── theme-toggle.tsx
-│       └── console-sidebar.tsx
+│       ├── console-sidebar.tsx
+│       └── image-result.tsx
 ├── hooks/                 # Custom React hooks
 │   └── use-theme.ts       # Theme management
 ├── lib/                   # Utility libraries
@@ -97,6 +122,7 @@ src/
 - **Tailwind CSS 4.0**: Utility-first styling
 - **Radix UI**: Accessible component primitives
 - **Framer Motion**: Smooth animations and transitions
+- **Fabric.js**: Advanced canvas manipulation
 
 ### Component Architecture
 
@@ -105,13 +131,32 @@ src/
 - `studio/page.tsx`: Full-featured studio application
 
 #### 2. **Studio Components**
-- `Canvas`: Main editing workspace with tool support
+- `Canvas`: Main editing workspace with Fabric.js integration
 - `Toolbar`: Tool selection and navigation
 - `GenerationPanel`: AI generation interface
 - `AssetsPanel`: Asset management and organization
 - `HistoryPanel`: Generation and editing history
 
-#### 3. **UI Components**
+#### 3. **Canvas Components**
+- `MainCanvas`: Core canvas with Fabric.js integration
+- `CanvasViewport`: Viewport management and navigation
+- `CanvasInfo`: Canvas information display
+- `FileUploadArea`: Drag and drop file upload
+- `LayersToggle`: Layer visibility controls
+- `ResizeCanvasModal`: Canvas resizing interface
+- `ToolOptionsPanel`: Tool-specific options
+- `ZoomControls`: Zoom functionality
+
+#### 4. **Tool Components**
+- `CropTool`: Image cropping functionality
+- `FiltersTool`: Image filters and effects
+- `ImageResizeTool`: Image resizing
+- `LayerManager`: Layer management
+- `ShapesTool`: Geometric shape creation
+- `TextTool`: Text addition and editing
+- `ToolsPanel`: Tool selection interface
+
+#### 5. **UI Components**
 - Reusable components following atomic design principles
 - Consistent styling with Tailwind CSS
 - Accessible components using Radix UI
@@ -157,6 +202,9 @@ Request: {
   size?: string;
   outputFormat?: string;
   count?: number;
+  mode?: string;
+  image?: string;
+  mask?: string;
   // ... other parameters
 }
 Response: {
@@ -164,6 +212,16 @@ Response: {
   data: GenerationResult;
   requestLog: object;
   responseLog: object;
+}
+```
+
+#### 3. **Models Endpoint** (`/api/models`)
+```typescript
+GET /api/models
+Response: {
+  models: ModelInfo[];
+  defaultModel: string;
+  defaultSize: string;
 }
 ```
 
@@ -176,6 +234,7 @@ class AzureImageProvider {
   
   validateConfiguration(): ValidationResult;
   generateImage(deploymentId: string, params: GenerationParams): Promise<GenerationResult>;
+  editImage(deploymentId: string, params: EditParams): Promise<GenerationResult>;
   getAvailableModels(): Model[];
   getModelCapabilities(modelId: string): Capability[];
 }
@@ -225,14 +284,10 @@ interface Asset {
   id: string;
   name: string;
   type: 'image' | 'video' | 'audio';
-  data: string; // Base64 or URL
-  metadata: {
-    size: { width: number; height: number };
-    format: string;
-    createdAt: Date;
-    modifiedAt: Date;
-  };
-  tags: string[];
+  url: string;
+  timestamp: Date;
+  prompt?: string;
+  model?: string;
 }
 ```
 
@@ -241,12 +296,13 @@ interface Asset {
 interface HistoryEntry {
   id: string;
   type: 'generation' | 'editing';
+  timestamp: Date;
   prompt: string;
   model: string;
-  parameters: GenerationParams;
-  result: GenerationResult;
-  timestamp: Date;
-  thumbnail: string;
+  settings: object;
+  imageUrl: string;
+  thumbnailUrl: string;
+  status: 'completed' | 'failed' | 'processing';
 }
 ```
 

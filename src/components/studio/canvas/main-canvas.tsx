@@ -7,12 +7,12 @@ import { LayerManager, Layer } from '../tools';
 import { Canvas as FabricCanvas, FabricImage, FabricObject } from 'fabric';
 
 // Import canvas components
-import CanvasViewport from './canvas-viewport';
+import CanvasViewport from '@/components/studio/canvas/canvas-viewport';
 import ToolOptionsPanel from './tool-options-panel';
 import ZoomControls from './zoom-controls';
 import LayersToggle from './layers-toggle';
 import CanvasInfo from './canvas-info';
-import FileUploadArea from './file-upload-area';
+import FileUploadArea from '@/components/studio/canvas/file-upload-area';
 import ContextMenu from '../context-menu';
 import ResizeDialog from '../resize-dialog';
 import ResizeCanvasModal from './resize-canvas-modal';
@@ -78,6 +78,7 @@ export default function MainCanvas({
   const [isShapeToolOpen, setIsShapeToolOpen] = useState(false);
 
   // Tool handlers
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleAddText = useCallback((text: string, style: any) => {
     if (!fabricCanvasRef.current) return;
 
@@ -118,9 +119,13 @@ export default function MainCanvas({
 
       setLayers(prev => [...prev, textLayer]);
       setActiveLayerId(textLayer.id);
+      
+      // Close the text tool modal after adding text
+      setIsTextToolOpen(false);
     });
   }, [canvasWidth, canvasHeight]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleAddShape = useCallback((shapeType: string, style: any) => {
     if (!fabricCanvasRef.current) return;
 
@@ -135,10 +140,11 @@ export default function MainCanvas({
         opacity: style.opacity / 100,
         selectable: true,
         evented: true,
-        originX: 'center',
-        originY: 'center'
+        originX: 'center' as const,
+        originY: 'center' as const
       };
 
+     
       switch (shapeType) {
         case 'rectangle':
           shapeObject = new Rect({
@@ -181,9 +187,13 @@ export default function MainCanvas({
 
       setLayers(prev => [...prev, shapeLayer]);
       setActiveLayerId(shapeLayer.id);
+      
+      // Close the shape tool modal after adding shape
+      setIsShapeToolOpen(false);
     });
   }, [canvasWidth, canvasHeight]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const loadImageDirectly = useCallback((img: any, imgWidth: number, imgHeight: number, targetCanvasWidth?: number, targetCanvasHeight?: number) => {
       if (!fabricCanvasRef.current) return;
 
@@ -312,25 +322,8 @@ export default function MainCanvas({
       const imgWidth = img.width || 0;
       const imgHeight = img.height || 0;
 
-      console.log('Image loaded successfully:', {
-        imgWidth,
-        imgHeight,
-        imgWidthFromFabric: img.width,
-        imgHeightFromFabric: img.height,
-        imgNaturalWidth: img.getElement()?.naturalWidth,
-        imgNaturalHeight: img.getElement()?.naturalHeight
-      });
       console.log('Current canvas dimensions:', canvasWidth, canvasHeight);
 
-      console.log('Dimension check:', {
-        imgWidth,
-        imgHeight,
-        canvasWidth,
-        canvasHeight,
-        isProcessingResize,
-        imageLoaded
-      });
-      
       // Check if canvas is empty (first image load)
       const hasObjects = canvas.getObjects().length > 0;
       
@@ -537,20 +530,28 @@ export default function MainCanvas({
   }, [layers]);
 
   const handleAddLayer = useCallback((type: 'text' | 'shape') => {
-    if (!fabricCanvasRef.current) return;
-    
-    const newLayer: Layer = {
-      id: `layer-${Date.now()}`,
-      name: type === 'text' ? 'Text Layer' : 'Shape Layer',
-      type,
-      visible: true,
-      locked: false,
-      opacity: 100,
-      object: undefined
-    };
-    
-    setLayers(prev => [...prev, newLayer]);
-    setActiveLayerId(newLayer.id);
+    // Open the appropriate tool modal instead of creating empty layer
+    if (type === 'text') {
+      setIsTextToolOpen(true);
+    } else if (type === 'shape') {
+      setIsShapeToolOpen(true);
+    }
+  }, []);
+
+  const handleToggleLayers = useCallback(() => {
+    setShowLayers(prev => !prev);
+  }, []);
+
+  const handleZoomIn = useCallback(() => {
+    setZoom(prev => Math.min(prev + 25, 400));
+  }, []);
+
+  const handleZoomOut = useCallback(() => {
+    setZoom(prev => Math.max(prev - 25, 25));
+  }, []);
+
+  const handleResetZoom = useCallback(() => {
+    setZoom(100);
   }, []);
 
   // Context menu handlers
@@ -625,7 +626,7 @@ export default function MainCanvas({
         setIsProcessingResize(false);
       }, 5000);
     }
-  }, [pendingCanvasDimensions, isCanvasReady, currentImage]);
+  }, [pendingCanvasDimensions, isCanvasReady, currentImage, loadImageToCanvas]);
 
   const handleResizeCanvasAndImage = useCallback(() => {
     if (pendingCanvasDimensions && currentImage) {
@@ -972,20 +973,19 @@ export default function MainCanvas({
 
         <LayersToggle
           showLayers={showLayers}
-          onToggleLayers={() => setShowLayers(!showLayers)}
+          onToggleLayers={handleToggleLayers}
         />
 
         <ZoomControls
           zoom={zoom}
-          onZoomIn={() => setZoom(prev => Math.min(prev + 25, 400))}
-          onZoomOut={() => setZoom(prev => Math.max(prev - 25, 25))}
-          onResetZoom={() => setZoom(100)}
+          onZoomIn={handleZoomIn}
+          onZoomOut={handleZoomOut}
+          onResetZoom={handleResetZoom}
         />
 
         <CanvasInfo
           canvasWidth={canvasWidth}
           canvasHeight={canvasHeight}
-          containerSize={containerSize}
           zoom={zoom}
           imageLoaded={imageLoaded}
           isResizing={isResizing}
