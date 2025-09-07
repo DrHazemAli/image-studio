@@ -45,6 +45,7 @@ export default function StudioPage() {
   const [showHistoryPanel, setShowHistoryPanel] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
   const [currentImage, setCurrentImage] = useState<string | null>(null);
+  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationProgress, setGenerationProgress] = useState(0);
   const [requestLog, setRequestLog] = useState<unknown>(null);
@@ -125,6 +126,7 @@ export default function StudioPage() {
     setIsGenerating(true);
     setGenerationProgress(0);
     setError(null);
+    setGeneratedImage(null); // Clear previous generated image
 
     try {
       // Simulate progress
@@ -169,6 +171,7 @@ export default function StudioPage() {
       if (data.data && data.data.data && data.data.data[0]) {
         const imageData = `data:image/png;base64,${data.data.data[0].b64_json}`;
         setCurrentImage(imageData);
+        setGeneratedImage(imageData);
         
         // Save to assets using IndexedDB
         const asset: Asset = {
@@ -424,6 +427,7 @@ export default function StudioPage() {
                   onImageLoad={setCurrentImage}
                   isGenerating={isGenerating}
                   isInpaintMode={isInpaintMode}
+                  generatedImage={generatedImage}
                 />
 
           {/* Console Sidebar */}

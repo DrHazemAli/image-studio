@@ -6,40 +6,343 @@ import { ZoomInIcon, ZoomOutIcon, ResetIcon } from '@radix-ui/react-icons';
 import { Button } from '@radix-ui/themes';
 import { Tool } from './toolbar';
 
+// Import Fabric.js properly
+import { Canvas as FabricCanvas, FabricImage, FabricObject, Path, Rect, IText } from 'fabric';
+
 interface CanvasProps {
   activeTool: Tool;
   currentImage?: string | null;
   onImageLoad?: (imageData: string) => void;
   isGenerating?: boolean;
   isInpaintMode?: boolean;
+  generatedImage?: string | null;
 }
 
-interface Layer {
-  id: string;
-  name: string;
-  imageData?: string;
-  visible: boolean;
-  opacity: number;
-  blendMode: string;
-}
-
-export function Canvas({ activeTool, currentImage, onImageLoad, isGenerating = false, isInpaintMode = false }: CanvasProps) {
+export function Canvas({ activeTool, currentImage, onImageLoad, isGenerating = false, isInpaintMode = false, generatedImage }: CanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const fabricCanvasRef = useRef<FabricCanvas | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [zoom, setZoom] = useState(100);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-  const [layers, setLayers] = useState<Layer[]>([
-    {
-      id: 'background',
-      name: 'Background',
-      visible: true,
-      opacity: 100,
-      blendMode: 'normal'
+  const [canvasSize] = useState({ width: 1024, height: 1024 });
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [brushSize, setBrushSize] = useState(10);
+  const [brushColor, setBrushColor] = useState('#000000');
+  const [isLoadingImage, setIsLoadingImage] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+
+  // Load image to Fabric.js canvas
+  const loadImageToCanvas = useCallback((imageData: string) => {
+    if (!fabricCanvasRef.current) return;
+
+    console.log('Loading image to canvas:', imageData.substring(0, 50) + '...');
+    setIsLoadingImage(true);
+
+    FabricImage.fromURL(imageData).then((img: FabricImage) => {
+      if (!fabricCanvasRef.current) return;
+      
+      console.log('Image loaded successfully:', img.width, img.height);
+      
+      // Clear existing objects
+      const canvas = fabricCanvasRef.current;
+      const objects = canvas.getObjects();
+      objects.forEach(obj => {
+        canvas.remove(obj);
+      });
+      
+      // Scale image to fit canvas while maintaining aspect ratio
+      const canvasWidth = canvas.width!;
+      const canvasHeight = canvas.height!;
+      const imgWidth = img.width!;
+      const imgHeight = img.height!;
+      
+      // Calculate scale to fit canvas (allow scaling up if image is smaller)
+      const scaleX = canvasWidth / imgWidth;
+      const scaleY = canvasHeight / imgHeight;
+      const scale = Math.min(scaleX, scaleY); // Remove the ", 1" to allow scaling up
+      
+      img.scale(scale);
+      
+      // Center the image on canvas
+      const scaledWidth = imgWidth * scale;
+      const scaledHeight = imgHeight * scale;
+      const left = (canvasWidth - scaledWidth) / 2;
+      const top = (canvasHeight - scaledHeight) / 2;
+      
+      img.set({
+        left: left,
+        top: top,
+        selectable: true,
+        evented: true,
+        lockMovementX: false,
+        lockMovementY: false,
+        // Ensure image is opaque and on top
+        opacity: 1,
+        globalCompositeOperation: 'source-over'
+      });
+      
+      canvas.add(img);
+      canvas.bringObjectToFront(img);
+      canvas.renderAll();
+      console.log('Image added to canvas and rendered at position:', left, top, 'scale:', scale);
+      setIsLoadingImage(false);
+      setImageLoaded(true);
+    }).catch((error) => {
+      console.error('Error loading image:', error);
+      setIsLoadingImage(false);
+    });
+  }, []);
+
+  // Initialize Fabric.js canvas
+  useEffect(() => {
+    if (!canvasRef.current) return;
+
+    console.log('Initializing Fabric.js canvas...');
+
+    const fabricCanvas = new FabricCanvas(canvasRef.current, {
+      width: canvasSize.width,
+      height: canvasSize.height,
+      backgroundColor: 'transparent',
+      selection: true,
+      preserveObjectStacking: true,
+    });
+
+    fabricCanvasRef.current = fabricCanvas;
+    console.log('Fabric.js canvas initialized');
+
+    return () => {
+      fabricCanvas.dispose();
+    };
+  }, [canvasSize.width, canvasSize.height]);
+
+  // Load image when currentImage changes
+  useEffect(() => {
+    if (currentImage && fabricCanvasRef.current) {
+      console.log('Current image changed, loading to canvas...', currentImage.substring(0, 50) + '...');
+      loadImageToCanvas(currentImage);
     }
-  ]);
-  const [canvasSize, setCanvasSize] = useState({ width: 1024, height: 1024 });
+  }, [currentImage, loadImageToCanvas]);
+
+  // Load generated image immediately when it's available
+  useEffect(() => {
+    if (generatedImage && fabricCanvasRef.current) {
+      console.log('Generated image received, loading to canvas...', generatedImage.substring(0, 50) + '...');
+      loadImageToCanvas(generatedImage);
+    }
+  }, [generatedImage, loadImageToCanvas]);
+
+  // Expose loadImageToCanvas function to parent component
+  useEffect(() => {
+    if (onImageLoad) {
+      // Store the loadImageToCanvas function so it can be called directly
+      (window as { loadImageToCanvas?: typeof loadImageToCanvas }).loadImageToCanvas = loadImageToCanvas;
+    }
+  }, [loadImageToCanvas, onImageLoad]);
+
+  // Drawing functions
+  const startDrawing = useCallback((pointer: { x: number; y: number }) => {
+    if (!fabricCanvasRef.current) return;
+
+    const path = new Path(`M ${pointer.x} ${pointer.y}`, {
+      stroke: brushColor,
+      strokeWidth: brushSize,
+      fill: '',
+      strokeLineCap: 'round',
+      strokeLineJoin: 'round',
+    });
+
+    fabricCanvasRef.current.add(path);
+    fabricCanvasRef.current.setActiveObject(path);
+  }, [brushColor, brushSize]);
+
+  const continueDrawing = useCallback((pointer: { x: number; y: number }) => {
+    if (!fabricCanvasRef.current) return;
+
+    const activeObject = fabricCanvasRef.current.getActiveObject() as Path;
+    if (activeObject && activeObject.type === 'path') {
+      const pathData = activeObject.path;
+      pathData.push(['L', pointer.x, pointer.y]);
+      activeObject.set('path', pathData);
+      fabricCanvasRef.current.renderAll();
+    }
+  }, []);
+
+  const startErasing = useCallback((pointer: { x: number; y: number }) => {
+    if (!fabricCanvasRef.current) return;
+
+    const path = new Path(`M ${pointer.x} ${pointer.y}`, {
+      stroke: 'white',
+      strokeWidth: brushSize * 2,
+      fill: '',
+      strokeLineCap: 'round',
+      strokeLineJoin: 'round',
+      globalCompositeOperation: 'destination-out',
+    });
+
+    fabricCanvasRef.current.add(path);
+    fabricCanvasRef.current.setActiveObject(path);
+  }, [brushSize]);
+
+  const continueErasing = useCallback((pointer: { x: number; y: number }) => {
+    if (!fabricCanvasRef.current) return;
+
+    const activeObject = fabricCanvasRef.current.getActiveObject() as Path;
+    if (activeObject && activeObject.type === 'path') {
+      const pathData = activeObject.path;
+      pathData.push(['L', pointer.x, pointer.y]);
+      activeObject.set('path', pathData);
+      fabricCanvasRef.current.renderAll();
+    }
+  }, []);
+
+  // Text tool
+  const addText = useCallback((pointer: { x: number; y: number }) => {
+    if (!fabricCanvasRef.current) return;
+
+    const text = new IText('Click to edit', {
+      left: pointer.x,
+      top: pointer.y,
+      fontFamily: 'Arial',
+      fontSize: 20,
+      fill: brushColor,
+    });
+
+    fabricCanvasRef.current.add(text);
+    fabricCanvasRef.current.setActiveObject(text);
+    fabricCanvasRef.current.renderAll();
+  }, [brushColor]);
+
+  // Shape tools
+  const addShape = useCallback((pointer: { x: number; y: number }) => {
+    if (!fabricCanvasRef.current) return;
+
+    const rect = new Rect({
+      left: pointer.x,
+      top: pointer.y,
+      width: 100,
+      height: 100,
+      fill: 'transparent',
+      stroke: brushColor,
+      strokeWidth: 2,
+    });
+
+    fabricCanvasRef.current.add(rect);
+    fabricCanvasRef.current.setActiveObject(rect);
+    fabricCanvasRef.current.renderAll();
+  }, [brushColor]);
+
+  // Handle canvas mouse events
+  const handleCanvasMouseDown = useCallback((opt: any) => {
+    if (!fabricCanvasRef.current) return;
+
+    const pointer = fabricCanvasRef.current.getPointer(opt.e);
+    
+    switch (activeTool) {
+      case 'brush':
+        setIsDrawing(true);
+        startDrawing(pointer);
+        break;
+      case 'eraser':
+        setIsDrawing(true);
+        startErasing(pointer);
+        break;
+      case 'text':
+        addText(pointer);
+        break;
+      case 'shape':
+        addShape(pointer);
+        break;
+    }
+  }, [activeTool, startDrawing, startErasing, addText, addShape]);
+
+  const handleCanvasMouseMove = useCallback((opt: any) => {
+    if (!fabricCanvasRef.current || !isDrawing) return;
+
+    const pointer = fabricCanvasRef.current.getPointer(opt.e);
+    
+    switch (activeTool) {
+      case 'brush':
+        continueDrawing(pointer);
+        break;
+      case 'eraser':
+        continueErasing(pointer);
+        break;
+    }
+  }, [activeTool, isDrawing, continueDrawing, continueErasing]);
+
+  const handleCanvasMouseUp = useCallback(() => {
+    setIsDrawing(false);
+  }, []);
+
+  // Set up canvas event listeners
+  useEffect(() => {
+    const canvas = fabricCanvasRef.current;
+    if (!canvas) return;
+
+    canvas.on('mouse:down', handleCanvasMouseDown);
+    canvas.on('mouse:move', handleCanvasMouseMove);
+    canvas.on('mouse:up', handleCanvasMouseUp);
+
+    return () => {
+      canvas.off('mouse:down', handleCanvasMouseDown);
+      canvas.off('mouse:move', handleCanvasMouseMove);
+      canvas.off('mouse:up', handleCanvasMouseUp);
+    };
+  }, [handleCanvasMouseDown, handleCanvasMouseMove, handleCanvasMouseUp]);
+
+  // Update canvas when currentImage changes
+  useEffect(() => {
+    if (currentImage && fabricCanvasRef.current) {
+      loadImageToCanvas(currentImage);
+    }
+  }, [currentImage, loadImageToCanvas]);
+
+  // Update tool behavior
+  useEffect(() => {
+    if (!fabricCanvasRef.current) return;
+
+    const canvas = fabricCanvasRef.current;
+    
+    switch (activeTool) {
+      case 'select':
+        canvas.isDrawingMode = false;
+        canvas.selection = true;
+        canvas.forEachObject((obj: FabricObject) => {
+          obj.selectable = true;
+          obj.evented = true;
+        });
+        break;
+      case 'brush':
+      case 'eraser':
+        canvas.isDrawingMode = false;
+        canvas.selection = false;
+        canvas.forEachObject((obj: FabricObject) => {
+          obj.selectable = false;
+          obj.evented = false;
+        });
+        break;
+      case 'hand':
+        canvas.isDrawingMode = false;
+        canvas.selection = false;
+        canvas.forEachObject((obj: FabricObject) => {
+          obj.selectable = false;
+          obj.evented = false;
+        });
+        break;
+      default:
+        canvas.isDrawingMode = false;
+        canvas.selection = true;
+        canvas.forEachObject((obj: FabricObject) => {
+          obj.selectable = true;
+          obj.evented = true;
+        });
+    }
+    
+    canvas.renderAll();
+  }, [activeTool]);
 
   const handleZoomIn = useCallback(() => {
     setZoom(prev => Math.min(prev + 25, 400));
@@ -81,60 +384,138 @@ export function Canvas({ activeTool, currentImage, onImageLoad, isGenerating = f
     setZoom(prev => Math.max(25, Math.min(400, prev + delta)));
   }, []);
 
-  const drawCanvas = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+  // Export canvas as image
+  const exportCanvas = useCallback(() => {
+    if (!fabricCanvasRef.current) return;
+    
+    const dataURL = fabricCanvasRef.current.toDataURL({
+      format: 'png',
+      quality: 1,
+      multiplier: 1
+    });
+    
+    // Create download link
+    const link = document.createElement('a');
+    link.download = 'edited-image.png';
+    link.href = dataURL;
+    link.click();
+  }, []);
 
     // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Draw checkerboard background
-    const cellSize = 20;
-    ctx.fillStyle = '#f0f0f0';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  const clearCanvas = useCallback(() => {
+    if (!fabricCanvasRef.current) return;
     
-    ctx.fillStyle = '#e0e0e0';
-    for (let x = 0; x < canvas.width; x += cellSize) {
-      for (let y = 0; y < canvas.height; y += cellSize) {
-        if ((x / cellSize + y / cellSize) % 2) {
-          ctx.fillRect(x, y, cellSize, cellSize);
-        }
-      }
-    }
-
-    // Draw current image if available
-    if (currentImage) {
-      const img = new Image();
-      img.onload = () => {
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      };
-      img.src = currentImage;
-    }
-  }, [currentImage]);
-
-  useEffect(() => {
-    drawCanvas();
-  }, [drawCanvas]);
+    // Clear all objects but preserve the canvas structure
+    const canvas = fabricCanvasRef.current;
+    const objects = canvas.getObjects();
+    objects.forEach(obj => {
+      canvas.remove(obj);
+    });
+    
+    canvas.renderAll();
+    setImageLoaded(false);
+  }, []);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    console.log('File selected:', file.name, file.type, file.size);
+
     const reader = new FileReader();
     reader.onload = (event) => {
       const imageData = event.target?.result as string;
+      console.log('File read successfully, calling onImageLoad...');
       onImageLoad?.(imageData);
+      
+      // Also try to load directly to canvas as fallback
+      if (fabricCanvasRef.current) {
+        console.log('Loading image directly to canvas as fallback...');
+        loadImageToCanvas(imageData);
+      }
+    };
+    reader.onerror = (error) => {
+      console.error('Error reading file:', error);
     };
     reader.readAsDataURL(file);
   };
 
   return (
     <div className="flex-1 relative overflow-hidden bg-gray-100 dark:bg-black">
+      {/* Tool Options Panel */}
+      {(activeTool === 'brush' || activeTool === 'eraser' || activeTool === 'text' || activeTool === 'shape') && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="absolute top-4 left-1/2 -translate-x-1/2 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-xl p-3 shadow-lg border border-gray-200 dark:border-gray-800"
+        >
+          <div className="flex items-center gap-4">
+            {activeTool === 'brush' && (
+              <>
+                <div className="flex items-center gap-2">
+                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Size:</label>
+                  <input
+                    type="range"
+                    min="1"
+                    max="50"
+                    value={brushSize}
+                    onChange={(e) => setBrushSize(Number(e.target.value))}
+                    className="w-20"
+                  />
+                  <span className="text-xs text-gray-500 w-8">{brushSize}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Color:</label>
+                  <input
+                    type="color"
+                    value={brushColor}
+                    onChange={(e) => setBrushColor(e.target.value)}
+                    className="w-8 h-8 rounded border border-gray-300 dark:border-gray-600"
+                  />
+                </div>
+              </>
+            )}
+            {activeTool === 'eraser' && (
+              <div className="flex items-center gap-2">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Size:</label>
+                <input
+                  type="range"
+                  min="5"
+                  max="100"
+                  value={brushSize}
+                  onChange={(e) => setBrushSize(Number(e.target.value))}
+                  className="w-20"
+                />
+                <span className="text-xs text-gray-500 w-8">{brushSize}</span>
+              </div>
+            )}
+            {activeTool === 'text' && (
+              <div className="flex items-center gap-2">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Color:</label>
+                <input
+                  type="color"
+                  value={brushColor}
+                  onChange={(e) => setBrushColor(e.target.value)}
+                  className="w-8 h-8 rounded border border-gray-300 dark:border-gray-600"
+                />
+              </div>
+            )}
+            {activeTool === 'shape' && (
+              <div className="flex items-center gap-2">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Color:</label>
+                <input
+                  type="color"
+                  value={brushColor}
+                  onChange={(e) => setBrushColor(e.target.value)}
+                  className="w-8 h-8 rounded border border-gray-300 dark:border-gray-600"
+                />
+              </div>
+            )}
+          </div>
+        </motion.div>
+      )}
+
       {/* Canvas Container */}
-    
       <div 
         ref={containerRef}
         className="w-full h-full relative cursor-grab active:cursor-grabbing"
@@ -154,16 +535,51 @@ export function Canvas({ activeTool, currentImage, onImageLoad, isGenerating = f
           {/* Canvas Shadow */}
           <div className="absolute -inset-2 bg-black/20 blur-lg rounded-lg" />
           
+          {/* Checkerboard Background */}
+          <div 
+            className="absolute inset-0 rounded-lg"
+            style={{
+              background: `
+                repeating-conic-gradient(#ffffff 0% 25%, #c0c0c0 0% 50%) 50% / 12px 12px
+              `
+            }}
+          />
+          
           {/* Main Canvas */}
           <canvas
             ref={canvasRef}
             width={canvasSize.width}
             height={canvasSize.height}
-            className="bg-white rounded-lg shadow-2xl border border-gray-300 dark:border-gray-600"
+            className="absolute inset-0 rounded-lg shadow-2xl border border-gray-300 dark:border-gray-600"
             style={{
-              imageRendering: zoom > 200 ? 'pixelated' : 'auto'
+              imageRendering: zoom > 200 ? 'pixelated' : 'auto',
+              cursor: activeTool === 'hand' ? 'grab' : 
+                      activeTool === 'brush' ? 'crosshair' :
+                      activeTool === 'eraser' ? 'crosshair' :
+                      activeTool === 'text' ? 'text' :
+                      activeTool === 'shape' ? 'crosshair' :
+                      activeTool === 'crop' ? 'crosshair' : 'default',
+              backgroundColor: 'transparent'
             }}
           />
+          
+          {/* Loading Indicator */}
+          {isLoadingImage && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="absolute inset-0 bg-black/20 backdrop-blur-sm rounded-lg flex items-center justify-center z-10"
+            >
+              <div className="bg-white/90 dark:bg-gray-900/90 rounded-xl p-4 shadow-lg">
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Loading image...
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          )}
           
           {/* Canvas Overlay for Tools */}
           <div className="absolute inset-0 pointer-events-none">
@@ -371,6 +787,31 @@ export function Canvas({ activeTool, currentImage, onImageLoad, isGenerating = f
         </Button>
       </motion.div>
 
+      {/* Action Buttons */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="absolute bottom-4 right-4 flex items-center gap-2 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-xl p-2 shadow-lg border border-gray-200 dark:border-gray-800"
+      >
+        <Button
+          variant="ghost"
+          size="1"
+          onClick={clearCanvas}
+          title="Clear Canvas"
+        >
+          <ResetIcon className="w-4 h-4" />
+        </Button>
+        
+        <Button
+          variant="ghost"
+          size="1"
+          onClick={exportCanvas}
+          title="Export Image"
+        >
+          <ZoomInIcon className="w-4 h-4" />
+        </Button>
+      </motion.div>
+
       {/* Canvas Info */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -380,12 +821,18 @@ export function Canvas({ activeTool, currentImage, onImageLoad, isGenerating = f
         <div className="text-xs text-gray-600 dark:text-gray-400 space-y-1">
           <div className="font-mono">{canvasSize.width} × {canvasSize.height} px</div>
           <div className="font-medium">Active: {activeTool}</div>
+          {imageLoaded && (
+            <div className="flex items-center gap-1 text-green-600 dark:text-green-400">
+              <div className="w-2 h-2 bg-green-500 rounded-full" />
+              <span>Image loaded</span>
+            </div>
+          )}
         </div>
       </motion.div>
 
       {/* File Upload Area (when no image) */}
       <AnimatePresence>
-        {!currentImage && (
+        {!imageLoaded && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

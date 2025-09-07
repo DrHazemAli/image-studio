@@ -16,6 +16,8 @@
     "@radix-ui/react-switch": "^1.2.6",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@radix-ui/themes": "^3.2.1",
+    "@types/fabric": "^5.3.10",
+    "fabric": "^6.7.1",
     "framer-motion": "^12.23.12",
     "next": "15.5.2",
     "react": "19.1.0",
