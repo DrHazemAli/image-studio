@@ -123,7 +123,7 @@ export default function ShapesTool({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.2 }}
-            className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full"
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full h-[60vh] overflow-hidden flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
@@ -143,7 +143,7 @@ export default function ShapesTool({
             </div>
 
             {/* Content */}
-            <div className="p-6 space-y-6">
+            <div className="p-6 space-y-6 flex-1 overflow-y-auto">
               {/* Shape Selection */}
               <div className="space-y-3">
                 <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">

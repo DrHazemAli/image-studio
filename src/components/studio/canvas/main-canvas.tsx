@@ -81,8 +81,8 @@ export default function MainCanvas({
   const handleAddText = useCallback((text: string, style: any) => {
     if (!fabricCanvasRef.current) return;
 
-    import('fabric').then(({ FabricText }) => {
-      const textObject = new FabricText(text, {
+    import('fabric').then(({ Textbox }) => {
+      const textObject = new Textbox(text, {
         left: canvasWidth / 2,
         top: canvasHeight / 2,
         fontFamily: style.fontFamily,
@@ -124,7 +124,7 @@ export default function MainCanvas({
   const handleAddShape = useCallback((shapeType: string, style: any) => {
     if (!fabricCanvasRef.current) return;
 
-    import('fabric').then(({ FabricRect, FabricCircle, FabricTriangle }) => {
+    import('fabric').then(({ Rect, Circle, Triangle }) => {
       let shapeObject;
       const commonProps = {
         left: canvasWidth / 2,
@@ -141,20 +141,20 @@ export default function MainCanvas({
 
       switch (shapeType) {
         case 'rectangle':
-          shapeObject = new FabricRect({
+          shapeObject = new Rect({
             ...commonProps,
             width: 100,
             height: 100
           });
           break;
         case 'circle':
-          shapeObject = new FabricCircle({
+          shapeObject = new Circle({
             ...commonProps,
             radius: 50
           });
           break;
         case 'triangle':
-          shapeObject = new FabricTriangle({
+          shapeObject = new Triangle({
             ...commonProps,
             width: 100,
             height: 100
