@@ -59,7 +59,7 @@ const tools = [
     id: 'select' as Tool, 
     name: 'Select', 
     icon: CursorArrowIcon, 
-    shortcut: 'Cmd+V',
+    shortcut: 'Cmd+1',
     group: 'selection'
   },
   { 
@@ -80,7 +80,7 @@ const tools = [
     id: 'zoom' as Tool, 
     name: 'Zoom', 
     icon: ZoomInIcon, 
-    shortcut: 'Cmd+Z',
+    shortcut: 'Cmd+2',
     group: 'navigation'
   },
   
@@ -155,7 +155,7 @@ const tools = [
     id: 'crop' as Tool, 
     name: 'Crop', 
     icon: CropIcon, 
-    shortcut: 'Cmd+C',
+    shortcut: 'Cmd+4',
     group: 'transform'
   },
   { 
@@ -187,7 +187,7 @@ const tools = [
     id: 'assets' as Tool, 
     name: 'Assets', 
     icon: StackIcon, 
-    shortcut: 'Cmd+A',
+    shortcut: 'Cmd+3',
     group: 'management'
   },
   { 

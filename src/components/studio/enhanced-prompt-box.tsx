@@ -186,7 +186,7 @@ export default function EnhancedPromptBox({
         ref={containerRef}
         className="w-full max-w-full "
         animate={{
-          width: (isFocused || localPrompt.trim()) ? "800px" : "600px"
+          width: (isFocused || localPrompt.trim()) ? "860px" : "640px"
         }}
         transition={{ 
           duration: 0.4, 
@@ -194,10 +194,10 @@ export default function EnhancedPromptBox({
           type: "tween"
         }}
         initial={{
-          width: "600px"
+          width: "640px"
         }}
         style={{
-          maxWidth: (isFocused || localPrompt.trim()) ? "800px" : "600px"
+          maxWidth: (isFocused || localPrompt.trim()) ? "860px" : "640px"
         }}
       >
       <div className="relative">
@@ -503,7 +503,7 @@ export default function EnhancedPromptBox({
                 onFocus={handleFocus}
                 rows={1}
                 onBlur={handleBlur}
-                className="w-full bg-transparent border-0 outline-none resize-none text-md text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 transition-all duration-300 focus:placeholder:text-gray-400 dark:focus:placeholder:text-gray-500"
+                className="w-full bg-transparent border-0 outline-none resize-none text-sm mt-1 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 transition-all duration-300 focus:placeholder:text-gray-400 dark:focus:placeholder:text-gray-500"
                 style={{
                   minHeight: "18px",
                   maxHeight: "200px",
@@ -540,7 +540,7 @@ export default function EnhancedPromptBox({
             >
               <Button
                 size="3"
-                className="!rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                className="!h-10 !w-10 !rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 onClick={handleGenerate}
                 disabled={isGenerating || !localPrompt.trim()}
               >

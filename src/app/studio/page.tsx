@@ -253,7 +253,7 @@ export default function StudioPage() {
       // Tool shortcuts - require Cmd key
       if (event.metaKey || event.ctrlKey) {
         switch (event.key) {
-          case 'v':
+          case '1':
             event.preventDefault();
             setActiveTool('select');
             break;
@@ -265,7 +265,7 @@ export default function StudioPage() {
             event.preventDefault();
             setActiveTool('hand');
             break;
-          case 'z':
+          case '2':
             event.preventDefault();
             setActiveTool('zoom');
             break;
@@ -274,7 +274,7 @@ export default function StudioPage() {
             setActiveTool('generate');
             setShowPromptBox(true);
             break;
-          case 'a':
+          case '3':
             event.preventDefault();
             setActiveTool('assets');
             setShowAssetsPanel(true);
@@ -293,7 +293,7 @@ export default function StudioPage() {
               setActiveTool('text');
             }
             break;
-          case 'c':
+          case '4':
             event.preventDefault();
             setActiveTool('crop');
             break;
