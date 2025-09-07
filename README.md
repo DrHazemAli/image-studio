@@ -1,5 +1,9 @@
 # Azure Image Studio
 
+Azure Image Studio is a cutting-edge image generation and editing platform that harnesses the full power of Azure AI services. Built and maintained by Microsoft MVPs, this professional-grade solution delivers state-of-the-art AI capabilities through an intuitive, modern interface. Whether you're creating stunning visuals, editing professional content, or building automated image workflows, Azure Image Studio provides the tools and performance you need to transform your creative vision into reality.
+
+![Azure Image Studio](https://github.com/DrHazemAli/azure-image-studio/blob/main/public/image-studio.jpg)
+
 <div align="center">
 
 ![Azure Image Studio](https://img.shields.io/badge/Azure-Image%20Studio-blue?style=for-the-badge&logo=microsoft-azure)
@@ -7,7 +11,6 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)
 ![React](https://img.shields.io/badge/React-19.1.0-blue?style=for-the-badge&logo=react)
 
-**A community-built image editing and generation platform that leverages Azure AI services**
 
 [![Version](https://img.shields.io/badge/Version-1.0.0-green?style=for-the-badge)](https://github.com/DrHazemAli/azure-image-studio)
 [![Community Project](https://img.shields.io/badge/Type-Community%20Project-orange?style=for-the-badge)](https://github.com/DrHazemAli/azure-image-studio)
@@ -24,6 +27,10 @@
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/DrHazemAli/azure-image-studio)](https://github.com/DrHazemAli/azure-image-studio/pulls)
 
 </div>
+
+
+**A community-built image editing and generation platform that leverages Azure AI services**
+
 
 ## 📋 Table of Contents
 
