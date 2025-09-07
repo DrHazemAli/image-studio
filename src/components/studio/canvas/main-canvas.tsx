@@ -17,6 +17,7 @@ import ContextMenu from '../context-menu';
 import ResizeDialog from '../resize-dialog';
 import ResizeCanvasModal from './resize-canvas-modal';
 import LoadingIndicator from '../loading-indicator';
+import { TextTool, ShapesTool } from '../tools';
 
 interface MainCanvasProps {
   activeTool: Tool;
@@ -72,7 +73,116 @@ export default function MainCanvas({
   const [activeLayerId, setActiveLayerId] = useState<string | null>(null);
   const [showLayers, setShowLayers] = useState(false);
 
-  // Removed unused variable
+  // Tool modal states
+  const [isTextToolOpen, setIsTextToolOpen] = useState(false);
+  const [isShapeToolOpen, setIsShapeToolOpen] = useState(false);
+
+  // Tool handlers
+  const handleAddText = useCallback((text: string, style: any) => {
+    if (!fabricCanvasRef.current) return;
+
+    import('fabric').then(({ FabricText }) => {
+      const textObject = new FabricText(text, {
+        left: canvasWidth / 2,
+        top: canvasHeight / 2,
+        fontFamily: style.fontFamily,
+        fontSize: style.fontSize,
+        fontWeight: style.fontWeight,
+        fontStyle: style.fontStyle,
+        textDecoration: style.textDecoration,
+        textAlign: style.textAlign,
+        fill: style.fillColor,
+        stroke: style.strokeColor,
+        strokeWidth: style.strokeWidth,
+        opacity: style.opacity / 100,
+        selectable: true,
+        evented: true,
+        originX: 'center',
+        originY: 'center'
+      });
+
+      fabricCanvasRef.current?.add(textObject);
+      fabricCanvasRef.current?.setActiveObject(textObject);
+      fabricCanvasRef.current?.renderAll();
+
+      // Create layer for the text
+      const textLayer: Layer = {
+        id: `text-layer-${Date.now()}`,
+        name: `Text: ${text.substring(0, 20)}${text.length > 20 ? '...' : ''}`,
+        type: 'text',
+        visible: true,
+        locked: false,
+        opacity: style.opacity,
+        object: textObject
+      };
+
+      setLayers(prev => [...prev, textLayer]);
+      setActiveLayerId(textLayer.id);
+    });
+  }, [canvasWidth, canvasHeight]);
+
+  const handleAddShape = useCallback((shapeType: string, style: any) => {
+    if (!fabricCanvasRef.current) return;
+
+    import('fabric').then(({ FabricRect, FabricCircle, FabricTriangle }) => {
+      let shapeObject;
+      const commonProps = {
+        left: canvasWidth / 2,
+        top: canvasHeight / 2,
+        fill: style.fillColor,
+        stroke: style.strokeColor,
+        strokeWidth: style.strokeWidth,
+        opacity: style.opacity / 100,
+        selectable: true,
+        evented: true,
+        originX: 'center',
+        originY: 'center'
+      };
+
+      switch (shapeType) {
+        case 'rectangle':
+          shapeObject = new FabricRect({
+            ...commonProps,
+            width: 100,
+            height: 100
+          });
+          break;
+        case 'circle':
+          shapeObject = new FabricCircle({
+            ...commonProps,
+            radius: 50
+          });
+          break;
+        case 'triangle':
+          shapeObject = new FabricTriangle({
+            ...commonProps,
+            width: 100,
+            height: 100
+          });
+          break;
+        default:
+          return;
+      }
+
+      fabricCanvasRef.current?.add(shapeObject);
+      fabricCanvasRef.current?.setActiveObject(shapeObject);
+      fabricCanvasRef.current?.renderAll();
+
+      // Create layer for the shape
+      const shapeLayer: Layer = {
+        id: `shape-layer-${Date.now()}`,
+        name: `${shapeType.charAt(0).toUpperCase() + shapeType.slice(1)}`,
+        type: 'shape',
+        visible: true,
+        locked: false,
+        opacity: style.opacity,
+        object: shapeObject
+      };
+
+      setLayers(prev => [...prev, shapeLayer]);
+      setActiveLayerId(shapeLayer.id);
+    });
+  }, [canvasWidth, canvasHeight]);
 
   const loadImageDirectly = useCallback((img: any, imgWidth: number, imgHeight: number, targetCanvasWidth?: number, targetCanvasHeight?: number) => {
       if (!fabricCanvasRef.current) return;
@@ -737,6 +847,15 @@ export default function MainCanvas({
     }
   }, [isCanvasReady]);
 
+  // Handle tool selection
+  useEffect(() => {
+    if (activeTool === 'text') {
+      setIsTextToolOpen(true);
+    } else if (activeTool === 'shape') {
+      setIsShapeToolOpen(true);
+    }
+  }, [activeTool]);
+
   // Clear last loaded image ref when currentImage changes to a new value
   useEffect(() => {
     if (currentImage && currentImage !== lastLoadedImageRef.current) {
@@ -908,6 +1027,18 @@ export default function MainCanvas({
           imageHeight={pendingImageDimensions?.height || 0}
           currentCanvasWidth={canvasWidth}
           currentCanvasHeight={canvasHeight}
+        />
+
+        <TextTool
+          isOpen={isTextToolOpen}
+          onClose={() => setIsTextToolOpen(false)}
+          onAddText={handleAddText}
+        />
+
+        <ShapesTool
+          isOpen={isShapeToolOpen}
+          onClose={() => setIsShapeToolOpen(false)}
+          onAddShape={handleAddShape}
         />
       </div>
     </div>
