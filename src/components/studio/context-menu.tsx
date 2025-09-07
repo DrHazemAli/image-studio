@@ -16,6 +16,7 @@ interface ContextMenuProps {
   position: { x: number; y: number };
   onClose: () => void;
   onResize: () => void;
+  onFitToCanvas?: () => void;
   onDownload?: () => void;
   onUpload?: () => void;
   onClear?: () => void;
@@ -38,6 +39,7 @@ export default function ContextMenu({
   position,
   onClose,
   onResize,
+  onFitToCanvas,
   onDownload,
   onUpload,
   onClear,
@@ -84,6 +86,16 @@ export default function ContextMenu({
         onResize();
         onClose();
       }
+    },
+    {
+      id: 'fitToCanvas',
+      label: 'Fit Image to Canvas',
+      icon: <FrameIcon className="w-4 h-4" />,
+      onClick: () => {
+        onFitToCanvas?.();
+        onClose();
+      },
+      disabled: !hasImage || !onFitToCanvas
     },
     {
       id: 'separator1',
