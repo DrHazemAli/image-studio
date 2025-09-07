@@ -474,15 +474,30 @@ export default function MainCanvas({
       setCanvasWidth(pendingCanvasDimensions.width);
       setCanvasHeight(pendingCanvasDimensions.height);
       
-      // Apply the resize to Fabric.js canvas
+      // Apply the resize to Fabric.js canvas and refit existing image
       if (fabricCanvasRef.current && isCanvasReady) {
         setTimeout(() => {
           if (fabricCanvasRef.current) {
             try {
+              // Resize canvas
               fabricCanvasRef.current.setDimensions({
                 width: pendingCanvasDimensions.width,
                 height: pendingCanvasDimensions.height
               });
+              
+              // Force reload of current image to fit new canvas dimensions
+              if (currentImage) {
+                console.log('Reloading image for new canvas dimensions');
+                // Clear the lastLoadedImageRef to force reload
+                lastLoadedImageRef.current = null;
+                // Trigger image reload after canvas is ready
+                setTimeout(() => {
+                  if (currentImage) {
+                    loadImageToCanvas(currentImage);
+                  }
+                }, 100);
+              }
+              
               fabricCanvasRef.current.renderAll();
               console.log('Canvas resized to:', pendingCanvasDimensions.width, 'x', pendingCanvasDimensions.height);
             } catch (error) {
