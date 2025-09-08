@@ -363,14 +363,21 @@ export default function MainCanvas({
         // First time loading an image - check if we should ask for resize confirmation
         console.log('First image load - checking if resize confirmation needed');
         
+        // Check if image is smaller than current canvas size first (using original dimensions)
+        const isImageSmallerThanCanvas = imgWidth < canvasWidth && imgHeight < canvasHeight;
+        
         // Calculate reasonable canvas size while maintaining aspect ratio
         const maxCanvasSize = 1200; // Maximum dimension for canvas (more viewport-friendly)
         const imageAspect = imgWidth / imgHeight;
         
         let targetWidth, targetHeight;
         
-        // Always scale down if either dimension is larger than maxCanvasSize
-        if (imgWidth > maxCanvasSize || imgHeight > maxCanvasSize) {
+        if (isImageSmallerThanCanvas) {
+          // Image is smaller than canvas - don't resize, just use original dimensions
+          targetWidth = imgWidth;
+          targetHeight = imgHeight;
+        } else if (imgWidth > maxCanvasSize || imgHeight > maxCanvasSize) {
+          // Image is very large - scale down to maxCanvasSize
           if (imageAspect > 1) {
             // Landscape image - fit to max width
             targetWidth = maxCanvasSize;
@@ -381,14 +388,10 @@ export default function MainCanvas({
             targetWidth = Math.round(targetHeight * imageAspect);
           }
         } else {
-          // Image is smaller than maxCanvasSize, but still scale it to a reasonable size
-          const scaleFactor = Math.min(800 / imgWidth, 600 / imgHeight, 1);
-          targetWidth = Math.round(imgWidth * scaleFactor);
-          targetHeight = Math.round(imgHeight * scaleFactor);
+          // Image fits reasonably but is larger than canvas - use original dimensions
+          targetWidth = imgWidth;
+          targetHeight = imgHeight;
         }
-        
-        // Check if image is smaller than current canvas size
-        const isImageSmallerThanCanvas = imgWidth < canvasWidth && imgHeight < canvasHeight;
         
         if (isImageSmallerThanCanvas) {
           // Image is smaller than canvas - ask user for confirmation

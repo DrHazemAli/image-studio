@@ -433,7 +433,7 @@ export default function CanvasViewport({
       >
         {/* Checkerboard Background - only behind the actual canvas */}
         <div
-          className="absolute inset-0 pointer-events-none"
+          className="absolute inset-0 pointer-events-none bg-red"
           style={{
             background: `
               repeating-conic-gradient(#ffffff 0% 25%, #c0c0c0 0% 50%) 50% / 12px 12px
@@ -444,7 +444,7 @@ export default function CanvasViewport({
         {/* Canvas */}
         <canvas
           ref={canvasRef}
-          className="absolute border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg"
+          className="absolute rounded-lg shadow-lg"
           style={{
             width: `${canvasWidth}px`,
             height: `${canvasHeight}px`,
