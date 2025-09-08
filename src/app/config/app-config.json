@@ -1,0 +1,163 @@
+{
+  "app": {
+    "name": "Azure Image Studio",
+    "version": "1.0.1",
+    "description": "AI-powered image generation and editing platform",
+    "environment": "development"
+  },
+  "features": {
+    "floatingImageToolbar": {
+      "enabled": true,
+      "defaultPosition": {
+        "x": 100,
+        "y": 100
+      },
+      "collapsible": true,
+      "smartPositioning": true
+    },
+    "backgroundRemoval": {
+      "enabled": true,
+      "defaultModel": "FLUX.1-Kontext-pro",
+      "models": [
+        {
+          "id": "FLUX.1-Kontext-pro",
+          "name": "FLUX 1 Kontext Pro",
+          "provider": "Microsoft Azure",
+          "description": "Microsoft's advanced vision-language model for image understanding and editing",
+          "capabilities": ["background-removal", "image-editing", "inpainting"],
+          "recommended": true,
+          "speed": "fast",
+          "quality": "high"
+        },
+        {
+          "id": "florence-2",
+          "name": "Florence 2.0",
+          "provider": "Microsoft Azure",
+          "description": "Microsoft's advanced vision-language model for image understanding and editing",
+          "capabilities": ["background-removal", "image-editing", "inpainting"],
+          "recommended": true,
+          "speed": "fast",
+          "quality": "high"
+        },
+        {
+          "id": "gpt-image-1",
+          "name": "GPT-Image-1",
+          "provider": "Azure OpenAI",
+          "description": "Latest model with enhanced capabilities including image editing and inpainting",
+          "capabilities": ["background-removal", "image-editing", "inpainting", "outpainting"],
+          "recommended": false,
+          "speed": "medium",
+          "quality": "premium",
+          "requiresApproval": true
+        }
+      ],
+      "defaultSettings": {
+        "quality": "standard",
+        "edgeRefinement": true,
+        "transparencyMode": "full",
+        "outputFormat": "png"
+      },
+      "advanced": {
+        "enableBatchProcessing": false,
+        "maxConcurrentRequests": 1,
+        "retryAttempts": 2,
+        "timeoutMs": 30000
+      }
+    },
+    "imageGeneration": {
+      "enabled": true,
+      "defaultModel": "FLUX.1-Kontext-pro",
+      "defaultSize": "1024x1024",
+      "defaultOutputFormat": "png"
+    },
+    "imageEditing": {
+      "enabled": true,
+      "tools": {
+        "crop": { "enabled": true },
+        "resize": { "enabled": true },
+        "filters": { "enabled": true },
+        "adjustments": { "enabled": true },
+        "transform": { "enabled": true },
+        "blendMode": { "enabled": true }
+      }
+    }
+  },
+  "ui": {
+    "theme": {
+      "default": "system",
+      "options": ["light", "dark", "system"]
+    },
+    "animations": {
+      "enabled": true,
+      "duration": "normal",
+      "easing": "ease-out"
+    },
+    "toolbar": {
+      "position": "left",
+      "collapsible": true,
+      "showShortcuts": true
+    },
+    "canvas": {
+      "defaultZoom": 100,
+      "zoomStep": 25,
+      "minZoom": 10,
+      "maxZoom": 500,
+      "gridEnabled": false,
+      "snapToGrid": false
+    },
+    "panels": {
+      "showConsole": false,
+      "showLayers": false,
+      "showHistory": true,
+      "showAssets": true
+    }
+  },
+  "performance": {
+    "imageProcessing": {
+      "maxImageSize": 4096,
+      "compressionQuality": 0.9,
+      "enableWebWorkers": true
+    },
+    "canvas": {
+      "renderingMode": "webgl",
+      "enableImageCache": true,
+      "maxCacheSize": 100
+    },
+    "api": {
+      "requestTimeout": 30000,
+      "retryDelay": 1000,
+      "maxRetries": 3
+    }
+  },
+  "security": {
+    "fileUpload": {
+      "maxFileSize": 10485760,
+      "allowedFormats": ["jpg", "jpeg", "png", "webp", "bmp"],
+      "validateImageHeaders": true
+    },
+    "api": {
+      "enableCors": true,
+      "rateLimit": {
+        "enabled": true,
+        "windowMs": 900000,
+        "maxRequests": 100
+      }
+    }
+  },
+  "integrations": {
+    "azure": {
+      "enabled": true,
+      "configFile": "azure-config.json",
+      "modelsFile": "azure-models.json"
+    },
+    "analytics": {
+      "enabled": false,
+      "provider": null
+    }
+  },
+  "debugging": {
+    "enableConsoleLogging": false,
+    "logLevel": "info",
+    "enablePerformanceMonitoring": false
+  }
+}

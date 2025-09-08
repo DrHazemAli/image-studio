@@ -18,7 +18,9 @@ import ResizeDialog from '../resize-dialog';
 import ResizeCanvasModal from './resize-canvas-modal';
 import LoadingIndicator from '../loading-indicator';
 import { TextTool, ShapesTool } from '../tools';
+import { FloatingImageToolbar, BackgroundRemovalTool } from '../image-toolbar';
 import { ZOOM_CONSTANTS, TOOL_CONSTANTS } from '@/lib/constants';
+import { useErrorToast, useSuccessToast, useWarningToast } from '@/components/ui/toast';
 
 interface MainCanvasProps {
   activeTool: Tool;
@@ -87,6 +89,18 @@ export default function MainCanvas({
   // Tool modal states
   const [isTextToolOpen, setIsTextToolOpen] = useState(false);
   const [isShapeToolOpen, setIsShapeToolOpen] = useState(false);
+  
+  // Floating image toolbar states
+  const [selectedImageObjects, setSelectedImageObjects] = useState<FabricObject[]>([]);
+  const [isImageToolbarVisible, setIsImageToolbarVisible] = useState(false);
+  const [isBackgroundRemovalOpen, setIsBackgroundRemovalOpen] = useState(false);
+  const [backgroundRemovalProgress, setBackgroundRemovalProgress] = useState<number | undefined>(undefined);
+  const [effectOverlay, setEffectOverlay] = useState<{
+    isVisible: boolean;
+    bounds: { x: number; y: number; width: number; height: number };
+    progress?: number;
+    message?: string;
+  } | null>(null);
 
   // Tool handlers
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -556,6 +570,373 @@ export default function MainCanvas({
     }
   }, []);
 
+  // Image toolbar handlers
+  const handleSelectionChange = useCallback(() => {
+    if (!fabricCanvasRef.current) return;
+    
+    const canvas = fabricCanvasRef.current;
+    const activeObjects = canvas.getActiveObjects();
+    
+    // Debug logs (commented out)
+    // console.log('Selection changed:', {
+    //   totalObjects: activeObjects.length,
+    //   objectTypes: activeObjects.map(obj => obj.type)
+    // });
+    
+    // Filter for image objects only
+    const imageObjects = activeObjects.filter(obj => obj.type === 'image');
+    
+    // console.log('Image objects found:', imageObjects.length);
+    
+    setSelectedImageObjects(imageObjects);
+    setIsImageToolbarVisible(imageObjects.length > 0);
+    
+    // console.log('Setting toolbar visible:', imageObjects.length > 0);
+    
+    // Close background removal modal if no images are selected
+    if (imageObjects.length === 0 && isBackgroundRemovalOpen) {
+      setIsBackgroundRemovalOpen(false);
+    }
+  }, [isBackgroundRemovalOpen]);
+
+  // Toast hooks for error handling
+  const showErrorToast = useErrorToast();
+  const showSuccessToast = useSuccessToast();
+  const showWarningToast = useWarningToast();
+
+  const handleBackgroundRemoval = useCallback(async (image: FabricObject): Promise<void> => {
+    if (!fabricCanvasRef.current || image.type !== 'image') return;
+    
+    try {
+      // Calculate effect bounds for the ray overlay
+      const objBounds = image.getBoundingRect();
+      const canvasElement = fabricCanvasRef.current.getElement();
+      const canvasRect = canvasElement.getBoundingClientRect();
+      const zoom = fabricCanvasRef.current.getZoom();
+      const pan = fabricCanvasRef.current.viewportTransform;
+
+      // Convert canvas coordinates to screen coordinates
+      const screenX = canvasRect.left + (objBounds.left + (pan?.[4] || 0)) * zoom;
+      const screenY = canvasRect.top + (objBounds.top + (pan?.[5] || 0)) * zoom;
+      const screenWidth = objBounds.width * zoom;
+      const screenHeight = objBounds.height * zoom;
+
+      setEffectOverlay({
+        isVisible: true,
+        bounds: {
+          x: screenX,
+          y: screenY,
+          width: screenWidth,
+          height: screenHeight
+        },
+        progress: 0,
+        message: 'Preparing image...'
+      });
+
+      // Get image data as base64
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const fabricImage = image as any; // FabricImage type assertion
+      const imageData = fabricImage.toDataURL({
+        format: 'png',
+        quality: 1
+      });
+
+      // Make API request to background removal endpoint
+      const response = await fetch('/api/background-removal', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          image: imageData,
+         
+          transparencyMode: 'full'
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        const errorMessage = errorData.error || 'Background removal failed';
+        
+        // Handle specific error cases
+        if (errorData.availableModels && errorMessage.includes('not available')) {
+          const availableModels = errorData.availableModels.join(', ');
+          showWarningToast(
+            'Model Not Available',
+            `The selected AI model is not available. Available models: ${availableModels}`
+          );
+        } else if (errorMessage.includes('disabled')) {
+          showErrorToast(
+            'Feature Disabled',
+            'Background removal feature is currently disabled in the configuration.'
+          );
+        } else {
+          showErrorToast('Background Removal Failed', errorMessage);
+        }
+        
+        // Hide effect overlay
+        setEffectOverlay(null);
+        return;
+      }
+
+      const result = await response.json();
+      
+      if (!result.success || !result.data?.data?.[0]?.b64_json) {
+        showErrorToast(
+          'Processing Failed',
+          'No processed image received from the server. Please try again.'
+        );
+        setEffectOverlay(null);
+        return;
+      }
+
+      // Update effect overlay for completion
+      setEffectOverlay(prev => prev ? {
+        ...prev,
+        progress: 100,
+        message: 'Background removed successfully!'
+      } : null);
+
+      // Load processed image back to canvas
+      const processedImageData = `data:image/png;base64,${result.data.data[0].b64_json}`;
+      
+      import('fabric').then(({ FabricImage }) => {
+        FabricImage.fromURL(processedImageData).then((newImg) => {
+          if (!fabricCanvasRef.current) return;
+          
+          // Replace the original image with the processed one
+          const canvas = fabricCanvasRef.current;
+          
+          // Copy transform properties from original image
+          newImg.set({
+            left: image.left,
+            top: image.top,
+            scaleX: image.scaleX,
+            scaleY: image.scaleY,
+            angle: image.angle,
+            opacity: image.opacity,
+            selectable: true,
+            evented: true
+          });
+          
+          // Remove old image and add new one
+          canvas.remove(image);
+          canvas.add(newImg);
+          canvas.setActiveObject(newImg);
+          canvas.renderAll();
+          
+          // Update layers
+          setLayers(prev => prev.map(layer => 
+            layer.object === image 
+              ? { ...layer, object: newImg, name: 'Background Removed Image' }
+              : layer
+          ));
+
+          // Show success toast
+          showSuccessToast(
+            'Background Removed',
+            'Image background has been successfully removed.'
+          );
+
+          // Hide effect overlay after a short delay
+          setTimeout(() => {
+            setEffectOverlay(null);
+          }, 1500);
+        });
+      });
+
+    } catch (error) {
+      console.error('Background removal failed:', error);
+      
+      // Hide effect overlay
+      setEffectOverlay(null);
+      
+      // Show appropriate error toast
+      if (error instanceof Error) {
+        if (error.message.includes('Failed to fetch')) {
+          showErrorToast(
+            'Connection Error',
+            'Unable to connect to the AI service. Please check your internet connection.'
+          );
+        } else {
+          showErrorToast(
+            'Unexpected Error',
+            error.message || 'An unexpected error occurred during background removal.'
+          );
+        }
+      } else {
+        showErrorToast(
+          'Unknown Error',
+          'An unknown error occurred. Please try again.'
+        );
+      }
+    }
+  }, [showErrorToast, showSuccessToast, showWarningToast]);
+
+  const handleImageDuplicate = useCallback((objects: FabricObject[]) => {
+    if (!fabricCanvasRef.current) return;
+    
+    objects.forEach((obj) => {
+      obj.clone().then((cloned: FabricObject) => {
+        cloned.set({
+          left: (obj.left || 0) + 20,
+          top: (obj.top || 0) + 20
+        });
+        fabricCanvasRef.current?.add(cloned);
+        fabricCanvasRef.current?.renderAll();
+        
+        // Create layer for duplicated object
+        const newLayer: Layer = {
+          id: `duplicate-layer-${Date.now()}`,
+          name: `Duplicate Image`,
+          type: 'image',
+          visible: true,
+          locked: false,
+          opacity: 100,
+          object: cloned
+        };
+        
+        setLayers(prev => [...prev, newLayer]);
+      });
+    });
+  }, []);
+
+  const handleImageDelete = useCallback((objects: FabricObject[]) => {
+    if (!fabricCanvasRef.current) return;
+    
+    objects.forEach((obj) => {
+      fabricCanvasRef.current?.remove(obj);
+    });
+    
+    fabricCanvasRef.current.renderAll();
+    
+    // Remove from layers
+    setLayers(prev => prev.filter(layer => layer.object && !objects.includes(layer.object)));
+    
+    // Update selection
+    setSelectedImageObjects([]);
+    setIsImageToolbarVisible(false);
+  }, []);
+
+  // Background removal handler for the modal version (returns processed image URL)
+  const handleBackgroundRemovalModal = useCallback(async (image: FabricObject, options?: any): Promise<string | null> => {
+    if (!fabricCanvasRef.current || image.type !== 'image') return null;
+    
+    try {
+      // Get image data as base64
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const fabricImage = image as any; // FabricImage type assertion
+      const imageData = fabricImage.toDataURL({
+        format: 'png',
+        quality: 1
+      });
+
+      // Make API request to background removal endpoint
+      const response = await fetch('/api/background-removal', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          image: imageData,
+          model: options?.model || 'florence-2',
+          quality: options?.quality || 'standard',
+          edgeRefinement: options?.edgeRefinement !== undefined ? options.edgeRefinement : true,
+          transparencyMode: options?.transparencyMode || 'full'
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        const errorMessage = errorData.error || 'Background removal failed';
+        
+        if (errorData.availableModels && errorMessage.includes('not available')) {
+          const availableModels = errorData.availableModels.join(', ');
+          showWarningToast(
+            'Model Not Available',
+            `The selected AI model is not available. Available models: ${availableModels}`
+          );
+        } else {
+          showErrorToast('Background Removal Failed', errorMessage);
+        }
+        return null;
+      }
+
+      const result = await response.json();
+      
+      if (!result.success || !result.data?.data?.[0]?.b64_json) {
+        showErrorToast(
+          'Processing Failed',
+          'No processed image received from the server. Please try again.'
+        );
+        return null;
+      }
+
+      // Return the processed image data
+      const processedImageData = `data:image/png;base64,${result.data.data[0].b64_json}`;
+      
+      // Load processed image back to canvas
+      import('fabric').then(({ FabricImage }) => {
+        FabricImage.fromURL(processedImageData).then((newImg) => {
+          if (!fabricCanvasRef.current) return;
+          
+          // Replace the original image with the processed one
+          const canvas = fabricCanvasRef.current;
+          
+          // Copy transform properties from original image
+          newImg.set({
+            left: image.left,
+            top: image.top,
+            scaleX: image.scaleX,
+            scaleY: image.scaleY,
+            angle: image.angle,
+            opacity: image.opacity,
+            selectable: true,
+            evented: true
+          });
+          
+          // Remove old image and add new one
+          canvas.remove(image);
+          canvas.add(newImg);
+          canvas.setActiveObject(newImg);
+          canvas.renderAll();
+          
+          // Update layers
+          setLayers(prev => prev.map(layer => 
+            layer.object === image 
+              ? { ...layer, object: newImg, name: 'Background Removed Image' }
+              : layer
+          ));
+        });
+      });
+
+      return processedImageData;
+    } catch (error) {
+      console.error('Background removal failed:', error);
+      
+      if (error instanceof Error) {
+        if (error.message.includes('Failed to fetch')) {
+          showErrorToast(
+            'Connection Error',
+            'Unable to connect to the AI service. Please check your internet connection.'
+          );
+        } else {
+          showErrorToast(
+            'Unexpected Error',
+            error.message || 'An unexpected error occurred during background removal.'
+          );
+        }
+      } else {
+        showErrorToast(
+          'Unknown Error',
+          'An unknown error occurred. Please try again.'
+        );
+      }
+      return null;
+    }
+  }, [showErrorToast, showWarningToast]);
+
   // Menu Bar Integration: Layer visibility toggle
   // This function is used by the View menu in the menu bar
   // It toggles the visibility of the layers panel
@@ -939,6 +1320,46 @@ export default function MainCanvas({
     return () => clearTimeout(timeoutId);
   }, [currentImage, generatedImage, loadImageToCanvas, isResizing, isProcessingResize]);
 
+  // Listen for canvas selection changes to show/hide image toolbar
+  useEffect(() => {
+    if (!fabricCanvasRef.current || !isCanvasReady) {
+      // console.log('Selection listeners: Canvas not ready', { 
+      //   hasCanvas: !!fabricCanvasRef.current, 
+      //   isCanvasReady 
+      // });
+      return;
+    }
+
+    const canvas = fabricCanvasRef.current;
+    // console.log('Setting up selection event listeners for canvas');
+
+    // Add selection event listeners
+    const handleSelection = () => {
+      // console.log('Selection event fired!');
+      handleSelectionChange();
+    };
+
+    const handleSelectionCleared = () => {
+      // console.log('Selection cleared event fired!');
+      setSelectedImageObjects([]);
+      setIsImageToolbarVisible(false);
+    };
+
+    canvas.on('selection:created', handleSelection);
+    canvas.on('selection:updated', handleSelection);
+    canvas.on('selection:cleared', handleSelectionCleared);
+
+    // console.log('Selection event listeners attached successfully');
+
+    // Cleanup
+    return () => {
+      // console.log('Cleaning up selection event listeners');
+      canvas.off('selection:created', handleSelection);
+      canvas.off('selection:updated', handleSelection);
+      canvas.off('selection:cleared', handleSelectionCleared);
+    };
+  }, [handleSelectionChange, isCanvasReady]);
+
   return (
     <>
       <LoadingIndicator
@@ -1092,6 +1513,26 @@ export default function MainCanvas({
           onAddShape={handleAddShape}
         />
       </div>
+
+      {/* Floating Image Toolbar */}
+      <FloatingImageToolbar
+        fabricCanvas={fabricCanvasRef.current}
+        selectedObjects={selectedImageObjects}
+        isVisible={isImageToolbarVisible}
+        onBackgroundRemoval={handleBackgroundRemoval}
+        onDuplicate={handleImageDuplicate}
+        onDelete={handleImageDelete}
+        effectOverlay={effectOverlay || undefined}
+      />
+
+      {/* Background Removal Tool Modal */}
+      <BackgroundRemovalTool
+        fabricCanvas={fabricCanvasRef.current}
+        selectedImage={selectedImageObjects[0] || null}
+        isOpen={isBackgroundRemovalOpen}
+        onClose={() => setIsBackgroundRemovalOpen(false)}
+        onRemoveBackground={handleBackgroundRemovalModal}
+      />
     </div>
     </>
   );

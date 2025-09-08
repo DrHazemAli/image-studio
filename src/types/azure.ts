@@ -45,6 +45,15 @@ export interface ImageEditRequest {
   size?: string;
 }
 
+export interface BackgroundRemovalRequest {
+  image: string; // base64 encoded image
+  model?: 'florence-2' | 'gpt-image-1';
+  quality?: 'standard' | 'high';
+  edgeRefinement?: boolean;
+  transparencyMode?: 'full' | 'soft';
+  output_format?: string;
+}
+
 export interface ImageGenerationResponse {
   data: Array<{
     b64_json: string;

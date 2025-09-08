@@ -1,4 +1,4 @@
-import { AzureConfig, AzureEndpoint, AzureDeployment, ImageGenerationRequest, ImageEditRequest, ImageGenerationResponse } from '@/types/azure';
+import { AzureConfig, AzureEndpoint, AzureDeployment, ImageGenerationRequest, ImageEditRequest, BackgroundRemovalRequest, ImageGenerationResponse } from '@/types/azure';
 
 export class AzureImageProvider {
   private config: AzureConfig;
@@ -249,5 +249,126 @@ export class AzureImageProvider {
 
   updateConfig(newConfig: Partial<AzureConfig>) {
     this.config = { ...this.config, ...newConfig };
+  }
+
+  /**
+   * Remove background from an image using Azure AI models
+   * Uses the image editing capabilities with a specialized prompt for background removal
+   */
+  async removeBackground(
+    request: BackgroundRemovalRequest,
+    onProgress?: (progress: number) => void
+  ): Promise<{
+    response: ImageGenerationResponse;
+    requestLog: Record<string, unknown>;
+    responseLog: Record<string, unknown>;
+  }> {
+    const modelId = request.model || 'florence-2';
+    
+    // Find deployment for the selected model
+    const deploymentInfo = this.getDeploymentByModelId(modelId);
+    if (!deploymentInfo) {
+      throw new Error(`No deployment found for model "${modelId}"`);
+    }
+
+    const { endpoint, deployment } = deploymentInfo;
+    
+    // For background removal, we use the image editing endpoint with a specialized prompt
+    const url = `${endpoint.baseUrl}/openai/deployments/${deployment.deploymentName}/images/edits?api-version=${endpoint.apiVersion}`;
+    
+    // Create FormData for multipart/form-data request
+    const formData = new FormData();
+    
+    // Convert base64 image to blob
+    const imageBlob = new Blob([Buffer.from(request.image.split(',')[1], 'base64')], { type: 'image/png' });
+    formData.append('image', imageBlob, 'image.png');
+    
+    // Create a background removal prompt
+    const backgroundRemovalPrompt = request.edgeRefinement 
+      ? "Remove the background completely, keeping only the main subject with precise edges and smooth transparency"
+      : "Remove the background completely, keeping only the main subject with natural transparency";
+    
+    formData.append('prompt', backgroundRemovalPrompt);
+    formData.append('response_format', request.output_format || 'b64_json');
+    formData.append('n', '1');
+    formData.append('size', '1024x1024');
+
+    const requestLog = {
+      url,
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer [REDACTED]`
+      },
+      body: {
+        prompt: backgroundRemovalPrompt,
+        hasImage: true,
+        model: modelId,
+        quality: request.quality,
+        edgeRefinement: request.edgeRefinement,
+        transparencyMode: request.transparencyMode,
+        output_format: request.output_format
+      },
+      timestamp: new Date().toISOString()
+    };
+
+    onProgress?.(20);
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.apiKey}`
+          // Don't set Content-Type for FormData, let the browser set it
+        },
+        body: formData
+      });
+
+      onProgress?.(60);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Azure AI background removal error: ${response.status} ${response.statusText} - ${errorText}`);
+      }
+
+      const data: ImageGenerationResponse = await response.json();
+      
+      onProgress?.(100);
+
+      const responseLog = {
+        status: response.status,
+        statusText: response.statusText,
+        body: {
+          ...data,
+          data: data.data.map(item => ({
+            ...item,
+            b64_json: '[BASE64_DATA_TRUNCATED]'
+          }))
+        },
+        timestamp: new Date().toISOString()
+      };
+
+      return {
+        response: data,
+        requestLog,
+        responseLog
+      };
+
+    } catch (error) {
+      onProgress?.(0);
+      throw error;
+    }
+  }
+
+  /**
+   * Get deployment info by model ID
+   */
+  private getDeploymentByModelId(modelId: string): { endpoint: AzureEndpoint; deployment: AzureDeployment } | null {
+    for (const endpoint of this.config.endpoints) {
+      const deployment = endpoint.deployments.find(d => d.id === modelId);
+      if (deployment) {
+        return { endpoint, deployment };
+      }
+    }
+    return null;
   }
 }
