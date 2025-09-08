@@ -18,9 +18,10 @@ interface HistoryPanelProps {
   isOpen: boolean;
   onClose: () => void;
   onReplay?: (entry: HistoryEntry) => void;
+  projectId?: string;
 }
 
-export function HistoryPanel({ isOpen, onClose, onReplay }: HistoryPanelProps) {
+export function HistoryPanel({ isOpen, onClose, onReplay, projectId }: HistoryPanelProps) {
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filter, setFilter] = useState<'all' | 'generation' | 'edit' | 'upload'>('all');
@@ -29,14 +30,14 @@ export function HistoryPanel({ isOpen, onClose, onReplay }: HistoryPanelProps) {
   useEffect(() => {
     const loadHistory = async () => {
       try {
-        const loadedHistory = await dbManager.getHistory();
+        const loadedHistory = await dbManager.getHistory(projectId);
         setHistory(loadedHistory);
       } catch (error) {
         console.error('Failed to load history:', error);
       }
     };
     loadHistory();
-  }, []);
+  }, [projectId]);
 
   // Save history to IndexedDB whenever history changes
   useEffect(() => {

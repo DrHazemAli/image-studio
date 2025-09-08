@@ -19,9 +19,10 @@ interface AssetsPanelProps {
   isOpen: boolean;
   onClose: () => void;
   onAssetSelect?: (asset: Asset) => void;
+  projectId?: string;
 }
 
-export function AssetsPanel({ isOpen, onClose, onAssetSelect }: AssetsPanelProps) {
+export function AssetsPanel({ isOpen, onClose, onAssetSelect, projectId }: AssetsPanelProps) {
   const [assets, setAssets] = useState<Asset[]>([]);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [searchQuery, setSearchQuery] = useState('');
@@ -31,14 +32,14 @@ export function AssetsPanel({ isOpen, onClose, onAssetSelect }: AssetsPanelProps
   useEffect(() => {
     const loadAssets = async () => {
       try {
-        const loadedAssets = await dbManager.getAssets();
+        const loadedAssets = await dbManager.getAssets(projectId);
         setAssets(loadedAssets);
       } catch (error) {
         console.error('Failed to load assets:', error);
       }
     };
     loadAssets();
-  }, []);
+  }, [projectId]);
 
   // Save assets to IndexedDB whenever assets change
   useEffect(() => {

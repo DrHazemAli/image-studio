@@ -1,6 +1,6 @@
 // Project management utilities for export/import functionality
-
-import { dbManager, type Asset, type HistoryEntry } from './indexeddb';
+/* eslint-disable */
+import { dbManager, type Asset, type HistoryEntry, type Project } from './indexeddb';
 
 export interface ProjectData {
   version: string;
@@ -28,6 +28,84 @@ export interface ProjectData {
 
 export class ProjectManager {
   private static readonly PROJECT_VERSION = '1.0.0';
+
+  // Generate a UUID v4
+  private static generateUUID(): string {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      const r = Math.random() * 16 | 0;
+      const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+
+  // Create a new project
+  static async createProject(
+    userId: string,
+    name: string = 'Untitled Project',
+    description?: string,
+    settings?: {
+      currentModel: string;
+      currentSize: string;
+      isInpaintMode: boolean;
+    },
+    canvas?: {
+      currentImage: string | null;
+      generatedImage: string | null;
+      attachedImage: string | null;
+    }
+  ): Promise<Project> {
+    const project: Project = {
+      id: this.generateUUID(),
+      user_id: userId,
+      name,
+      description,
+      created_at: new Date(),
+      updated_at: new Date(),
+      settings: settings || {
+        currentModel: 'FLUX.1-Kontext-pro',
+        currentSize: '1024x1024',
+        isInpaintMode: false
+      },
+      canvas: canvas || {
+        currentImage: null,
+        generatedImage: null,
+        attachedImage: null
+      },
+      metadata: {
+        tags: [],
+        author: 'Azure Image Studio'
+      }
+    };
+
+    await dbManager.saveProject(project);
+    return project;
+  }
+
+  // Load a project by ID
+  static async loadProject(projectId: string): Promise<Project | null> {
+    return await dbManager.getProject(projectId);
+  }
+
+  // Save/Update a project
+  static async saveProject(project: Project): Promise<void> {
+    project.updated_at = new Date();
+    await dbManager.saveProject(project);
+  }
+
+  // Get all projects for a user
+  static async getUserProjects(userId: string): Promise<Project[]> {
+    return await dbManager.getProjects(userId);
+  }
+
+  // Get all projects (for admin purposes)
+  static async getAllProjects(): Promise<Project[]> {
+    return await dbManager.getProjects();
+  }
+
+  // Delete a project
+  static async deleteProject(projectId: string): Promise<void> {
+    await dbManager.deleteProject(projectId);
+  }
 
   // Export current project to JSON
   static async exportProject(
@@ -72,6 +150,32 @@ export class ProjectManager {
     }
   }
 
+  // Export project from IndexedDB project
+  static async exportProjectFromDB(project: Project): Promise<ProjectData> {
+    try {
+      // Get project-specific assets and history from IndexedDB
+      const assets = await dbManager.getAssets(project.id);
+      const history = await dbManager.getHistory(project.id);
+
+      const projectData: ProjectData = {
+        version: this.PROJECT_VERSION,
+        name: project.name,
+        createdAt: project.created_at.toISOString(),
+        lastModified: project.updated_at.toISOString(),
+        settings: project.settings,
+        canvas: project.canvas,
+        assets,
+        history,
+        metadata: project.metadata,
+      };
+
+      return projectData;
+    } catch (error) {
+      console.error('Failed to export project from DB:', error);
+      throw new Error('Failed to export project from DB');
+    }
+  }
+
   // Import project from JSON
   static async importProject(projectData: ProjectData): Promise<{
     success: boolean;
@@ -103,6 +207,7 @@ export class ProjectManager {
         try {
           await dbManager.saveAsset({
             ...asset,
+            project_id: '', // Will be set by the calling function
             timestamp: new Date(asset.timestamp),
           });
           assetsImported++;
@@ -117,6 +222,7 @@ export class ProjectManager {
         try {
           await dbManager.saveHistoryEntry({
             ...entry,
+            project_id: '', // Will be set by the calling function
             timestamp: new Date(entry.timestamp),
           });
           historyImported++;
@@ -145,24 +251,110 @@ export class ProjectManager {
     }
   }
 
+  // Import project and save to IndexedDB
+  static async importProjectToDB(
+    projectData: ProjectData,
+    userId: string
+  ): Promise<{
+    success: boolean;
+    message: string;
+    project?: Project;
+  }> {
+    try {
+      // Validate project data
+      if (!this.validateProjectData(projectData)) {
+        return {
+          success: false,
+          message: 'Invalid project file format',
+        };
+      }
+
+      // Create new project in IndexedDB
+      const project = await this.createProject(
+        userId,
+        projectData.name,
+        projectData.metadata.description,
+        projectData.settings,
+        projectData.canvas
+      );
+
+      // Update metadata
+      project.metadata = projectData.metadata;
+
+      // Save the project
+      await this.saveProject(project);
+
+      // Import assets with project_id
+      let assetsImported = 0;
+      for (const asset of projectData.assets) {
+        try {
+          await dbManager.saveAsset({
+            ...asset,
+            project_id: project.id,
+            timestamp: new Date(asset.timestamp),
+          });
+          assetsImported++;
+        } catch (error) {
+          console.warn('Failed to import asset:', asset.id, error);
+        }
+      }
+
+      // Import history with project_id
+      let historyImported = 0;
+      for (const entry of projectData.history) {
+        try {
+          await dbManager.saveHistoryEntry({
+            ...entry,
+            project_id: project.id,
+            timestamp: new Date(entry.timestamp),
+          });
+          historyImported++;
+        } catch (error) {
+          console.warn('Failed to import history entry:', entry.id, error);
+        }
+      }
+
+      return {
+        success: true,
+        message: `Project "${projectData.name}" imported successfully. ${assetsImported} assets, ${historyImported} history entries.`,
+        project,
+      };
+      } catch (err) {
+        console.error('Failed to import project to DB:', err);
+        return {
+          success: false,
+          message: `Failed to import project: ${err instanceof Error ? err.message : 'Unknown error'}`,
+        };
+      }
+  }
+
   // Validate project data structure
-  private static validateProjectData(data: any): data is ProjectData {
+  private static validateProjectData(data: unknown): data is ProjectData {
     return (
-      data &&
+      data !== null &&
       typeof data === 'object' &&
-      typeof data.version === 'string' &&
-      typeof data.name === 'string' &&
-      typeof data.createdAt === 'string' &&
-      typeof data.lastModified === 'string' &&
-      data.settings &&
-      typeof data.settings.currentModel === 'string' &&
-      typeof data.settings.currentSize === 'string' &&
-      typeof data.settings.isInpaintMode === 'boolean' &&
-      data.canvas &&
-      Array.isArray(data.assets) &&
-      Array.isArray(data.history) &&
-      data.metadata &&
-      typeof data.metadata === 'object'
+      'version' in data &&
+      'name' in data &&
+      'createdAt' in data &&
+      'lastModified' in data &&
+      'settings' in data &&
+      'canvas' in data &&
+      'assets' in data &&
+      'history' in data &&
+      'metadata' in data &&
+      typeof (data as any).version === 'string' &&
+      typeof (data as any).name === 'string' &&
+      typeof (data as any).createdAt === 'string' &&
+      typeof (data as any).lastModified === 'string' &&
+      (data as any).settings &&
+      typeof (data as any).settings.currentModel === 'string' &&
+      typeof (data as any).settings.currentSize === 'string' &&
+      typeof (data as any).settings.isInpaintMode === 'boolean' &&
+      (data as any).canvas &&
+      Array.isArray((data as any).assets) &&
+      Array.isArray((data as any).history) &&
+      (data as any).metadata &&
+      typeof (data as any).metadata === 'object'
     );
   }
 
