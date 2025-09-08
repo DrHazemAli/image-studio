@@ -580,6 +580,28 @@ export default function MainCanvas({
     setZoom(ZOOM_CONSTANTS.DEFAULT_ZOOM);
   }, [setZoom]);
 
+  // Delete selected elements from canvas
+  // This function removes all currently selected objects from the Fabric.js canvas
+  // It's triggered by the Delete or Backspace key when no input is focused
+  const handleDeleteSelected = useCallback(() => {
+    const canvas = fabricCanvasRef.current;
+    if (!canvas) return;
+
+    const activeObjects = canvas.getActiveObjects();
+    if (activeObjects.length > 0) {
+      // Delete all selected objects
+      activeObjects.forEach(obj => {
+        canvas.remove(obj);
+      });
+      
+      // Clear selection and re-render canvas
+      canvas.discardActiveObject();
+      canvas.requestRenderAll();
+      
+      console.log(`Deleted ${activeObjects.length} selected object(s)`);
+    }
+  }, []);
+
   // Context menu handlers
   const handleContextMenu = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -981,6 +1003,7 @@ export default function MainCanvas({
           onBrushSizeChange={setBrushSize}
           onBrushColorChange={setBrushColor}
           onImageLoadedChange={setImageLoaded}
+          onDeleteSelected={handleDeleteSelected}
           onCanvasWidthChange={handleCanvasWidthChange}
           onCanvasHeightChange={handleCanvasHeightChange}
           onIsCanvasReadyChange={handleIsCanvasReadyChange}

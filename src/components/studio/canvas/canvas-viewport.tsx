@@ -37,6 +37,7 @@ interface CanvasViewportProps {
   onBrushSizeChange: (brushSize: number) => void;
   onBrushColorChange: (brushColor: string) => void;
   onImageLoadedChange: (imageLoaded: boolean) => void;
+  onDeleteSelected: () => void;
   // Removed unused callback props
   onCanvasWidthChange: (width: number) => void;
   onCanvasHeightChange: (height: number) => void;
@@ -80,6 +81,7 @@ export default function CanvasViewport({
   onBrushSizeChange,
   onBrushColorChange,
   onImageLoadedChange,
+  onDeleteSelected,
   // Removed unused callback parameters
   onCanvasWidthChange,
   onCanvasHeightChange,
@@ -374,6 +376,34 @@ export default function CanvasViewport({
       container.removeEventListener('wheel', handleWheel);
     };
   }, [handleWheel, containerRef]);
+
+  // Handle keyboard events for canvas operations
+  // This effect listens for Delete/Backspace keys to remove selected canvas elements
+  // It only triggers when no input fields are focused to avoid interfering with text editing
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Only handle delete key when canvas is focused or when no input is focused
+      if (event.key === 'Delete' || event.key === 'Backspace') {
+        const activeElement = document.activeElement;
+        const isInputFocused = activeElement && (
+          activeElement.tagName === 'INPUT' ||
+          activeElement.tagName === 'TEXTAREA' ||
+          (activeElement as HTMLElement).contentEditable === 'true'
+        );
+        
+        if (!isInputFocused) {
+          event.preventDefault();
+          onDeleteSelected();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onDeleteSelected]);
 
   return (
     <div 

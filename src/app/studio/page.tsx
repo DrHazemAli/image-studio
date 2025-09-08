@@ -970,6 +970,10 @@ export default function StudioPage() {
                   <span>Redo</span>
                   <span className="text-gray-500">Cmd+Shift+Z</span>
                 </div>
+                <div className="flex justify-between">
+                  <span>Delete Selected</span>
+                  <span className="text-gray-500">Delete / Backspace</span>
+                </div>
               </div>
               <button
                 onClick={() => setShowKeyboardShortcuts(false)}
