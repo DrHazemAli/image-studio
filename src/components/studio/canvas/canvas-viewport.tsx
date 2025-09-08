@@ -111,7 +111,7 @@ export default function CanvasViewport({
     onIsDraggingChange(false);
   }, [onIsDraggingChange]);
 
-  const handleWheel = useCallback((e: React.WheelEvent) => {
+  const handleWheel = useCallback((e: WheelEvent) => {
     e.preventDefault();
     const delta = e.deltaY > 0 ? -10 : 10;
     onZoomChange(Math.max(25, Math.min(400, zoom + delta)));
@@ -362,6 +362,18 @@ export default function CanvasViewport({
     console.log('Canvas configured for editing');
   }, [isCanvasReady, fabricCanvasRef]);
 
+  // Add wheel event listener manually to avoid passive event issues
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    container.addEventListener('wheel', handleWheel, { passive: false });
+    
+    return () => {
+      container.removeEventListener('wheel', handleWheel);
+    };
+  }, [handleWheel, containerRef]);
+
   return (
     <div 
       ref={containerRef}
@@ -370,7 +382,6 @@ export default function CanvasViewport({
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
-      onWheel={handleWheel}
       onContextMenu={onContextMenu}
       style={{
         width: '100%',

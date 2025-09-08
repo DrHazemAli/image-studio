@@ -8,7 +8,7 @@ import { Canvas as FabricCanvas, FabricImage, FabricObject } from 'fabric';
 
 // Import canvas components
 import CanvasViewport from '@/components/studio/canvas/canvas-viewport';
-import ToolOptionsPanel from './tool-options-panel';
+import { ToolOptionsPanel } from '../panels';
 import ZoomControls from './zoom-controls';
 import LayersToggle from './layers-toggle';
 import CanvasInfo from './canvas-info';
@@ -304,6 +304,13 @@ export default function MainCanvas({
   // Load image to Fabric.js canvas
   const loadImageToCanvas = useCallback((imageData: string) => {
     if (!fabricCanvasRef.current || isLoadingImage || isProcessingResize) return;
+    
+    // Validate image data before processing
+    if (!imageData || imageData === 'undefined' || imageData.includes('undefined')) {
+      console.error('Invalid image data provided to canvas:', imageData);
+      setIsLoadingImage(false);
+      return;
+    }
     
     // Prevent loading the same image multiple times
     if (lastLoadedImageRef.current === imageData) {

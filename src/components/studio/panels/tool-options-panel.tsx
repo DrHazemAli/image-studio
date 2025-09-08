@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Tool } from '../toolbar';
+import { Tool } from '@/components/studio/toolbar';
 
 interface ToolOptionsPanelProps {
   activeTool: Tool;

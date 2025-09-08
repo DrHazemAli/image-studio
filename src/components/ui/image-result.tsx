@@ -66,14 +66,26 @@ export function ImageResult({ result, prompt }: ImageResultProps) {
                     <AspectRatio ratio={1}>
                       <div 
                         className="relative w-full h-full cursor-pointer"
-                        onClick={() => setSelectedImage(`data:image/png;base64,${image.b64_json}`)}
+                        onClick={() => {
+                          if (image.b64_json) {
+                            setSelectedImage(`data:image/png;base64,${image.b64_json}`);
+                          } else {
+                            console.error('Image b64_json is undefined for image:', index);
+                          }
+                        }}
                       >
-                        <Image
-                          src={`data:image/png;base64,${image.b64_json}`}
-                          alt={`Generated image ${index + 1}`}
-                          fill
-                          className="object-cover"
-                        />
+                        {image.b64_json ? (
+                          <Image
+                            src={`data:image/png;base64,${image.b64_json}`}
+                            alt={`Generated image ${index + 1}`}
+                            fill
+                            className="object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-800">
+                            <span className="text-gray-500 dark:text-gray-400">Invalid image data</span>
+                          </div>
+                        )}
                       </div>
                     </AspectRatio>
                     <Box p="3">
@@ -81,7 +93,14 @@ export function ImageResult({ result, prompt }: ImageResultProps) {
                         <Button
                           size="1"
                           variant="soft"
-                          onClick={() => setSelectedImage(`data:image/png;base64,${image.b64_json}`)}
+                          onClick={() => {
+                            if (image.b64_json) {
+                              setSelectedImage(`data:image/png;base64,${image.b64_json}`);
+                            } else {
+                              console.error('Cannot view image - b64_json is undefined');
+                            }
+                          }}
+                          disabled={!image.b64_json}
                         >
                           <MagnifyingGlassIcon />
                           View
@@ -89,7 +108,14 @@ export function ImageResult({ result, prompt }: ImageResultProps) {
                         <Button
                           size="1"
                           variant="soft"
-                          onClick={() => downloadImage(image.b64_json, index)}
+                          onClick={() => {
+                            if (image.b64_json) {
+                              downloadImage(image.b64_json, index);
+                            } else {
+                              console.error('Cannot download image - b64_json is undefined');
+                            }
+                          }}
+                          disabled={!image.b64_json}
                         >
                           <DownloadIcon />
                           Download

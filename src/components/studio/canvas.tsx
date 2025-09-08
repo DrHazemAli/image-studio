@@ -1,6 +1,6 @@
 'use client';
 
-import MainCanvas from './canvas/main-canvas';
+import MainCanvas from '@/components/studio/canvas/main-canvas';
 
 interface CanvasProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

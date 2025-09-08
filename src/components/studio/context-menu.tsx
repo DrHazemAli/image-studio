@@ -72,7 +72,7 @@ export default function ContextMenu({
     };
 
     if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
+      document.addEventListener('keydown', handleEscape, { passive: false });
       return () => document.removeEventListener('keydown', handleEscape);
     }
   }, [isOpen, onClose]);

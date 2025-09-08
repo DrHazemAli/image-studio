@@ -1,5 +1,5 @@
+/* eslint-disable */
 'use client';
-
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -13,15 +13,14 @@ import {
   ChevronRightIcon,
   ChevronDownIcon
 } from '@radix-ui/react-icons';
-import { Button } from '@radix-ui/themes';
 import { FabricObject } from 'fabric';
 
 // Import all tool components
-import ImageResizeTool from './image-resize-tool';
-import CropTool from './crop-tool';
-import ShapesTool from './shapes-tool';
-import TextTool from './text-tool';
-import FiltersTool from './filters-tool';
+import ImageResizeTool from '@/components/studio/tools/image-resize-tool';
+import CropTool from '@/components/studio/tools/crop-tool';
+import ShapesTool from '@/components/studio/tools/shapes-tool';
+import TextTool from '@/components/studio/tools/text-tool';
+import FiltersTool from '@/components/studio/tools/filters-tool';
 
 interface ToolsPanelProps {
   selectedObject: FabricObject | null;

@@ -6,11 +6,9 @@ import { Theme } from '@radix-ui/themes';
 import { Toolbar, Tool } from '@/components/studio/toolbar';
 import { Canvas } from '@/components/studio/canvas';
 import EnhancedPromptBox from '@/components/studio/enhanced-prompt-box';
-import { GenerationPanel } from '@/components/studio/generation-panel';
-import { AssetsPanel } from '@/components/studio/assets-panel';
-import { HistoryPanel } from '@/components/studio/history-panel';
+import { GenerationPanel, AssetsPanel, HistoryPanel } from '@/components/studio/panels';
 import { ConsoleSidebar } from '@/components/ui/console-sidebar';
-import { SizeModal } from '@/components/studio/size-modal';
+import { SizeModal, ErrorNotification } from '@/components/studio/modals';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { StudioLoading } from '@/components/studio/studio-loading';
 import type { ModelInfo } from '@/app/api/models/route';
@@ -23,8 +21,6 @@ import {
   Share1Icon,
   LayersIcon,
   InfoCircledIcon,
-  Cross2Icon,
-  ExclamationTriangleIcon,
   GitHubLogoIcon,
   LinkedInLogoIcon,
 } from '@radix-ui/react-icons';
@@ -130,11 +126,30 @@ export default function StudioPage() {
     fetchModels();
   }, []);
 
-  // Get model name helper
+  // Get model name helper - memoized to prevent unnecessary recalculations
   const getModelName = useCallback((modelId: string) => {
     const model = models.find(m => m.id === modelId);
     return model ? model.name : modelId;
   }, [models]);
+
+  // Memoized error dismiss handler to prevent unnecessary rerenders
+  const handleErrorDismiss = useCallback(() => {
+    setError(null);
+  }, []);
+
+  // Memoized size modal handlers to prevent unnecessary rerenders
+  const handleSizeModalOpen = useCallback(() => {
+    setShowSizeModal(true);
+  }, []);
+
+  const handleSizeModalClose = useCallback(() => {
+    setShowSizeModal(false);
+  }, []);
+
+  // Memoized attached image removal handler
+  const handleAttachedImageRemove = useCallback(() => {
+    setAttachedImage(null);
+  }, []);
 
   // Handle project name editing
   const handleProjectNameEdit = useCallback(() => {
@@ -272,7 +287,17 @@ export default function StudioPage() {
 
       // Set the generated image and save to assets & history
       if (data.data && data.data.data && data.data.data[0]) {
-        const imageData = `data:image/png;base64,${data.data.data[0].b64_json}`;
+        const imageItem = data.data.data[0];
+        
+        // Validate that b64_json exists and is not undefined
+        if (!imageItem.b64_json) {
+          console.error('Generated image data is missing b64_json field:', imageItem);
+          setError('Generated image data is invalid - missing image content');
+          setResponseLog('Error: Generated image data is missing b64_json field');
+          return;
+        }
+        
+        const imageData = `data:image/png;base64,${imageItem.b64_json}`;
         setCurrentImage(imageData);
         setGeneratedImage(imageData);
         
@@ -442,7 +467,7 @@ export default function StudioPage() {
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown, { passive: false });
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleExportProject, handleImportProject]);
 
@@ -660,32 +685,10 @@ export default function StudioPage() {
         </motion.div>
 
         {/* Error Notification */}
-        <AnimatePresence>
-          {error && (
-            <motion.div
-              initial={{ opacity: 0, x: 300 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 300 }}
-              className="fixed top-4 right-4 z-60 bg-red-500/90 dark:bg-red-600/90 backdrop-blur-xl text-white p-4 rounded-xl shadow-lg border border-red-400/30 max-w-md"
-            >
-              <div className="flex items-start gap-3">
-                <div className="p-1 bg-red-600 rounded-lg">
-                  <ExclamationTriangleIcon className="w-4 h-4 text-white" />
-                </div>
-                <div className="flex-1">
-                  <h4 className="font-semibold mb-1">Generation Failed</h4>
-                  <p className="text-sm opacity-90">{error}</p>
-                </div>
-                <button
-                  onClick={() => setError(null)}
-                  className="p-1 hover:bg-red-600 rounded transition-colors"
-                >
-                  <Cross2Icon className="w-4 h-4" />
-                </button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <ErrorNotification 
+          error={error} 
+          onDismiss={handleErrorDismiss} 
+        />
 
         {/* Enhanced Prompt Box */}
         {showPromptBox && (
@@ -728,8 +731,8 @@ export default function StudioPage() {
             size={currentSize}
             onSizeChange={setCurrentSize}
             attachedImage={attachedImage}
-            onAttachedImageRemove={() => setAttachedImage(null)}
-            onShowSizeModal={() => setShowSizeModal(true)}
+            onAttachedImageRemove={handleAttachedImageRemove}
+            onShowSizeModal={handleSizeModalOpen}
             onImageUpload={handleImageUpload}
             models={models}
             getModelName={getModelName}
@@ -739,7 +742,7 @@ export default function StudioPage() {
         {/* Size Modal */}
         <SizeModal
           isOpen={showSizeModal}
-          onClose={() => setShowSizeModal(false)}
+          onClose={handleSizeModalClose}
           currentSize={currentSize}
           currentModel={currentModel}
           onSizeChange={setCurrentSize}

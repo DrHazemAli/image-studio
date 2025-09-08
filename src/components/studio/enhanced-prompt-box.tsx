@@ -14,7 +14,6 @@ import {
   ClockIcon,
   ImageIcon,
   Cross2Icon,
-  AspectRatioIcon,
   FileIcon,
   CameraIcon,
 } from "@radix-ui/react-icons";
