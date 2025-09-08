@@ -1,5 +1,8 @@
 # Support Guide - Azure Image Studio
 
+**Last Updated**: September 8, 2025  
+**Version**: 1.0.1
+
 Need help with Azure Image Studio? This guide will help you find the right resources and get the support you need.
 
 > ⚠️ **Important**: This is a **community project** and is not affiliated with or endorsed by Microsoft or Azure. It's an independent project that uses Azure AI services.
@@ -7,13 +10,15 @@ Need help with Azure Image Studio? This guide will help you find the right resou
 ## 🚀 Quick Help
 
 ### Getting Started
-- **[Getting Started Guide](docs/Getting-Started.md)** - Complete setup and configuration
-- **[User Guide](docs/User-Guide.md)** - Detailed usage instructions
+- **[Getting Started Guide](docs/getting-started.md)** - Complete setup and configuration
+- **[Configuration Guide](docs/configuration.md)** - Comprehensive configuration reference
+- **[User Guide](docs/user-guide.md)** - Detailed usage instructions
 - **[FAQ](#frequently-asked-questions)** - Common questions and answers
 
 ### Technical Issues
-- **[API Documentation](docs/API-Documentation.md)** - Technical reference
-- **[Architecture Guide](docs/Architecture.md)** - System design details
+- **[API Documentation](docs/api-documentation.md)** - Technical reference
+- **[Architecture Guide](docs/architecture.md)** - System design details
+- **[Developer Guide](docs/developer-guide.md)** - Development setup and architecture
 - **[Troubleshooting](#troubleshooting)** - Common issues and solutions
 
 ## 📞 Support Channels
@@ -116,13 +121,13 @@ A: Yes, we follow security best practices. See our [Privacy Policy](PRIVACY.md) 
 ### Configuration Questions
 
 **Q: How do I get an Azure API key?**
-A: You need an Azure subscription and access to Azure OpenAI or Azure AI Foundry services. This is a community project that uses Azure services - it's not an official Microsoft product. See the [Getting Started Guide](docs/Getting-Started.md) for details.
+A: You need an Azure subscription and access to Azure OpenAI or Azure AI Foundry services. This is a community project that uses Azure services - it's not an official Microsoft product. See the [Getting Started Guide](docs/getting-started.md) and [Configuration Guide](docs/configuration.md) for details.
 
 **Q: Which models should I use?**
 A: It depends on your needs. DALL-E 3 is great for creative images, FLUX 1.1 Pro for photorealistic images, and FLUX Kontext Pro for editing.
 
 **Q: Can I use multiple models?**
-A: Yes, you can configure and use multiple models. See the [API Documentation](docs/API-Documentation.md) for configuration details.
+A: Yes, you can configure and use multiple models. See the [Configuration Guide](docs/configuration.md) and [API Documentation](docs/api-documentation.md) for configuration details.
 
 **Q: How do I update my configuration?**
 A: Edit the configuration files in `src/app/config/` and restart the application.
@@ -130,7 +135,7 @@ A: Edit the configuration files in `src/app/config/` and restart the application
 ### Usage Questions
 
 **Q: How do I generate images?**
-A: Enter a description in the prompt box, select a model, and click generate. See the [User Guide](docs/User-Guide.md) for detailed instructions.
+A: Enter a description in the prompt box, select a model, and click generate. See the [User Guide](docs/user-guide.md) and [Image Generation Guide](docs/image-generation.md) for detailed instructions.
 
 **Q: Can I edit existing images?**
 A: Yes, use the Edit tool to modify existing images with AI assistance.
@@ -144,7 +149,7 @@ A: Yes, use the batch generation feature to create multiple images simultaneousl
 ### Technical Questions
 
 **Q: What are the system requirements?**
-A: Modern browser, internet connection, and sufficient system resources. See the [Getting Started Guide](docs/Getting-Started.md) for details.
+A: Modern browser, internet connection, and sufficient system resources. See the [Getting Started Guide](docs/getting-started.md) and [Installation Guide](docs/installation.md) for details.
 
 **Q: Can I run this on mobile?**
 A: Yes, the application is mobile-responsive, but some features may be limited on smaller screens.
@@ -153,7 +158,7 @@ A: Yes, the application is mobile-responsive, but some features may be limited o
 A: Pull the latest changes from the repository and run `npm install` and `npm run dev`.
 
 **Q: Can I contribute to the project?**
-A: Yes! See our [Contributing Guide](CONTRIBUTING.md) for details on how to contribute.
+A: Yes! See our [Contributing Guide](docs/contributing.md) for details on how to contribute.
 
 ## 🐛 Reporting Bugs
 
@@ -215,16 +220,20 @@ Add any other context or screenshots about the feature request here.
 ## 📚 Additional Resources
 
 ### Documentation
-- **[Getting Started](docs/Getting-Started.md)** - Setup and configuration
-- **[User Guide](docs/User-Guide.md)** - Detailed usage instructions
-- **[API Documentation](docs/API-Documentation.md)** - Technical reference
-- **[Architecture Guide](docs/Architecture.md)** - System design
-- **[Roadmap](docs/Roadmap.md)** - Current and planned features
+- **[Getting Started](docs/getting-started.md)** - Setup and configuration
+- **[Configuration Guide](docs/configuration.md)** - Comprehensive configuration reference
+- **[User Guide](docs/user-guide.md)** - Detailed usage instructions
+- **[Image Generation Guide](docs/image-generation.md)** - AI generation workflows
+- **[Tools Reference](docs/tools-reference.md)** - Complete tools reference
+- **[API Documentation](docs/api-documentation.md)** - Technical reference
+- **[Architecture Guide](docs/architecture.md)** - System design
+- **[Developer Guide](docs/developer-guide.md)** - Development setup
+- **[Roadmap](docs/roadmap.md)** - Current and planned features
 
 ### Community
 - **[GitHub Repository](https://github.com/DrHazemAli/azure-image-studio)** - Source code and issues
 - **[GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)** - Community discussions
-- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute
+- **[Contributing Guide](docs/contributing.md)** - How to contribute
 - **[Code of Conduct](CODE_OF_CONDUCT.md)** - Community guidelines
 
 ### Legal

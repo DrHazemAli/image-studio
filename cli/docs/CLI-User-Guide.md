@@ -699,7 +699,6 @@ Common error codes and solutions:
 This guide covers the essential features and workflows of the Azure Image Studio CLI. For more detailed information, see:
 
 - [CLI README](../README.md) - Installation and quick start
-- [API Documentation](./API-Documentation.md) - Technical reference
-- [Architecture Guide](./Architecture.md) - System design overview
+- [CLI API Documentation](./CLI-API-Documentation.md) - Technical reference
 
 Happy generating! 🎨

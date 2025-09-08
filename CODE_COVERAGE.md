@@ -1,5 +1,8 @@
 # Code Quality & Testing
 
+**Last Updated**: September 8, 2025  
+**Version**: 1.0.1
+
 ## 🧪 Code Coverage
 
 We maintain high code quality standards with comprehensive testing:
@@ -104,4 +107,4 @@ We track the following quality metrics:
 
 ---
 
-*For detailed testing documentation and setup instructions, see our [Development Guide](docs/Architecture.md#testing).*
+*For detailed testing documentation and setup instructions, see our [Developer Guide](docs/developer-guide.md) and [Architecture Guide](docs/architecture.md).*

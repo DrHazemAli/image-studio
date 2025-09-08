@@ -120,3 +120,6 @@ coverage/
 
 # Internal
 internal/
+
+# old_docs
+old_docs/

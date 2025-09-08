@@ -6,6 +6,14 @@ This comprehensive guide will help you master Azure Image Studio's features and 
 
 ## 🎯 Getting Started
 
+### Installation
+
+Please see the [Installation Guide](installation.md) for detailed instructions.
+
+### Configuration
+Please see the [Configuration Guide](configuration.md) for detailed instructions.
+
+
 ### Launching the Studio
 
 1. **From the Home Page**: Click "Launch Azure Image Studio" to open the full-featured studio
@@ -368,14 +376,49 @@ The studio is divided into several key areas:
 - **Community**: Connect with other users
 - **Updates**: Check for latest versions and fixes
 
+## 📋 Keyboard Shortcuts
+
+### Navigation
+- `Cmd+1` - Select Tool
+- `Cmd+2` - Zoom Tool
+- `Cmd+M` - Move Tool
+- `Cmd+H` - Hand Tool
+
+### Generation
+- `Cmd+G` - Generate Tool
+- `Cmd+E` - Edit Tool
+- `Cmd+I` - Inpaint Tool
+
+### Drawing
+- `Cmd+B` - Brush Tool
+- `Shift+E` - Eraser Tool
+- `Cmd+Shift+T` - Text Tool
+- `Cmd+U` - Shape Tool
+
+### Transform
+- `Cmd+4` - Crop Tool
+- `Cmd+Z` - Undo
+- `Cmd+Shift+Z` - Redo
+- `Cmd+S` - Save Project
+
+## 🎯 Next Steps
+
+1. **Explore the Studio**: Try the professional studio interface
+2. **Test Different Models**: Experiment with various AI models
+3. **Learn Advanced Features**: Check out the [Image Generation Guide](image-generation.md)
+4. **Customize Configuration**: Adjust settings for your specific needs
+
+## 📚 Additional Resources
+
+- [Getting Started](getting-started.md) - Initial setup and configuration
+- [Image Generation Guide](image-generation.md) - AI generation workflows
+- [Tools Reference](tools-reference.md) - Complete tools reference
+- [Developer Guide](developer-guide.md) - Development setup and architecture
+- [API Documentation](api-documentation.md) - Technical reference
+- [Architecture Guide](architecture.md) - System design overview
+
 ---
 
-This guide covers the essential features and workflows of Azure Image Studio. For more detailed information, see:
-
-- [Getting Started](Getting-Started.md) - Initial setup and configuration
-- [API Documentation](API-Documentation.md) - Technical reference
-- [Architecture Guide](Architecture.md) - System design overview
-- [CLI Documentation](../cli/README.md) - Command-line interface guide
-- [CLI User Guide](../cli/docs/CLI-User-Guide.md) - Comprehensive CLI usage guide
+This guide covers the essential features and workflows of Azure Image Studio. For more detailed information, see the specific guides for each feature area.
 
 Happy creating! 🎨

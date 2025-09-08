@@ -971,4 +971,3 @@ This API documentation provides comprehensive technical details for integrating 
 
 - [CLI User Guide](./CLI-User-Guide.md) - User-focused documentation
 - [CLI README](../README.md) - Installation and quick start
-- [Architecture Guide](./CLI-Architecture.md) - System design overview

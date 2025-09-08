@@ -1,14 +1,17 @@
 # Security Policy
 
+**Last Updated**: September 8, 2025  
+**Version**: 1.0.1
+
 ## 🔒 Supported Versions
 
 We provide security updates for the following versions of Azure Image Studio:
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.0.x   | :white_check_mark: |
-| 0.9.x   | :white_check_mark: |
-| < 0.9   | :x:                |
+| 1.0.1   | :white_check_mark: |
+| 1.0.0   | :white_check_mark: |
+| < 1.0   | :x:                |
 
 ## 🚨 Reporting a Vulnerability
 

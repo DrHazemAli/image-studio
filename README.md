@@ -12,10 +12,11 @@ Azure Image Studio is a cutting-edge image generation and editing platform that 
 ![React](https://img.shields.io/badge/React-19.1.0-blue?style=for-the-badge&logo=react)
 
 
-[![Version](https://img.shields.io/badge/Version-1.0.0-green?style=for-the-badge)](https://github.com/DrHazemAli/azure-image-studio)
+[![Version](https://img.shields.io/badge/Version-1.0.1-green?style=for-the-badge)](https://github.com/DrHazemAli/azure-image-studio)
 [![Community Project](https://img.shields.io/badge/Type-Community%20Project-orange?style=for-the-badge)](https://github.com/DrHazemAli/azure-image-studio)
 [![Microsoft MVP](https://img.shields.io/badge/Author-Microsoft%20MVP-purple?style=for-the-badge)](https://github.com/DrHazemAli)
 [![Code Coverage](https://img.shields.io/badge/Code%20Coverage-85%25-brightgreen?style=for-the-badge)](CODE_COVERAGE.md)
+[![Last Updated](https://img.shields.io/badge/Last%20Updated-September%2008%2C%202025-blue?style=for-the-badge)](https://github.com/DrHazemAli/azure-image-studio)
 
 </div>
 
@@ -56,7 +57,7 @@ Azure Image Studio is a community-developed, production-ready platform that inte
 
 **Note**: This is not an official Microsoft or Azure product, but rather a community project that utilizes Azure's AI services.
 
-**⚠️ Development Status**: Azure Image Studio is currently in **pre-release** and **testing phase**. While we've implemented many features, some functionality may not work as expected since development is ongoing. Please see our [Development Roadmap](docs/Roadmap.md) for current status and planned features.
+**✅ Production Status**: Azure Image Studio is currently **production-ready** (v1.0.1) with comprehensive features implemented and documented. The platform is stable and ready for professional use. Please see our [Development Roadmap](docs/roadmap.md) for current status and planned features.
 
 ## ✨ Features
 
@@ -81,12 +82,14 @@ Azure Image Studio is a community-developed, production-ready platform that inte
 - **FLUX 1.1 Pro**: Advanced image generation with superior quality
 - **FLUX 1 Kontext Pro**: Context-aware image generation and editing
 - **GPT-Image-1**: Latest model with enhanced capabilities including image editing and inpainting (requires approval)
+- **Florence 2.0**: Microsoft's vision-language model for advanced image understanding
 
 ### 🛠️ **Advanced Capabilities**
 - **Text-to-Image**: Generate images from natural language descriptions
 - **Image Editing**: Modify existing images with AI-powered tools
 - **Inpainting/Outpainting**: Fill or extend image areas intelligently
 - **Image-to-Image**: Transform images based on text prompts
+- **Background Removal**: AI-powered background removal and replacement
 - **Batch Generation**: Create multiple images simultaneously
 - **Quality Control**: Multiple quality levels and output formats
 
@@ -203,9 +206,12 @@ The platform uses a flexible configuration system located in `src/app/config/`:
 ```bash
 # Azure API Key (used for all models)
 AZURE_API_KEY=your_azure_api_key_here
+
+# This is optional, The backend routes will replace the <env.AZURE_API_BASE_URL> with the actual url with this value
+AZURE_API_BASE_URL=your_azure_api_base_url_here
 ```
 
-> ⚙️ **Configuration Details**: Each model requires its own endpoint configuration. See the [API Documentation](docs/API-Documentation.md) for complete setup instructions.
+> ⚙️ **Configuration Details**: Each model requires its own endpoint configuration. See the [Configuration Guide](docs/configuration.md) for complete setup instructions.
 
 ## 🎨 Usage
 
@@ -222,7 +228,7 @@ AZURE_API_KEY=your_azure_api_key_here
 4. Edit using the advanced canvas
 5. Save and export your work
 
-> 📖 **Detailed Usage**: Check out our comprehensive [User Guide](docs/User-Guide.md) for detailed instructions on all features and workflows.
+> 📖 **Detailed Usage**: Check out our comprehensive [User Guide](docs/user-guide.md) for detailed instructions on all features and workflows.
 
 ## 📁 Project Structure
 
@@ -251,40 +257,62 @@ azure-image-studio/
 │   ├── docs/              # CLI documentation
 │   └── package.json       # CLI dependencies
 └── docs/                  # Comprehensive documentation
-    ├── Getting-Started.md # Setup and configuration guide
-    ├── User-Guide.md      # Detailed usage instructions
-    ├── API-Documentation.md # Technical API reference
-    └── Architecture.md    # System design overview
+    ├── getting-started.md # Setup and configuration guide
+    ├── configuration.md   # Comprehensive configuration reference
+    ├── user-guide.md      # Detailed usage instructions
+    ├── api-documentation.md # Technical API reference
+    ├── architecture.md    # System design overview
+    ├── database-guide.md  # Data storage and management
+    ├── installation.md    # Installation instructions
+    ├── deployment.md      # Deployment guide
+    ├── cli-documentation.md # CLI guide
+    ├── contributing.md    # Contribution guide
+    └── roadmap.md         # Development roadmap
 ```
 
 ## 🗺️ What's Coming Next
 
 We're actively developing exciting new features:
 
-1. **Project Sharing** - Share projects with team members, clients, and the community
-2. **Cloud Storage with Azure** - Seamless cloud-based asset management and cross-device access
-3. **Prompt Enhancement using GPT models** - AI-powered prompt optimization and style suggestions
+1. **Advanced Canvas Features** - Enhanced editing tools and professional capabilities
+2. **Enhanced AI Features** - Style transfer, image upscaling, and advanced AI processing
+3. **Performance Optimization** - Improved caching, memory management, and database optimization
 
-For detailed information about our development timeline and planned features, see our [Development Roadmap](docs/Roadmap.md).
+**Future Plans:**
+- **Project Sharing** - Share projects with team members, clients, and the community
+- **Cloud Storage with Azure** - Seamless cloud-based asset management and cross-device access
+- **User Authentication** - User accounts and collaboration features
 
-> 📚 **Need detailed setup instructions?** Check out our comprehensive [Getting Started Guide](docs/Getting-Started.md)
+For detailed information about our development timeline and planned features, see our [Development Roadmap](docs/roadmap.md).
+
+> 📚 **Need detailed setup instructions?** Check out our comprehensive [Getting Started Guide](docs/getting-started.md)
 
 ## 📚 Documentation
 
-### Web Application
-- 🚀 **[Getting Started](docs/Getting-Started.md)** - Complete setup and configuration guide
-- 📖 **[User Guide](docs/User-Guide.md)** - Detailed usage instructions for all features
-- 🔧 **[API Documentation](docs/API-Documentation.md)** - Technical reference and examples
-- 🏗️ **[Architecture Guide](docs/Architecture.md)** - System design and technical details
+### User Documentation
+- 🚀 **[Getting Started](docs/getting-started.md)** - Complete setup and configuration guide
+- ⚙️ **[Configuration Guide](docs/configuration.md)** - Comprehensive configuration reference
+- 📖 **[User Guide](docs/user-guide.md)** - Detailed usage instructions for all features
+- 🎨 **[Image Generation Guide](docs/image-generation.md)** - AI generation workflows and best practices
+- 🛠️ **[Tools Reference](docs/tools-reference.md)** - Complete tools reference and usage guide
+
+### Developer Documentation
+- 🔧 **[Developer Guide](docs/developer-guide.md)** - Development setup and architecture
+- 📡 **[API Documentation](docs/api-documentation.md)** - Technical reference and examples
+- 🏗️ **[Architecture Guide](docs/architecture.md)** - System design and technical details
+- 🗄️ **[Database Guide](docs/database-guide.md)** - Data storage and management
+- 🚀 **[Installation Guide](docs/installation.md)** - Detailed installation instructions
+- ☁️ **[Deployment Guide](docs/deployment.md)** - Production deployment instructions
 
 ### Command-Line Interface
-- 🖥️ **[CLI Documentation](cli/README.md)** - Command-line interface guide
-- 📖 **[CLI User Guide](cli/docs/CLI-User-Guide.md)** - Comprehensive CLI usage guide
+- 🖥️ **[CLI Documentation](docs/cli-documentation.md)** - Comprehensive CLI guide
+- 📖 **[CLI User Guide](cli/docs/CLI-User-Guide.md)** - CLI usage instructions
 - 🔧 **[CLI API Documentation](cli/docs/CLI-API-Documentation.md)** - CLI technical reference
 
-### Development & Planning
-- 🗺️ **[Development Roadmap](docs/Roadmap.md)** - Current status, planned features, and development timeline
-- 🧪 **[Code Coverage & Testing](CODE_COVERAGE.md)** - Testing strategy, coverage reports, and quality metrics
+### Community & Development
+- 🤝 **[Contributing Guide](docs/contributing.md)** - How to contribute to the project
+- 🗺️ **[Development Roadmap](docs/roadmap.md)** - Current status and planned features
+- 🧪 **[Code Coverage & Testing](CODE_COVERAGE.md)** - Testing strategy and quality metrics
 
 ## 🤝 Contributing
 
