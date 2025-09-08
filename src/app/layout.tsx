@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "@radix-ui/themes/styles.css";
 import { ToastProvider } from "@/components/ui/toast";
-
+import appConfig from "@/app/config/app-config.json";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Azure Image Studio",
-  description: "AI-powered image generation and editing using Azure OpenAI services",
+  title: appConfig.app.name,
+  description: appConfig.app.description,
 };
 
 export default function RootLayout({

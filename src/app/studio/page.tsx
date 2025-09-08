@@ -8,7 +8,7 @@ import { Canvas } from '@/components/studio/canvas';
 import EnhancedPromptBox from '@/components/studio/enhanced-prompt-box';
 import { GenerationPanel, AssetsPanel, HistoryPanel } from '@/components/studio/panels';
 import { ConsoleSidebar } from '@/components/ui/console-sidebar';
-import { SizeModal, ErrorNotification } from '@/components/studio/modals';
+import { SizeModal, ErrorNotification, AboutModal, ShortcutsModal } from '@/components/modals';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { StudioLoading } from '@/components/studio/studio-loading';
 import { MenuBar, MenuProvider } from '@/components/studio/menu-bar';
@@ -26,7 +26,7 @@ import {
   GitHubLogoIcon,
   LinkedInLogoIcon,
 } from '@radix-ui/react-icons';
-
+import appConfig from "@/app/config/app-config.json";
 interface GenerationParams {
   prompt: string;
   model: string;
@@ -183,6 +183,16 @@ export default function StudioPage() {
     setShowSizeModal(false);
   }, []);
 
+  // Memoized About modal close handler
+  const handleAboutModalClose = useCallback(() => {
+    setShowAbout(false);
+  }, []);
+
+  // Memoized Shortcuts modal close handler
+  const handleShortcutsModalClose = useCallback(() => {
+    setShowKeyboardShortcuts(false);
+  }, []);
+
   // Memoized attached image removal handler
   const handleAttachedImageRemove = useCallback(() => {
     setAttachedImage(null);
@@ -311,9 +321,9 @@ export default function StudioPage() {
         generatedImage,
         attachedImage,
         {
-          description: `Project exported from Azure Image Studio`,
+          description: `Project exported from ${appConfig.app.name}`,
           tags: ['azure', 'image-studio'],
-          author: 'Azure Image Studio User'
+          author: appConfig.app.name
         }
       );
       
@@ -644,7 +654,7 @@ export default function StudioPage() {
               </div>
               <div>
                 <h1 className="font-bold text-gray-900 dark:text-white">
-                  Azure Image Studio
+                  {appConfig.app.name}
                 </h1>
                 {isEditingProjectName ? (
                   <input
@@ -848,7 +858,7 @@ export default function StudioPage() {
           
          
           <div className="flex items-center gap-4">
-            <span>Azure Image Studio v1.0</span>
+            <span>{appConfig.app.name} v{appConfig.app.version}</span>
             <a href="https://github.com/DrHazemAli/azure-image-studio" target="_blank" rel="noopener noreferrer">
             <GitHubLogoIcon className="w-4 h-4" />
            </a>
@@ -932,79 +942,17 @@ export default function StudioPage() {
           models={models}
         />
 
-        {/* Keyboard Shortcuts Modal */}
-        {showKeyboardShortcuts && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
-              <h2 className="text-xl font-bold mb-4">Keyboard Shortcuts</h2>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span>New Project</span>
-                  <span className="text-gray-500">Cmd+N</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Open Project</span>
-                  <span className="text-gray-500">Cmd+O</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Save Project</span>
-                  <span className="text-gray-500">Cmd+S</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Generate Tool</span>
-                  <span className="text-gray-500">Cmd+G</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Inpaint Tool</span>
-                  <span className="text-gray-500">Cmd+I</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Toggle Console</span>
-                  <span className="text-gray-500">Cmd+Shift+C</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Undo</span>
-                  <span className="text-gray-500">Cmd+Z</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Redo</span>
-                  <span className="text-gray-500">Cmd+Shift+Z</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Delete Selected</span>
-                  <span className="text-gray-500">Delete / Backspace</span>
-                </div>
-              </div>
-              <button
-                onClick={() => setShowKeyboardShortcuts(false)}
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        )}
-
         {/* About Modal */}
-        {showAbout && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
-              <h2 className="text-xl font-bold mb-4">About Azure Image Studio</h2>
-              <div className="space-y-2 text-sm">
-                <p><strong>Version:</strong> 1.0.0</p>
-                <p><strong>Description:</strong> A powerful image generation and editing studio powered by Azure AI.</p>
-                <p><strong>Author:</strong> Dr. Hazem Ali</p>
-                <p><strong>GitHub:</strong> <a href="https://github.com/DrHazemAli/azure-image-studio" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">github.com/DrHazemAli/azure-image-studio</a></p>
-              </div>
-              <button
-                onClick={() => setShowAbout(false)}
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        )}
+        <AboutModal
+          isOpen={showAbout}
+          onClose={handleAboutModalClose}
+        />
+
+        {/* Shortcuts Modal */}
+        <ShortcutsModal
+          isOpen={showKeyboardShortcuts}
+          onClose={handleShortcutsModalClose}
+        />
 
           </motion.div>
         )}

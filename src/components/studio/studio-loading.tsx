@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { LayersIcon } from '@radix-ui/react-icons';
-
+import appConfig from "@/app/config/app-config.json";
 interface StudioLoadingProps {
   isVisible: boolean;
 }
@@ -134,7 +134,7 @@ export function StudioLoading({ isVisible }: StudioLoadingProps) {
               backgroundSize: '200% 100%'
             }}
           >
-            Azure Image Studio
+            {appConfig.app.name}
           </motion.span>
         </motion.h1>
 

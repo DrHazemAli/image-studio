@@ -3,7 +3,22 @@
     "name": "Azure Image Studio",
     "version": "1.0.1",
     "description": "AI-powered image generation and editing platform",
-    "environment": "development"
+    "environment": "development",
+    "github": "https://github.com/DrHazemAli/azure-image-studio"
+  },
+  "admin": {
+    "user_id": "dcee1a95-7dd1-4ba0-9ce6-84f1786fbe76",
+    "name": "Hazem Ali",
+    "username": "hazem",
+    "role": "admin",
+    "password": "123456",
+    "email": "email@domain.com"
+  },
+  "author": {
+    "name": "Hazem Ali",
+    "website": "https://www.skytells.ai",
+    "github": "https://github.com/DrHazemAli",
+    "linkedin": "https://www.linkedin.com/in/drhazemali/"
   },
   "features": {
     "floatingImageToolbar": {

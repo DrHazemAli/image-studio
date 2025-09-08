@@ -158,15 +158,38 @@ export interface BackgroundRemovalModel {
  */
 export class AppConfigService {
   private static config: AppConfig | null = null;
+  private static loadingPromise: Promise<AppConfig> | null = null;
 
   /**
    * Load app configuration from the JSON file
    */
   static async loadConfig(): Promise<AppConfig> {
+    // Return cached config if available
     if (this.config) {
       return this.config;
     }
 
+    // Return existing loading promise if one is in progress
+    if (this.loadingPromise) {
+      return this.loadingPromise;
+    }
+
+    // Create new loading promise
+    this.loadingPromise = this.fetchConfig();
+
+    try {
+      const result = await this.loadingPromise;
+      return result;
+    } finally {
+      // Clear loading promise when done
+      this.loadingPromise = null;
+    }
+  }
+
+  /**
+   * Internal method to fetch config from API
+   */
+  private static async fetchConfig(): Promise<AppConfig> {
     try {
       // In client-side, we'll fetch from the config endpoint
       const response = await fetch('/api/app-config');
@@ -175,7 +198,7 @@ export class AppConfigService {
       }
       
       this.config = await response.json();
-      return this.config;
+      return this.config!;
     } catch (error) {
       console.error('Error loading app configuration:', error);
       

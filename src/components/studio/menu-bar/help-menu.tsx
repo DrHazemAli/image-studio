@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { ContextMenu, type ContextMenuItem } from './context-menu';
 import { useMenuContext } from './menu-context';
-
+import appConfig from "@/app/config/app-config.json";
 interface HelpMenuProps {
   onShowKeyboardShortcuts: () => void;
   onShowAbout: () => void;
@@ -62,7 +62,7 @@ export function HelpMenu({
       action: () => {},
     },
     {
-      label: 'About Azure Image Studio',
+      label: `About ${appConfig.app.name}`,
       action: onShowAbout,
     },
   ];
