@@ -55,7 +55,7 @@
         "quality": "standard",
         "edgeRefinement": true,
         "transparencyMode": "full",
-        "outputFormat": "png"
+        "outputFormat": "b64_json"
       },
       "advanced": {
         "enableBatchProcessing": false,

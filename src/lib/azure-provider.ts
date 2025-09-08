@@ -289,7 +289,7 @@ export class AzureImageProvider {
       : "Remove the background completely, keeping only the main subject with natural transparency";
     
     formData.append('prompt', backgroundRemovalPrompt);
-    formData.append('response_format', request.output_format || 'b64_json');
+    formData.append('response_format', 'b64_json');
     formData.append('n', '1');
     formData.append('size', '1024x1024');
 

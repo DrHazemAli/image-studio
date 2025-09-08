@@ -4,6 +4,7 @@ import { AzureConfig, BackgroundRemovalRequest } from '@/types/azure';
 import { AppConfig } from '@/types/app-config';
 import azureConfigData from '../../config/azure-config.json';
 import appConfigData from '../../config/app-config.json';
+import { replaceEnvTags } from '@/lib/env';
 
 export async function POST(request: NextRequest) {
   try {
@@ -44,6 +45,7 @@ export async function POST(request: NextRequest) {
 
     // Load app configuration for defaults and validation
     const appConfig = appConfigData as AppConfig;
+    
     const bgRemovalConfig = appConfig.features.backgroundRemoval;
     
     // Check if background removal feature is enabled
@@ -76,6 +78,10 @@ export async function POST(request: NextRequest) {
     }
 
     const config = azureConfigData as AzureConfig;
+    // loop to endpoints and replace the baseurl with the env tag
+    config.endpoints.forEach(endpoint => {
+      endpoint.baseUrl = replaceEnvTags(endpoint.baseUrl);
+    });
     const provider = new AzureImageProvider(config, apiKey);
     
     // Validate provider configuration

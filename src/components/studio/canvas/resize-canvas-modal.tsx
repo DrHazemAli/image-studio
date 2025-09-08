@@ -17,6 +17,7 @@ interface ResizeCanvasModalProps {
   onResizeCanvas: () => void;
   onResizeCanvasAndImage: () => void;
   onDiscard: () => void;
+  onKeepCurrentCanvas?: () => void;
   imageWidth: number;
   imageHeight: number;
   currentCanvasWidth: number;
@@ -29,6 +30,7 @@ export default function ResizeCanvasModal({
   onResizeCanvas,
   onResizeCanvasAndImage,
   onDiscard,
+  onKeepCurrentCanvas,
   imageWidth,
   imageHeight,
   currentCanvasWidth,
@@ -48,6 +50,13 @@ export default function ResizeCanvasModal({
     onDiscard();
     onClose();
   }, [onDiscard, onClose]);
+
+  const handleKeepCurrentCanvas = useCallback(() => {
+    if (onKeepCurrentCanvas) {
+      onKeepCurrentCanvas();
+    }
+    onClose();
+  }, [onKeepCurrentCanvas, onClose]);
 
   // Only log when modal is actually open to reduce noise
   if (isOpen) {
@@ -95,7 +104,7 @@ export default function ResizeCanvasModal({
             {/* Content */}
             <div className="p-6">
               <p className="text-gray-600 dark:text-gray-300 mb-6">
-                The image dimensions don&apos;t match your current canvas size. Choose how you&apos;d like to proceed:
+                The image is smaller than your current canvas size. Choose how you&apos;d like to proceed:
               </p>
 
               {/* Size Comparison */}
@@ -145,6 +154,13 @@ export default function ResizeCanvasModal({
                       <div className="text-xs text-green-700 dark:text-green-200">Both canvas and image will be resized to fit</div>
                     </div>
                   </div>
+                  <div className="flex items-start gap-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                    <FrameIcon className="w-4 h-4 text-purple-600 mt-0.5" />
+                    <div>
+                      <div className="text-sm font-medium text-purple-900 dark:text-purple-100">Keep Current Canvas</div>
+                      <div className="text-xs text-purple-700 dark:text-purple-200">Load image at current size without resizing canvas</div>
+                    </div>
+                  </div>
                   <div className="flex items-start gap-3 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
                     <TrashIcon className="w-4 h-4 text-red-600 mt-0.5" />
                     <div>
@@ -176,6 +192,18 @@ export default function ResizeCanvasModal({
                   <ImageIcon className="w-4 h-4" />
                   Resize Canvas & Image
                 </Button>
+                
+                {onKeepCurrentCanvas && (
+                  <Button
+                    variant="soft"
+                    color="purple"
+                    onClick={handleKeepCurrentCanvas}
+                    className="flex items-center justify-center gap-2 w-full"
+                  >
+                    <FrameIcon className="w-4 h-4" />
+                    Keep Current Canvas
+                  </Button>
+                )}
                 
                 <Button
                   variant="soft"

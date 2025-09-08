@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AzureImageProvider } from '@/lib/azure-provider';
 import { AzureConfig } from '@/types/azure';
-import azureConfigData from '../../config/azure-config.json';
-
+import azureConfigData from '@/app/config/azure-config.json';
+import { replaceEnvTags } from '@/lib/env';
 export async function POST(request: NextRequest) {
   try {
     const apiKey = process.env.AZURE_API_KEY;
@@ -32,6 +32,10 @@ export async function POST(request: NextRequest) {
     }
 
     const config = azureConfigData as AzureConfig;
+    // loop to endpoints and replace the baseurl with the env tag
+    config.endpoints.forEach(endpoint => {
+      endpoint.baseUrl = replaceEnvTags(endpoint.baseUrl);
+    });
     const provider = new AzureImageProvider(config, apiKey);
     
     const validation = provider.validateConfiguration();

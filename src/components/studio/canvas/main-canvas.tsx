@@ -324,7 +324,7 @@ export default function MainCanvas({
       setActiveLayerId(imageLayer.id);
     setImageLoaded(true);
     setIsLoadingImage(false);
-  }, [canvasWidth, canvasHeight]);
+  }, [canvasWidth, canvasHeight, setZoom]);
 
   // Load image to Fabric.js canvas
   const loadImageToCanvas = useCallback((imageData: string) => {
@@ -360,9 +360,8 @@ export default function MainCanvas({
       const hasObjects = canvas.getObjects().length > 0;
       
       if (!hasObjects) {
-        // First time loading an image - auto-resize canvas to match image aspect ratio
-        console.log('First image load - auto-resize canvas to match image aspect ratio');
-        setIsProcessingResize(true);
+        // First time loading an image - check if we should ask for resize confirmation
+        console.log('First image load - checking if resize confirmation needed');
         
         // Calculate reasonable canvas size while maintaining aspect ratio
         const maxCanvasSize = 1200; // Maximum dimension for canvas (more viewport-friendly)
@@ -388,40 +387,57 @@ export default function MainCanvas({
           targetHeight = Math.round(imgHeight * scaleFactor);
         }
         
-        // Resize canvas to calculated dimensions
-        console.log('Setting canvas dimensions:', {
-          imgWidth,
-          imgHeight,
-          imageAspect,
-          targetWidth,
-          targetHeight
-        });
-        setCanvasWidth(targetWidth);
-        setCanvasHeight(targetHeight);
+        // Check if image is smaller than current canvas size
+        const isImageSmallerThanCanvas = imgWidth < canvasWidth && imgHeight < canvasHeight;
         
-        // Load the image after a short delay to allow canvas to resize
-        setTimeout(() => {
-          if (fabricCanvasRef.current) {
-            console.log('Loading image after canvas resize:', {
-              imgWidth,
-              imgHeight,
-              targetWidth,
-              targetHeight,
-              canvasWidth: fabricCanvasRef.current.width,
-              canvasHeight: fabricCanvasRef.current.height,
-              stateCanvasWidth: canvasWidth,
-              stateCanvasHeight: canvasHeight
-            });
-            loadImageDirectly(img, imgWidth, imgHeight, targetWidth, targetHeight);
+        if (isImageSmallerThanCanvas) {
+          // Image is smaller than canvas - ask user for confirmation
+          console.log('Image is smaller than canvas - showing resize confirmation modal');
+          setPendingImageDimensions({ width: imgWidth, height: imgHeight });
+          setPendingCanvasDimensions({ width: targetWidth, height: targetHeight });
+          setIsResizeCanvasModalOpen(true);
+          setIsLoadingImage(false);
+          return;
+        } else {
+          // Image is larger than or equal to canvas - auto-resize as before
+          console.log('Image is larger than canvas - auto-resizing canvas to match image aspect ratio');
+          setIsProcessingResize(true);
+          
+          // Resize canvas to calculated dimensions
+          console.log('Setting canvas dimensions:', {
+            imgWidth,
+            imgHeight,
+            imageAspect,
+            targetWidth,
+            targetHeight
+          });
+          setCanvasWidth(targetWidth);
+          setCanvasHeight(targetHeight);
+          
+          // Load the image after a short delay to allow canvas to resize
+          setTimeout(() => {
+            if (fabricCanvasRef.current) {
+              console.log('Loading image after canvas resize:', {
+                imgWidth,
+                imgHeight,
+                targetWidth,
+                targetHeight,
+                canvasWidth: fabricCanvasRef.current.width,
+                canvasHeight: fabricCanvasRef.current.height,
+                stateCanvasWidth: canvasWidth,
+                stateCanvasHeight: canvasHeight
+              });
+              loadImageDirectly(img, imgWidth, imgHeight, targetWidth, targetHeight);
+              setIsProcessingResize(false);
+            }
+          }, 150);
+          
+          // Safety timeout to reset processing flag
+          setTimeout(() => {
             setIsProcessingResize(false);
-          }
-        }, 150);
-        
-        // Safety timeout to reset processing flag
-        setTimeout(() => {
-          setIsProcessingResize(false);
-        }, 3000);
-        return;
+          }, 3000);
+          return;
+        }
       }
       
       // For new images, auto-resize logic already handled above
@@ -820,7 +836,12 @@ export default function MainCanvas({
   }, []);
 
   // Background removal handler for the modal version (returns processed image URL)
-  const handleBackgroundRemovalModal = useCallback(async (image: FabricObject, options?: any): Promise<string | null> => {
+  const handleBackgroundRemovalModal = useCallback(async (image: FabricObject, options?: {
+    model?: string;
+    quality?: string;
+    edgeRefinement?: boolean;
+    transparencyMode?: string;
+  }): Promise<string | null> => {
     if (!fabricCanvasRef.current || image.type !== 'image') return null;
     
     try {
@@ -1125,6 +1146,39 @@ export default function MainCanvas({
     setIsLoadingImage(false);
     setIsProcessingResize(false);
   }, []);
+
+  const handleKeepCurrentCanvas = useCallback(() => {
+    if (pendingImageDimensions && currentImage) {
+      // Load the image directly without resizing the canvas
+      console.log('Loading image with current canvas size');
+      setIsProcessingResize(true);
+      
+      // Close the modal first
+      setIsResizeCanvasModalOpen(false);
+      setPendingImageDimensions(null);
+      setPendingCanvasDimensions(null);
+      
+      // Load the image directly to the current canvas
+      FabricImage.fromURL(currentImage).then((img) => {
+        if (!fabricCanvasRef.current) return;
+        const imgWidth = img.width || 0;
+        const imgHeight = img.height || 0;
+        lastLoadedImageRef.current = currentImage; // Update ref to prevent duplicate loading
+        
+        // Load image directly without resizing canvas
+        loadImageDirectly(img, imgWidth, imgHeight, canvasWidth, canvasHeight);
+        setIsProcessingResize(false);
+      }).catch((error) => {
+        console.error('Error loading image with current canvas:', error);
+        setIsProcessingResize(false);
+      });
+      
+      // Safety timeout to reset processing flag
+      setTimeout(() => {
+        setIsProcessingResize(false);
+      }, 3000);
+    }
+  }, [pendingImageDimensions, currentImage, canvasWidth, canvasHeight, loadImageDirectly]);
 
   const handleCloseResizeModal = useCallback(() => {
     // Reset all states when modal is closed
@@ -1495,6 +1549,7 @@ export default function MainCanvas({
           onResizeCanvas={handleResizeCanvas}
           onResizeCanvasAndImage={handleResizeCanvasAndImage}
           onDiscard={handleDiscardImage}
+          onKeepCurrentCanvas={handleKeepCurrentCanvas}
           imageWidth={pendingImageDimensions?.width || 0}
           imageHeight={pendingImageDimensions?.height || 0}
           currentCanvasWidth={canvasWidth}
