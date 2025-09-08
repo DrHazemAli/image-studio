@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useRef, useEffect, useState, useCallback, useImperativeHandle, forwardRef } from 'react';
 // Removed unused imports
 import { Tool } from '../toolbar';
 import { LayerManager, Layer } from '../tools';
@@ -22,6 +22,10 @@ import { FloatingImageToolbar, BackgroundRemovalTool } from '../image-toolbar';
 import { ZOOM_CONSTANTS, TOOL_CONSTANTS } from '@/lib/constants';
 import { useErrorToast, useSuccessToast, useWarningToast } from '@/components/ui/toast';
 
+export interface MainCanvasRef {
+  addImageToCanvas: (imageData: string) => void;
+}
+
 interface MainCanvasProps {
   activeTool: Tool;
   currentImage?: string | null;
@@ -34,7 +38,7 @@ interface MainCanvasProps {
   onZoomChange?: (zoom: number) => void;
 }
 
-export default function MainCanvas({ 
+const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(({ 
   activeTool, 
   currentImage, 
   onImageLoad, 
@@ -43,7 +47,7 @@ export default function MainCanvas({
   // Menu Bar Integration: External zoom control parameters
   zoom: externalZoom,
   onZoomChange
-}: MainCanvasProps) {
+}, ref) => {
   // Canvas refs and state
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fabricCanvasRef = useRef<FabricCanvas | null>(null);
@@ -453,6 +457,69 @@ export default function MainCanvas({
       setIsLoadingImage(false);
     });
   }, [isLoadingImage, isProcessingResize, canvasWidth, canvasHeight, loadImageDirectly]);
+
+  // Add image to canvas as an object (for insert functionality)
+  const addImageToCanvas = useCallback((imageData: string) => {
+    if (!fabricCanvasRef.current) return;
+    
+    console.log('Adding image to canvas:', imageData.substring(0, 50) + '...');
+    
+    FabricImage.fromURL(imageData).then((img) => {
+      if (!fabricCanvasRef.current) return;
+      
+      const canvas = fabricCanvasRef.current;
+      const imgWidth = img.width || 0;
+      const imgHeight = img.height || 0;
+      
+      // Scale image to fit within canvas bounds (max 300px width/height)
+      const maxSize = 300;
+      let scale = 1;
+      if (imgWidth > maxSize || imgHeight > maxSize) {
+        scale = Math.min(maxSize / imgWidth, maxSize / imgHeight);
+      }
+      
+      // Set image properties
+      img.set({
+        left: canvas.width / 2,
+        top: canvas.height / 2,
+        scaleX: scale,
+        scaleY: scale,
+        originX: 'center',
+        originY: 'center',
+        selectable: true,
+        evented: true,
+        cornerStyle: 'circle',
+        cornerColor: '#007bff',
+        cornerSize: 8,
+        transparentCorners: false,
+        borderColor: '#007bff',
+        borderScaleFactor: 2
+      });
+      
+      // Add image to canvas
+      canvas.add(img);
+      canvas.setActiveObject(img);
+      canvas.renderAll();
+      
+      // Create layer for the image
+      const imageLayer: Layer = {
+        id: `image-${Date.now()}`,
+        name: `Image ${layers.length + 1}`,
+        type: 'image',
+        visible: true,
+        locked: false,
+        opacity: 1,
+        object: img
+      };
+      
+      setLayers(prev => [...prev, imageLayer]);
+      setActiveLayerId(imageLayer.id);
+      
+      console.log('Image added to canvas successfully');
+    }).catch((error) => {
+      console.error('Error adding image to canvas:', error);
+    });
+  }, [layers.length]);
 
   // Layer management functions
   const handleLayerSelect = useCallback((layerId: string) => {
@@ -1377,6 +1444,11 @@ export default function MainCanvas({
     return () => clearTimeout(timeoutId);
   }, [currentImage, generatedImage, loadImageToCanvas, isResizing, isProcessingResize]);
 
+  // Expose addImageToCanvas function through ref
+  useImperativeHandle(ref, () => ({
+    addImageToCanvas
+  }), [addImageToCanvas]);
+
   // Listen for canvas selection changes to show/hide image toolbar
   useEffect(() => {
     if (!fabricCanvasRef.current || !isCanvasReady) {
@@ -1594,4 +1666,8 @@ export default function MainCanvas({
     </div>
     </>
   );
-}
+});
+
+MainCanvas.displayName = 'MainCanvas';
+
+export default MainCanvas;

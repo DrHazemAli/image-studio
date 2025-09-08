@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Theme } from '@radix-ui/themes';
 import { Toolbar, Tool } from '@/components/studio/toolbar';
 import { Canvas } from '@/components/studio/canvas';
+import { type MainCanvasRef } from '@/components/studio/canvas/main-canvas';
 import EnhancedPromptBox from '@/components/studio/enhanced-prompt-box';
 import { GenerationPanel, AssetsPanel, HistoryPanel } from '@/components/studio/panels';
 import { ConsoleSidebar } from '@/components/ui/console-sidebar';
@@ -82,6 +83,9 @@ export default function ProjectStudioPage() {
     timestamp: number;
   }>>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
+
+  // Canvas ref for insert functionality
+  const canvasRef = useRef<MainCanvasRef>(null);
 
   // Load project on mount
   useEffect(() => {
@@ -443,6 +447,63 @@ export default function ProjectStudioPage() {
     window.open('https://github.com/DrHazemAli/azure-image-studio/issues', '_blank');
   }, []);
 
+  // Insert menu handlers
+  const handleInsertImage = useCallback(() => {
+    // Trigger file upload for image
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (event) => {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (file) {
+        // Convert file to base64 and add to canvas
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const imageData = e.target?.result as string;
+          if (imageData && canvasRef.current) {
+            canvasRef.current.addImageToCanvas(imageData);
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+    input.click();
+  }, []);
+
+  const handleInsertLayer = useCallback(() => {
+    // Create a new layer - for now just show a notification
+    console.log('Insert new layer');
+    // TODO: Implement layer creation logic
+  }, []);
+
+  const handleInsertText = useCallback(() => {
+    // Switch to text tool
+    setActiveTool('text');
+  }, []);
+
+  const handleInsertShape = useCallback(() => {
+    // Switch to shape tool
+    setActiveTool('shape');
+  }, []);
+
+  const handleInsertRectangle = useCallback(() => {
+    // Switch to shape tool and set rectangle mode
+    setActiveTool('shape');
+    // TODO: Set specific shape mode to rectangle
+  }, []);
+
+  const handleInsertCircle = useCallback(() => {
+    // Switch to shape tool and set circle mode
+    setActiveTool('shape');
+    // TODO: Set specific shape mode to circle
+  }, []);
+
+  const handleInsertLine = useCallback(() => {
+    // Switch to shape tool and set line mode
+    setActiveTool('shape');
+    // TODO: Set specific shape mode to line
+  }, []);
+
   // Handle project export
   const handleExportProject = useCallback(async () => {
     if (!currentProject) return;
@@ -801,6 +862,13 @@ export default function ProjectStudioPage() {
                 onExportProject={handleExportProject}
                 onImportProject={handleImportProject}
                 onClose={handleClose}
+                onInsertImage={handleInsertImage}
+                onInsertLayer={handleInsertLayer}
+                onInsertText={handleInsertText}
+                onInsertShape={handleInsertShape}
+                onInsertRectangle={handleInsertRectangle}
+                onInsertCircle={handleInsertCircle}
+                onInsertLine={handleInsertLine}
                 showConsole={showConsole}
                 showAssetsPanel={showAssetsPanel}
                 showHistoryPanel={showHistoryPanel}
@@ -893,6 +961,7 @@ export default function ProjectStudioPage() {
           <Toolbar activeTool={activeTool} onToolChange={handleToolChange} />
 
           <Canvas
+            ref={canvasRef}
             activeTool={activeTool}
             currentImage={currentImage}
             onImageLoad={setCurrentImage}

@@ -1,6 +1,7 @@
 'use client';
 
-import MainCanvas from '@/components/studio/canvas/main-canvas';
+import React, { forwardRef } from 'react';
+import MainCanvas, { type MainCanvasRef } from '@/components/studio/canvas/main-canvas';
 
 interface CanvasProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -17,9 +18,10 @@ interface CanvasProps {
 
 // Menu Bar Integration: Canvas wrapper component
 // This component passes through zoom control props from the menu bar to the main canvas
-export function Canvas({ activeTool, currentImage, onImageLoad, isGenerating = false, isInpaintMode = false, generatedImage, zoom, onZoomChange }: CanvasProps) {
+export const Canvas = forwardRef<MainCanvasRef, CanvasProps>(({ activeTool, currentImage, onImageLoad, isGenerating = false, isInpaintMode = false, generatedImage, zoom, onZoomChange }, ref) => {
   return (
     <MainCanvas
+      ref={ref}
       activeTool={activeTool}
       currentImage={currentImage}
       onImageLoad={onImageLoad}
@@ -30,4 +32,6 @@ export function Canvas({ activeTool, currentImage, onImageLoad, isGenerating = f
       onZoomChange={onZoomChange}
     />
   );
-}
+});
+
+Canvas.displayName = 'Canvas';

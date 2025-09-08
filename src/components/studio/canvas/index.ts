@@ -1,4 +1,4 @@
-export { default as MainCanvas } from './main-canvas';
+export { default as MainCanvas, type MainCanvasRef } from './main-canvas';
 export { default as CanvasViewport } from './canvas-viewport';
 export { default as ZoomControls } from './zoom-controls';
 export { default as LayersToggle } from './layers-toggle';

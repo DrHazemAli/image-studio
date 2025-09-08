@@ -1,6 +1,7 @@
 'use client';
 
 import { FileMenu } from './file-menu';
+import { InsertMenu } from './insert-menu';
 import { ViewMenu } from './view-menu';
 import { ToolsMenu } from './tools-menu';
 import { HelpMenu } from './help-menu';
@@ -14,6 +15,15 @@ interface MenuBarProps {
   onExportProject: () => void;
   onImportProject: () => void;
   onClose: () => void;
+  
+  // Insert menu props
+  onInsertImage: () => void;
+  onInsertLayer: () => void;
+  onInsertText: () => void;
+  onInsertShape: () => void;
+  onInsertRectangle: () => void;
+  onInsertCircle: () => void;
+  onInsertLine: () => void;
   
   // View menu props
   showConsole: boolean;
@@ -52,6 +62,13 @@ export function MenuBar({
   onExportProject,
   onImportProject,
   onClose,
+  onInsertImage,
+  onInsertLayer,
+  onInsertText,
+  onInsertShape,
+  onInsertRectangle,
+  onInsertCircle,
+  onInsertLine,
   showConsole,
   showAssetsPanel,
   showHistoryPanel,
@@ -85,6 +102,16 @@ export function MenuBar({
         onExportProject={onExportProject}
         onImportProject={onImportProject}
         onClose={onClose}
+      />
+      
+      <InsertMenu
+        onInsertImage={onInsertImage}
+        onInsertLayer={onInsertLayer}
+        onInsertText={onInsertText}
+        onInsertShape={onInsertShape}
+        onInsertRectangle={onInsertRectangle}
+        onInsertCircle={onInsertCircle}
+        onInsertLine={onInsertLine}
       />
       
       <ViewMenu
