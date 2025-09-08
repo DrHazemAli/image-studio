@@ -16,7 +16,7 @@ interface HistoryEntry {
   timestamp: Date;
   prompt?: string;
   model?: string;
-  settings?: any;
+  settings?: Record<string, unknown>;
   imageUrl?: string;
   thumbnailUrl?: string;
   status: 'completed' | 'failed' | 'in-progress';
@@ -29,6 +29,11 @@ class IndexedDBManager {
   private db: IDBDatabase | null = null;
 
   async init(): Promise<void> {
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined' || typeof indexedDB === 'undefined') {
+      throw new Error('IndexedDB is not available in this environment');
+    }
+
     return new Promise((resolve, reject) => {
       const request = indexedDB.open(this.dbName, this.version);
 
@@ -180,6 +185,11 @@ class IndexedDBManager {
 
   // Migration from localStorage
   async migrateFromLocalStorage(): Promise<void> {
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+      return;
+    }
+
     try {
       // Migrate assets
       const savedAssets = localStorage.getItem('azure-studio-assets');
@@ -228,8 +238,10 @@ class IndexedDBManager {
 // Create singleton instance
 export const dbManager = new IndexedDBManager();
 
-// Initialize on import
-dbManager.init().catch(console.error);
+// Initialize only in browser environment
+if (typeof window !== 'undefined') {
+  dbManager.init().catch(console.error);
+}
 
 export type { Asset, HistoryEntry };
 

@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ZoomInIcon, ZoomOutIcon, ResetIcon, FrameIcon } from '@radix-ui/react-icons';
 import { Button } from '@radix-ui/themes';
+import { ZOOM_CONSTANTS } from '@/lib/constants';
 
 interface ZoomControlsProps {
   zoom: number;
@@ -28,7 +29,7 @@ export default function ZoomControls({
         variant="ghost"
         size="1"
         onClick={onZoomOut}
-        disabled={zoom <= 25}
+        disabled={zoom <= ZOOM_CONSTANTS.MIN_ZOOM}
       >
         <ZoomOutIcon className="w-4 h-4" />
       </Button>
@@ -41,7 +42,7 @@ export default function ZoomControls({
         variant="ghost"
         size="1"
         onClick={onZoomIn}
-        disabled={zoom >= 400}
+        disabled={zoom >= ZOOM_CONSTANTS.MAX_ZOOM}
       >
         <ZoomInIcon className="w-4 h-4" />
       </Button>

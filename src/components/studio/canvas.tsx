@@ -10,9 +10,14 @@ interface CanvasProps {
   isGenerating?: boolean;
   isInpaintMode?: boolean;
   generatedImage?: string | null;
+  // Menu Bar Integration: External zoom control props
+  zoom?: number;
+  onZoomChange?: (zoom: number) => void;
 }
 
-export function Canvas({ activeTool, currentImage, onImageLoad, isGenerating = false, isInpaintMode = false, generatedImage }: CanvasProps) {
+// Menu Bar Integration: Canvas wrapper component
+// This component passes through zoom control props from the menu bar to the main canvas
+export function Canvas({ activeTool, currentImage, onImageLoad, isGenerating = false, isInpaintMode = false, generatedImage, zoom, onZoomChange }: CanvasProps) {
   return (
     <MainCanvas
       activeTool={activeTool}
@@ -21,6 +26,8 @@ export function Canvas({ activeTool, currentImage, onImageLoad, isGenerating = f
       isGenerating={isGenerating}
       isInpaintMode={isInpaintMode}
       generatedImage={generatedImage}
+      zoom={zoom}
+      onZoomChange={onZoomChange}
     />
   );
 }

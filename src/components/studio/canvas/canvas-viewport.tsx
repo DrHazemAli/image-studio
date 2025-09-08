@@ -3,6 +3,7 @@
 import React, { useEffect, useCallback } from 'react';
 import { Canvas as FabricCanvas, FabricObject } from 'fabric';
 import { Tool } from '../toolbar';
+import { ZOOM_CONSTANTS } from '@/lib/constants';
 
 interface CanvasViewportProps {
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
@@ -114,7 +115,7 @@ export default function CanvasViewport({
   const handleWheel = useCallback((e: WheelEvent) => {
     e.preventDefault();
     const delta = e.deltaY > 0 ? -10 : 10;
-    onZoomChange(Math.max(25, Math.min(400, zoom + delta)));
+    onZoomChange(Math.max(ZOOM_CONSTANTS.MIN_ZOOM, Math.min(ZOOM_CONSTANTS.MAX_ZOOM, zoom + delta)));
   }, [zoom, onZoomChange]);
 
   // Handle canvas resize from borders

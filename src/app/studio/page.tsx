@@ -11,9 +11,11 @@ import { ConsoleSidebar } from '@/components/ui/console-sidebar';
 import { SizeModal, ErrorNotification } from '@/components/studio/modals';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { StudioLoading } from '@/components/studio/studio-loading';
+import { MenuBar, MenuProvider } from '@/components/studio/menu-bar';
 import type { ModelInfo } from '@/app/api/models/route';
 import { dbManager, type Asset, type HistoryEntry } from '@/lib/indexeddb';
 import { ProjectManager } from '@/lib/project-manager';
+import { ZOOM_CONSTANTS, CANVAS_CONSTANTS } from '@/lib/constants';
 import { 
   HamburgerMenuIcon, 
   DownloadIcon, 
@@ -60,6 +62,19 @@ export default function StudioPage() {
   const [showSizeModal, setShowSizeModal] = useState(false);
   const [attachedImage, setAttachedImage] = useState<string | null>(null);
   const [models, setModels] = useState<ModelInfo[]>([]);
+  const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
+  const [showAbout, setShowAbout] = useState(false);
+  const [zoom, setZoom] = useState(ZOOM_CONSTANTS.INITIAL_ZOOM);
+  
+  // Undo/Redo state
+  const [history, setHistory] = useState<Array<{
+    currentImage: string | null;
+    generatedImage: string | null;
+    attachedImage: string | null;
+    zoom: number;
+    timestamp: number;
+  }>>([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
 
   // Handle tool changes
   const handleToolChange = useCallback((tool: Tool) => {
@@ -87,15 +102,37 @@ export default function StudioPage() {
     }
   }, []);
 
+  // Save current state to history
+  const saveToHistory = useCallback(() => {
+    const newState = {
+      currentImage,
+      generatedImage,
+      attachedImage,
+      zoom,
+      timestamp: Date.now()
+    };
+    
+    setHistory(prev => {
+      const newHistory = prev.slice(0, historyIndex + 1);
+      newHistory.push(newState);
+      // Keep only last N states to prevent memory issues
+      return newHistory.slice(-CANVAS_CONSTANTS.MAX_HISTORY_STATES);
+    });
+    setHistoryIndex(prev => Math.min(prev + 1, CANVAS_CONSTANTS.MAX_HISTORY_STATES - 1));
+  }, [currentImage, generatedImage, attachedImage, zoom, historyIndex]);
+
   // Handle image attachment
   const handleImageUpload = useCallback((file: File) => {
+    // Save current state before upload
+    saveToHistory();
+    
     const reader = new FileReader();
     reader.onload = (event) => {
       const imageData = event.target?.result as string;
       setAttachedImage(imageData);
     };
     reader.readAsDataURL(file);
-  }, []);
+  }, [saveToHistory]);
 
   // Loading timer - show loading screen for 5 seconds
   useEffect(() => {
@@ -177,6 +214,91 @@ export default function StudioPage() {
     }
   }, [handleProjectNameSave, handleProjectNameCancel]);
 
+  // Menu bar handlers
+  const handleNewProject = useCallback(() => {
+    setProjectName('Untitled Project');
+    setCurrentImage(null);
+    setGeneratedImage(null);
+    setAttachedImage(null);
+    setError(null);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    // In a real app, this would close the window/tab
+    console.log('Close application');
+  }, []);
+
+  const handleZoomIn = useCallback(() => {
+    setZoom(prev => Math.min(prev + ZOOM_CONSTANTS.ZOOM_STEP, ZOOM_CONSTANTS.MAX_ZOOM));
+  }, []);
+
+  const handleZoomOut = useCallback(() => {
+    setZoom(prev => Math.max(prev - ZOOM_CONSTANTS.ZOOM_STEP, ZOOM_CONSTANTS.MIN_ZOOM));
+  }, []);
+
+  const handleResetZoom = useCallback(() => {
+    setZoom(ZOOM_CONSTANTS.DEFAULT_ZOOM);
+  }, []);
+
+  const handleToggleFullscreen = useCallback(() => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  }, []);
+
+  const handleClearCanvas = useCallback(() => {
+    // Save current state before clearing
+    saveToHistory();
+    
+    setCurrentImage(null);
+    setGeneratedImage(null);
+    setAttachedImage(null);
+  }, [saveToHistory]);
+
+  const handleUndo = useCallback(() => {
+    if (historyIndex > 0) {
+      const prevState = history[historyIndex - 1];
+      setCurrentImage(prevState.currentImage);
+      setGeneratedImage(prevState.generatedImage);
+      setAttachedImage(prevState.attachedImage);
+      setZoom(prevState.zoom);
+      setHistoryIndex(prev => prev - 1);
+    }
+  }, [history, historyIndex]);
+
+  const handleRedo = useCallback(() => {
+    if (historyIndex < history.length - 1) {
+      const nextState = history[historyIndex + 1];
+      setCurrentImage(nextState.currentImage);
+      setGeneratedImage(nextState.generatedImage);
+      setAttachedImage(nextState.attachedImage);
+      setZoom(nextState.zoom);
+      setHistoryIndex(prev => prev + 1);
+    }
+  }, [history, historyIndex]);
+
+  const handleShowKeyboardShortcuts = useCallback(() => {
+    setShowKeyboardShortcuts(true);
+  }, []);
+
+  const handleShowAbout = useCallback(() => {
+    setShowAbout(true);
+  }, []);
+
+  const handleShowDocumentation = useCallback(() => {
+    window.open('https://github.com/DrHazemAli/azure-image-studio', '_blank');
+  }, []);
+
+  const handleShowGitHub = useCallback(() => {
+    window.open('https://github.com/DrHazemAli/azure-image-studio', '_blank');
+  }, []);
+
+  const handleShowSupport = useCallback(() => {
+    window.open('https://github.com/DrHazemAli/azure-image-studio/issues', '_blank');
+  }, []);
+
   // Handle project export
   const handleExportProject = useCallback(async () => {
     try {
@@ -201,6 +323,10 @@ export default function StudioPage() {
       setError('Failed to export project');
     }
   }, [projectName, currentModel, currentSize, isInpaintMode, currentImage, generatedImage, attachedImage]);
+
+  const handleSaveProject = useCallback(() => {
+    handleExportProject();
+  }, [handleExportProject]);
 
   // Handle project import
   const handleImportProject = useCallback(() => {
@@ -241,6 +367,9 @@ export default function StudioPage() {
 
   // Handle image generation
   const handleGenerate = useCallback(async (params: GenerationParams) => {
+    // Save current state before generation
+    saveToHistory();
+    
     setIsGenerating(true);
     setGenerationProgress(0);
     setError(null);
@@ -347,7 +476,7 @@ export default function StudioPage() {
       setIsGenerating(false);
       setTimeout(() => setGenerationProgress(0), 2000);
     }
-  }, [isInpaintMode, attachedImage]);
+  }, [isInpaintMode, attachedImage, saveToHistory]);
 
   // Migrate from localStorage to IndexedDB on mount
   useEffect(() => {
@@ -360,6 +489,13 @@ export default function StudioPage() {
     };
     migrateData();
   }, []);
+
+  // Initialize history with current state
+  useEffect(() => {
+    if (history.length === 0) {
+      saveToHistory();
+    }
+  }, [saveToHistory, history.length]);
 
   // Handle keyboard shortcuts
   useEffect(() => {
@@ -377,6 +513,15 @@ export default function StudioPage() {
           case 'e':
             event.preventDefault();
             handleExportProject();
+            break;
+          case 'z':
+            if (event.shiftKey) {
+              event.preventDefault();
+              handleRedo();
+            } else {
+              event.preventDefault();
+              handleUndo();
+            }
             break;
         }
       }
@@ -469,7 +614,7 @@ export default function StudioPage() {
 
     window.addEventListener('keydown', handleKeyDown, { passive: false });
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleExportProject, handleImportProject]);
+  }, [handleExportProject, handleImportProject, handleUndo, handleRedo]);
 
   return (
     <Theme>
@@ -522,6 +667,41 @@ export default function StudioPage() {
                 )}
               </div>
             </div>
+            
+            {/* Menu Bar */}
+            <MenuProvider>
+              <MenuBar
+                onNewProject={handleNewProject}
+                onOpenProject={handleImportProject}
+                onSaveProject={handleSaveProject}
+                onExportProject={handleExportProject}
+                onImportProject={handleImportProject}
+                onClose={handleClose}
+                showConsole={showConsole}
+                showAssetsPanel={showAssetsPanel}
+                showHistoryPanel={showHistoryPanel}
+                showPromptBox={showPromptBox}
+                onToggleConsole={() => setShowConsole(!showConsole)}
+                onToggleAssetsPanel={() => setShowAssetsPanel(!showAssetsPanel)}
+                onToggleHistoryPanel={() => setShowHistoryPanel(!showHistoryPanel)}
+                onTogglePromptBox={() => setShowPromptBox(!showPromptBox)}
+                onZoomIn={handleZoomIn}
+                onZoomOut={handleZoomOut}
+                onResetZoom={handleResetZoom}
+                onToggleFullscreen={handleToggleFullscreen}
+                activeTool={activeTool}
+                onToolChange={handleToolChange}
+                onShowSizeModal={handleSizeModalOpen}
+                onClearCanvas={handleClearCanvas}
+                onUndo={handleUndo}
+                onRedo={handleRedo}
+                onShowKeyboardShortcuts={handleShowKeyboardShortcuts}
+                onShowAbout={handleShowAbout}
+                onShowDocumentation={handleShowDocumentation}
+                onShowGitHub={handleShowGitHub}
+                onShowSupport={handleShowSupport}
+              />
+            </MenuProvider>
           </div>
 
           <div className="flex items-center gap-2">
@@ -595,6 +775,8 @@ export default function StudioPage() {
                   isGenerating={isGenerating}
                   isInpaintMode={isInpaintMode}
                   generatedImage={generatedImage}
+                  zoom={zoom}
+                  onZoomChange={setZoom}
                 />
 
           {/* Console Sidebar */}
@@ -749,6 +931,76 @@ export default function StudioPage() {
           getModelName={getModelName}
           models={models}
         />
+
+        {/* Keyboard Shortcuts Modal */}
+        {showKeyboardShortcuts && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
+              <h2 className="text-xl font-bold mb-4">Keyboard Shortcuts</h2>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span>New Project</span>
+                  <span className="text-gray-500">Cmd+N</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Open Project</span>
+                  <span className="text-gray-500">Cmd+O</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Save Project</span>
+                  <span className="text-gray-500">Cmd+S</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Generate Tool</span>
+                  <span className="text-gray-500">Cmd+G</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Inpaint Tool</span>
+                  <span className="text-gray-500">Cmd+I</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Toggle Console</span>
+                  <span className="text-gray-500">Cmd+Shift+C</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Undo</span>
+                  <span className="text-gray-500">Cmd+Z</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Redo</span>
+                  <span className="text-gray-500">Cmd+Shift+Z</span>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowKeyboardShortcuts(false)}
+                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* About Modal */}
+        {showAbout && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
+              <h2 className="text-xl font-bold mb-4">About Azure Image Studio</h2>
+              <div className="space-y-2 text-sm">
+                <p><strong>Version:</strong> 1.0.0</p>
+                <p><strong>Description:</strong> A powerful image generation and editing studio powered by Azure AI.</p>
+                <p><strong>Author:</strong> Dr. Hazem Ali</p>
+                <p><strong>GitHub:</strong> <a href="https://github.com/DrHazemAli/azure-image-studio" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">github.com/DrHazemAli/azure-image-studio</a></p>
+              </div>
+              <button
+                onClick={() => setShowAbout(false)}
+                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
 
           </motion.div>
         )}

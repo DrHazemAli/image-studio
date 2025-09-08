@@ -18,6 +18,7 @@ import ResizeDialog from '../resize-dialog';
 import ResizeCanvasModal from './resize-canvas-modal';
 import LoadingIndicator from '../loading-indicator';
 import { TextTool, ShapesTool } from '../tools';
+import { ZOOM_CONSTANTS, TOOL_CONSTANTS } from '@/lib/constants';
 
 interface MainCanvasProps {
   activeTool: Tool;
@@ -26,6 +27,9 @@ interface MainCanvasProps {
   isGenerating?: boolean;
   isInpaintMode?: boolean;
   generatedImage?: string | null;
+  // Menu Bar Integration: External zoom control props
+  zoom?: number;
+  onZoomChange?: (zoom: number) => void;
 }
 
 export default function MainCanvas({ 
@@ -33,7 +37,10 @@ export default function MainCanvas({
   currentImage, 
   onImageLoad, 
   // Removed unused parameters 
-  generatedImage 
+  generatedImage,
+  // Menu Bar Integration: External zoom control parameters
+  zoom: externalZoom,
+  onZoomChange
 }: MainCanvasProps) {
   // Canvas refs and state
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -44,13 +51,17 @@ export default function MainCanvas({
   const resizeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Canvas state
-  const [zoom, setZoom] = useState(100);
+  // Menu Bar Integration: Zoom state management
+  // This allows the menu bar to control zoom externally while maintaining internal fallback
+  const [internalZoom, setInternalZoom] = useState(ZOOM_CONSTANTS.DEFAULT_ZOOM);
+  const zoom = externalZoom !== undefined ? externalZoom : internalZoom;
+  const setZoom = onZoomChange || setInternalZoom;
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [isDrawing, setIsDrawing] = useState(false);
-  const [brushSize, setBrushSize] = useState(10);
-  const [brushColor, setBrushColor] = useState('#000000');
+  const [brushSize, setBrushSize] = useState(TOOL_CONSTANTS.DEFAULT_BRUSH_SIZE);
+  const [brushColor, setBrushColor] = useState(TOOL_CONSTANTS.DEFAULT_BRUSH_COLOR);
   const [isLoadingImage, setIsLoadingImage] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [canvasWidth, setCanvasWidth] = useState(1024);
@@ -212,7 +223,7 @@ export default function MainCanvas({
         const scale = Math.min(scaleX, scaleY);
 
         if (scale < 1) {
-          const newZoom = Math.max(scale * 100, 15);
+          const newZoom = Math.max(scale * 100, ZOOM_CONSTANTS.AUTO_ZOOM_MIN);
           setZoom(newZoom);
           console.log('Auto-zoomed out to:', newZoom + '% to fit canvas in viewport');
         }
@@ -545,21 +556,29 @@ export default function MainCanvas({
     }
   }, []);
 
+  // Menu Bar Integration: Layer visibility toggle
+  // This function is used by the View menu in the menu bar
+  // It toggles the visibility of the layers panel
   const handleToggleLayers = useCallback(() => {
     setShowLayers(prev => !prev);
   }, []);
 
+  // Menu Bar Integration: Zoom controls
+  // These functions are used by the View menu in the menu bar
+  // They control the canvas zoom level with configurable increments
   const handleZoomIn = useCallback(() => {
-    setZoom(prev => Math.min(prev + 25, 400));
-  }, []);
+    const newZoom = Math.min(zoom + ZOOM_CONSTANTS.ZOOM_STEP, ZOOM_CONSTANTS.MAX_ZOOM);
+    setZoom(newZoom);
+  }, [setZoom, zoom]);
 
   const handleZoomOut = useCallback(() => {
-    setZoom(prev => Math.max(prev - 25, 25));
-  }, []);
+    const newZoom = Math.max(zoom - ZOOM_CONSTANTS.ZOOM_STEP, ZOOM_CONSTANTS.MIN_ZOOM);
+    setZoom(newZoom);
+  }, [setZoom, zoom]);
 
   const handleResetZoom = useCallback(() => {
-    setZoom(100);
-  }, []);
+    setZoom(ZOOM_CONSTANTS.DEFAULT_ZOOM);
+  }, [setZoom]);
 
   // Context menu handlers
   const handleContextMenu = useCallback((e: React.MouseEvent) => {
@@ -855,7 +874,9 @@ export default function MainCanvas({
     }
   }, [isCanvasReady]);
 
-  // Handle tool selection
+  // Menu Bar Integration: Tool selection handling
+  // This effect responds to tool changes from the Tools menu in the menu bar
+  // It automatically opens tool-specific panels when tools are selected
   useEffect(() => {
     if (activeTool === 'text') {
       setIsTextToolOpen(true);
