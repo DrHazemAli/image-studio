@@ -316,7 +316,7 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
     {
       id: 'background-removal',
       name: 'Remove Background',
-      icon: ScissorsIcon,
+      icon: MagicWandIcon,
       tooltip: 'Remove image background using AI',
       shortcut: 'Cmd+Shift+B',
       variant: 'primary',
@@ -327,7 +327,7 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
     {
       id: 'filters',
       name: 'Filters',
-      icon: MixerHorizontalIcon,
+      icon: ColorWheelIcon,
       tooltip: 'Apply image filters and presets',
       shortcut: 'Cmd+Shift+F',
       action: handleFilters,
@@ -336,7 +336,7 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
     {
       id: 'adjustments',
       name: 'Adjustments',
-      icon: ColorWheelIcon,
+      icon: MixerHorizontalIcon,
       tooltip: 'Professional color and lighting adjustments',
       shortcut: 'Cmd+Shift+A',
       action: handleAdjustments,
@@ -511,7 +511,7 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
                         exit={{ width: 0, opacity: 0 }}
                         transition={{ duration: 0.2 }}
                       >
-                        {visibleTools.map((tool) => (
+                        {visibleTools.map(tool => (
                           <ImageToolButton
                             key={tool.id}
                             id={tool.id}

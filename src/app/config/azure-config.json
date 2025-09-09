@@ -1,10 +1,12 @@
 {
   "endpoints": [
     {
-      "id": "primary",
-      "name": "Primary Endpoint",
+      "id": "dalle-3",
+      "name": "DALL-E 3 Endpoint",
       "baseUrl": "<env.AZURE_API_BASE_URL>",
       "apiVersion": "2025-04-01-preview",
+      "apiKey": "",
+      "resourceName": "",
       "deployments": [
         {
           "id": "dalle-3",
@@ -13,7 +15,17 @@
           "maxSize": "1024x1024",
           "supportedFormats": ["png", "jpeg"],
           "description": "High-quality image generation with DALL-E 3"
-        },
+        }
+      ]
+    },
+    {
+      "id": "flux-1-1-pro",
+      "name": "FLUX 1.1 Pro Endpoint",
+      "baseUrl": "<env.AZURE_API_BASE_URL>",
+      "apiVersion": "2025-04-01-preview",
+      "apiKey": "",
+      "resourceName": "",
+      "deployments": [
         {
           "id": "flux-1-1-pro",
           "name": "FLUX 1.1 Pro",
@@ -21,7 +33,17 @@
           "maxSize": "1024x1024",
           "supportedFormats": ["png", "jpeg"],
           "description": "High-quality image generation with FLUX 1.1 Pro model"
-        },
+        }
+      ]
+    },
+    {
+      "id": "FLUX.1-Kontext-pro",
+      "name": "FLUX 1 Kontext Pro Endpoint",
+      "baseUrl": "<env.AZURE_API_BASE_URL>",
+      "apiVersion": "2025-04-01-preview",
+      "apiKey": "",
+      "resourceName": "",
+      "deployments": [
         {
           "id": "FLUX.1-Kontext-pro",
           "name": "FLUX 1 Kontext Pro",
@@ -33,6 +55,8 @@
       ]
     }
   ],
+  "primaryApiKey": "",
+  "primaryEndpoint": "",
   "defaultSettings": {
     "outputFormat": "png",
     "size": "1024x1024",

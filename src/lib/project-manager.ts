@@ -2,6 +2,7 @@
 /* eslint-disable */
 import {
   dbManager,
+  createProjectWithDefaults,
   type Asset,
   type HistoryEntry,
   type Project,
@@ -62,50 +63,14 @@ export class ProjectManager {
       attachedImage: string | null;
     },
   ): Promise<Project> {
-    const project: Project = {
-      id: this.generateUUID(),
+    // Use the centralized createProjectWithDefaults function with proper defaults
+    const project = createProjectWithDefaults({
       user_id: userId,
       name,
       description,
-      created_at: new Date(),
-      updated_at: new Date(),
-      settings: settings || {
-        currentModel: "FLUX.1-Kontext-pro",
-        currentSize: "1024x1024",
-        isInpaintMode: false,
-      },
-      canvas: canvas || {
-        currentImage: null,
-        generatedImage: null,
-        attachedImage: null,
-      },
-      ui: {
-        activeTool: "select",
-        showGenerationPanel: true,
-        showPromptBox: true,
-        showAssetsPanel: false,
-        showHistoryPanel: false,
-        showConsole: false,
-        showSizeModal: false,
-        showKeyboardShortcuts: false,
-        showAbout: false,
-        zoom: 1,
-      },
-      generation: {
-        isGenerating: false,
-        generationProgress: 0,
-        requestLog: null,
-        responseLog: null,
-      },
-      history: {
-        states: [],
-        historyIndex: -1,
-      },
-      metadata: {
-        tags: [],
-        author: "Azure Image Studio",
-      },
-    };
+      settings,
+      canvas,
+    });
 
     await dbManager.saveProject(project);
     return project;

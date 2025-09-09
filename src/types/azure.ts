@@ -12,11 +12,21 @@ export interface AzureEndpoint {
   name: string;
   baseUrl: string;
   apiVersion: string;
+  apiKey?: string; // Optional per-endpoint API key
+  resourceName?: string; // Optional per-endpoint resource name
   deployments: AzureDeployment[];
+  status?: 'valid' | 'invalid' | 'pending' | 'idle'; // Current validation status
+  validated_at?: string | null; // ISO timestamp of last validation
 }
 
 export interface AzureConfig {
+  primary: {
+    status?: 'valid' | 'invalid' | 'pending' | 'idle';
+    validated_at?: string | null;
+  };
   endpoints: AzureEndpoint[];
+  primaryApiKey: string; // Primary API key used as fallback
+  primaryEndpoint: string; // Primary endpoint URL used as fallback
   defaultSettings: {
     outputFormat: string;
     size: string;

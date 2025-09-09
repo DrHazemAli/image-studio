@@ -1,57 +1,98 @@
 'use client';
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import {
-  Sun,
-  Moon,
-  Monitor,
-  Palette,
-  Eye,
-  EyeOff,
-  Sliders,
-  Layers,
-} from 'lucide-react';
+import React, { useMemo, useCallback, useState, useEffect } from 'react';
+import { Sun, Moon, Monitor, Palette, Eye, EyeOff } from 'lucide-react';
 import { config } from '@/lib/settings';
 import { useTheme } from '@/hooks/use-theme';
 
 export function GeneralSettings() {
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
-  const themeOptions = [
-    {
-      value: 'light' as const,
-      label: 'Light',
-      description: 'Clean and bright interface',
-      icon: Sun,
-    },
-    {
-      value: 'dark' as const,
-      label: 'Dark',
-      description: 'Easy on the eyes in low light',
-      icon: Moon,
-    },
-    {
-      value: 'system' as const,
-      label: 'System',
-      description: 'Follow your system preference',
-      icon: Monitor,
-    },
-  ];
+  // Cache config values to prevent redundant reads
+  const [settings, setSettings] = useState({
+    animations: config('ui.animations', true),
+    showConsole: config('ui.showConsole', false),
+    showLayers: config('ui.showLayers', false),
+    showHistory: config('ui.showHistory', true),
+    autoSaveEnabled: config('autoSave.enabled', true),
+    autoSaveDuration: config('autoSave.duration', 3),
+  });
 
-  const handleThemeChange = (newTheme: 'light' | 'dark' | 'system') => {
-    setTheme(newTheme);
-  };
+  // Update settings when config changes
+  useEffect(() => {
+    const handleSettingsChange = (event: CustomEvent) => {
+      const { key, value } = event.detail;
+      setSettings(prev => ({
+        ...prev,
+        [key]: value,
+      }));
+    };
 
-  const handleToggleSetting = (key: string, currentValue: boolean) => {
-    config(key, !currentValue);
-    // Force re-render by updating a dummy state or using a callback
+    window.addEventListener(
+      'settingsChanged',
+      handleSettingsChange as EventListener
+    );
+    return () =>
+      window.removeEventListener(
+        'settingsChanged',
+        handleSettingsChange as EventListener
+      );
+  }, []);
+
+  const themeOptions = useMemo(
+    () => [
+      {
+        value: 'light' as const,
+        label: 'Light',
+        description: 'Clean and bright interface',
+        icon: Sun,
+      },
+      {
+        value: 'dark' as const,
+        label: 'Dark',
+        description: 'Easy on the eyes in low light',
+        icon: Moon,
+      },
+      {
+        value: 'system' as const,
+        label: 'System',
+        description: 'Follow your system preference',
+        icon: Monitor,
+      },
+    ],
+    []
+  );
+
+  const handleThemeChange = useCallback(
+    (newTheme: 'light' | 'dark' | 'system') => {
+      setTheme(newTheme);
+    },
+    [setTheme]
+  );
+
+  const handleToggleSetting = useCallback(
+    (key: string, currentValue: boolean) => {
+      const newValue = !currentValue;
+      config(key, newValue);
+      setSettings(prev => ({ ...prev, [key]: newValue }));
+      window.dispatchEvent(
+        new CustomEvent('settingsChanged', {
+          detail: { key, value: newValue },
+        })
+      );
+    },
+    []
+  );
+
+  const handleAutoSaveDurationChange = useCallback((value: number) => {
+    config('autoSave.duration', value);
+    setSettings(prev => ({ ...prev, autoSaveDuration: value }));
     window.dispatchEvent(
       new CustomEvent('settingsChanged', {
-        detail: { key, value: !currentValue },
+        detail: { key: 'autoSave.duration', value },
       })
     );
-  };
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -73,24 +114,22 @@ export function GeneralSettings() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {themeOptions.map((option) => {
+            {themeOptions.map(option => {
               const Icon = option.icon;
               const isSelected = theme === option.value;
 
               return (
-                <motion.button
+                <button
                   key={option.value}
                   onClick={() => handleThemeChange(option.value)}
                   className={`
-                    relative p-3 rounded-lg border transition-all duration-200 text-left group
+                    relative p-3 rounded-lg border transition-colors duration-200 text-left group
                     ${
                       isSelected
                         ? 'border-blue-500/50 bg-blue-50/50 dark:bg-blue-900/20 shadow-sm'
                         : 'border-gray-200/50 dark:border-gray-700/50 hover:border-gray-300/50 dark:hover:border-gray-600/50 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm'
                     }
                   `}
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.99 }}
                 >
                   <div className="flex items-center gap-3">
                     <div
@@ -114,16 +153,12 @@ export function GeneralSettings() {
                       </div>
                     </div>
                     {isSelected && (
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center"
-                      >
+                      <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center">
                         <div className="w-2 h-2 rounded-full bg-white" />
-                      </motion.div>
+                      </div>
                     )}
                   </div>
-                </motion.button>
+                </button>
               );
             })}
           </div>
@@ -151,12 +186,9 @@ export function GeneralSettings() {
               </div>
             </div>
             <ToggleSwitch
-              checked={config('ui.animations', true)}
+              checked={settings.animations}
               onChange={() =>
-                handleToggleSetting(
-                  'ui.animations',
-                  config('ui.animations', true)
-                )
+                handleToggleSetting('ui.animations', settings.animations)
               }
             />
           </div>
@@ -172,12 +204,9 @@ export function GeneralSettings() {
               </div>
             </div>
             <ToggleSwitch
-              checked={config('ui.showConsole', false)}
+              checked={settings.showConsole}
               onChange={() =>
-                handleToggleSetting(
-                  'ui.showConsole',
-                  config('ui.showConsole', false)
-                )
+                handleToggleSetting('ui.showConsole', settings.showConsole)
               }
             />
           </div>
@@ -193,12 +222,9 @@ export function GeneralSettings() {
               </div>
             </div>
             <ToggleSwitch
-              checked={config('ui.showLayers', false)}
+              checked={settings.showLayers}
               onChange={() =>
-                handleToggleSetting(
-                  'ui.showLayers',
-                  config('ui.showLayers', false)
-                )
+                handleToggleSetting('ui.showLayers', settings.showLayers)
               }
             />
           </div>
@@ -214,12 +240,9 @@ export function GeneralSettings() {
               </div>
             </div>
             <ToggleSwitch
-              checked={config('ui.showHistory', true)}
+              checked={settings.showHistory}
               onChange={() =>
-                handleToggleSetting(
-                  'ui.showHistory',
-                  config('ui.showHistory', true)
-                )
+                handleToggleSetting('ui.showHistory', settings.showHistory)
               }
             />
           </div>
@@ -247,24 +270,19 @@ export function GeneralSettings() {
               </div>
             </div>
             <ToggleSwitch
-              checked={config('autoSave.enabled', true)}
+              checked={settings.autoSaveEnabled}
               onChange={() =>
                 handleToggleSetting(
                   'autoSave.enabled',
-                  config('autoSave.enabled', true)
+                  settings.autoSaveEnabled
                 )
               }
             />
           </div>
 
           {/* Auto-save Duration */}
-          {config('autoSave.enabled', true) && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="p-3 rounded-lg bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50"
-            >
+          {settings.autoSaveEnabled && (
+            <div className="p-3 rounded-lg bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50">
               <div className="mb-2">
                 <div className="font-medium text-gray-900 dark:text-white text-sm">
                   Auto-save Interval
@@ -278,25 +296,17 @@ export function GeneralSettings() {
                   type="range"
                   min="1"
                   max="30"
-                  value={config('autoSave.duration', 3)}
-                  onChange={(e) => {
-                    config('autoSave.duration', parseInt(e.target.value));
-                    window.dispatchEvent(
-                      new CustomEvent('settingsChanged', {
-                        detail: {
-                          key: 'autoSave.duration',
-                          value: parseInt(e.target.value),
-                        },
-                      })
-                    );
-                  }}
+                  value={settings.autoSaveDuration}
+                  onChange={e =>
+                    handleAutoSaveDurationChange(parseInt(e.target.value))
+                  }
                   className="flex-1 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
                 />
                 <div className="w-12 text-xs font-medium text-gray-900 dark:text-white">
-                  {config('autoSave.duration', 3)}s
+                  {settings.autoSaveDuration}s
                 </div>
               </div>
-            </motion.div>
+            </div>
           )}
         </div>
       </div>
@@ -305,7 +315,7 @@ export function GeneralSettings() {
 }
 
 // Toggle Switch Component
-function ToggleSwitch({
+const ToggleSwitch = React.memo(function ToggleSwitch({
   checked,
   onChange,
 }: {
@@ -316,17 +326,15 @@ function ToggleSwitch({
     <button
       onClick={onChange}
       className={`
-        relative inline-flex h-5 w-9 items-center rounded-full transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500/50
+        relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500/50
         ${checked ? 'bg-blue-500' : 'bg-gray-300 dark:bg-gray-600'}
       `}
     >
-      <motion.span
-        className={`
-          inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform duration-200 ease-in-out
-        `}
-        animate={{ x: checked ? 16 : 1 }}
-        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+      <span
+        className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform duration-150 ease-in-out ${
+          checked ? 'translate-x-4' : 'translate-x-0.5'
+        }`}
       />
     </button>
   );
-}
+});

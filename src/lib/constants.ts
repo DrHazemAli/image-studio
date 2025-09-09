@@ -1,3 +1,7 @@
+// Azure Configuration Object Key
+export const AZURE_CONFIG_OBJECT_KEY = 'az_config';
+
+
 // Canvas and Zoom Constants
 export const ZOOM_CONSTANTS = {
   // Zoom limits
@@ -22,6 +26,9 @@ export const TOOL_CONSTANTS = {
 
   // Default colors
   DEFAULT_BRUSH_COLOR: '#000000' as string,
+
+  // Default active tool
+  DEFAULT_ACTIVE_TOOL: 'select' as string,
 };
 
 // Canvas settings
@@ -32,4 +39,68 @@ export const CANVAS_CONSTANTS = {
 
   // History settings
   MAX_HISTORY_STATES: 50 as number,
+};
+
+// UI Panel Constants
+export const UI_CONSTANTS = {
+  // Panel visibility defaults
+  PANELS: {
+    SHOW_GENERATION_PANEL: true,
+    SHOW_PROMPT_BOX: true,
+    SHOW_ASSETS_PANEL: false,
+    SHOW_HISTORY_PANEL: false,
+    SHOW_CONSOLE: false,
+    SHOW_SIZE_MODAL: false,
+    SHOW_KEYBOARD_SHORTCUTS: false,
+    SHOW_ABOUT: false,
+  },
+
+  // Modal states
+  MODALS: {
+    SHOW_SIZE_MODAL: false,
+    SHOW_KEYBOARD_SHORTCUTS: false,
+    SHOW_ABOUT: false,
+  },
+};
+
+// Model and Generation Constants
+export const MODEL_CONSTANTS = {
+  // Default model settings
+  DEFAULT_MODEL: 'FLUX.1-Kontext-pro',
+  DEFAULT_SIZE: '1024x1024',
+  DEFAULT_INPAINT_MODE: false,
+
+  // Generation state
+  GENERATION: {
+    IS_GENERATING: false,
+    PROGRESS: 0,
+    REQUEST_LOG: null,
+    RESPONSE_LOG: null,
+  },
+};
+
+// Project Constants
+export const PROJECT_CONSTANTS = {
+  // Default project settings
+  DEFAULT_USER_ID: 'default-user',
+  DEFAULT_PROJECT_NAME: 'Untitled Project',
+
+  // Canvas defaults
+  CANVAS: {
+    CURRENT_IMAGE: null,
+    GENERATED_IMAGE: null,
+    ATTACHED_IMAGE: null,
+  },
+
+  // History defaults
+  HISTORY: {
+    STATES: [],
+    HISTORY_INDEX: -1,
+  },
+
+  // Metadata defaults
+  METADATA: {
+    TAGS: [],
+    AUTHOR: 'Azure Image Studio',
+  },
 };

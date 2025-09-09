@@ -74,6 +74,11 @@ export default function LayerManager({
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleDragStart = useCallback((e: any, index: number) => {
+    // Don't start drag if the event is from a slider or its container
+    if (e.target.type === 'range' || e.target.closest('.opacity-slider-container')) {
+      e.preventDefault();
+      return;
+    }
     setDraggedIndex(index);
     if (e.dataTransfer) {
       e.dataTransfer.effectAllowed = 'move';
@@ -89,6 +94,7 @@ export default function LayerManager({
   }, []);
 
   const handleDrop = useCallback(
+     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (e: any, dropIndex: number) => {
       e.preventDefault();
       if (draggedIndex !== null && draggedIndex !== dropIndex) {
@@ -205,9 +211,9 @@ export default function LayerManager({
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
               draggable
-              onDragStart={(e) => handleDragStart(e, index)}
+              onDragStart={e => handleDragStart(e, index)}
               onDragOver={handleDragOver}
-              onDrop={(e) => handleDrop(e, index)}
+              onDrop={e => handleDrop(e, index)}
               className={`
                 group relative p-3 border-b border-gray-100 dark:border-zinc-800 cursor-pointer
                 transition-colors hover:bg-gray-50 dark:hover:bg-zinc-700/50
@@ -222,14 +228,10 @@ export default function LayerManager({
               </div>
 
               <div className="flex items-center gap-3 ml-4">
-                {/* Layer Icon */}
-                <div className="flex-shrink-0 text-gray-600 dark:text-gray-400">
-                  {getLayerIcon(layer.type)}
-                </div>
-
                 {/* Layer Info */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start gap-2">
+                  {getLayerIcon(layer.type)}
                     <span className="text-sm font-medium text-gray-900 dark:text-white break-words leading-tight">
                       {layer.name}
                     </span>
@@ -241,15 +243,23 @@ export default function LayerManager({
                   </div>
 
                   {/* Opacity Slider */}
-                  <div className="mt-1">
+                  <div className="mt-1 opacity-slider-container"
+                    onMouseDown={e => e.stopPropagation()}
+                    onTouchStart={e => e.stopPropagation()}
+                    onDragStart={e => e.preventDefault()}
+                  >
                     <input
                       type="range"
                       min="0"
                       max="100"
                       value={layer.opacity}
                       onChange={createLayerOpacityHandler(layer.id)}
-                      onClick={(e) => e.stopPropagation()}
-                      className="w-full h-1 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer slider"
+                      onClick={e => e.stopPropagation()}
+                      onMouseDown={e => e.stopPropagation()}
+                      onTouchStart={e => e.stopPropagation()}
+                      onDragStart={e => e.preventDefault()}
+                      draggable={false}
+                      className="w-full h-1 bg-gray-200 dark:bg-zinc-600 rounded-lg appearance-none cursor-pointer slider"
                     />
                     <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                       {layer.opacity}%
@@ -258,7 +268,7 @@ export default function LayerManager({
                 </div>
 
                 {/* Layer Controls */}
-                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="flex items-center gap-1">
                   {/* Visibility Toggle */}
                   <button
                     onClick={createLayerVisibilityHandler(layer.id)}

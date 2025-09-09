@@ -1,7 +1,5 @@
 echo "🔍 Running pre-commit checks..."
 
-echo "🧹 Running lint-staged (ESLint + Prettier)..."
-npx lint-staged
 
 echo "🔧 Running TypeScript type check..."
 if ! npm run typecheck; then

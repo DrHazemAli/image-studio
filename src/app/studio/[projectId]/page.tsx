@@ -191,7 +191,8 @@ export default function ProjectStudioPage() {
             // Restore UI state if available
             if (project.ui) {
               setActiveTool(project.ui.activeTool as Tool);
-              setShowGenerationPanel(project.ui.showGenerationPanel);
+              // Don't auto-restore generation panel - let user open it manually
+              // setShowGenerationPanel(project.ui.showGenerationPanel);
               setShowPromptBox(project.ui.showPromptBox);
               setShowAssetsPanel(project.ui.showAssetsPanel);
               setShowHistoryPanel(project.ui.showHistoryPanel);
@@ -339,7 +340,7 @@ export default function ProjectStudioPage() {
         setShowHistoryPanel(true);
         break;
       case 'prompt':
-        setShowPromptBox((prev) => !prev);
+        setShowPromptBox(prev => !prev);
         break;
     }
   }, []);
@@ -354,13 +355,13 @@ export default function ProjectStudioPage() {
       timestamp: Date.now(),
     };
 
-    setHistory((prev) => {
+    setHistory(prev => {
       const newHistory = prev.slice(0, historyIndex + 1);
       newHistory.push(newState);
       // Keep only last N states to prevent memory issues
       return newHistory.slice(-CANVAS_CONSTANTS.MAX_HISTORY_STATES);
     });
-    setHistoryIndex((prev) =>
+    setHistoryIndex(prev =>
       Math.min(prev + 1, CANVAS_CONSTANTS.MAX_HISTORY_STATES - 1)
     );
   }, [currentImage, generatedImage, attachedImage, zoom, historyIndex]);
@@ -372,7 +373,7 @@ export default function ProjectStudioPage() {
       saveToHistory();
 
       const reader = new FileReader();
-      reader.onload = (event) => {
+      reader.onload = event => {
         const imageData = event.target?.result as string;
         setAttachedImage(imageData);
       };
@@ -415,7 +416,7 @@ export default function ProjectStudioPage() {
   // Get model name helper - memoized to prevent unnecessary recalculations
   const getModelName = useCallback(
     (modelId: string) => {
-      const model = models.find((m) => m.id === modelId);
+      const model = models.find(m => m.id === modelId);
       return model ? model.name : modelId;
     },
     [models]
@@ -540,13 +541,13 @@ export default function ProjectStudioPage() {
   }, []);
 
   const handleZoomIn = useCallback(() => {
-    setZoom((prev) =>
+    setZoom(prev =>
       Math.min(prev + ZOOM_CONSTANTS.ZOOM_STEP, ZOOM_CONSTANTS.MAX_ZOOM)
     );
   }, []);
 
   const handleZoomOut = useCallback(() => {
-    setZoom((prev) =>
+    setZoom(prev =>
       Math.max(prev - ZOOM_CONSTANTS.ZOOM_STEP, ZOOM_CONSTANTS.MIN_ZOOM)
     );
   }, []);
@@ -579,7 +580,7 @@ export default function ProjectStudioPage() {
       setGeneratedImage(prevState.generatedImage);
       setAttachedImage(prevState.attachedImage);
       setZoom(prevState.zoom);
-      setHistoryIndex((prev) => prev - 1);
+      setHistoryIndex(prev => prev - 1);
     }
   }, [history, historyIndex]);
 
@@ -590,7 +591,7 @@ export default function ProjectStudioPage() {
       setGeneratedImage(nextState.generatedImage);
       setAttachedImage(nextState.attachedImage);
       setZoom(nextState.zoom);
-      setHistoryIndex((prev) => prev + 1);
+      setHistoryIndex(prev => prev + 1);
     }
   }, [history, historyIndex]);
 
@@ -623,12 +624,12 @@ export default function ProjectStudioPage() {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
-    input.onchange = (event) => {
+    input.onchange = event => {
       const file = (event.target as HTMLInputElement).files?.[0];
       if (file) {
         // Convert file to base64 and add to canvas
         const reader = new FileReader();
-        reader.onload = (e) => {
+        reader.onload = e => {
           const imageData = e.target?.result as string;
           if (imageData && canvasRef.current) {
             canvasRef.current.addImageToCanvas(imageData);
@@ -697,7 +698,7 @@ export default function ProjectStudioPage() {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = '.json';
-    input.onchange = async (event) => {
+    input.onchange = async event => {
       const file = (event.target as HTMLInputElement).files?.[0];
       if (!file) return;
 
@@ -737,7 +738,7 @@ export default function ProjectStudioPage() {
       try {
         // Simulate progress
         const progressInterval = setInterval(() => {
-          setGenerationProgress((prev) => Math.min(prev + 10, 90));
+          setGenerationProgress(prev => Math.min(prev + 10, 90));
         }, 500);
 
         const response = await fetch('/api/generate', {
@@ -949,7 +950,7 @@ export default function ProjectStudioPage() {
           case 'p':
             event.preventDefault();
             setActiveTool('prompt');
-            setShowPromptBox((prev) => !prev);
+            setShowPromptBox(prev => !prev);
             break;
           case 'u':
             event.preventDefault();
@@ -1028,7 +1029,7 @@ export default function ProjectStudioPage() {
                   <input
                     type="text"
                     value={tempProjectName}
-                    onChange={(e) => setTempProjectName(e.target.value)}
+                    onChange={e => setTempProjectName(e.target.value)}
                     onBlur={handleProjectNameSave}
                     onKeyDown={handleProjectNameKeyDown}
                     className="text-xs text-gray-500 dark:text-gray-400 bg-transparent border-b border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 outline-none min-w-0"
@@ -1212,7 +1213,7 @@ export default function ProjectStudioPage() {
         <AssetsPanel
           isOpen={showAssetsPanel}
           onClose={() => setShowAssetsPanel(false)}
-          onAssetSelect={(asset) => {
+          onAssetSelect={asset => {
             setCurrentImage(asset.url);
             setShowAssetsPanel(false);
           }}
@@ -1223,7 +1224,7 @@ export default function ProjectStudioPage() {
         <HistoryPanel
           isOpen={showHistoryPanel}
           onClose={() => setShowHistoryPanel(false)}
-          onReplay={(entry) => {
+          onReplay={entry => {
             if (entry.prompt) {
               // Re-run the generation with the same parameters
               setShowHistoryPanel(false);
@@ -1298,7 +1299,7 @@ export default function ProjectStudioPage() {
         {/* Enhanced Prompt Box */}
         {showPromptBox && (
           <EnhancedPromptBox
-            onGenerate={(prompt) => {
+            onGenerate={prompt => {
               handleGenerate({
                 prompt,
                 model: currentModel,

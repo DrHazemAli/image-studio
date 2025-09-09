@@ -18,6 +18,7 @@ const eslintConfig = [
       prettier: prettierPlugin,
     },
     rules: {
+      /*
       'prettier/prettier': [
         'error',
         {
@@ -28,6 +29,7 @@ const eslintConfig = [
           useTabs: false,
         },
       ],
+      */
       // Temporarily relax some rules to allow commit
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': 'warn',

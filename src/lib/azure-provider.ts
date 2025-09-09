@@ -10,18 +10,16 @@ import {
 
 export class AzureImageProvider {
   private config: AzureConfig;
-  private apiKey: string;
 
-  constructor(config: AzureConfig, apiKey: string) {
+  constructor(config: AzureConfig) {
     this.config = config;
-    this.apiKey = apiKey;
   }
 
   validateConfiguration(): { isValid: boolean; errors: string[] } {
     const errors: string[] = [];
 
-    if (!this.apiKey || this.apiKey.trim() === '') {
-      errors.push('Azure API key is missing');
+    if (!this.config.primaryApiKey || this.config.primaryApiKey.trim() === '') {
+      errors.push('Primary Azure API key is missing');
     }
 
     if (!this.config.endpoints || this.config.endpoints.length === 0) {
@@ -54,6 +52,16 @@ export class AzureImageProvider {
     return this.config.endpoints.flatMap((endpoint) => endpoint.deployments);
   }
 
+  /**
+   * Get the appropriate API key for an endpoint
+   * Uses endpoint-specific API key if available, otherwise falls back to primary API key
+   */
+  private getApiKeyForEndpoint(endpoint: AzureEndpoint): string {
+    return endpoint.apiKey && endpoint.apiKey.trim() !== '' 
+      ? endpoint.apiKey 
+      : this.config.primaryApiKey;
+  }
+
   getDeploymentById(
     deploymentId: string
   ): { endpoint: AzureEndpoint; deployment: AzureDeployment } | null {
@@ -83,6 +91,7 @@ export class AzureImageProvider {
     }
 
     const { endpoint, deployment } = deploymentInfo;
+    const apiKey = this.getApiKeyForEndpoint(endpoint);
 
     const url = `${endpoint.baseUrl}/openai/deployments/${deployment.deploymentName}/images/generations?api-version=${endpoint.apiVersion}`;
 
@@ -111,7 +120,7 @@ export class AzureImageProvider {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${this.apiKey}`,
+          Authorization: `Bearer ${apiKey}`,
         },
         body: JSON.stringify(requestPayload),
       });
@@ -168,6 +177,7 @@ export class AzureImageProvider {
     }
 
     const { endpoint, deployment } = deploymentInfo;
+    const apiKey = this.getApiKeyForEndpoint(endpoint);
 
     // Use the edits endpoint for image editing/inpainting
     const url = `${endpoint.baseUrl}/openai/deployments/${deployment.deploymentName}/images/edits?api-version=${endpoint.apiVersion}`;
@@ -221,7 +231,7 @@ export class AzureImageProvider {
       const response = await fetch(url, {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${this.apiKey}`,
+          Authorization: `Bearer ${apiKey}`,
           // Don't set Content-Type for FormData, let the browser set it
         },
         body: formData,
@@ -293,6 +303,7 @@ export class AzureImageProvider {
     }
 
     const { endpoint, deployment } = deploymentInfo;
+    const apiKey = this.getApiKeyForEndpoint(endpoint);
 
     // For background removal, we use the image editing endpoint with a specialized prompt
     const url = `${endpoint.baseUrl}/openai/deployments/${deployment.deploymentName}/images/edits?api-version=${endpoint.apiVersion}`;
@@ -341,7 +352,7 @@ export class AzureImageProvider {
       const response = await fetch(url, {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${this.apiKey}`,
+          Authorization: `Bearer ${apiKey}`,
           // Don't set Content-Type for FormData, let the browser set it
         },
         body: formData,

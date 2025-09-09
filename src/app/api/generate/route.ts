@@ -41,11 +41,14 @@ export async function POST(request: NextRequest) {
     }
 
     const config = azureConfigData as AzureConfig;
+    // Add primary API key to config
+    config.primaryApiKey = apiKey;
+    
     // loop to endpoints and replace the baseurl with the env tag
     config.endpoints.forEach((endpoint) => {
       endpoint.baseUrl = replaceEnvTags(endpoint.baseUrl);
     });
-    const provider = new AzureImageProvider(config, apiKey);
+    const provider = new AzureImageProvider(config);
 
     const validation = provider.validateConfiguration();
     if (!validation.isValid) {

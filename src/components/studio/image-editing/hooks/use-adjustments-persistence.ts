@@ -262,7 +262,7 @@ export const useAdjustmentsPersistence = (
       const objects = fabricCanvas.getObjects();
       let appliedCount = 0;
 
-      objects.forEach((obj) => {
+      objects.forEach(obj => {
         if (obj instanceof FabricImage) {
           const storedAdjustments = loadImageAdjustments(obj);
 

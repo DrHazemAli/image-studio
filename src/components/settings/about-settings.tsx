@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   Info,
@@ -15,7 +15,29 @@ import {
 import { config } from '@/lib/settings';
 
 export function AboutSettings() {
-  const appConfig = {
+  // Cache config values to prevent redundant reads
+  const [currentSettings, setCurrentSettings] = useState({
+    theme: config('theme', 'system'),
+    autoSaveEnabled: config('autoSave.enabled', true),
+    animations: config('ui.animations', true),
+    showConsole: config('ui.showConsole', false),
+  });
+
+  // Update settings when config changes
+  useEffect(() => {
+    const handleSettingsChange = (event: CustomEvent) => {
+      const { key, value } = event.detail;
+      setCurrentSettings(prev => ({
+        ...prev,
+        [key]: value,
+      }));
+    };
+
+    window.addEventListener('settingsChanged', handleSettingsChange as EventListener);
+    return () => window.removeEventListener('settingsChanged', handleSettingsChange as EventListener);
+  }, []);
+
+  const appConfig = useMemo(() => ({
     name: 'Azure Image Studio',
     version: '1.0.1',
     description: 'AI-powered image generation and editing platform',
@@ -23,7 +45,7 @@ export function AboutSettings() {
     github: 'https://github.com/DrHazemAli/azure-image-studio',
     linkedin: 'https://linkedin.com/in/hazemali',
     website: 'https://www.skytells.ai',
-  };
+  }), []);
 
   return (
     <div className="space-y-8">
@@ -109,11 +131,8 @@ export function AboutSettings() {
               desc: 'Highly customizable interface and settings',
             },
           ].map((feature, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
               className="p-4 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-600 transition-colors"
             >
               <div className="flex items-start gap-3">
@@ -127,7 +146,7 @@ export function AboutSettings() {
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
@@ -205,7 +224,7 @@ export function AboutSettings() {
             <div>
               <span className="text-gray-500 dark:text-gray-400">Theme:</span>
               <span className="ml-2 text-gray-900 dark:text-white capitalize">
-                {config('theme', 'system')}
+                {currentSettings.theme}
               </span>
             </div>
             <div>
@@ -213,7 +232,7 @@ export function AboutSettings() {
                 Auto-save:
               </span>
               <span className="ml-2 text-gray-900 dark:text-white">
-                {config('autoSave.enabled', true) ? 'Enabled' : 'Disabled'}
+                {currentSettings.autoSaveEnabled ? 'Enabled' : 'Disabled'}
               </span>
             </div>
             <div>
@@ -221,13 +240,13 @@ export function AboutSettings() {
                 Animations:
               </span>
               <span className="ml-2 text-gray-900 dark:text-white">
-                {config('ui.animations', true) ? 'Enabled' : 'Disabled'}
+                {currentSettings.animations ? 'Enabled' : 'Disabled'}
               </span>
             </div>
             <div>
               <span className="text-gray-500 dark:text-gray-400">Console:</span>
               <span className="ml-2 text-gray-900 dark:text-white">
-                {config('ui.showConsole', false) ? 'Visible' : 'Hidden'}
+                {currentSettings.showConsole ? 'Visible' : 'Hidden'}
               </span>
             </div>
           </div>

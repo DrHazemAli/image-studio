@@ -1,5 +1,12 @@
 // IndexedDB utility functions for storing large data like images and history
 /* eslint-disable */
+import {
+  ZOOM_CONSTANTS,
+  TOOL_CONSTANTS,
+  UI_CONSTANTS,
+  MODEL_CONSTANTS,
+  PROJECT_CONSTANTS,
+} from './constants';
 interface Asset {
   id: string;
   project_id: string; // Foreign key to Project
@@ -76,6 +83,84 @@ interface Project {
   metadata: {
     tags?: string[];
     author?: string;
+  };
+}
+
+// Default fallback values for Project interface using defined constants
+const DEFAULT_PROJECT_VALUES = {
+  settings: {
+    currentModel: MODEL_CONSTANTS.DEFAULT_MODEL,
+    currentSize: MODEL_CONSTANTS.DEFAULT_SIZE,
+    isInpaintMode: MODEL_CONSTANTS.DEFAULT_INPAINT_MODE,
+  },
+  canvas: {
+    currentImage: PROJECT_CONSTANTS.CANVAS.CURRENT_IMAGE,
+    generatedImage: PROJECT_CONSTANTS.CANVAS.GENERATED_IMAGE,
+    attachedImage: PROJECT_CONSTANTS.CANVAS.ATTACHED_IMAGE,
+  },
+  ui: {
+    activeTool: TOOL_CONSTANTS.DEFAULT_ACTIVE_TOOL,
+    showGenerationPanel: UI_CONSTANTS.PANELS.SHOW_GENERATION_PANEL,
+    showPromptBox: UI_CONSTANTS.PANELS.SHOW_PROMPT_BOX,
+    showAssetsPanel: UI_CONSTANTS.PANELS.SHOW_ASSETS_PANEL,
+    showHistoryPanel: UI_CONSTANTS.PANELS.SHOW_HISTORY_PANEL,
+    showConsole: UI_CONSTANTS.PANELS.SHOW_CONSOLE,
+    showSizeModal: UI_CONSTANTS.PANELS.SHOW_SIZE_MODAL,
+    showKeyboardShortcuts: UI_CONSTANTS.PANELS.SHOW_KEYBOARD_SHORTCUTS,
+    showAbout: UI_CONSTANTS.PANELS.SHOW_ABOUT,
+    zoom: ZOOM_CONSTANTS.INITIAL_ZOOM, // 90% fallback as requested
+  },
+  generation: {
+    isGenerating: MODEL_CONSTANTS.GENERATION.IS_GENERATING,
+    generationProgress: MODEL_CONSTANTS.GENERATION.PROGRESS,
+    requestLog: MODEL_CONSTANTS.GENERATION.REQUEST_LOG,
+    responseLog: MODEL_CONSTANTS.GENERATION.RESPONSE_LOG,
+  },
+  history: {
+    states: PROJECT_CONSTANTS.HISTORY.STATES,
+    historyIndex: PROJECT_CONSTANTS.HISTORY.HISTORY_INDEX,
+  },
+  metadata: {
+    tags: PROJECT_CONSTANTS.METADATA.TAGS,
+    author: PROJECT_CONSTANTS.METADATA.AUTHOR,
+  },
+};
+
+// Helper function to create a project with fallback values using defined constants
+function createProjectWithDefaults(project: Partial<Project>): Project {
+  const now = new Date();
+  
+  return {
+    id: project.id || crypto.randomUUID(),
+    user_id: project.user_id || PROJECT_CONSTANTS.DEFAULT_USER_ID,
+    name: project.name || PROJECT_CONSTANTS.DEFAULT_PROJECT_NAME,
+    description: project.description,
+    created_at: project.created_at || now,
+    updated_at: project.updated_at || now,
+    settings: {
+      ...DEFAULT_PROJECT_VALUES.settings,
+      ...project.settings,
+    },
+    canvas: {
+      ...DEFAULT_PROJECT_VALUES.canvas,
+      ...project.canvas,
+    },
+    ui: {
+      ...DEFAULT_PROJECT_VALUES.ui,
+      ...project.ui,
+    },
+    generation: {
+      ...DEFAULT_PROJECT_VALUES.generation,
+      ...project.generation,
+    },
+    history: {
+      ...DEFAULT_PROJECT_VALUES.history,
+      ...project.history,
+    },
+    metadata: {
+      ...DEFAULT_PROJECT_VALUES.metadata,
+      ...project.metadata,
+    },
   };
 }
 
@@ -475,11 +560,13 @@ class IndexedDBManager {
 
       request.onsuccess = () => {
         if (request.result) {
-          const project = {
+          const rawProject = {
             ...request.result,
             created_at: new Date(request.result.created_at),
             updated_at: new Date(request.result.updated_at),
           };
+          // Apply fallback values to ensure all properties have defaults
+          const project = createProjectWithDefaults(rawProject);
           resolve(project);
         } else {
           resolve(null);
@@ -504,11 +591,15 @@ class IndexedDBManager {
       }
 
       request.onsuccess = () => {
-        const projects = request.result.map((project: any) => ({
-          ...project,
-          created_at: new Date(project.created_at),
-          updated_at: new Date(project.updated_at),
-        }));
+        const projects = request.result.map((project: any) => {
+          const rawProject = {
+            ...project,
+            created_at: new Date(project.created_at),
+            updated_at: new Date(project.updated_at),
+          };
+          // Apply fallback values to ensure all properties have defaults
+          return createProjectWithDefaults(rawProject);
+        });
         resolve(projects);
       };
       request.onerror = () => reject(request.error);
@@ -538,6 +629,11 @@ class IndexedDBManager {
       request.onerror = () => reject(request.error);
     });
   }
+
+  // Helper method to create a new project with default values
+  createNewProject(overrides: Partial<Project> = {}): Project {
+    return createProjectWithDefaults(overrides);
+  }
 }
 
 // Create singleton instance
@@ -549,3 +645,4 @@ if (typeof window !== "undefined") {
 }
 
 export type { Asset, HistoryEntry, Project };
+export { createProjectWithDefaults, DEFAULT_PROJECT_VALUES };

@@ -18,8 +18,11 @@ export async function GET() {
         'Azure API key not found. Please set AZURE_API_KEY environment variable in .env.local file.'
       );
     } else {
+      // Add primary API key to config for validation
+      config.primaryApiKey = apiKey;
+      
       // Validate configuration only if API key exists
-      const provider = new AzureImageProvider(config, apiKey);
+      const provider = new AzureImageProvider(config);
       const validation = provider.validateConfiguration();
       if (!validation.isValid) {
         configErrors = validation.errors;
