@@ -12,14 +12,15 @@ import { GenerationPanel, AssetsPanel, HistoryPanel } from '@/components/studio/
 import { ConsoleSidebar } from '@/components/ui/console-sidebar';
 import { SizeModal, ErrorNotification, AboutModal, ShortcutsModal } from '@/components/modals';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { SyncManager } from '@/components/studio/sync-manager';
 import { StudioLoading } from '@/components/studio/studio-loading';
 import { MenuBar, MenuProvider } from '@/components/studio/menu-bar';
 import type { ModelInfo } from '@/app/api/models/route';
 import { dbManager, type Asset, type HistoryEntry, type Project } from '@/lib/indexeddb';
 import { ProjectManager } from '@/lib/project-manager';
+import { syncHelper } from '@/lib/sync-helper';
 import { ZOOM_CONSTANTS, CANVAS_CONSTANTS } from '@/lib/constants';
 import { 
-  HamburgerMenuIcon, 
   DownloadIcon, 
   UploadIcon,
   Share1Icon,
@@ -28,6 +29,7 @@ import {
   GitHubLogoIcon,
   LinkedInLogoIcon,
 } from '@radix-ui/react-icons';
+import { Code } from 'lucide-react';
 import appConfig from "@/app/config/app-config.json";
 
 interface GenerationParams {
@@ -84,8 +86,48 @@ export default function ProjectStudioPage() {
   }>>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
 
+  // Auto-save functionality
+  const [autoSave, setAutoSave] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('auto-save-enabled');
+      return stored !== null ? JSON.parse(stored) : true; // Default to enabled
+    }
+    return true;
+  });
+  // Auto-save duration settings
+  const [autoSaveDuration, setAutoSaveDuration] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('auto-save-duration');
+      return stored ? parseInt(stored) : 3; // Default to 3 seconds
+    }
+    return 3;
+  });
+
   // Canvas ref for insert functionality
   const canvasRef = useRef<MainCanvasRef>(null);
+
+  const toggleAutoSave = useCallback(() => {
+    const newAutoSave = !autoSave;
+    setAutoSave(newAutoSave);
+    localStorage.setItem('auto-save-enabled', JSON.stringify(newAutoSave));
+    
+    // Update sync helper
+    syncHelper.setEnabled(newAutoSave);
+    
+    if (newAutoSave) {
+      console.log('Auto-save enabled');
+    } else {
+      console.log('Auto-save disabled');
+      syncHelper.cancelSync(); // Cancel any pending auto-save
+    }
+  }, [autoSave]);
+
+  // Duration control for auto-save
+  const updateAutoSaveDuration = useCallback((duration: number) => {
+    setAutoSaveDuration(duration);
+    localStorage.setItem('auto-save-duration', duration.toString());
+    syncHelper.setDuration(duration);
+  }, []);
 
   // Unified function to update page title
   const updatePageTitle = useCallback((projectNameParam?: string) => {
@@ -123,6 +165,34 @@ export default function ProjectStudioPage() {
             setCurrentImage(project.canvas.currentImage);
             setGeneratedImage(project.canvas.generatedImage);
             setAttachedImage(project.canvas.attachedImage);
+            
+            // Restore UI state if available
+            if (project.ui) {
+              setActiveTool(project.ui.activeTool as Tool);
+              setShowGenerationPanel(project.ui.showGenerationPanel);
+              setShowPromptBox(project.ui.showPromptBox);
+              setShowAssetsPanel(project.ui.showAssetsPanel);
+              setShowHistoryPanel(project.ui.showHistoryPanel);
+              setShowConsole(project.ui.showConsole);
+              setShowSizeModal(project.ui.showSizeModal);
+              setShowKeyboardShortcuts(project.ui.showKeyboardShortcuts);
+              setShowAbout(project.ui.showAbout);
+              setZoom(project.ui.zoom);
+            }
+            
+            // Restore generation state if available
+            if (project.generation) {
+              setIsGenerating(project.generation.isGenerating);
+              setGenerationProgress(project.generation.generationProgress);
+              setRequestLog(project.generation.requestLog);
+              setResponseLog(project.generation.responseLog);
+            }
+            
+            // Restore undo/redo history if available
+            if (project.history) {
+              setHistory(project.history.states);
+              setHistoryIndex(project.history.historyIndex);
+            }
             
             // Update page title with project name
             updatePageTitle(project.name);
@@ -165,6 +235,7 @@ export default function ProjectStudioPage() {
 
     loadProject();
   }, [projectId, router]);
+
 
   // Save project when state changes
   const saveProject = useCallback(async () => {
@@ -715,6 +786,7 @@ export default function ProjectStudioPage() {
     }
   }, [saveToHistory, history.length]);
 
+
   // Handle keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -980,8 +1052,41 @@ export default function ProjectStudioPage() {
               }`}
               title="Toggle Console"
             >
-              <HamburgerMenuIcon className="w-4 h-4" />
+              <Code className="w-4 h-4" />
             </motion.button>
+
+            {/* Sync Manager */}
+            <SyncManager
+              currentProject={currentProject}
+              projectName={projectName}
+              currentModel={currentModel}
+              currentSize={currentSize}
+              isInpaintMode={isInpaintMode}
+              currentImage={currentImage}
+              generatedImage={generatedImage}
+              attachedImage={attachedImage}
+              activeTool={activeTool}
+              showGenerationPanel={showGenerationPanel}
+              showPromptBox={showPromptBox}
+              showAssetsPanel={showAssetsPanel}
+              showHistoryPanel={showHistoryPanel}
+              showConsole={showConsole}
+              showSizeModal={showSizeModal}
+              showKeyboardShortcuts={showKeyboardShortcuts}
+              showAbout={showAbout}
+              zoom={zoom}
+              isGenerating={isGenerating}
+              generationProgress={generationProgress}
+              requestLog={requestLog}
+              responseLog={responseLog}
+              history={history}
+              historyIndex={historyIndex}
+              autoSave={autoSave}
+              autoSaveDuration={autoSaveDuration}
+              onToggleAutoSave={toggleAutoSave}
+              onUpdateAutoSaveDuration={updateAutoSaveDuration}
+            />
+
 
             <ThemeToggle />
           </div>

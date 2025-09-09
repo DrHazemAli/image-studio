@@ -42,6 +42,37 @@ interface Project {
     generatedImage: string | null;
     attachedImage: string | null;
   };
+  // UI State
+  ui: {
+    activeTool: string;
+    showGenerationPanel: boolean;
+    showPromptBox: boolean;
+    showAssetsPanel: boolean;
+    showHistoryPanel: boolean;
+    showConsole: boolean;
+    showSizeModal: boolean;
+    showKeyboardShortcuts: boolean;
+    showAbout: boolean;
+    zoom: number;
+  };
+  // Generation State
+  generation: {
+    isGenerating: boolean;
+    generationProgress: number;
+    requestLog: unknown;
+    responseLog: unknown;
+  };
+  // Undo/Redo History
+  history: {
+    states: Array<{
+      currentImage: string | null;
+      generatedImage: string | null;
+      attachedImage: string | null;
+      zoom: number;
+      timestamp: number;
+    }>;
+    historyIndex: number;
+  };
   metadata: {
     tags?: string[];
     author?: string;
@@ -50,7 +81,7 @@ interface Project {
 
 class IndexedDBManager {
   private dbName = 'AzureStudioDB';
-  private version = 3; // Increment version to add project_id foreign keys
+  private version = 4; // Increment version to add comprehensive project state
   private db: IDBDatabase | null = null;
 
   async init(): Promise<void> {

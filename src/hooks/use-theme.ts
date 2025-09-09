@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { config } from '@/lib/settings';
 
 type Theme = 'light' | 'dark' | 'system';
 
@@ -9,11 +10,8 @@ export function useTheme() {
   const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
-    // Get saved theme from localStorage
-    const saved = localStorage.getItem('theme') as Theme;
-    if (saved) {
-      setTheme(saved);
-    }
+    const saved = config('theme', 'system') as Theme;
+    setTheme(saved);
   }, []);
 
   useEffect(() => {
@@ -44,7 +42,8 @@ export function useTheme() {
 
   const setThemeValue = (newTheme: Theme) => {
     setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
+    // Save theme using Laravel-style config
+    config('theme', newTheme);
   };
 
   return {
