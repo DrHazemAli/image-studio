@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export interface ContextMenuItem {
   label: string;
@@ -18,7 +18,12 @@ interface ContextMenuProps {
   onClose: () => void;
 }
 
-export function ContextMenu({ isOpen, position, items, onClose }: ContextMenuProps) {
+export function ContextMenu({
+  isOpen,
+  position,
+  items,
+  onClose,
+}: ContextMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,7 +34,7 @@ export function ContextMenu({ isOpen, position, items, onClose }: ContextMenuPro
     };
 
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         onClose();
       }
     };
@@ -37,15 +42,15 @@ export function ContextMenu({ isOpen, position, items, onClose }: ContextMenuPro
     if (isOpen) {
       // Add a small delay to prevent immediate closing when opening
       const timeoutId = setTimeout(() => {
-        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener("mousedown", handleClickOutside);
       }, 100);
-      
-      document.addEventListener('keydown', handleEscape);
+
+      document.addEventListener("keydown", handleEscape);
 
       return () => {
         clearTimeout(timeoutId);
-        document.removeEventListener('mousedown', handleClickOutside);
-        document.removeEventListener('keydown', handleEscape);
+        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener("keydown", handleEscape);
       };
     }
   }, [isOpen, onClose]);

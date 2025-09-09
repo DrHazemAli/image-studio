@@ -20,23 +20,28 @@ This comprehensive guide covers all aspects of configuring Azure Image Studio, f
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Azure subscription with AI services access
 - Azure OpenAI Service account (for DALL-E 3 and GPT-Image-1)
 - Azure AI Foundry access (for FLUX models)
 
 ### Basic Setup
+
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/DrHazemAli/azure-image-studio.git
    cd azure-image-studio
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
+
    ```bash
    cp .env.example .env.local
    # Edit .env.local with your Azure credentials
@@ -69,10 +74,10 @@ AZURE_API_BASE_URL=https://your-resource.openai.azure.com
 
 ### Environment Variable Details
 
-| Variable | Required | Description | Example |
-|----------|----------|-------------|---------|
-| `AZURE_API_KEY` | ✅ Yes | Your Azure API key for authentication | `abc123...` |
-| `AZURE_API_BASE_URL` | No | Your Azure OpenAI endpoint URL | `https://your-resource.openai.azure.com` |
+| Variable             | Required | Description                           | Example                                  |
+| -------------------- | -------- | ------------------------------------- | ---------------------------------------- |
+| `AZURE_API_KEY`      | ✅ Yes   | Your Azure API key for authentication | `abc123...`                              |
+| `AZURE_API_BASE_URL` | No       | Your Azure OpenAI endpoint URL        | `https://your-resource.openai.azure.com` |
 
 ### Security Best Practices
 
@@ -123,6 +128,7 @@ This file defines your Azure endpoints and basic deployment settings:
 ### Configuration Structure
 
 #### Endpoints
+
 - **`id`**: Unique identifier for the endpoint
 - **`name`**: Display name for the endpoint
 - **`baseUrl`**: Azure endpoint URL (use `<env.AZURE_API_BASE_URL>` for environment variable)
@@ -130,6 +136,7 @@ This file defines your Azure endpoints and basic deployment settings:
 - **`deployments`**: Array of model deployments
 
 #### Deployments
+
 - **`id`**: Unique identifier for the deployment
 - **`name`**: Display name for the model
 - **`deploymentName`**: Actual deployment name in Azure
@@ -138,11 +145,13 @@ This file defines your Azure endpoints and basic deployment settings:
 - **`description`**: Human-readable description
 
 #### Default Settings
+
 - **`outputFormat`**: Default output format (png, jpeg)
 - **`size`**: Default image size
 - **`n`**: Default number of images to generate
 
 #### UI Settings
+
 - **`theme`**: Default theme (light, dark, system)
 - **`showConsole`**: Whether to show the console panel
 - **`animationsEnabled`**: Whether to enable animations
@@ -193,6 +202,7 @@ This comprehensive file defines all available models, their capabilities, and co
 ### Model Configuration Structure
 
 #### Model Properties
+
 - **`id`**: Unique model identifier
 - **`name`**: Display name
 - **`description`**: Model description
@@ -206,6 +216,7 @@ This comprehensive file defines all available models, their capabilities, and co
 - **`features`**: Model-specific features
 
 #### Supported Capabilities
+
 - **`text-to-image`**: Generate images from text prompts
 - **`image-editing`**: Edit existing images
 - **`inpainting`**: Fill in selected areas
@@ -215,6 +226,7 @@ This comprehensive file defines all available models, their capabilities, and co
 - **`style-transfer`**: Apply artistic styles
 
 #### Size Configuration
+
 ```json
 {
   "size": "1024x1024",
@@ -227,6 +239,7 @@ This comprehensive file defines all available models, their capabilities, and co
 ### Adding New Models
 
 1. **Add to Azure Models File**
+
    ```json
    {
      "id": "new-model",
@@ -253,6 +266,7 @@ This comprehensive file defines all available models, their capabilities, and co
    ```
 
 2. **Add to Azure Config File**
+
    ```json
    {
      "id": "new-model",
@@ -345,44 +359,52 @@ This file controls application behavior, UI settings, and feature toggles:
 ### Feature Configuration
 
 #### Floating Image Toolbar
+
 - **`enabled`**: Enable/disable the floating toolbar
 - **`defaultPosition`**: Default position (x, y coordinates)
 - **`collapsible`**: Whether toolbar can be collapsed
 - **`smartPositioning`**: Auto-positioning based on image location
 
 #### Background Removal
+
 - **`enabled`**: Enable/disable background removal feature
 - **`defaultModel`**: Default model for background removal
 - **`models`**: Available models for background removal
 - **`defaultSettings`**: Default quality and format settings
 
 #### Image Generation
+
 - **`enabled`**: Enable/disable image generation
 - **`defaultModel`**: Default model for generation
 - **`defaultSize`**: Default image size
 - **`defaultOutputFormat`**: Default output format
 
 #### Image Editing
+
 - **`enabled`**: Enable/disable image editing
 - **`tools`**: Available editing tools and their status
 
 ### UI Configuration
 
 #### Theme Settings
+
 - **`default`**: Default theme (light, dark, system)
 - **`options`**: Available theme options
 
 #### Animation Settings
+
 - **`enabled`**: Enable/disable animations
 - **`duration`**: Animation duration (fast, normal, slow)
 - **`easing`**: Animation easing function
 
 #### Toolbar Settings
+
 - **`position`**: Toolbar position (left, right, top, bottom)
 - **`collapsible`**: Whether toolbar can be collapsed
 - **`showShortcuts`**: Whether to show keyboard shortcuts
 
 #### Canvas Settings
+
 - **`defaultZoom`**: Default zoom level (percentage)
 - **`zoomStep`**: Zoom increment/decrement step
 - **`minZoom`**: Minimum zoom level
@@ -391,6 +413,7 @@ This file controls application behavior, UI settings, and feature toggles:
 - **`snapToGrid`**: Whether to snap to grid
 
 #### Panel Settings
+
 - **`showConsole`**: Whether to show console panel
 - **`showLayers`**: Whether to show layers panel
 - **`showHistory`**: Whether to show history panel
@@ -423,16 +446,19 @@ This file controls application behavior, UI settings, and feature toggles:
 ```
 
 #### Image Processing
+
 - **`maxImageSize`**: Maximum image size in pixels
 - **`compressionQuality`**: Image compression quality (0.0-1.0)
 - **`enableWebWorkers`**: Use web workers for processing
 
 #### Canvas Performance
+
 - **`renderingMode`**: Canvas rendering mode (webgl, canvas2d)
 - **`enableImageCache`**: Enable image caching
 - **`maxCacheSize`**: Maximum number of cached images
 
 #### API Performance
+
 - **`requestTimeout`**: Request timeout in milliseconds
 - **`retryDelay`**: Delay between retries in milliseconds
 - **`maxRetries`**: Maximum number of retry attempts
@@ -460,11 +486,13 @@ This file controls application behavior, UI settings, and feature toggles:
 ```
 
 #### File Upload Security
+
 - **`maxFileSize`**: Maximum file size in bytes (10MB default)
 - **`allowedFormats`**: Allowed image formats
 - **`validateImageHeaders`**: Validate image file headers
 
 #### API Security
+
 - **`enableCors`**: Enable Cross-Origin Resource Sharing
 - **`rateLimit`**: Rate limiting configuration
   - **`enabled`**: Enable rate limiting
@@ -490,11 +518,13 @@ This file controls application behavior, UI settings, and feature toggles:
 ```
 
 #### Azure Integration
+
 - **`enabled`**: Enable Azure integration
 - **`configFile`**: Azure configuration file path
 - **`modelsFile`**: Azure models file path
 
 #### Analytics Integration
+
 - **`enabled`**: Enable analytics tracking
 - **`provider`**: Analytics provider (null, google-analytics, etc.)
 
@@ -511,6 +541,7 @@ This file controls application behavior, UI settings, and feature toggles:
 ```
 
 #### Debugging Options
+
 - **`enableConsoleLogging`**: Enable console logging
 - **`logLevel`**: Log level (debug, info, warn, error)
 - **`enablePerformanceMonitoring`**: Enable performance monitoring
@@ -551,41 +582,49 @@ curl http://localhost:3000/api/config
 
 ### Common Validation Errors
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| `Azure API key not found` | Missing `AZURE_API_KEY` | Set environment variable |
-| `Invalid endpoint URL` | Malformed base URL | Check URL format |
-| `Model deployment not found` | Missing deployment | Verify deployment name |
-| `Configuration file syntax error` | Invalid JSON | Validate JSON syntax |
+| Error                             | Cause                   | Solution                 |
+| --------------------------------- | ----------------------- | ------------------------ |
+| `Azure API key not found`         | Missing `AZURE_API_KEY` | Set environment variable |
+| `Invalid endpoint URL`            | Malformed base URL      | Check URL format         |
+| `Model deployment not found`      | Missing deployment      | Verify deployment name   |
+| `Configuration file syntax error` | Invalid JSON            | Validate JSON syntax     |
 
 ## 🚨 Troubleshooting
 
 ### Common Issues
 
 #### 1. API Key Issues
+
 **Problem**: "Azure API key not configured"
-**Solution**: 
+**Solution**:
+
 - Check `.env.local` file exists
 - Verify `AZURE_API_KEY` is set correctly
 - Ensure no extra spaces or quotes
 
 #### 2. Endpoint Connection Issues
+
 **Problem**: "Failed to connect to Azure endpoint"
 **Solution**:
+
 - Verify `AZURE_API_BASE_URL` is correct
 - Check network connectivity
 - Ensure Azure service is active
 
 #### 3. Model Deployment Issues
+
 **Problem**: "Model deployment not found"
 **Solution**:
+
 - Verify deployment name in Azure portal
 - Check `azure-config.json` deployment names
 - Ensure deployment is active
 
 #### 4. Configuration File Issues
+
 **Problem**: "Invalid configuration file"
 **Solution**:
+
 - Validate JSON syntax
 - Check file paths
 - Ensure all required fields are present
@@ -622,6 +661,7 @@ npm run cli -- generate --prompt "test image" --model dalle-3
 ## 📚 Additional Resources
 
 ### Documentation
+
 - [Getting Started Guide](getting-started.md) - Initial setup and configuration
 - [User Guide](user-guide.md) - Complete user manual
 - [Developer Guide](developer-guide.md) - Development setup and architecture
@@ -629,12 +669,14 @@ npm run cli -- generate --prompt "test image" --model dalle-3
 - [Architecture Guide](architecture.md) - System design overview
 
 ### External Resources
+
 - [Azure OpenAI Service Documentation](https://docs.microsoft.com/en-us/azure/cognitive-services/openai/)
 - [Azure AI Foundry Documentation](https://docs.microsoft.com/en-us/azure/ai-services/ai-foundry/)
 - [Next.js Environment Variables](https://nextjs.org/docs/basic-features/environment-variables)
 - [JSON Schema Validation](https://json-schema.org/)
 
 ### Support
+
 - [GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues) - Bug reports and feature requests
 - [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions) - Community support
 - [Azure Support](https://azure.microsoft.com/en-us/support/) - Azure service support

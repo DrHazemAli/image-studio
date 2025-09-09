@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Cross2Icon } from '@radix-ui/react-icons';
+import React, { useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Cross2Icon } from "@radix-ui/react-icons";
 
 /**
  * Props interface for the SlidingPanel component
@@ -12,24 +12,24 @@ export interface SlidingPanelProps {
   // Panel state
   isOpen: boolean;
   onClose: () => void;
-  
+
   // Content
   title: string;
   icon?: React.ReactNode;
   children: React.ReactNode;
-  
+
   // Layout options
-  width?: 'sm' | 'md' | 'lg' | 'xl';
+  width?: "sm" | "md" | "lg" | "xl";
   maxHeight?: string;
-  
+
   // Behavior
   closeOnEscape?: boolean;
   closeOnOverlayClick?: boolean;
   preventBodyScroll?: boolean;
-  
+
   // Actions
   actions?: React.ReactNode;
-  
+
   // Styling
   className?: string;
 }
@@ -45,23 +45,23 @@ export const SlidingPanel: React.FC<SlidingPanelProps> = ({
   title,
   icon,
   children,
-  width = 'md',
-  maxHeight = '100vh',
+  width = "md",
+  maxHeight = "100vh",
   closeOnEscape = true,
   closeOnOverlayClick = true,
   preventBodyScroll = true,
   actions,
-  className = ''
+  className = "",
 }) => {
   const panelRef = useRef<HTMLDivElement>(null);
   const previousActiveElement = useRef<HTMLElement | null>(null);
 
   // Define width classes
   const widthClasses = {
-    sm: 'w-80',      // 320px
-    md: 'w-96',      // 384px
-    lg: 'w-[28rem]', // 448px
-    xl: 'w-[32rem]'  // 512px
+    sm: "w-80", // 320px
+    md: "w-96", // 384px
+    lg: "w-[28rem]", // 448px
+    xl: "w-[32rem]", // 512px
   };
 
   // Handle keyboard events
@@ -69,21 +69,23 @@ export const SlidingPanel: React.FC<SlidingPanelProps> = ({
     if (!isOpen) return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (closeOnEscape && event.key === 'Escape') {
+      if (closeOnEscape && event.key === "Escape") {
         event.preventDefault();
         onClose();
       }
 
       // Trap focus within the panel
-      if (event.key === 'Tab' && panelRef.current) {
+      if (event.key === "Tab" && panelRef.current) {
         const focusableElements = panelRef.current.querySelectorAll(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
         );
-        
+
         if (focusableElements.length === 0) return;
 
         const firstElement = focusableElements[0] as HTMLElement;
-        const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+        const lastElement = focusableElements[
+          focusableElements.length - 1
+        ] as HTMLElement;
 
         if (event.shiftKey) {
           if (document.activeElement === firstElement) {
@@ -99,8 +101,8 @@ export const SlidingPanel: React.FC<SlidingPanelProps> = ({
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, closeOnEscape, onClose]);
 
   // Manage focus and body scroll
@@ -108,7 +110,7 @@ export const SlidingPanel: React.FC<SlidingPanelProps> = ({
     if (isOpen) {
       // Store the previously active element
       previousActiveElement.current = document.activeElement as HTMLElement;
-      
+
       // Focus the panel for screen readers
       setTimeout(() => {
         panelRef.current?.focus();
@@ -116,7 +118,7 @@ export const SlidingPanel: React.FC<SlidingPanelProps> = ({
 
       // Prevent body scroll if requested
       if (preventBodyScroll) {
-        document.body.style.overflow = 'hidden';
+        document.body.style.overflow = "hidden";
       }
     } else {
       // Restore focus to the previously active element
@@ -127,13 +129,13 @@ export const SlidingPanel: React.FC<SlidingPanelProps> = ({
 
       // Restore body scroll
       if (preventBodyScroll) {
-        document.body.style.overflow = '';
+        document.body.style.overflow = "";
       }
     }
 
     return () => {
       if (preventBodyScroll) {
-        document.body.style.overflow = '';
+        document.body.style.overflow = "";
       }
     };
   }, [isOpen, preventBodyScroll]);
@@ -172,18 +174,18 @@ export const SlidingPanel: React.FC<SlidingPanelProps> = ({
               focus:outline-none
               ${className}
             `}
-            style={{ 
-              height: '100vh',
-              maxHeight 
+            style={{
+              height: "100vh",
+              maxHeight,
             }}
-            initial={{ x: '100%' }}
+            initial={{ x: "100%" }}
             animate={{ x: 0 }}
-            exit={{ x: '100%' }}
+            exit={{ x: "100%" }}
             transition={{
               type: "spring",
               stiffness: 300,
               damping: 30,
-              duration: 0.4
+              duration: 0.4,
             }}
             tabIndex={-1}
             role="dialog"
@@ -199,14 +201,14 @@ export const SlidingPanel: React.FC<SlidingPanelProps> = ({
                       {icon}
                     </div>
                   )}
-                  <h2 
+                  <h2
                     id="panel-title"
                     className="text-lg font-semibold text-gray-900 dark:text-white"
                   >
                     {title}
                   </h2>
                 </div>
-                
+
                 <button
                   onClick={onClose}
                   className="
@@ -224,9 +226,7 @@ export const SlidingPanel: React.FC<SlidingPanelProps> = ({
 
             {/* Content area with custom scrollbar */}
             <div className="flex-1 overflow-y-auto image-editing-panel">
-              <div className="px-6 py-4">
-                {children}
-              </div>
+              <div className="px-6 py-4">{children}</div>
             </div>
 
             {/* Footer actions (if provided) */}

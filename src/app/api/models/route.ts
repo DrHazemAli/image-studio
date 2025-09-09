@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { NextResponse } from "next/server";
+import fs from "fs";
+import path from "path";
 
 export interface ModelInfo {
   id: string;
@@ -32,8 +32,11 @@ interface ModelConfig {
 export async function GET() {
   try {
     // Read the models configuration from the JSON file
-    const configPath = path.join(process.cwd(), 'src/app/config/azure-models.json');
-    const configData = fs.readFileSync(configPath, 'utf8');
+    const configPath = path.join(
+      process.cwd(),
+      "src/app/config/azure-models.json",
+    );
+    const configData = fs.readFileSync(configPath, "utf8");
     const config = JSON.parse(configData);
 
     // Extract all models from the configuration
@@ -46,27 +49,30 @@ export async function GET() {
           id: model.id,
           name: model.name,
           provider: model.provider,
-          supportsInpaint: model.capabilities?.includes('inpainting') || false,
+          supportsInpaint: model.capabilities?.includes("inpainting") || false,
           primary: model.primary || false,
           premium: model.premium || false,
-          supportedSizes: model.supportedSizes || []
+          supportedSizes: model.supportedSizes || [],
         });
       });
     }
 
     // Process Black Forest Labs models
     if (config.imageModels?.generation?.blackForestLabs) {
-      config.imageModels.generation.blackForestLabs.forEach((model: ModelConfig) => {
-        models.push({
-          id: model.id,
-          name: model.name,
-          provider: model.provider,
-          supportsInpaint: model.capabilities?.includes('inpainting') || false,
-          primary: model.primary || false,
-          premium: model.premium || false,
-          supportedSizes: model.supportedSizes || []
-        });
-      });
+      config.imageModels.generation.blackForestLabs.forEach(
+        (model: ModelConfig) => {
+          models.push({
+            id: model.id,
+            name: model.name,
+            provider: model.provider,
+            supportsInpaint:
+              model.capabilities?.includes("inpainting") || false,
+            primary: model.primary || false,
+            premium: model.premium || false,
+            supportedSizes: model.supportedSizes || [],
+          });
+        },
+      );
     }
 
     // Process Microsoft models
@@ -76,24 +82,24 @@ export async function GET() {
           id: model.id,
           name: model.name,
           provider: model.provider,
-          supportsInpaint: model.capabilities?.includes('inpainting') || false,
+          supportsInpaint: model.capabilities?.includes("inpainting") || false,
           primary: model.primary || false,
           premium: model.premium || false,
-          supportedSizes: model.supportedSizes || []
+          supportedSizes: model.supportedSizes || [],
         });
       });
     }
 
     return NextResponse.json({
       models,
-      defaultModel: 'FLUX.1-Kontext-pro',
-      defaultSize: '1024x1024'
+      defaultModel: "FLUX.1-Kontext-pro",
+      defaultSize: "1024x1024",
     });
   } catch (error) {
-    console.error('Error reading models configuration:', error);
+    console.error("Error reading models configuration:", error);
     return NextResponse.json(
-      { error: 'Failed to load models configuration' },
-      { status: 500 }
+      { error: "Failed to load models configuration" },
+      { status: 500 },
     );
   }
 }

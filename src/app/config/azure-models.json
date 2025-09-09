@@ -16,9 +16,24 @@
             "image-to-image"
           ],
           "supportedSizes": [
-            { "size": "1024x1024", "label": "Square (1:1)", "aspect": "1:1", "description": "Fastest generation" },
-            { "size": "1024x1536", "label": "Portrait (2:3)", "aspect": "2:3", "description": "Vertical orientation" },
-            { "size": "1536x1024", "label": "Landscape (3:2)", "aspect": "3:2", "description": "Horizontal orientation" }
+            {
+              "size": "1024x1024",
+              "label": "Square (1:1)",
+              "aspect": "1:1",
+              "description": "Fastest generation"
+            },
+            {
+              "size": "1024x1536",
+              "label": "Portrait (2:3)",
+              "aspect": "2:3",
+              "description": "Vertical orientation"
+            },
+            {
+              "size": "1536x1024",
+              "label": "Landscape (3:2)",
+              "aspect": "3:2",
+              "description": "Horizontal orientation"
+            }
           ],
           "supportedFormats": ["png", "jpeg"],
           "qualityLevels": ["low", "medium", "high"],
@@ -39,12 +54,20 @@
           "description": "High-quality image generation with natural and vivid styles",
           "provider": "Azure OpenAI",
           "apiVersion": "2024-10-21",
-          "capabilities": [
-            "text-to-image"
-          ],
+          "capabilities": ["text-to-image"],
           "supportedSizes": [
-            { "size": "1024x1024", "label": "Square (1:1)", "aspect": "1:1", "description": "Standard size" },
-            { "size": "1024x768", "label": "Standard (4:3)", "aspect": "4:3", "description": "Default size" }
+            {
+              "size": "1024x1024",
+              "label": "Square (1:1)",
+              "aspect": "1:1",
+              "description": "Standard size"
+            },
+            {
+              "size": "1024x768",
+              "label": "Standard (4:3)",
+              "aspect": "4:3",
+              "description": "Default size"
+            }
           ],
           "supportedFormats": ["png", "jpeg"],
           "styleOptions": ["natural", "vivid"],
@@ -65,18 +88,56 @@
           "description": "Advanced text-to-image generation with superior quality",
           "provider": "Black Forest Labs",
           "apiVersion": "2024-12-01",
-          "capabilities": [
-            "text-to-image"
-          ],
+          "capabilities": ["text-to-image"],
           "supportedSizes": [
-            { "size": "1024x1024", "label": "Square (1:1)", "aspect": "1:1", "description": "Standard resolution" },
-            { "size": "1024x768", "label": "Standard (4:3)", "aspect": "4:3", "description": "Default size" },
-            { "size": "768x1024", "label": "Portrait (3:4)", "aspect": "3:4", "description": "Vertical format" },
-            { "size": "1536x1024", "label": "Landscape (3:2)", "aspect": "3:2", "description": "Wide format" },
-            { "size": "1024x1536", "label": "Tall (2:3)", "aspect": "2:3", "description": "Portrait format" },
-            { "size": "1440x1440", "label": "Large Square", "aspect": "1:1", "description": "High resolution" },
-            { "size": "2752x1536", "label": "Ultra Landscape (16:9)", "aspect": "16:9", "description": "Ultra HD landscape" },
-            { "size": "2048x2048", "label": "Ultra Square (1:1)", "aspect": "1:1", "description": "Ultra HD square" }
+            {
+              "size": "1024x1024",
+              "label": "Square (1:1)",
+              "aspect": "1:1",
+              "description": "Standard resolution"
+            },
+            {
+              "size": "1024x768",
+              "label": "Standard (4:3)",
+              "aspect": "4:3",
+              "description": "Default size"
+            },
+            {
+              "size": "768x1024",
+              "label": "Portrait (3:4)",
+              "aspect": "3:4",
+              "description": "Vertical format"
+            },
+            {
+              "size": "1536x1024",
+              "label": "Landscape (3:2)",
+              "aspect": "3:2",
+              "description": "Wide format"
+            },
+            {
+              "size": "1024x1536",
+              "label": "Tall (2:3)",
+              "aspect": "2:3",
+              "description": "Portrait format"
+            },
+            {
+              "size": "1440x1440",
+              "label": "Large Square",
+              "aspect": "1:1",
+              "description": "High resolution"
+            },
+            {
+              "size": "2752x1536",
+              "label": "Ultra Landscape (16:9)",
+              "aspect": "16:9",
+              "description": "Ultra HD landscape"
+            },
+            {
+              "size": "2048x2048",
+              "label": "Ultra Square (1:1)",
+              "aspect": "1:1",
+              "description": "Ultra HD square"
+            }
           ],
           "supportedFormats": ["png", "jpeg"],
           "maxTokens": 5000,
@@ -101,14 +162,54 @@
             "style-transfer"
           ],
           "supportedSizes": [
-            { "size": "1024x1024", "label": "Square (1:1)", "aspect": "1:1", "description": "Standard resolution" },
-            { "size": "1024x768", "label": "Standard (4:3)", "aspect": "4:3", "description": "Default size" },
-            { "size": "768x1024", "label": "Portrait (3:4)", "aspect": "3:4", "description": "Vertical format" },
-            { "size": "1536x1024", "label": "Landscape (3:2)", "aspect": "3:2", "description": "Wide format" },
-            { "size": "1024x1536", "label": "Tall (2:3)", "aspect": "2:3", "description": "Portrait format" },
-            { "size": "1440x1440", "label": "Large Square", "aspect": "1:1", "description": "High resolution" },
-            { "size": "2752x1536", "label": "Ultra Landscape (16:9)", "aspect": "16:9", "description": "Ultra HD landscape" },
-            { "size": "2048x2048", "label": "Ultra Square (1:1)", "aspect": "1:1", "description": "Ultra HD square" }
+            {
+              "size": "1024x1024",
+              "label": "Square (1:1)",
+              "aspect": "1:1",
+              "description": "Standard resolution"
+            },
+            {
+              "size": "1024x768",
+              "label": "Standard (4:3)",
+              "aspect": "4:3",
+              "description": "Default size"
+            },
+            {
+              "size": "768x1024",
+              "label": "Portrait (3:4)",
+              "aspect": "3:4",
+              "description": "Vertical format"
+            },
+            {
+              "size": "1536x1024",
+              "label": "Landscape (3:2)",
+              "aspect": "3:2",
+              "description": "Wide format"
+            },
+            {
+              "size": "1024x1536",
+              "label": "Tall (2:3)",
+              "aspect": "2:3",
+              "description": "Portrait format"
+            },
+            {
+              "size": "1440x1440",
+              "label": "Large Square",
+              "aspect": "1:1",
+              "description": "High resolution"
+            },
+            {
+              "size": "2752x1536",
+              "label": "Ultra Landscape (16:9)",
+              "aspect": "16:9",
+              "description": "Ultra HD landscape"
+            },
+            {
+              "size": "2048x2048",
+              "label": "Ultra Square (1:1)",
+              "aspect": "1:1",
+              "description": "Ultra HD square"
+            }
           ],
           "supportedFormats": ["png", "jpeg"],
           "maxTokens": 5000,
@@ -131,14 +232,20 @@
           "description": "Microsoft's advanced vision-language model for image understanding and generation",
           "provider": "Microsoft Azure",
           "apiVersion": "2024-12-01",
-          "capabilities": [
-            "text-to-image",
-            "image-editing",
-            "inpainting"
-          ],
+          "capabilities": ["text-to-image", "image-editing", "inpainting"],
           "supportedSizes": [
-            { "size": "1024x1024", "label": "Square (1:1)", "aspect": "1:1", "description": "Standard size" },
-            { "size": "1024x768", "label": "Standard (4:3)", "aspect": "4:3", "description": "Default size" }
+            {
+              "size": "1024x1024",
+              "label": "Square (1:1)",
+              "aspect": "1:1",
+              "description": "Standard size"
+            },
+            {
+              "size": "1024x768",
+              "label": "Standard (4:3)",
+              "aspect": "4:3",
+              "description": "Default size"
+            }
           ],
           "supportedFormats": ["png", "jpeg"],
           "maxImages": 1,
@@ -201,7 +308,13 @@
       "icon": "magic-wand",
       "name": "Generate",
       "description": "Create new images from text descriptions",
-      "supportedModels": ["gpt-image-1", "dalle-3", "flux-1-1-pro", "flux-kontext-pro", "florence-2"]
+      "supportedModels": [
+        "gpt-image-1",
+        "dalle-3",
+        "flux-1-1-pro",
+        "flux-kontext-pro",
+        "florence-2"
+      ]
     },
     "editing": {
       "icon": "pencil",

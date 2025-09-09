@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import * as Tooltip from '@radix-ui/react-tooltip';
+import React from "react";
+import { motion } from "framer-motion";
+import * as Tooltip from "@radix-ui/react-tooltip";
 
 /**
  * Props interface for the ImageToolButton component
@@ -13,23 +13,23 @@ export interface ImageToolButtonProps {
   id: string;
   name: string;
   icon: React.ComponentType<{ className?: string }>;
-  
+
   // Visual states
   isActive?: boolean;
   isDisabled?: boolean;
   isProcessing?: boolean;
-  
+
   // Interaction handlers
   onClick: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
-  
+
   // Visual customization
   tooltip?: string;
   shortcut?: string;
   className?: string;
-  variant?: 'default' | 'primary' | 'danger';
-  size?: 'small' | 'medium' | 'large';
+  variant?: "default" | "primary" | "danger";
+  size?: "small" | "medium" | "large";
 }
 
 /**
@@ -48,49 +48,49 @@ export const ImageToolButton: React.FC<ImageToolButtonProps> = ({
   onMouseLeave,
   tooltip,
   shortcut,
-  className = '',
-  variant = 'default',
-  size = 'medium'
+  className = "",
+  variant = "default",
+  size = "medium",
 }) => {
   // Define size classes based on size prop
   const sizeClasses = {
-    small: 'w-8 h-8',
-    medium: 'w-10 h-10', 
-    large: 'w-12 h-12'
+    small: "w-8 h-8",
+    medium: "w-10 h-10",
+    large: "w-12 h-12",
   };
 
   // Define icon size classes
   const iconSizeClasses = {
-    small: 'w-4 h-4',
-    medium: 'w-5 h-5',
-    large: 'w-6 h-6'
+    small: "w-4 h-4",
+    medium: "w-5 h-5",
+    large: "w-6 h-6",
   };
 
   // Define variant styles
   const getVariantClasses = () => {
     if (isDisabled) {
-      return 'bg-gray-100 dark:bg-zinc-800 text-gray-400 dark:text-zinc-600 cursor-not-allowed';
+      return "bg-gray-100 dark:bg-zinc-800 text-gray-400 dark:text-zinc-600 cursor-not-allowed";
     }
 
     if (isActive) {
       switch (variant) {
-        case 'primary':
-          return 'bg-blue-500 text-white shadow-lg ring-2 ring-blue-500/20';
-        case 'danger':
-          return 'bg-red-500 text-white shadow-lg ring-2 ring-red-500/20';
+        case "primary":
+          return "bg-blue-500 text-white shadow-lg ring-2 ring-blue-500/20";
+        case "danger":
+          return "bg-red-500 text-white shadow-lg ring-2 ring-red-500/20";
         default:
-          return 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-lg';
+          return "bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-lg";
       }
     }
 
     // Default hover states
     switch (variant) {
-      case 'primary':
-        return 'bg-white dark:bg-zinc-800 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 border border-blue-200 dark:border-blue-800';
-      case 'danger':
-        return 'bg-white dark:bg-zinc-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 border border-red-200 dark:border-red-800';
+      case "primary":
+        return "bg-white dark:bg-zinc-800 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 border border-blue-200 dark:border-blue-800";
+      case "danger":
+        return "bg-white dark:bg-zinc-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 border border-red-200 dark:border-red-800";
       default:
-        return 'bg-white dark:bg-zinc-800 text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-700 border border-gray-200 dark:border-zinc-600';
+        return "bg-white dark:bg-zinc-800 text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-700 border border-gray-200 dark:border-zinc-600";
     }
   };
 
@@ -119,11 +119,11 @@ export const ImageToolButton: React.FC<ImageToolButtonProps> = ({
       whileTap={!isDisabled ? { scale: 0.95 } : {}}
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ 
-        type: "spring", 
-        stiffness: 300, 
+      transition={{
+        type: "spring",
+        stiffness: 300,
         damping: 30,
-        delay: 0.1 
+        delay: 0.1,
       }}
     >
       {/* Processing spinner overlay */}
@@ -141,10 +141,12 @@ export const ImageToolButton: React.FC<ImageToolButtonProps> = ({
           />
         </motion.div>
       )}
-      
+
       {/* Main icon */}
-      <Icon className={`${iconSizeClasses[size]} transition-colors duration-200`} />
-      
+      <Icon
+        className={`${iconSizeClasses[size]} transition-colors duration-200`}
+      />
+
       {/* Active indicator */}
       {isActive && (
         <motion.div
@@ -155,11 +157,11 @@ export const ImageToolButton: React.FC<ImageToolButtonProps> = ({
           transition={{ type: "spring", stiffness: 500, damping: 30 }}
         />
       )}
-      
+
       {/* Keyboard shortcut indicator */}
       {shortcut && !isActive && (
         <div className="absolute -bottom-1 -right-1 min-w-[16px] h-4 bg-gray-700 dark:bg-zinc-300 text-white dark:text-zinc-700 rounded text-xs flex items-center justify-center px-1 font-mono text-[10px]">
-          {shortcut.length === 1 ? shortcut : '⌘'}
+          {shortcut.length === 1 ? shortcut : "⌘"}
         </div>
       )}
     </motion.button>
@@ -169,9 +171,7 @@ export const ImageToolButton: React.FC<ImageToolButtonProps> = ({
   if (tooltip) {
     return (
       <Tooltip.Root>
-        <Tooltip.Trigger asChild>
-          {buttonContent}
-        </Tooltip.Trigger>
+        <Tooltip.Trigger asChild>{buttonContent}</Tooltip.Trigger>
         <Tooltip.Portal>
           <Tooltip.Content
             className="bg-gray-900 dark:bg-zinc-100 text-white dark:text-zinc-900 px-3 py-2 rounded-lg text-sm font-medium shadow-lg max-w-xs z-50"

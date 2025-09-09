@@ -1,11 +1,19 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { DownloadIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
-import { Card, Box, Button, Flex, Text, Dialog, AspectRatio } from '@radix-ui/themes';
-import Image from 'next/image';
-import { ImageGenerationResponse } from '@/types/azure';
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { DownloadIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import {
+  Card,
+  Box,
+  Button,
+  Flex,
+  Text,
+  Dialog,
+  AspectRatio,
+} from "@radix-ui/themes";
+import Image from "next/image";
+import { ImageGenerationResponse } from "@/types/azure";
 
 interface ImageResultProps {
   result: ImageGenerationResponse | null;
@@ -20,7 +28,7 @@ export function ImageResult({ result, prompt }: ImageResultProps) {
   }
 
   const downloadImage = (base64Data: string, index: number) => {
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = `data:image/png;base64,${base64Data}`;
     link.download = `generated-image-${index + 1}-${Date.now()}.png`;
     document.body.appendChild(link);
@@ -47,13 +55,16 @@ export function ImageResult({ result, prompt }: ImageResultProps) {
               </Text>
             </Box>
             <Text size="1" color="gray">
-              {result.data.length} image{result.data.length !== 1 ? 's' : ''}
+              {result.data.length} image{result.data.length !== 1 ? "s" : ""}
             </Text>
           </Flex>
 
-          <div className="grid gap-4" style={{ 
-            gridTemplateColumns: `repeat(${Math.min(result.data.length, 2)}, 1fr)` 
-          }}>
+          <div
+            className="grid gap-4"
+            style={{
+              gridTemplateColumns: `repeat(${Math.min(result.data.length, 2)}, 1fr)`,
+            }}
+          >
             <AnimatePresence>
               {result.data.map((image, index) => (
                 <motion.div
@@ -64,13 +75,18 @@ export function ImageResult({ result, prompt }: ImageResultProps) {
                 >
                   <Card className="overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow">
                     <AspectRatio ratio={1}>
-                      <div 
+                      <div
                         className="relative w-full h-full cursor-pointer"
                         onClick={() => {
                           if (image.b64_json) {
-                            setSelectedImage(`data:image/png;base64,${image.b64_json}`);
+                            setSelectedImage(
+                              `data:image/png;base64,${image.b64_json}`,
+                            );
                           } else {
-                            console.error('Image b64_json is undefined for image:', index);
+                            console.error(
+                              "Image b64_json is undefined for image:",
+                              index,
+                            );
                           }
                         }}
                       >
@@ -83,7 +99,9 @@ export function ImageResult({ result, prompt }: ImageResultProps) {
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-800">
-                            <span className="text-gray-500 dark:text-gray-400">Invalid image data</span>
+                            <span className="text-gray-500 dark:text-gray-400">
+                              Invalid image data
+                            </span>
                           </div>
                         )}
                       </div>
@@ -95,9 +113,13 @@ export function ImageResult({ result, prompt }: ImageResultProps) {
                           variant="soft"
                           onClick={() => {
                             if (image.b64_json) {
-                              setSelectedImage(`data:image/png;base64,${image.b64_json}`);
+                              setSelectedImage(
+                                `data:image/png;base64,${image.b64_json}`,
+                              );
                             } else {
-                              console.error('Cannot view image - b64_json is undefined');
+                              console.error(
+                                "Cannot view image - b64_json is undefined",
+                              );
                             }
                           }}
                           disabled={!image.b64_json}
@@ -112,7 +134,9 @@ export function ImageResult({ result, prompt }: ImageResultProps) {
                             if (image.b64_json) {
                               downloadImage(image.b64_json, index);
                             } else {
-                              console.error('Cannot download image - b64_json is undefined');
+                              console.error(
+                                "Cannot download image - b64_json is undefined",
+                              );
                             }
                           }}
                           disabled={!image.b64_json}
@@ -130,7 +154,10 @@ export function ImageResult({ result, prompt }: ImageResultProps) {
         </Box>
       </Card>
 
-      <Dialog.Root open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
+      <Dialog.Root
+        open={!!selectedImage}
+        onOpenChange={() => setSelectedImage(null)}
+      >
         <Dialog.Content maxWidth="90vw" maxHeight="90vh">
           <Dialog.Title>Generated Image</Dialog.Title>
           <Box className="mt-4">

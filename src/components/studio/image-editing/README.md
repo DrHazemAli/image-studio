@@ -18,10 +18,11 @@ Professional-grade image editing interface with Canva-style sliding panels, real
 ### Panels
 
 #### `SlidingPanel`
+
 Base sliding panel component with consistent behavior and styling.
 
 ```tsx
-import { SlidingPanel } from '@/components/studio/image-editing';
+import { SlidingPanel } from "@/components/studio/image-editing";
 
 <SlidingPanel
   isOpen={isOpen}
@@ -32,14 +33,15 @@ import { SlidingPanel } from '@/components/studio/image-editing';
   actions={<Button>Apply</Button>}
 >
   <div>Panel content</div>
-</SlidingPanel>
+</SlidingPanel>;
 ```
 
 #### `ImageFiltersPanel`
+
 Complete image filters interface with presets and manual controls.
 
 ```tsx
-import { ImageFiltersPanel } from '@/components/studio/image-editing';
+import { ImageFiltersPanel } from "@/components/studio/image-editing";
 
 <ImageFiltersPanel
   isOpen={isFiltersOpen}
@@ -48,20 +50,21 @@ import { ImageFiltersPanel } from '@/components/studio/image-editing';
   selectedImage={selectedImage}
   onApplyFilters={(adjustments) => {
     // Apply final adjustments
-    console.log('Applied filters:', adjustments);
+    console.log("Applied filters:", adjustments);
   }}
   onResetFilters={() => {
     // Reset to original
-    console.log('Filters reset');
+    console.log("Filters reset");
   }}
-/>
+/>;
 ```
 
 #### `ColorAdjustmentsPanel`
+
 Professional color adjustment tools with presets and before/after preview.
 
 ```tsx
-import { ColorAdjustmentsPanel } from '@/components/studio/image-editing';
+import { ColorAdjustmentsPanel } from "@/components/studio/image-editing";
 
 <ColorAdjustmentsPanel
   isOpen={isAdjustmentsOpen}
@@ -70,22 +73,23 @@ import { ColorAdjustmentsPanel } from '@/components/studio/image-editing';
   selectedImage={selectedImage}
   onApplyAdjustments={(adjustments) => {
     // Apply final adjustments
-    console.log('Applied adjustments:', adjustments);
+    console.log("Applied adjustments:", adjustments);
   }}
   onResetAdjustments={() => {
     // Reset to original
-    console.log('Adjustments reset');
+    console.log("Adjustments reset");
   }}
-/>
+/>;
 ```
 
 ### Controls
 
 #### `AdjustmentSlider`
+
 Professional slider control with text input, reset, and tooltips.
 
 ```tsx
-import { AdjustmentSlider } from '@/components/studio/image-editing';
+import { AdjustmentSlider } from "@/components/studio/image-editing";
 
 <AdjustmentSlider
   label="Brightness"
@@ -98,15 +102,16 @@ import { AdjustmentSlider } from '@/components/studio/image-editing';
   color="orange"
   description="Adjust overall image brightness"
   showReset={true}
-  formatValue={(value) => `${value > 0 ? '+' : ''}${value}%`}
-/>
+  formatValue={(value) => `${value > 0 ? "+" : ""}${value}%`}
+/>;
 ```
 
 #### `ImagePreview`
+
 Real-time image preview with before/after toggle.
 
 ```tsx
-import { ImagePreview } from '@/components/studio/image-editing';
+import { ImagePreview } from "@/components/studio/image-editing";
 
 <ImagePreview
   fabricCanvas={fabricCanvas}
@@ -114,30 +119,31 @@ import { ImagePreview } from '@/components/studio/image-editing';
   adjustments={currentAdjustments}
   showBeforeAfter={true}
   onToggleBeforeAfter={() => setShowBefore(!showBefore)}
-/>
+/>;
 ```
 
 ### Hooks
 
 #### `useRealTimePreview`
+
 Performance-optimized hook for real-time image adjustments.
 
 ```tsx
-import { 
-  useRealTimePreview, 
+import {
+  useRealTimePreview,
   DEFAULT_ADJUSTMENTS,
-  ImageAdjustments 
-} from '@/components/studio/image-editing';
+  ImageAdjustments,
+} from "@/components/studio/image-editing";
 
 const {
   isProcessing,
   applyAdjustments,
   resetAdjustments,
-  getCurrentAdjustments
+  getCurrentAdjustments,
 } = useRealTimePreview(fabricCanvas, selectedImage, {
   debounceMs: 16, // 60fps
   showProcessingIndicator: true,
-  onError: (error) => console.error(error)
+  onError: (error) => console.error(error),
 });
 
 // Apply adjustments
@@ -153,42 +159,42 @@ const handleAdjustmentChange = (key: keyof ImageAdjustments, value: number) => {
 
 ```tsx
 // In your floating image toolbar component
-import { 
-  ImageFiltersPanel, 
+import {
+  ImageFiltersPanel,
   ColorAdjustmentsPanel,
-  ImageAdjustments 
-} from '@/components/studio/image-editing';
+  ImageAdjustments,
+} from "@/components/studio/image-editing";
 
-export const FloatingImageToolbar = ({ 
-  fabricCanvas, 
+export const FloatingImageToolbar = ({
+  fabricCanvas,
   selectedObjects,
   onApplyFilters,
-  onApplyAdjustments 
+  onApplyAdjustments,
 }) => {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [isAdjustmentsOpen, setIsAdjustmentsOpen] = useState(false);
 
   const tools = [
     {
-      id: 'filters',
-      name: 'Filters',
+      id: "filters",
+      name: "Filters",
       icon: MixerHorizontalIcon,
-      tooltip: 'Apply image filters and presets',
+      tooltip: "Apply image filters and presets",
       action: () => setIsFiltersOpen(true),
     },
     {
-      id: 'adjustments',
-      name: 'Adjustments', 
+      id: "adjustments",
+      name: "Adjustments",
       icon: ColorWheelIcon,
-      tooltip: 'Professional color and lighting adjustments',
+      tooltip: "Professional color and lighting adjustments",
       action: () => setIsAdjustmentsOpen(true),
-    }
+    },
   ];
 
   return (
     <>
       {/* Your existing toolbar UI */}
-      
+
       <ImageFiltersPanel
         isOpen={isFiltersOpen}
         onClose={() => setIsFiltersOpen(false)}
@@ -196,7 +202,7 @@ export const FloatingImageToolbar = ({
         selectedImage={selectedObjects[0] || null}
         onApplyFilters={onApplyFilters}
       />
-      
+
       <ColorAdjustmentsPanel
         isOpen={isAdjustmentsOpen}
         onClose={() => setIsAdjustmentsOpen(false)}
@@ -212,6 +218,7 @@ export const FloatingImageToolbar = ({
 ## 🎛️ Adjustment Types
 
 ### Basic Adjustments
+
 - **Brightness** (-100 to 100): Overall lightness
 - **Contrast** (-100 to 100): Difference between light and dark areas
 - **Saturation** (-100 to 100): Color intensity
@@ -219,23 +226,27 @@ export const FloatingImageToolbar = ({
 - **Blur** (0 to 20): Blur effect in pixels
 
 ### Color Adjustments
+
 - **Temperature** (-100 to 100): Warm/cool color balance
-- **Tint** (-100 to 100): Green/magenta color balance  
+- **Tint** (-100 to 100): Green/magenta color balance
 - **Vibrance** (-100 to 100): Smart saturation (protects skin tones)
 - **Exposure** (-200 to 200): Overall brightness in stops
 
 ### Light Adjustments
+
 - **Highlights** (-100 to 100): Brightest areas
 - **Shadows** (-100 to 100): Darkest areas
 - **Whites** (-100 to 100): Pure white areas
 - **Blacks** (-100 to 100): Pure black areas
 
 ### Detail Adjustments
+
 - **Sharpness** (0 to 100): Edge definition
 - **Clarity** (-100 to 100): Midtone contrast
 - **Denoise** (0 to 100): Noise reduction
 
 ### Effects
+
 - **Sepia** (0 to 100): Sepia tone effect
 - **Grayscale** (0 to 100): Black and white conversion
 - **Vignette** (0 to 100): Dark edge effect
@@ -244,6 +255,7 @@ export const FloatingImageToolbar = ({
 ## 🎨 Filter Presets
 
 ### Built-in Presets
+
 - **Original**: No filters applied
 - **Bright**: Increased brightness and contrast
 - **Dramatic**: High contrast with deep shadows
@@ -252,6 +264,7 @@ export const FloatingImageToolbar = ({
 - **Cinematic**: Film-like color grading
 
 ### Color Adjustment Presets
+
 - **Auto Enhance**: Automatic color correction
 - **Portrait**: Optimized for skin tones
 - **Landscape**: Enhanced colors and clarity
@@ -269,14 +282,17 @@ export const FloatingImageToolbar = ({
 ## 🎨 Styling
 
 ### CSS Classes Available
+
 ```css
 /* Custom scrollbar for panels */
-.image-editing-panel::-webkit-scrollbar { width: 8px; }
+.image-editing-panel::-webkit-scrollbar {
+  width: 8px;
+}
 
 /* Slider track styling */
-input[type="range"]::-webkit-slider-track { 
-  background: #e5e7eb; 
-  border-radius: 4px; 
+input[type="range"]::-webkit-slider-track {
+  background: #e5e7eb;
+  border-radius: 4px;
 }
 
 /* Focus states */
@@ -286,6 +302,7 @@ input[type="range"]:focus::-webkit-slider-thumb {
 ```
 
 ### Customization
+
 All components accept `className` props for custom styling and fully support Tailwind CSS classes.
 
 ## 🔧 TypeScript Support
@@ -293,13 +310,13 @@ All components accept `className` props for custom styling and fully support Tai
 Full TypeScript support with comprehensive type definitions:
 
 ```tsx
-import type { 
+import type {
   ImageAdjustments,
   PreviewConfig,
   SlidingPanelProps,
   AdjustmentSliderProps,
-  ImagePreviewProps 
-} from '@/components/studio/image-editing';
+  ImagePreviewProps,
+} from "@/components/studio/image-editing";
 ```
 
 ## 📱 Browser Support

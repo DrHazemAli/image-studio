@@ -14,6 +14,7 @@ Azure Image Studio can be deployed on various platforms including Azure Static W
 ## ☁️ Azure Static Web Apps Deployment
 
 ### Prerequisites
+
 - Azure subscription
 - GitHub repository
 - Azure CLI installed
@@ -21,6 +22,7 @@ Azure Image Studio can be deployed on various platforms including Azure Static W
 ### 1. Create Azure Static Web App
 
 #### Using Azure Portal
+
 1. Go to [Azure Portal](https://portal.azure.com)
 2. Click "Create a resource"
 3. Search for "Static Web App"
@@ -39,6 +41,7 @@ Azure Image Studio can be deployed on various platforms including Azure Static W
    - **Build Presets**: Next.js
 
 #### Using Azure CLI
+
 ```bash
 # Login to Azure
 az login
@@ -60,6 +63,7 @@ az staticwebapp create \
 ### 2. Configure Build Settings
 
 #### Create .github/workflows/azure-static-web-apps.yml
+
 ```yaml
 name: Azure Static Web Apps CI/CD
 
@@ -98,6 +102,7 @@ jobs:
 ### 3. Configure Environment Variables
 
 #### In Azure Portal
+
 1. Go to your Static Web App
 2. Navigate to "Configuration"
 3. Add the following application settings:
@@ -105,6 +110,7 @@ jobs:
    - `NEXT_PUBLIC_APP_URL`: Your static web app URL
 
 #### Using Azure CLI
+
 ```bash
 # Set environment variables
 az staticwebapp appsettings set \
@@ -113,6 +119,7 @@ az staticwebapp appsettings set \
 ```
 
 ### 4. Deploy
+
 ```bash
 # Push to main branch to trigger deployment
 git add .
@@ -123,10 +130,12 @@ git push origin main
 ## 🟢 Vercel Deployment
 
 ### Prerequisites
+
 - Vercel account
 - GitHub repository
 
 ### 1. Connect Repository
+
 1. Go to [Vercel Dashboard](https://vercel.com/dashboard)
 2. Click "New Project"
 3. Import your GitHub repository
@@ -137,6 +146,7 @@ git push origin main
    - **Output Directory**: .next
 
 ### 2. Configure Environment Variables
+
 1. Go to Project Settings
 2. Navigate to "Environment Variables"
 3. Add the following variables:
@@ -144,6 +154,7 @@ git push origin main
    - `NEXT_PUBLIC_APP_URL`: Your Vercel app URL
 
 ### 3. Deploy
+
 ```bash
 # Install Vercel CLI
 npm i -g vercel
@@ -156,6 +167,7 @@ git push origin main
 ```
 
 ### 4. Custom Domain (Optional)
+
 1. Go to Project Settings
 2. Navigate to "Domains"
 3. Add your custom domain
@@ -164,10 +176,12 @@ git push origin main
 ## 🟠 Netlify Deployment
 
 ### Prerequisites
+
 - Netlify account
 - GitHub repository
 
 ### 1. Connect Repository
+
 1. Go to [Netlify Dashboard](https://app.netlify.com)
 2. Click "New site from Git"
 3. Connect your GitHub repository
@@ -177,6 +191,7 @@ git push origin main
    - **Node version**: 18
 
 ### 2. Configure Environment Variables
+
 1. Go to Site Settings
 2. Navigate to "Environment variables"
 3. Add the following variables:
@@ -184,6 +199,7 @@ git push origin main
    - `NEXT_PUBLIC_APP_URL`: Your Netlify app URL
 
 ### 3. Create netlify.toml
+
 ```toml
 [build]
   command = "npm run build"
@@ -199,6 +215,7 @@ git push origin main
 ```
 
 ### 4. Deploy
+
 ```bash
 # Install Netlify CLI
 npm install -g netlify-cli
@@ -213,6 +230,7 @@ git push origin main
 ## 🐳 Docker Deployment
 
 ### 1. Create Dockerfile
+
 ```dockerfile
 FROM node:20-alpine AS base
 
@@ -264,8 +282,9 @@ CMD ["node", "server.js"]
 ```
 
 ### 2. Create docker-compose.yml
+
 ```yaml
-version: '3.8'
+version: "3.8"
 
 services:
   azure-image-studio:
@@ -287,6 +306,7 @@ services:
 ```
 
 ### 3. Build and Deploy
+
 ```bash
 # Build the image
 docker build -t azure-image-studio .
@@ -304,6 +324,7 @@ docker-compose up -d
 ## 🖥️ Traditional Hosting Deployment
 
 ### Prerequisites
+
 - VPS or dedicated server
 - Node.js 18+ installed
 - PM2 or similar process manager
@@ -312,6 +333,7 @@ docker-compose up -d
 ### 1. Server Setup
 
 #### Install Node.js
+
 ```bash
 # Ubuntu/Debian
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
@@ -323,11 +345,13 @@ sudo yum install -y nodejs
 ```
 
 #### Install PM2
+
 ```bash
 npm install -g pm2
 ```
 
 ### 2. Deploy Application
+
 ```bash
 # Clone repository
 git clone https://github.com/yourusername/azure-image-studio.git
@@ -366,6 +390,7 @@ pm2 startup
 ```
 
 ### 3. Configure Nginx
+
 ```nginx
 server {
     listen 80;
@@ -386,6 +411,7 @@ server {
 ```
 
 ### 4. SSL Certificate (Let's Encrypt)
+
 ```bash
 # Install Certbot
 sudo apt install certbot python3-certbot-nginx
@@ -403,6 +429,7 @@ sudo crontab -e
 ### Production Environment Variables
 
 #### Required Variables
+
 ```bash
 # Azure API Key
 AZURE_API_KEY=your_production_api_key_here
@@ -418,6 +445,7 @@ AZURE_API_BASE_URL=https://your-endpoint.openai.azure.com
 ```
 
 #### Optional Variables
+
 ```bash
 # Debug mode (set to false in production)
 DEBUG=false
@@ -435,6 +463,7 @@ DATABASE_URL=your_database_url_here
 ### Configuration Files
 
 #### Production Configuration
+
 Ensure your configuration files are properly set up:
 
 1. **azure-config.json**: Update with production endpoints
@@ -446,6 +475,7 @@ Ensure your configuration files are properly set up:
 ### Health Checks
 
 #### Application Health Check
+
 ```bash
 # Check if application is running
 curl -f http://localhost:3000/api/config
@@ -455,6 +485,7 @@ pm2 status
 ```
 
 #### Database Health Check
+
 ```bash
 # Check IndexedDB status (if applicable)
 # This would be done through the application interface
@@ -463,6 +494,7 @@ pm2 status
 ### Logging
 
 #### PM2 Logs
+
 ```bash
 # View logs
 pm2 logs azure-image-studio
@@ -475,6 +507,7 @@ pm2 logs azure-image-studio --out
 ```
 
 #### Nginx Logs
+
 ```bash
 # Access logs
 sudo tail -f /var/log/nginx/access.log
@@ -486,6 +519,7 @@ sudo tail -f /var/log/nginx/error.log
 ### Performance Monitoring
 
 #### PM2 Monitoring
+
 ```bash
 # Monitor in real-time
 pm2 monit
@@ -495,6 +529,7 @@ pm2 show azure-image-studio
 ```
 
 #### System Monitoring
+
 ```bash
 # Check system resources
 htop
@@ -511,6 +546,7 @@ free -h
 ### GitHub Actions
 
 #### Create .github/workflows/deploy.yml
+
 ```yaml
 name: Deploy to Production
 
@@ -521,44 +557,46 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '20'
-        cache: 'npm'
-    
-    - name: Install dependencies
-      run: npm ci
-    
-    - name: Run tests
-      run: npm test
-    
-    - name: Build application
-      run: npm run build
-      env:
-        AZURE_API_KEY: ${{ secrets.AZURE_API_KEY }}
-        NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
-    
-    - name: Deploy to server
-      uses: appleboy/ssh-action@v0.1.5
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.SSH_KEY }}
-        script: |
-          cd /path/to/azure-image-studio
-          git pull origin main
-          npm ci
-          npm run build
-          pm2 restart azure-image-studio
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build application
+        run: npm run build
+        env:
+          AZURE_API_KEY: ${{ secrets.AZURE_API_KEY }}
+          NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /path/to/azure-image-studio
+            git pull origin main
+            npm ci
+            npm run build
+            pm2 restart azure-image-studio
 ```
 
 ### Secrets Configuration
+
 Add the following secrets to your GitHub repository:
+
 - `AZURE_API_KEY`: Your Azure API key
 - `NEXT_PUBLIC_APP_URL`: Your production URL
 - `HOST`: Your server IP address
@@ -570,6 +608,7 @@ Add the following secrets to your GitHub repository:
 ### Common Deployment Issues
 
 #### Build Failures
+
 ```bash
 # Check Node.js version
 node --version
@@ -583,6 +622,7 @@ npm run type-check
 ```
 
 #### Environment Variable Issues
+
 ```bash
 # Verify environment variables are set
 echo $AZURE_API_KEY
@@ -592,6 +632,7 @@ curl http://localhost:3000/api/config
 ```
 
 #### Port Issues
+
 ```bash
 # Check if port is in use
 lsof -i :3000
@@ -604,6 +645,7 @@ PORT=3001 npm start
 ```
 
 #### SSL Certificate Issues
+
 ```bash
 # Check certificate status
 sudo certbot certificates
@@ -618,6 +660,7 @@ curl -I https://yourdomain.com
 ### Performance Issues
 
 #### Memory Issues
+
 ```bash
 # Check memory usage
 free -h
@@ -627,6 +670,7 @@ NODE_OPTIONS="--max-old-space-size=4096" npm start
 ```
 
 #### CPU Issues
+
 ```bash
 # Check CPU usage
 top
@@ -638,6 +682,7 @@ pm2 start ecosystem.config.js --instances max
 ## 📚 Additional Resources
 
 ### Documentation
+
 - [Installation Guide](installation.md) - Installation instructions
 - [Getting Started](getting-started.md) - Setup and configuration
 - [Architecture Guide](architecture.md) - System architecture
@@ -645,12 +690,14 @@ pm2 start ecosystem.config.js --instances max
 - [API Documentation](api-documentation.md) - Technical reference
 
 ### Platform Documentation
+
 - [Azure Static Web Apps](https://docs.microsoft.com/en-us/azure/static-web-apps/)
 - [Vercel Documentation](https://vercel.com/docs)
 - [Netlify Documentation](https://docs.netlify.com/)
 - [Docker Documentation](https://docs.docker.com/)
 
 ### Monitoring Tools
+
 - [PM2 Documentation](https://pm2.keymetrics.io/docs/)
 - [Nginx Documentation](https://nginx.org/en/docs/)
 - [Let's Encrypt Documentation](https://letsencrypt.org/docs/)
@@ -658,11 +705,13 @@ pm2 start ecosystem.config.js --instances max
 ## 🆘 Support
 
 ### Getting Help
+
 - Check the [troubleshooting section](#troubleshooting)
 - Review the [GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
 - Join [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
 
 ### Contact
+
 - **Author**: Hazem Ali (Microsoft MVP)
 - **GitHub**: [@DrHazemAli](https://github.com/DrHazemAli)
 - **LinkedIn**: [Hazem Ali](https://linkedin.com/in/hazemali)

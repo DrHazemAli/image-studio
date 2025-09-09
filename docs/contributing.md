@@ -64,6 +64,7 @@ nano .env.local
 ```
 
 Add your Azure API key to `.env.local`:
+
 ```bash
 AZURE_API_KEY=your_azure_api_key_here
 ```
@@ -120,6 +121,7 @@ type(scope): description
 ```
 
 **Types:**
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -129,6 +131,7 @@ type(scope): description
 - `chore`: Maintenance tasks
 
 **Examples:**
+
 ```bash
 feat(api): add support for FLUX 1.1 Pro model
 fix(ui): resolve canvas zoom issue on mobile
@@ -187,20 +190,24 @@ When creating a PR, please include:
 
 ```markdown
 ## Description
+
 Brief description of changes
 
 ## Type of Change
+
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Breaking change
 - [ ] Documentation update
 
 ## Testing
+
 - [ ] Tests pass locally
 - [ ] Manual testing completed
 - [ ] Cross-browser testing (if UI changes)
 
 ## Checklist
+
 - [ ] Code follows style guidelines
 - [ ] Self-review completed
 - [ ] Documentation updated
@@ -300,16 +307,16 @@ src/
 ### Test Structure
 
 ```typescript
-describe('ComponentName', () => {
-  it('should render correctly', () => {
+describe("ComponentName", () => {
+  it("should render correctly", () => {
     // Test implementation
   });
 
-  it('should handle user interactions', () => {
+  it("should handle user interactions", () => {
     // Test implementation
   });
 
-  it('should handle error states', () => {
+  it("should handle error states", () => {
     // Test implementation
   });
 });
@@ -348,30 +355,37 @@ describe('ComponentName', () => {
 
 ```markdown
 ## Bug Description
+
 Clear description of the bug
 
 ## Steps to Reproduce
+
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
 4. See error
 
 ## Expected Behavior
+
 What you expected to happen
 
 ## Actual Behavior
+
 What actually happened
 
 ## Environment
+
 - OS: [e.g., Windows 10, macOS 12, Ubuntu 20.04]
 - Browser: [e.g., Chrome 91, Firefox 89, Safari 14]
 - Node.js version: [e.g., 18.0.0]
 - Application version: [e.g., 1.0.1]
 
 ## Screenshots
+
 If applicable, add screenshots
 
 ## Additional Context
+
 Any other context about the problem
 ```
 
@@ -388,18 +402,23 @@ Any other context about the problem
 
 ```markdown
 ## Feature Description
+
 Clear description of the feature
 
 ## Use Case
+
 Why is this feature needed?
 
 ## Proposed Solution
+
 How should this feature work?
 
 ## Alternatives Considered
+
 What other solutions have you considered?
 
 ## Additional Context
+
 Any other context or screenshots
 ```
 
@@ -487,12 +506,14 @@ Contributors are recognized in:
 ## 📚 Additional Resources
 
 ### Documentation
+
 - [Installation Guide](installation.md) - Setup instructions
 - [Developer Guide](developer-guide.md) - Development setup
 - [API Documentation](api-documentation.md) - API reference
 - [Architecture Guide](architecture.md) - System design
 
 ### External Resources
+
 - [Next.js Documentation](https://nextjs.org/docs)
 - [React Documentation](https://react.dev/)
 - [TypeScript Documentation](https://www.typescriptlang.org/docs/)

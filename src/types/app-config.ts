@@ -8,9 +8,9 @@ export interface AppConfig {
     name: string;
     version: string;
     description: string;
-    environment: 'development' | 'production' | 'staging';
+    environment: "development" | "production" | "staging";
   };
-  
+
   features: {
     floatingImageToolbar: {
       enabled: boolean;
@@ -18,15 +18,15 @@ export interface AppConfig {
       collapsible: boolean;
       smartPositioning: boolean;
     };
-    
+
     backgroundRemoval: {
       enabled: boolean;
       defaultModel: string;
       models: BackgroundRemovalModel[];
       defaultSettings: {
-        quality: 'standard' | 'high';
+        quality: "standard" | "high";
         edgeRefinement: boolean;
-        transparencyMode: 'full' | 'soft';
+        transparencyMode: "full" | "soft";
         outputFormat: string;
       };
       advanced: {
@@ -36,14 +36,14 @@ export interface AppConfig {
         timeoutMs: number;
       };
     };
-    
+
     imageGeneration: {
       enabled: boolean;
       defaultModel: string;
       defaultSize: string;
       defaultOutputFormat: string;
     };
-    
+
     imageEditing: {
       enabled: boolean;
       tools: {
@@ -56,19 +56,19 @@ export interface AppConfig {
       };
     };
   };
-  
+
   ui: {
     theme: {
-      default: 'light' | 'dark' | 'system';
-      options: ('light' | 'dark' | 'system')[];
+      default: "light" | "dark" | "system";
+      options: ("light" | "dark" | "system")[];
     };
     animations: {
       enabled: boolean;
-      duration: 'fast' | 'normal' | 'slow';
+      duration: "fast" | "normal" | "slow";
       easing: string;
     };
     toolbar: {
-      position: 'left' | 'right' | 'top' | 'bottom';
+      position: "left" | "right" | "top" | "bottom";
       collapsible: boolean;
       showShortcuts: boolean;
     };
@@ -87,7 +87,7 @@ export interface AppConfig {
       showAssets: boolean;
     };
   };
-  
+
   performance: {
     imageProcessing: {
       maxImageSize: number;
@@ -95,7 +95,7 @@ export interface AppConfig {
       enableWebWorkers: boolean;
     };
     canvas: {
-      renderingMode: 'webgl' | 'canvas2d';
+      renderingMode: "webgl" | "canvas2d";
       enableImageCache: boolean;
       maxCacheSize: number;
     };
@@ -105,7 +105,7 @@ export interface AppConfig {
       maxRetries: number;
     };
   };
-  
+
   security: {
     fileUpload: {
       maxFileSize: number;
@@ -121,7 +121,7 @@ export interface AppConfig {
       };
     };
   };
-  
+
   integrations: {
     azure: {
       enabled: boolean;
@@ -133,10 +133,10 @@ export interface AppConfig {
       provider: string | null;
     };
   };
-  
+
   debugging: {
     enableConsoleLogging: boolean;
-    logLevel: 'debug' | 'info' | 'warn' | 'error';
+    logLevel: "debug" | "info" | "warn" | "error";
     enablePerformanceMonitoring: boolean;
   };
 }
@@ -148,8 +148,8 @@ export interface BackgroundRemovalModel {
   description: string;
   capabilities: string[];
   recommended: boolean;
-  speed: 'fast' | 'medium' | 'slow';
-  quality: 'standard' | 'high' | 'premium';
+  speed: "fast" | "medium" | "slow";
+  quality: "standard" | "high" | "premium";
   requiresApproval?: boolean;
 }
 
@@ -192,16 +192,16 @@ export class AppConfigService {
   private static async fetchConfig(): Promise<AppConfig> {
     try {
       // In client-side, we'll fetch from the config endpoint
-      const response = await fetch('/api/app-config');
+      const response = await fetch("/api/app-config");
       if (!response.ok) {
         throw new Error(`Failed to load app config: ${response.statusText}`);
       }
-      
+
       this.config = await response.json();
       return this.config!;
     } catch (error) {
-      console.error('Error loading app configuration:', error);
-      
+      console.error("Error loading app configuration:", error);
+
       // Return default config as fallback
       return this.getDefaultConfig();
     }
@@ -217,7 +217,9 @@ export class AppConfigService {
   /**
    * Get background removal configuration
    */
-  static getBackgroundRemovalConfig(): AppConfig['features']['backgroundRemoval'] | null {
+  static getBackgroundRemovalConfig():
+    | AppConfig["features"]["backgroundRemoval"]
+    | null {
     return this.config?.features.backgroundRemoval || null;
   }
 
@@ -232,13 +234,13 @@ export class AppConfigService {
    * Get default background removal model
    */
   static getDefaultBackgroundRemovalModel(): string {
-    return this.config?.features.backgroundRemoval.defaultModel || 'florence-2';
+    return this.config?.features.backgroundRemoval.defaultModel || "florence-2";
   }
 
   /**
    * Check if a feature is enabled
    */
-  static isFeatureEnabled(feature: keyof AppConfig['features']): boolean {
+  static isFeatureEnabled(feature: keyof AppConfig["features"]): boolean {
     return this.config?.features[feature]?.enabled || false;
   }
 
@@ -248,51 +250,51 @@ export class AppConfigService {
   private static getDefaultConfig(): AppConfig {
     return {
       app: {
-        name: 'Azure Image Studio',
-        version: '1.0.1',
-        description: 'AI-powered image generation and editing platform',
-        environment: 'development'
+        name: "Azure Image Studio",
+        version: "1.0.1",
+        description: "AI-powered image generation and editing platform",
+        environment: "development",
       },
       features: {
         floatingImageToolbar: {
           enabled: true,
           defaultPosition: { x: 100, y: 100 },
           collapsible: true,
-          smartPositioning: true
+          smartPositioning: true,
         },
         backgroundRemoval: {
           enabled: true,
-          defaultModel: 'florence-2',
+          defaultModel: "florence-2",
           models: [
             {
-              id: 'florence-2',
-              name: 'Florence 2.0',
-              provider: 'Microsoft Azure',
-              description: 'Microsoft\'s advanced vision-language model',
-              capabilities: ['background-removal'],
+              id: "florence-2",
+              name: "Florence 2.0",
+              provider: "Microsoft Azure",
+              description: "Microsoft's advanced vision-language model",
+              capabilities: ["background-removal"],
               recommended: true,
-              speed: 'fast',
-              quality: 'high'
-            }
+              speed: "fast",
+              quality: "high",
+            },
           ],
           defaultSettings: {
-            quality: 'standard',
+            quality: "standard",
             edgeRefinement: true,
-            transparencyMode: 'full',
-            outputFormat: 'png'
+            transparencyMode: "full",
+            outputFormat: "png",
           },
           advanced: {
             enableBatchProcessing: false,
             maxConcurrentRequests: 1,
             retryAttempts: 2,
-            timeoutMs: 30000
-          }
+            timeoutMs: 30000,
+          },
         },
         imageGeneration: {
           enabled: true,
-          defaultModel: 'FLUX.1-Kontext-pro',
-          defaultSize: '1024x1024',
-          defaultOutputFormat: 'png'
+          defaultModel: "FLUX.1-Kontext-pro",
+          defaultSize: "1024x1024",
+          defaultOutputFormat: "png",
         },
         imageEditing: {
           enabled: true,
@@ -302,24 +304,24 @@ export class AppConfigService {
             filters: { enabled: true },
             adjustments: { enabled: true },
             transform: { enabled: true },
-            blendMode: { enabled: true }
-          }
-        }
+            blendMode: { enabled: true },
+          },
+        },
       },
       ui: {
         theme: {
-          default: 'system',
-          options: ['light', 'dark', 'system']
+          default: "system",
+          options: ["light", "dark", "system"],
         },
         animations: {
           enabled: true,
-          duration: 'normal',
-          easing: 'ease-out'
+          duration: "normal",
+          easing: "ease-out",
         },
         toolbar: {
-          position: 'left',
+          position: "left",
           collapsible: true,
-          showShortcuts: true
+          showShortcuts: true,
         },
         canvas: {
           defaultZoom: 100,
@@ -327,63 +329,63 @@ export class AppConfigService {
           minZoom: 10,
           maxZoom: 500,
           gridEnabled: false,
-          snapToGrid: false
+          snapToGrid: false,
         },
         panels: {
           showConsole: false,
           showLayers: false,
           showHistory: true,
-          showAssets: true
-        }
+          showAssets: true,
+        },
       },
       performance: {
         imageProcessing: {
           maxImageSize: 4096,
           compressionQuality: 0.9,
-          enableWebWorkers: true
+          enableWebWorkers: true,
         },
         canvas: {
-          renderingMode: 'webgl',
+          renderingMode: "webgl",
           enableImageCache: true,
-          maxCacheSize: 100
+          maxCacheSize: 100,
         },
         api: {
           requestTimeout: 30000,
           retryDelay: 1000,
-          maxRetries: 3
-        }
+          maxRetries: 3,
+        },
       },
       security: {
         fileUpload: {
           maxFileSize: 10485760,
-          allowedFormats: ['jpg', 'jpeg', 'png', 'webp', 'bmp'],
-          validateImageHeaders: true
+          allowedFormats: ["jpg", "jpeg", "png", "webp", "bmp"],
+          validateImageHeaders: true,
         },
         api: {
           enableCors: true,
           rateLimit: {
             enabled: true,
             windowMs: 900000,
-            maxRequests: 100
-          }
-        }
+            maxRequests: 100,
+          },
+        },
       },
       integrations: {
         azure: {
           enabled: true,
-          configFile: 'azure-config.json',
-          modelsFile: 'azure-models.json'
+          configFile: "azure-config.json",
+          modelsFile: "azure-models.json",
         },
         analytics: {
           enabled: false,
-          provider: null
-        }
+          provider: null,
+        },
       },
       debugging: {
         enableConsoleLogging: false,
-        logLevel: 'info',
-        enablePerformanceMonitoring: false
-      }
+        logLevel: "info",
+        enablePerformanceMonitoring: false,
+      },
     };
   }
 }

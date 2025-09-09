@@ -10,12 +10,14 @@ Need help with Azure Image Studio? This guide will help you find the right resou
 ## 🚀 Quick Help
 
 ### Getting Started
+
 - **[Getting Started Guide](docs/getting-started.md)** - Complete setup and configuration
 - **[Configuration Guide](docs/configuration.md)** - Comprehensive configuration reference
 - **[User Guide](docs/user-guide.md)** - Detailed usage instructions
 - **[FAQ](#frequently-asked-questions)** - Common questions and answers
 
 ### Technical Issues
+
 - **[API Documentation](docs/api-documentation.md)** - Technical reference
 - **[Architecture Guide](docs/architecture.md)** - System design details
 - **[Developer Guide](docs/developer-guide.md)** - Development setup and architecture
@@ -24,16 +26,19 @@ Need help with Azure Image Studio? This guide will help you find the right resou
 ## 📞 Support Channels
 
 ### GitHub Issues
+
 - **Bug Reports**: [Report bugs](https://github.com/DrHazemAli/azure-image-studio/issues)
 - **Feature Requests**: [Request features](https://github.com/DrHazemAli/azure-image-studio/issues)
 - **General Questions**: [Ask questions](https://github.com/DrHazemAli/azure-image-studio/discussions)
 
 ### Direct Contact
+
 - **LinkedIn**: [LinkedIn](https://www.linkedin.com/in/hazemali/)
 - **GitHub**: [@DrHazemAli](https://github.com/DrHazemAli)
 - **Response Time**: Within 48 hours
 
 ### Community Support
+
 - **GitHub Discussions**: Community help and discussions
 - **Issues**: Browse existing issues and solutions
 - **Pull Requests**: Contribute fixes and improvements
@@ -43,41 +48,52 @@ Need help with Azure Image Studio? This guide will help you find the right resou
 ### Common Issues
 
 #### Configuration Problems
+
 **Issue**: "Azure API key not configured"
+
 - **Solution**: Ensure `AZURE_API_KEY` is set in your `.env.local` file
 - **Check**: Verify the API key is correct and has proper permissions
 
 **Issue**: "Invalid Azure configuration"
+
 - **Solution**: Check your `azure-config.json` and `azure-models.json` files
 - **Check**: Verify endpoint URLs and deployment names are correct
 
 **Issue**: "Model not available"
+
 - **Solution**: Ensure the model is enabled in your configuration
 - **Check**: Verify you have access to the required Azure service
 
 #### Generation Issues
+
 **Issue**: Generation fails with error
+
 - **Solution**: Check the console for detailed error messages
 - **Check**: Verify your prompt is appropriate and within limits
 - **Try**: Use a different model or simpler prompt
 
 **Issue**: Slow generation times
+
 - **Solution**: Check your internet connection and Azure service status
 - **Check**: Verify you haven't exceeded rate limits
 - **Try**: Use a smaller image size or different model
 
 **Issue**: Poor quality results
+
 - **Solution**: Try different prompts or models
 - **Check**: Ensure you're using appropriate quality settings
 - **Try**: Use more descriptive prompts
 
 #### UI/UX Issues
+
 **Issue**: Interface not loading properly
+
 - **Solution**: Clear browser cache and refresh
 - **Check**: Ensure you're using a supported browser
 - **Try**: Disable browser extensions
 
 **Issue**: Canvas not responding
+
 - **Solution**: Refresh the page and try again
 - **Check**: Ensure you have sufficient system resources
 - **Try**: Use a different browser or device
@@ -85,18 +101,21 @@ Need help with Azure Image Studio? This guide will help you find the right resou
 ### Performance Issues
 
 #### Slow Loading
+
 - **Check**: Internet connection speed
 - **Try**: Clear browser cache
 - **Check**: Disable unnecessary browser extensions
 - **Try**: Use a different browser
 
 #### Memory Issues
+
 - **Check**: Available system memory
 - **Try**: Close other applications
 - **Check**: Reduce image sizes
 - **Try**: Restart the application
 
 #### Generation Timeouts
+
 - **Check**: Azure service status
 - **Try**: Use simpler prompts
 - **Check**: Verify rate limits
@@ -163,18 +182,21 @@ A: Yes! See our [Contributing Guide](docs/contributing.md) for details on how to
 ## 🐛 Reporting Bugs
 
 ### Before Reporting
+
 1. Check if the issue already exists
 2. Try the latest version
 3. Check the documentation
 4. Search closed issues for solutions
 
 ### Bug Report Template
+
 ```markdown
 **Describe the bug**
 A clear and concise description of what the bug is.
 
 **To Reproduce**
 Steps to reproduce the behavior:
+
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
@@ -187,6 +209,7 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Environment:**
+
 - OS: [e.g. Windows, macOS, Linux]
 - Browser: [e.g. Chrome, Firefox, Safari]
 - Version: [e.g. 1.0.0]
@@ -198,11 +221,13 @@ Add any other context about the problem here.
 ## 💡 Feature Requests
 
 ### Before Requesting
+
 1. Check if the feature already exists
 2. Search existing feature requests
 3. Consider if it aligns with project goals
 
 ### Feature Request Template
+
 ```markdown
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is.
@@ -220,6 +245,7 @@ Add any other context or screenshots about the feature request here.
 ## 📚 Additional Resources
 
 ### Documentation
+
 - **[Getting Started](docs/getting-started.md)** - Setup and configuration
 - **[Configuration Guide](docs/configuration.md)** - Comprehensive configuration reference
 - **[User Guide](docs/user-guide.md)** - Detailed usage instructions
@@ -231,12 +257,14 @@ Add any other context or screenshots about the feature request here.
 - **[Roadmap](docs/roadmap.md)** - Current and planned features
 
 ### Community
+
 - **[GitHub Repository](https://github.com/DrHazemAli/azure-image-studio)** - Source code and issues
 - **[GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)** - Community discussions
 - **[Contributing Guide](docs/contributing.md)** - How to contribute
 - **[Code of Conduct](CODE_OF_CONDUCT.md)** - Community guidelines
 
 ### Legal
+
 - **[License](LICENSE)** - MIT License
 - **[Privacy Policy](PRIVACY.md)** - Privacy information
 - **[Security Policy](SECURITY.md)** - Security information
@@ -244,13 +272,17 @@ Add any other context or screenshots about the feature request here.
 ## 🆘 Emergency Support
 
 ### Critical Issues
+
 For critical security issues or major bugs:
+
 - **LinkedIn**: [LinkedIn](https://www.linkedin.com/in/hazemali/)
 - **Subject**: "URGENT: [Issue Description]"
 - **Response**: Within 24 hours
 
 ### Service Outages
+
 If the service is down:
+
 - Check [Azure Status](https://status.azure.com/)
 - Check [GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
 - Follow updates on [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)

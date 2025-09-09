@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { Switch } from '@radix-ui/react-switch';
-import { useTheme } from '@/hooks/use-theme';
+import { motion } from "framer-motion";
+import { Switch } from "@radix-ui/react-switch";
+import { useTheme } from "@/hooks/use-theme";
 
 interface MacStyleViewProps {
   title: string;
@@ -12,37 +12,37 @@ interface MacStyleViewProps {
   stats?: {
     label: string;
     value: string | number;
-    color?: 'green' | 'blue' | 'yellow' | 'red' | 'gray';
+    color?: "green" | "blue" | "yellow" | "red" | "gray";
   }[];
   children?: React.ReactNode;
   className?: string;
 }
 
-export function MacStyleView({ 
-  title, 
-  description, 
-  isEnabled, 
-  onToggle, 
-  stats = [], 
+export function MacStyleView({
+  title,
+  description,
+  isEnabled,
+  onToggle,
+  stats = [],
   children,
-  className = ''
+  className = "",
 }: MacStyleViewProps) {
   const { resolvedTheme } = useTheme();
 
   const getStatColor = (color?: string) => {
     switch (color) {
-      case 'green':
-        return 'text-green-600 dark:text-green-400';
-      case 'blue':
-        return 'text-blue-600 dark:text-blue-400';
-      case 'yellow':
-        return 'text-yellow-600 dark:text-yellow-400';
-      case 'red':
-        return 'text-red-600 dark:text-red-400';
-      case 'gray':
-        return 'text-gray-600 dark:text-gray-400';
+      case "green":
+        return "text-green-600 dark:text-green-400";
+      case "blue":
+        return "text-blue-600 dark:text-blue-400";
+      case "yellow":
+        return "text-yellow-600 dark:text-yellow-400";
+      case "red":
+        return "text-red-600 dark:text-red-400";
+      case "gray":
+        return "text-gray-600 dark:text-gray-400";
       default:
-        return 'text-gray-600 dark:text-gray-400';
+        return "text-gray-600 dark:text-gray-400";
     }
   };
 
@@ -54,30 +54,35 @@ export function MacStyleView({
       transition={{ duration: 0.2 }}
       className={`bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl rounded-xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg p-4 ${className}`}
       style={{
-        background: resolvedTheme === 'dark' 
-          ? 'linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(31, 41, 55, 0.95) 100%)'
-          : 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.95) 100%)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
+        background:
+          resolvedTheme === "dark"
+            ? "linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(31, 41, 55, 0.95) 100%)"
+            : "linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.95) 100%)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
       }}
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex-1">
-          <h3 className={`text-sm font-semibold ${
-            resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'
-          }`}>
+          <h3
+            className={`text-sm font-semibold ${
+              resolvedTheme === "dark" ? "text-white" : "text-gray-900"
+            }`}
+          >
             {title}
           </h3>
           {description && (
-            <p className={`text-xs mt-1 ${
-              resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-            }`}>
+            <p
+              className={`text-xs mt-1 ${
+                resolvedTheme === "dark" ? "text-gray-400" : "text-gray-600"
+              }`}
+            >
               {description}
             </p>
           )}
         </div>
-        
+
         {/* Mac-style toggle switch */}
         <div className="flex items-center">
           <Switch
@@ -93,7 +98,7 @@ export function MacStyleView({
               transition={{
                 type: "spring",
                 stiffness: 500,
-                damping: 30
+                damping: 30,
               }}
             />
           </Switch>
@@ -110,17 +115,21 @@ export function MacStyleView({
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: index * 0.1 }}
               className={`p-3 rounded-lg border ${
-                resolvedTheme === 'dark' 
-                  ? 'bg-gray-800/50 border-gray-700/50' 
-                  : 'bg-gray-50/50 border-gray-200/50'
+                resolvedTheme === "dark"
+                  ? "bg-gray-800/50 border-gray-700/50"
+                  : "bg-gray-50/50 border-gray-200/50"
               }`}
             >
-              <div className={`text-xs font-medium ${
-                resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-              }`}>
+              <div
+                className={`text-xs font-medium ${
+                  resolvedTheme === "dark" ? "text-gray-400" : "text-gray-600"
+                }`}
+              >
                 {stat.label}
               </div>
-              <div className={`text-lg font-bold mt-1 ${getStatColor(stat.color)}`}>
+              <div
+                className={`text-lg font-bold mt-1 ${getStatColor(stat.color)}`}
+              >
                 {stat.value}
               </div>
             </motion.div>
@@ -129,11 +138,7 @@ export function MacStyleView({
       )}
 
       {/* Additional content */}
-      {children && (
-        <div className="mt-4">
-          {children}
-        </div>
-      )}
+      {children && <div className="mt-4">{children}</div>}
     </motion.div>
   );
 }

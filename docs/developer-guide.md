@@ -7,6 +7,7 @@ This comprehensive guide provides everything developers need to understand, cont
 ## 🚀 Quick Start for Developers
 
 ### Prerequisites
+
 - **Node.js 18+** installed on your system
 - **Git** for version control
 - **Azure subscription** with access to AI services
@@ -16,17 +17,20 @@ This comprehensive guide provides everything developers need to understand, cont
 ### Development Setup
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/DrHazemAli/azure-image-studio.git
    cd azure-image-studio
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment**
+
    ```bash
    # Copy the example environment file
    cp .env.example .env.local
@@ -34,6 +38,7 @@ This comprehensive guide provides everything developers need to understand, cont
    ```
 
 4. **Start development server**
+
    ```bash
    npm run dev
    ```
@@ -61,6 +66,7 @@ This comprehensive guide provides everything developers need to understand, cont
 ### Technology Stack
 
 #### Frontend
+
 - **Next.js 15.5.2** - React framework with App Router
 - **React 19.1.0** - Latest React with concurrent features
 - **TypeScript 5.0** - Type-safe development
@@ -70,6 +76,7 @@ This comprehensive guide provides everything developers need to understand, cont
 - **Fabric.js** - Advanced canvas manipulation
 
 #### Backend
+
 - **Azure OpenAI Service** - AI model integration
 - **Azure AI Foundry** - FLUX model integration
 - **RESTful API** - Clean API architecture
@@ -77,6 +84,7 @@ This comprehensive guide provides everything developers need to understand, cont
 - **Error Handling** - Comprehensive error management
 
 #### Data Storage
+
 - **IndexedDB** - Client-side data storage
 - **Local Storage** - Configuration and preferences
 - **Project Management** - Export/import functionality
@@ -180,12 +188,14 @@ src/
 ### Code Organization
 
 #### Component Structure
+
 - **Atomic Design**: Components follow atomic design principles
 - **Single Responsibility**: Each component has a single, well-defined purpose
 - **Reusability**: Components are designed for reuse across the application
 - **Type Safety**: All components are fully typed with TypeScript
 
 #### File Naming Conventions
+
 - **Components**: PascalCase (e.g., `MainCanvas.tsx`)
 - **Hooks**: camelCase with `use` prefix (e.g., `useTheme.ts`)
 - **Utilities**: camelCase (e.g., `azureProvider.ts`)
@@ -216,17 +226,20 @@ npm run test:coverage    # Run tests with coverage
 ### Code Standards
 
 #### TypeScript
+
 - **Strict Mode**: All TypeScript strict checks enabled
 - **Type Definitions**: All functions and components must have proper types
 - **Interface Definitions**: Use interfaces for object shapes
 - **Type Imports**: Use type imports for type-only imports
 
 #### ESLint Configuration
+
 - **Next.js Rules**: Follows Next.js recommended ESLint rules
 - **TypeScript Rules**: TypeScript-specific linting rules
 - **Custom Rules**: Project-specific linting rules
 
 #### Code Formatting
+
 - **Prettier**: Automatic code formatting
 - **Consistent Style**: Consistent code style across the project
 - **Import Organization**: Organized imports with proper grouping
@@ -236,13 +249,14 @@ npm run test:coverage    # Run tests with coverage
 ### IndexedDB Implementation
 
 #### Database Schema
+
 ```typescript
 interface Asset {
   id: string;
   project_id: string; // Foreign key to Project
   url: string;
   name: string;
-  type: 'generation' | 'edit' | 'upload';
+  type: "generation" | "edit" | "upload";
   timestamp: Date;
   prompt?: string;
   model?: string;
@@ -251,14 +265,14 @@ interface Asset {
 interface HistoryEntry {
   id: string;
   project_id: string; // Foreign key to Project
-  type: 'generation' | 'edit' | 'upload';
+  type: "generation" | "edit" | "upload";
   timestamp: Date;
   prompt?: string;
   model?: string;
   settings?: Record<string, unknown>;
   imageUrl?: string;
   thumbnailUrl?: string;
-  status: 'completed' | 'failed' | 'in-progress';
+  status: "completed" | "failed" | "in-progress";
   error?: string;
 }
 
@@ -287,6 +301,7 @@ interface Project {
 ```
 
 #### Database Operations
+
 - **CRUD Operations**: Create, Read, Update, Delete for all entities
 - **Indexing**: Proper indexing for performance
 - **Migration**: Automatic database migration system
@@ -295,6 +310,7 @@ interface Project {
 ### Project Management
 
 #### Project Structure
+
 ```typescript
 interface ProjectData {
   version: string;
@@ -322,6 +338,7 @@ interface ProjectData {
 ```
 
 #### Project Operations
+
 - **Create**: Create new projects with templates
 - **Export**: Export projects to JSON format
 - **Import**: Import projects from JSON files
@@ -333,28 +350,29 @@ interface ProjectData {
 ### Azure Provider
 
 #### AzureImageProvider Class
+
 ```typescript
 class AzureImageProvider {
   constructor(config: AzureConfig, apiKey: string);
-  
+
   // Validate configuration
   validateConfiguration(): ValidationResult;
-  
+
   // Generate images
   generateImage(
-    deploymentId: string, 
-    params: GenerationParams
+    deploymentId: string,
+    params: GenerationParams,
   ): Promise<GenerationResult>;
-  
+
   // Edit images
   editImage(
     deploymentId: string,
-    params: EditParams
+    params: EditParams,
   ): Promise<GenerationResult>;
-  
+
   // Get available models
   getAvailableModels(): Model[];
-  
+
   // Get model capabilities
   getModelCapabilities(modelId: string): Capability[];
 }
@@ -363,6 +381,7 @@ class AzureImageProvider {
 #### API Endpoints
 
 ##### Generation Endpoint
+
 ```typescript
 POST /api/generate
 {
@@ -378,6 +397,7 @@ POST /api/generate
 ```
 
 ##### Configuration Endpoint
+
 ```typescript
 GET /api/config
 Response: {
@@ -388,6 +408,7 @@ Response: {
 ```
 
 ##### Models Endpoint
+
 ```typescript
 GET /api/models
 Response: {
@@ -400,12 +421,14 @@ Response: {
 ### Error Handling
 
 #### Error Types
+
 - **Configuration Errors**: Invalid Azure configuration
 - **API Errors**: Azure service errors
 - **Validation Errors**: Input validation failures
 - **Network Errors**: Connection issues
 
 #### Error Response Format
+
 ```typescript
 {
   error: string;
@@ -420,6 +443,7 @@ Response: {
 ### Fabric.js Integration
 
 #### Canvas Components
+
 - **MainCanvas**: Core canvas with Fabric.js integration
 - **CanvasViewport**: Viewport management and navigation
 - **CanvasInfo**: Canvas information display
@@ -430,6 +454,7 @@ Response: {
 - **ZoomControls**: Zoom functionality
 
 #### Canvas Operations
+
 - **Object Management**: Add, remove, modify canvas objects
 - **Layer Management**: Manage object layers
 - **Transform Operations**: Move, resize, rotate objects
@@ -439,6 +464,7 @@ Response: {
 ### Tool System
 
 #### Available Tools
+
 - **CropTool**: Image cropping functionality
 - **FiltersTool**: Image filters and effects
 - **ImageResizeTool**: Image resizing
@@ -448,6 +474,7 @@ Response: {
 - **ToolsPanel**: Tool selection interface
 
 #### Tool Architecture
+
 ```typescript
 interface Tool {
   id: string;
@@ -464,28 +491,33 @@ interface Tool {
 ### Testing Strategy
 
 #### Unit Tests
+
 - **Component Tests**: Test individual components
 - **Utility Tests**: Test utility functions
 - **Hook Tests**: Test custom React hooks
 - **API Tests**: Test API endpoints
 
 #### Integration Tests
+
 - **Canvas Tests**: Test canvas functionality
 - **Database Tests**: Test IndexedDB operations
 - **API Integration Tests**: Test Azure API integration
 
 #### End-to-End Tests
+
 - **User Workflows**: Test complete user workflows
 - **Generation Tests**: Test image generation flows
 - **Project Tests**: Test project management
 
 ### Testing Tools
+
 - **Jest**: JavaScript testing framework
 - **React Testing Library**: React component testing
 - **Playwright**: End-to-end testing
 - **MSW**: API mocking
 
 ### Running Tests
+
 ```bash
 # Run all tests
 npm test
@@ -508,6 +540,7 @@ npm run test:e2e
 ### Build Process
 
 #### Production Build
+
 ```bash
 # Build the application
 npm run build
@@ -517,6 +550,7 @@ npm run start
 ```
 
 #### Build Optimization
+
 - **Code Splitting**: Automatic code splitting with Next.js
 - **Image Optimization**: Next.js image optimization
 - **Bundle Analysis**: Bundle size analysis
@@ -525,6 +559,7 @@ npm run start
 ### Azure Deployment
 
 #### Azure Static Web Apps
+
 ```yaml
 # azure-static-web-apps.yml
 name: Azure Static Web Apps CI/CD
@@ -559,6 +594,7 @@ jobs:
 ```
 
 #### Environment Configuration
+
 ```bash
 # Production environment variables
 AZURE_API_KEY=your_production_api_key
@@ -570,6 +606,7 @@ NEXT_PUBLIC_APP_URL=https://your-app.azurestaticapps.net
 ### CLI Architecture
 
 #### Command Structure
+
 ```typescript
 interface Command {
   name: string;
@@ -580,6 +617,7 @@ interface Command {
 ```
 
 #### Available Commands
+
 - **config**: Configuration management
 - **generate**: Image generation
 - **models**: Model management
@@ -588,6 +626,7 @@ interface Command {
 - **dev**: Development tools
 
 ### CLI Development Setup
+
 ```bash
 # Navigate to CLI directory
 cd cli
@@ -610,17 +649,20 @@ npm test
 ### Frontend Optimization
 
 #### Code Splitting
+
 - **Route-based Splitting**: Split code by routes
 - **Component Splitting**: Lazy load components
 - **Library Splitting**: Split vendor libraries
 
 #### Image Optimization
+
 - **Next.js Image**: Automatic image optimization
 - **Lazy Loading**: Lazy load images
 - **Format Selection**: Choose optimal image formats
 - **Compression**: Automatic image compression
 
 #### Caching Strategy
+
 - **Browser Caching**: Cache static assets
 - **API Caching**: Cache API responses
 - **IndexedDB Caching**: Cache application data
@@ -628,12 +670,14 @@ npm test
 ### Backend Optimization
 
 #### API Optimization
+
 - **Request Batching**: Batch multiple requests
 - **Response Compression**: Compress API responses
 - **Connection Pooling**: Reuse connections
 - **Rate Limiting**: Implement rate limiting
 
 #### Database Optimization
+
 - **Indexing**: Proper database indexing
 - **Query Optimization**: Optimize database queries
 - **Connection Management**: Efficient connection management
@@ -643,12 +687,14 @@ npm test
 ### Security Measures
 
 #### API Security
+
 - **API Key Management**: Secure API key storage
 - **Input Validation**: Validate all inputs
 - **Rate Limiting**: Prevent abuse
 - **CORS Configuration**: Proper CORS setup
 
 #### Client Security
+
 - **XSS Prevention**: Prevent cross-site scripting
 - **CSRF Protection**: Cross-site request forgery protection
 - **Content Security Policy**: CSP headers
@@ -657,11 +703,13 @@ npm test
 ### Data Protection
 
 #### Data Encryption
+
 - **In Transit**: HTTPS for all communications
 - **At Rest**: Encrypt sensitive data
 - **API Keys**: Secure API key storage
 
 #### Privacy
+
 - **Data Minimization**: Collect only necessary data
 - **User Consent**: Obtain user consent
 - **Data Retention**: Implement data retention policies
@@ -671,6 +719,7 @@ npm test
 ### Development Guidelines
 
 #### Code Standards
+
 - **TypeScript**: Use TypeScript for all new code
 - **ESLint**: Follow the project's ESLint configuration
 - **Prettier**: Use Prettier for code formatting
@@ -678,6 +727,7 @@ npm test
 - **Comments**: Add comments for complex logic
 
 #### Commit Messages
+
 ```bash
 # Good examples
 feat: add support for FLUX 1.1 Pro model
@@ -693,6 +743,7 @@ changes
 ```
 
 #### Pull Request Process
+
 1. **Create a Pull Request**
    - Use a descriptive title
    - Reference any related issues
@@ -712,6 +763,7 @@ changes
 ### Areas for Contribution
 
 #### High Priority
+
 - **Bug Fixes**: Fix reported issues
 - **Performance**: Optimize image generation and rendering
 - **Accessibility**: Improve accessibility features
@@ -719,6 +771,7 @@ changes
 - **Documentation**: Improve and expand documentation
 
 #### Feature Development
+
 - **New AI Models**: Add support for additional models
 - **Advanced Tools**: Implement new editing tools
 - **Collaboration**: Add real-time collaboration features
@@ -728,6 +781,7 @@ changes
 ## 📚 Additional Resources
 
 ### Documentation
+
 - [Architecture Guide](architecture.md) - System design overview
 - [API Documentation](api-documentation.md) - Technical API reference
 - [Database Guide](database-guide.md) - Data storage and management
@@ -735,6 +789,7 @@ changes
 - [Deployment Guide](deployment.md) - Azure deployment instructions
 
 ### External Resources
+
 - [Next.js Documentation](https://nextjs.org/docs)
 - [React Documentation](https://react.dev)
 - [TypeScript Documentation](https://www.typescriptlang.org/docs)
@@ -742,6 +797,7 @@ changes
 - [Fabric.js Documentation](http://fabricjs.com/docs)
 
 ### Community
+
 - [GitHub Repository](https://github.com/DrHazemAli/azure-image-studio)
 - [GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
 - [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)

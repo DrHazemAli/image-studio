@@ -66,17 +66,20 @@ Azure GenAI Image Studio is a modern web application built with a client-server 
 ### Frontend Technologies
 
 #### Core Framework
+
 - **Next.js 15.5.2**: React framework with App Router
 - **React 19.1.0**: UI library with concurrent features
 - **TypeScript 5.0**: Type-safe JavaScript development
 
 #### UI and Styling
+
 - **Tailwind CSS 4.0**: Utility-first CSS framework
 - **Radix UI**: Accessible component primitives
 - **Framer Motion**: Animation and gesture library
 - **Fabric.js**: Canvas manipulation library
 
 #### State Management
+
 - **React Context**: Global state management
 - **useState/useEffect**: Local component state
 - **Custom Hooks**: Reusable stateful logic
@@ -84,11 +87,13 @@ Azure GenAI Image Studio is a modern web application built with a client-server 
 ### Backend Technologies
 
 #### API Layer
+
 - **Next.js API Routes**: Serverless API endpoints
 - **Azure SDK**: Azure service integration
 - **RESTful APIs**: Standard HTTP-based communication
 
 #### Data Layer
+
 - **IndexedDB**: Client-side data persistence
 - **LocalStorage**: Configuration and preferences
 - **Azure Blob Storage**: Server-side asset storage
@@ -96,11 +101,13 @@ Azure GenAI Image Studio is a modern web application built with a client-server 
 ### AI and ML Services
 
 #### Azure Services
+
 - **Azure OpenAI Service**: DALL-E 3, GPT models
 - **Azure AI Foundry**: FLUX models and advanced AI
 - **Azure Computer Vision**: Image analysis and processing
 
 #### Model Support
+
 - **DALL-E 3**: High-quality image generation
 - **FLUX 1.1 Pro**: Artistic and creative generation
 - **FLUX 1 Kontext Pro**: Context-aware generation
@@ -112,6 +119,7 @@ Azure GenAI Image Studio is a modern web application built with a client-server 
 ### Frontend Components
 
 #### Page Components
+
 ```
 src/app/
 ├── page.tsx                 # Home page
@@ -124,6 +132,7 @@ src/app/
 ```
 
 #### UI Components
+
 ```
 src/components/
 ├── ui/                     # Base UI components
@@ -140,6 +149,7 @@ src/components/
 ```
 
 #### Service Components
+
 ```
 src/services/
 ├── azure-image-provider.ts # Azure AI integration
@@ -151,6 +161,7 @@ src/services/
 ### Backend Components
 
 #### API Routes
+
 ```
 src/app/api/
 ├── generate/
@@ -162,6 +173,7 @@ src/app/api/
 ```
 
 #### Configuration
+
 ```
 src/app/config/
 ├── azure-config.json      # Azure service configuration
@@ -182,12 +194,14 @@ User Input → Frontend Validation → API Route → Azure Service → Response 
 #### Client-Side Storage
 
 **IndexedDB**:
+
 - **Projects**: Complete project data and metadata
 - **Assets**: Generated and imported images
 - **History**: Change tracking and versioning
 - **Preferences**: User settings and configurations
 
 **LocalStorage**:
+
 - **Authentication**: API keys and tokens
 - **UI State**: Interface preferences
 - **Cache**: Temporary data and optimizations
@@ -195,6 +209,7 @@ User Input → Frontend Validation → API Route → Azure Service → Response 
 #### Server-Side Storage
 
 **Azure Blob Storage**:
+
 - **Asset Files**: Large image files and media
 - **Backups**: Project and asset backups
 - **Templates**: Shared templates and resources
@@ -202,6 +217,7 @@ User Input → Frontend Validation → API Route → Azure Service → Response 
 ### Data Models
 
 #### Project Model
+
 ```typescript
 interface Project {
   id: string;
@@ -216,11 +232,12 @@ interface Project {
 ```
 
 #### Asset Model
+
 ```typescript
 interface Asset {
   id: string;
   name: string;
-  type: 'generated' | 'imported' | 'edited';
+  type: "generated" | "imported" | "edited";
   url: string;
   metadata: AssetMetadata;
   projectId?: string;
@@ -229,6 +246,7 @@ interface Asset {
 ```
 
 #### History Model
+
 ```typescript
 interface HistoryEntry {
   id: string;
@@ -245,6 +263,7 @@ interface HistoryEntry {
 ### RESTful API Design
 
 #### Endpoint Structure
+
 ```
 /api/
 ├── generate              # Image generation
@@ -258,6 +277,7 @@ interface HistoryEntry {
 #### Request/Response Patterns
 
 **Image Generation**:
+
 ```typescript
 POST /api/generate
 {
@@ -278,6 +298,7 @@ Response:
 ```
 
 **Configuration**:
+
 ```typescript
 GET /api/config
 
@@ -298,6 +319,7 @@ Response:
 ### Error Handling
 
 #### Error Response Format
+
 ```typescript
 {
   "success": false,
@@ -310,6 +332,7 @@ Response:
 ```
 
 #### Error Categories
+
 - **Validation Errors**: Invalid input data
 - **Authentication Errors**: API key issues
 - **Rate Limiting**: Quota exceeded
@@ -321,18 +344,21 @@ Response:
 ### Security Layers
 
 #### Client-Side Security
+
 - **Input Validation**: All user inputs are validated
 - **XSS Protection**: Content Security Policy headers
 - **CSRF Protection**: Token-based request validation
 - **Secure Storage**: Encrypted local storage for sensitive data
 
 #### Server-Side Security
+
 - **API Key Management**: Secure Azure API key handling
 - **Request Validation**: Server-side input validation
 - **Rate Limiting**: Protection against abuse
 - **Error Handling**: Secure error messages without sensitive data
 
 #### Network Security
+
 - **HTTPS Only**: All communications encrypted
 - **CORS Configuration**: Controlled cross-origin access
 - **Headers Security**: Security headers for protection
@@ -341,6 +367,7 @@ Response:
 ### Authentication and Authorization
 
 #### API Key Management
+
 - **Environment Variables**: Secure key storage
 - **Key Rotation**: Support for key updates
 - **Access Control**: Role-based permissions
@@ -351,11 +378,13 @@ Response:
 ### Deployment Options
 
 #### Static Deployment
+
 - **Vercel**: Optimized for Next.js applications
 - **Netlify**: Static site hosting with serverless functions
 - **Azure Static Web Apps**: Azure-native hosting solution
 
 #### Container Deployment
+
 - **Docker**: Containerized application deployment
 - **Azure Container Instances**: Serverless container hosting
 - **Kubernetes**: Orchestrated container deployment
@@ -363,6 +392,7 @@ Response:
 ### Environment Configuration
 
 #### Development Environment
+
 ```bash
 # Local development
 npm run dev
@@ -370,6 +400,7 @@ npm run dev
 ```
 
 #### Production Environment
+
 ```bash
 # Production build
 npm run build
@@ -380,6 +411,7 @@ npm start
 ### CI/CD Pipeline
 
 #### Build Process
+
 1. **Code Quality**: ESLint and TypeScript checks
 2. **Testing**: Unit and integration tests
 3. **Build**: Production-optimized build
@@ -390,12 +422,14 @@ npm start
 ### Optimization Strategies
 
 #### Frontend Performance
+
 - **Code Splitting**: Lazy loading of components
 - **Image Optimization**: Next.js automatic image optimization
 - **Caching**: Browser and CDN caching strategies
 - **Bundle Optimization**: Tree shaking and minification
 
 #### Backend Performance
+
 - **API Optimization**: Efficient data processing
 - **Caching**: Response caching for repeated requests
 - **Connection Pooling**: Efficient Azure service connections
@@ -404,12 +438,14 @@ npm start
 ### Monitoring and Metrics
 
 #### Performance Metrics
+
 - **Page Load Time**: Initial application load
 - **API Response Time**: Backend service performance
 - **User Interactions**: UI responsiveness
 - **Error Rates**: System reliability metrics
 
 #### Monitoring Tools
+
 - **Browser DevTools**: Client-side performance analysis
 - **Azure Monitor**: Server-side performance tracking
 - **Custom Analytics**: Application-specific metrics
@@ -419,12 +455,14 @@ npm start
 ### Horizontal Scaling
 
 #### Frontend Scaling
+
 - **CDN Distribution**: Global content delivery
 - **Load Balancing**: Multiple server instances
 - **Caching Layers**: Redis and browser caching
 - **Static Assets**: Optimized asset delivery
 
 #### Backend Scaling
+
 - **Serverless Functions**: Auto-scaling API endpoints
 - **Database Scaling**: Azure service scaling
 - **Queue Systems**: Asynchronous processing
@@ -433,6 +471,7 @@ npm start
 ### Vertical Scaling
 
 #### Resource Optimization
+
 - **Memory Management**: Efficient memory usage
 - **CPU Optimization**: Multi-threading and async processing
 - **Storage Optimization**: Efficient data storage
@@ -441,6 +480,7 @@ npm start
 ### Future Scaling Plans
 
 #### Planned Improvements
+
 - **Real-time Collaboration**: WebSocket integration
 - **Cloud Storage**: Azure Blob Storage integration
 - **Advanced Caching**: Redis and CDN optimization

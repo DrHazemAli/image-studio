@@ -1,10 +1,15 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ZoomInIcon, ZoomOutIcon, ResetIcon, FrameIcon } from '@radix-ui/react-icons';
-import { Button } from '@radix-ui/themes';
-import { ZOOM_CONSTANTS } from '@/lib/constants';
+import React from "react";
+import { motion } from "framer-motion";
+import {
+  ZoomInIcon,
+  ZoomOutIcon,
+  ResetIcon,
+  FrameIcon,
+} from "@radix-ui/react-icons";
+import { Button } from "@radix-ui/themes";
+import { ZOOM_CONSTANTS } from "@/lib/constants";
 
 interface ZoomControlsProps {
   zoom: number;
@@ -17,7 +22,7 @@ export default function ZoomControls({
   zoom,
   onZoomIn,
   onZoomOut,
-  onResetZoom
+  onResetZoom,
 }: ZoomControlsProps) {
   return (
     <motion.div
@@ -33,11 +38,11 @@ export default function ZoomControls({
       >
         <ZoomOutIcon className="w-4 h-4" />
       </Button>
-      
+
       <div className="px-3 py-1 text-sm font-mono min-w-[60px] text-center">
         {zoom}%
       </div>
-      
+
       <Button
         variant="ghost"
         size="1"
@@ -46,24 +51,19 @@ export default function ZoomControls({
       >
         <ZoomInIcon className="w-4 h-4" />
       </Button>
-      
+
       <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1" />
-      
-      <Button
-        variant="ghost"
-        size="1"
-        onClick={onResetZoom}
-        title="Reset Zoom"
-      >
+
+      <Button variant="ghost" size="1" onClick={onResetZoom} title="Reset Zoom">
         <ResetIcon className="w-4 h-4" />
       </Button>
-      
+
       <Button
         variant="ghost"
         size="1"
         onClick={() => {
           // Fit to viewport logic would go here
-          console.log('Fit to viewport');
+          console.log("Fit to viewport");
         }}
         title="Fit to Viewport"
       >

@@ -1,9 +1,13 @@
-'use client';
+"use client";
 
-import * as Select from '@radix-ui/react-select';
-import { ChevronDownIcon, ChevronUpIcon, CheckIcon } from '@radix-ui/react-icons';
-import { Text, Flex, Box } from '@radix-ui/themes';
-import { AzureDeployment } from '@/types/azure';
+import * as Select from "@radix-ui/react-select";
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  CheckIcon,
+} from "@radix-ui/react-icons";
+import { Text, Flex, Box } from "@radix-ui/themes";
+import { AzureDeployment } from "@/types/azure";
 
 interface ModelSelectorProps {
   deployments: AzureDeployment[];
@@ -12,21 +16,21 @@ interface ModelSelectorProps {
   disabled?: boolean;
 }
 
-export function ModelSelector({ 
-  deployments, 
-  selectedDeployment, 
-  onDeploymentChange, 
-  disabled = false 
+export function ModelSelector({
+  deployments,
+  selectedDeployment,
+  onDeploymentChange,
+  disabled = false,
 }: ModelSelectorProps) {
-  const selectedModel = deployments.find(d => d.id === selectedDeployment);
+  const selectedModel = deployments.find((d) => d.id === selectedDeployment);
 
   return (
     <Box>
       <Text size="2" weight="medium" className="mb-2 block">
         Model
       </Text>
-      <Select.Root 
-        value={selectedDeployment} 
+      <Select.Root
+        value={selectedDeployment}
         onValueChange={onDeploymentChange}
         disabled={disabled}
       >
@@ -38,7 +42,8 @@ export function ModelSelector({
                   {selectedModel.name}
                 </Text>
                 <Text size="1" color="gray">
-                  {selectedModel.maxSize} • {selectedModel.supportedFormats.join(', ')}
+                  {selectedModel.maxSize} •{" "}
+                  {selectedModel.supportedFormats.join(", ")}
                 </Text>
               </Flex>
             )}
@@ -53,7 +58,7 @@ export function ModelSelector({
             <Select.ScrollUpButton className="flex items-center justify-center h-6 bg-white text-gray-700 cursor-default">
               <ChevronUpIcon />
             </Select.ScrollUpButton>
-            
+
             <Select.Viewport className="p-1">
               {deployments.map((deployment) => (
                 <Select.Item
@@ -70,10 +75,14 @@ export function ModelSelector({
                         Max size: {deployment.maxSize}
                       </Text>
                       <Text size="1" color="gray">
-                        Formats: {deployment.supportedFormats.join(', ')}
+                        Formats: {deployment.supportedFormats.join(", ")}
                       </Text>
                       {deployment.description && (
-                        <Text size="1" color="gray" style={{ fontStyle: 'italic' }}>
+                        <Text
+                          size="1"
+                          color="gray"
+                          style={{ fontStyle: "italic" }}
+                        >
                           {deployment.description}
                         </Text>
                       )}
@@ -85,7 +94,7 @@ export function ModelSelector({
                 </Select.Item>
               ))}
             </Select.Viewport>
-            
+
             <Select.ScrollDownButton className="flex items-center justify-center h-6 bg-white text-gray-700 cursor-default">
               <ChevronDownIcon />
             </Select.ScrollDownButton>

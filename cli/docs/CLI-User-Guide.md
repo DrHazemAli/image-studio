@@ -36,11 +36,13 @@ npm install && npm run build
 ### First-Time Setup
 
 1. **Initialize Configuration**
+
    ```bash
    azure-image-studio config init
    ```
 
 2. **Set API Key**
+
    ```bash
    azure-image-studio config set-api-key
    ```
@@ -104,6 +106,7 @@ The CLI uses two main configuration files:
 ### Configuration Commands
 
 #### Initialize Configuration
+
 ```bash
 # Create default configuration
 azure-image-studio config init
@@ -113,6 +116,7 @@ azure-image-studio config init --force
 ```
 
 #### Validate Configuration
+
 ```bash
 # Check configuration validity
 azure-image-studio config validate
@@ -122,6 +126,7 @@ azure-image-studio config test --model dalle-3
 ```
 
 #### Manage API Keys
+
 ```bash
 # Set API key interactively
 azure-image-studio config set-api-key
@@ -134,6 +139,7 @@ export AZURE_API_KEY=your-api-key-here
 ```
 
 #### View Configuration
+
 ```bash
 # Show full configuration
 azure-image-studio config show
@@ -147,6 +153,7 @@ azure-image-studio config show --hide-sensitive
 ### Single Image Generation
 
 #### Basic Generation
+
 ```bash
 # Simple prompt
 azure-image-studio generate single --prompt "a cat sitting on a windowsill"
@@ -159,6 +166,7 @@ azure-image-studio generate single --prompt "a sunset" --quality hd --size 1024x
 ```
 
 #### Advanced Options
+
 ```bash
 # Multiple images
 azure-image-studio generate single --prompt "a flower" --count 4
@@ -182,6 +190,7 @@ azure-image-studio generate single --prompt "a clean room" --negative-prompt "me
 ### Batch Generation
 
 #### From File
+
 ```bash
 # Create prompts file
 echo -e "a beautiful sunset\na mountain landscape\na city skyline\na peaceful lake" > prompts.txt
@@ -194,6 +203,7 @@ azure-image-studio generate batch --file prompts.txt --model flux-1-1-pro --qual
 ```
 
 #### Batch Options
+
 ```bash
 # Control concurrency
 azure-image-studio generate batch --file prompts.txt --max-concurrent 2
@@ -213,6 +223,7 @@ azure-image-studio generate interactive
 ```
 
 This will prompt you for:
+
 - Image prompt
 - Model selection
 - Image size
@@ -416,6 +427,7 @@ export VERBOSE=true
 ### Scripting and Automation
 
 #### Bash Script Example
+
 ```bash
 #!/bin/bash
 
@@ -430,18 +442,22 @@ azure-image-studio assets clean --older-than 30d --confirm
 ```
 
 #### Node.js Script Example
+
 ```javascript
-const { spawn } = require('child_process');
+const { spawn } = require("child_process");
 
 async function generateImages(prompts) {
   return new Promise((resolve, reject) => {
-    const child = spawn('azure-image-studio', [
-      'generate', 'batch',
-      '--file', prompts,
-      '--output', './generated'
+    const child = spawn("azure-image-studio", [
+      "generate",
+      "batch",
+      "--file",
+      prompts,
+      "--output",
+      "./generated",
     ]);
 
-    child.on('close', (code) => {
+    child.on("close", (code) => {
       if (code === 0) resolve();
       else reject(new Error(`Process exited with code ${code}`));
     });
@@ -452,6 +468,7 @@ async function generateImages(prompts) {
 ### CI/CD Integration
 
 #### GitHub Actions Example
+
 ```yaml
 name: Generate Images
 on: [push]
@@ -463,11 +480,11 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: '18'
-      
+          node-version: "18"
+
       - name: Install CLI
         run: npm install -g azure-image-studio-cli
-      
+
       - name: Generate Images
         env:
           AZURE_API_KEY: ${{ secrets.AZURE_API_KEY }}
@@ -479,6 +496,7 @@ jobs:
 ### Custom Configuration
 
 #### Multiple Endpoints
+
 ```json
 {
   "endpoints": [
@@ -521,6 +539,7 @@ jobs:
 ### Common Issues
 
 #### Configuration Issues
+
 ```bash
 # Check configuration
 azure-image-studio config show
@@ -533,6 +552,7 @@ azure-image-studio config test
 ```
 
 #### API Key Issues
+
 ```bash
 # Check if API key is set
 echo $AZURE_API_KEY
@@ -545,6 +565,7 @@ azure-image-studio dev test --key your-key
 ```
 
 #### Model Issues
+
 ```bash
 # List available models
 azure-image-studio models list
@@ -557,6 +578,7 @@ azure-image-studio models test --model your-model-id
 ```
 
 #### Generation Issues
+
 ```bash
 # Test with simple prompt
 azure-image-studio generate single --prompt "test" --verbose
@@ -610,16 +632,18 @@ Common error codes and solutions:
 ### Performance Optimization
 
 1. **Batch Processing**
+
    ```bash
    # Use batch processing for multiple images
    azure-image-studio generate batch --file prompts.txt --max-concurrent 3
    ```
 
 2. **Appropriate Sizes**
+
    ```bash
    # Use smaller sizes for testing
    azure-image-studio generate single --prompt "test" --size 256x256
-   
+
    # Use full size for final images
    azure-image-studio generate single --prompt "final" --size 1024x1024
    ```
@@ -633,10 +657,11 @@ Common error codes and solutions:
 ### Security Best Practices
 
 1. **API Key Management**
+
    ```bash
    # Use environment variables
    export AZURE_API_KEY=your-key
-   
+
    # Don't commit API keys to version control
    echo "AZURE_API_KEY=your-key" >> .env.local
    echo ".env.local" >> .gitignore
@@ -651,15 +676,17 @@ Common error codes and solutions:
 ### Organization Best Practices
 
 1. **Asset Organization**
+
    ```bash
    # Organize by date
    azure-image-studio assets organize --by-date
-   
+
    # Organize by project
    azure-image-studio assets organize --by-model
    ```
 
 2. **Regular Cleanup**
+
    ```bash
    # Clean old assets weekly
    azure-image-studio assets clean --older-than 7d
@@ -674,15 +701,17 @@ Common error codes and solutions:
 ### Prompt Engineering
 
 1. **Effective Prompts**
+
    ```bash
    # Good: Specific and descriptive
    azure-image-studio generate single --prompt "a photorealistic portrait of a golden retriever, sitting pose, golden hour lighting, shallow depth of field"
-   
+
    # Better: Include technical details
    azure-image-studio generate single --prompt "professional photograph of a golden retriever, 85mm lens, f/2.8, golden hour, bokeh background, high resolution"
    ```
 
 2. **Negative Prompts**
+
    ```bash
    # Use negative prompts to avoid unwanted elements
    azure-image-studio generate single --prompt "a clean modern kitchen" --negative-prompt "messy, cluttered, dirty"

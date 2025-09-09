@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ZoomInIcon } from '@radix-ui/react-icons';
+import React, { useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ZoomInIcon } from "@radix-ui/react-icons";
 
 interface FileUploadAreaProps {
   onImageLoad?: (imageData: string) => void;
@@ -13,27 +13,30 @@ interface FileUploadAreaProps {
 export default function FileUploadArea({
   onImageLoad,
   isLoadingImage,
-  imageLoaded
+  imageLoaded,
 }: FileUploadAreaProps) {
-  const handleFileUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !onImageLoad) return;
+  const handleFileUpload = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file || !onImageLoad) return;
 
-    console.log('File selected:', file.name, file.type, file.size);
+      console.log("File selected:", file.name, file.type, file.size);
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const result = event.target?.result as string;
-      if (result) {
-        console.log('File read successfully, calling onImageLoad...');
-        onImageLoad(result);
-      }
-    };
-    reader.readAsDataURL(file);
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const result = event.target?.result as string;
+        if (result) {
+          console.log("File read successfully, calling onImageLoad...");
+          onImageLoad(result);
+        }
+      };
+      reader.readAsDataURL(file);
 
-    // Clear the input to allow selecting the same file again
-    e.target.value = '';
-  }, [onImageLoad, isLoadingImage]);
+      // Clear the input to allow selecting the same file again
+      e.target.value = "";
+    },
+    [onImageLoad, isLoadingImage],
+  );
 
   return (
     <AnimatePresence>
@@ -50,10 +53,7 @@ export default function FileUploadArea({
             exit={{ opacity: 0, scale: 0.9 }}
             className="pointer-events-auto"
           >
-            <label
-              htmlFor="file-upload"
-              className="cursor-pointer block"
-            >
+            <label htmlFor="file-upload" className="cursor-pointer block">
               <input
                 id="file-upload"
                 type="file"
@@ -69,8 +69,12 @@ export default function FileUploadArea({
                 <div className="flex items-center gap-3">
                   <ZoomInIcon className="w-5 h-5 text-gray-500 dark:text-gray-400" />
                   <div className="text-sm">
-                    <span className="text-gray-700 dark:text-gray-300 font-medium">Upload Image</span>
-                    <span className="text-gray-500 dark:text-gray-400 ml-2">or start editing with tools</span>
+                    <span className="text-gray-700 dark:text-gray-300 font-medium">
+                      Upload Image
+                    </span>
+                    <span className="text-gray-500 dark:text-gray-400 ml-2">
+                      or start editing with tools
+                    </span>
                   </div>
                   <div className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg text-xs">
                     Browse

@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import React, { useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  MixerHorizontalIcon, 
+import React, { useState, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  MixerHorizontalIcon,
   Cross2Icon,
   SunIcon,
   MoonIcon,
   ColorWheelIcon,
   EyeClosedIcon,
-  ShadowIcon
-} from '@radix-ui/react-icons';
-import { Button } from '@radix-ui/themes';
+  ShadowIcon,
+} from "@radix-ui/react-icons";
+import { Button } from "@radix-ui/themes";
 
 interface FilterSettings {
   brightness: number;
@@ -43,7 +43,7 @@ interface FiltersToolProps {
 
 const FILTER_PRESETS: FilterPreset[] = [
   {
-    name: 'Original',
+    name: "Original",
     icon: <ColorWheelIcon className="w-4 h-4" />,
     settings: {
       brightness: 0,
@@ -56,60 +56,60 @@ const FILTER_PRESETS: FilterPreset[] = [
       sepia: 0,
       grayscale: 0,
       invert: false,
-      opacity: 100
-    }
+      opacity: 100,
+    },
   },
   {
-    name: 'Bright',
+    name: "Bright",
     icon: <SunIcon className="w-4 h-4" />,
     settings: {
       brightness: 20,
       contrast: 10,
-      saturation: 5
-    }
+      saturation: 5,
+    },
   },
   {
-    name: 'Dark',
+    name: "Dark",
     icon: <MoonIcon className="w-4 h-4" />,
     settings: {
       brightness: -20,
       contrast: 15,
-      saturation: -10
-    }
+      saturation: -10,
+    },
   },
   {
-    name: 'Vintage',
+    name: "Vintage",
     icon: <ShadowIcon className="w-4 h-4" />,
     settings: {
       sepia: 30,
       contrast: 10,
       brightness: -5,
-      saturation: -20
-    }
+      saturation: -20,
+    },
   },
   {
-    name: 'Black & White',
+    name: "Black & White",
     icon: <EyeClosedIcon className="w-4 h-4" />,
     settings: {
       grayscale: 100,
-      contrast: 20
-    }
+      contrast: 20,
+    },
   },
   {
-    name: 'High Contrast',
+    name: "High Contrast",
     icon: <MixerHorizontalIcon className="w-4 h-4" />,
     settings: {
       contrast: 50,
-      brightness: 5
-    }
-  }
+      brightness: 5,
+    },
+  },
 ];
 
 export default function FiltersTool({
   isOpen,
   onClose,
   selectedImage,
-  onApplyFilter
+  onApplyFilter,
 }: FiltersToolProps) {
   const [settings, setSettings] = useState<FilterSettings>({
     brightness: 0,
@@ -122,25 +122,30 @@ export default function FiltersTool({
     sepia: 0,
     grayscale: 0,
     invert: false,
-    opacity: 100
+    opacity: 100,
   });
 
-  const [selectedPreset, setSelectedPreset] = useState<FilterPreset>(FILTER_PRESETS[0]);
+  const [selectedPreset, setSelectedPreset] = useState<FilterPreset>(
+    FILTER_PRESETS[0],
+  );
 
   const handlePresetSelect = useCallback((preset: FilterPreset) => {
     setSelectedPreset(preset);
-    setSettings(prev => ({
+    setSettings((prev) => ({
       ...prev,
-      ...preset.settings
+      ...preset.settings,
     }));
   }, []);
 
-  const handleSettingChange = useCallback((property: keyof FilterSettings, value: number | boolean) => {
-    setSettings(prev => ({
-      ...prev,
-      [property]: value
-    }));
-  }, []);
+  const handleSettingChange = useCallback(
+    (property: keyof FilterSettings, value: number | boolean) => {
+      setSettings((prev) => ({
+        ...prev,
+        [property]: value,
+      }));
+    },
+    [],
+  );
 
   const handleApplyFilter = useCallback(() => {
     onApplyFilter(settings);
@@ -159,24 +164,28 @@ export default function FiltersTool({
       sepia: 0,
       grayscale: 0,
       invert: false,
-      opacity: 100
+      opacity: 100,
     });
     setSelectedPreset(FILTER_PRESETS[0]);
   }, []);
 
   const generateFilterCSS = useCallback(() => {
     const filters = [];
-    
-    if (settings.brightness !== 0) filters.push(`brightness(${100 + settings.brightness}%)`);
-    if (settings.contrast !== 0) filters.push(`contrast(${100 + settings.contrast}%)`);
-    if (settings.saturation !== 0) filters.push(`saturate(${100 + settings.saturation}%)`);
+
+    if (settings.brightness !== 0)
+      filters.push(`brightness(${100 + settings.brightness}%)`);
+    if (settings.contrast !== 0)
+      filters.push(`contrast(${100 + settings.contrast}%)`);
+    if (settings.saturation !== 0)
+      filters.push(`saturate(${100 + settings.saturation}%)`);
     if (settings.hue !== 0) filters.push(`hue-rotate(${settings.hue}deg)`);
     if (settings.blur !== 0) filters.push(`blur(${settings.blur}px)`);
     if (settings.sepia !== 0) filters.push(`sepia(${settings.sepia}%)`);
-    if (settings.grayscale !== 0) filters.push(`grayscale(${settings.grayscale}%)`);
-    if (settings.invert) filters.push('invert(100%)');
-    
-    return filters.join(' ');
+    if (settings.grayscale !== 0)
+      filters.push(`grayscale(${settings.grayscale}%)`);
+    if (settings.invert) filters.push("invert(100%)");
+
+    return filters.join(" ");
   }, [settings]);
 
   if (!selectedImage) return null;
@@ -221,7 +230,7 @@ export default function FiltersTool({
                 <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
                   Presets
                 </h3>
-                
+
                 <div className="space-y-2">
                   {FILTER_PRESETS.map((preset) => (
                     <button
@@ -229,13 +238,15 @@ export default function FiltersTool({
                       onClick={() => handlePresetSelect(preset)}
                       className={`w-full p-3 text-left border rounded-lg transition-colors ${
                         selectedPreset.name === preset.name
-                          ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
-                          : 'border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
+                          ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
+                          : "border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
                       }`}
                     >
                       <div className="flex items-center gap-2">
                         {preset.icon}
-                        <span className="font-medium text-sm">{preset.name}</span>
+                        <span className="font-medium text-sm">
+                          {preset.name}
+                        </span>
                       </div>
                     </button>
                   ))}
@@ -250,50 +261,68 @@ export default function FiltersTool({
                     <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">
                       Basic Adjustments
                     </h3>
-                    
+
                     <div className="space-y-3">
                       <div>
                         <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
-                          Brightness: {settings.brightness > 0 ? '+' : ''}{settings.brightness}
+                          Brightness: {settings.brightness > 0 ? "+" : ""}
+                          {settings.brightness}
                         </label>
                         <input
                           type="range"
                           min="-100"
                           max="100"
                           value={settings.brightness}
-                          onChange={(e) => handleSettingChange('brightness', parseInt(e.target.value))}
+                          onChange={(e) =>
+                            handleSettingChange(
+                              "brightness",
+                              parseInt(e.target.value),
+                            )
+                          }
                           className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer"
                         />
                       </div>
-                      
+
                       <div>
                         <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
-                          Contrast: {settings.contrast > 0 ? '+' : ''}{settings.contrast}
+                          Contrast: {settings.contrast > 0 ? "+" : ""}
+                          {settings.contrast}
                         </label>
                         <input
                           type="range"
                           min="-100"
                           max="100"
                           value={settings.contrast}
-                          onChange={(e) => handleSettingChange('contrast', parseInt(e.target.value))}
+                          onChange={(e) =>
+                            handleSettingChange(
+                              "contrast",
+                              parseInt(e.target.value),
+                            )
+                          }
                           className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer"
                         />
                       </div>
-                      
+
                       <div>
                         <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
-                          Saturation: {settings.saturation > 0 ? '+' : ''}{settings.saturation}
+                          Saturation: {settings.saturation > 0 ? "+" : ""}
+                          {settings.saturation}
                         </label>
                         <input
                           type="range"
                           min="-100"
                           max="100"
                           value={settings.saturation}
-                          onChange={(e) => handleSettingChange('saturation', parseInt(e.target.value))}
+                          onChange={(e) =>
+                            handleSettingChange(
+                              "saturation",
+                              parseInt(e.target.value),
+                            )
+                          }
                           className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer"
                         />
                       </div>
-                      
+
                       <div>
                         <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
                           Hue: {settings.hue}°
@@ -303,7 +332,9 @@ export default function FiltersTool({
                           min="-180"
                           max="180"
                           value={settings.hue}
-                          onChange={(e) => handleSettingChange('hue', parseInt(e.target.value))}
+                          onChange={(e) =>
+                            handleSettingChange("hue", parseInt(e.target.value))
+                          }
                           className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer"
                         />
                       </div>
@@ -315,7 +346,7 @@ export default function FiltersTool({
                     <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">
                       Effects
                     </h3>
-                    
+
                     <div className="space-y-3">
                       <div>
                         <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
@@ -326,11 +357,16 @@ export default function FiltersTool({
                           min="0"
                           max="20"
                           value={settings.blur}
-                          onChange={(e) => handleSettingChange('blur', parseInt(e.target.value))}
+                          onChange={(e) =>
+                            handleSettingChange(
+                              "blur",
+                              parseInt(e.target.value),
+                            )
+                          }
                           className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer"
                         />
                       </div>
-                      
+
                       <div>
                         <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
                           Sepia: {settings.sepia}%
@@ -340,11 +376,16 @@ export default function FiltersTool({
                           min="0"
                           max="100"
                           value={settings.sepia}
-                          onChange={(e) => handleSettingChange('sepia', parseInt(e.target.value))}
+                          onChange={(e) =>
+                            handleSettingChange(
+                              "sepia",
+                              parseInt(e.target.value),
+                            )
+                          }
                           className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer"
                         />
                       </div>
-                      
+
                       <div>
                         <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
                           Grayscale: {settings.grayscale}%
@@ -354,20 +395,30 @@ export default function FiltersTool({
                           min="0"
                           max="100"
                           value={settings.grayscale}
-                          onChange={(e) => handleSettingChange('grayscale', parseInt(e.target.value))}
+                          onChange={(e) =>
+                            handleSettingChange(
+                              "grayscale",
+                              parseInt(e.target.value),
+                            )
+                          }
                           className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer"
                         />
                       </div>
-                      
+
                       <div className="flex items-center gap-3">
                         <input
                           type="checkbox"
                           id="invert"
                           checked={settings.invert}
-                          onChange={(e) => handleSettingChange('invert', e.target.checked)}
+                          onChange={(e) =>
+                            handleSettingChange("invert", e.target.checked)
+                          }
                           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                         />
-                        <label htmlFor="invert" className="text-sm text-gray-700 dark:text-gray-300">
+                        <label
+                          htmlFor="invert"
+                          className="text-sm text-gray-700 dark:text-gray-300"
+                        >
                           Invert Colors
                         </label>
                       </div>
@@ -388,7 +439,12 @@ export default function FiltersTool({
                         min="0"
                         max="100"
                         value={settings.opacity}
-                        onChange={(e) => handleSettingChange('opacity', parseInt(e.target.value))}
+                        onChange={(e) =>
+                          handleSettingChange(
+                            "opacity",
+                            parseInt(e.target.value),
+                          )
+                        }
                         className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer"
                       />
                     </div>
@@ -401,26 +457,39 @@ export default function FiltersTool({
                 <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
                   Preview
                 </h3>
-                
+
                 <div className="relative bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden">
                   <div
                     className="w-full h-48 bg-cover bg-center"
                     style={{
                       backgroundImage: `url(${selectedImage.getSrc()})`,
                       filter: generateFilterCSS(),
-                      opacity: settings.opacity / 100
+                      opacity: settings.opacity / 100,
                     }}
                   />
-                  
+
                   {/* Filter Info */}
                   <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-3">
                     <div className="text-xs space-y-1">
-                      <div>Brightness: {settings.brightness > 0 ? '+' : ''}{settings.brightness}</div>
-                      <div>Contrast: {settings.contrast > 0 ? '+' : ''}{settings.contrast}</div>
-                      <div>Saturation: {settings.saturation > 0 ? '+' : ''}{settings.saturation}</div>
+                      <div>
+                        Brightness: {settings.brightness > 0 ? "+" : ""}
+                        {settings.brightness}
+                      </div>
+                      <div>
+                        Contrast: {settings.contrast > 0 ? "+" : ""}
+                        {settings.contrast}
+                      </div>
+                      <div>
+                        Saturation: {settings.saturation > 0 ? "+" : ""}
+                        {settings.saturation}
+                      </div>
                       {settings.blur > 0 && <div>Blur: {settings.blur}px</div>}
-                      {settings.sepia > 0 && <div>Sepia: {settings.sepia}%</div>}
-                      {settings.grayscale > 0 && <div>Grayscale: {settings.grayscale}%</div>}
+                      {settings.sepia > 0 && (
+                        <div>Sepia: {settings.sepia}%</div>
+                      )}
+                      {settings.grayscale > 0 && (
+                        <div>Grayscale: {settings.grayscale}%</div>
+                      )}
                       {settings.invert && <div>Inverted</div>}
                     </div>
                   </div>
@@ -430,27 +499,15 @@ export default function FiltersTool({
 
             {/* Footer */}
             <div className="flex items-center justify-between p-6 border-t border-gray-200 dark:border-gray-700">
-              <Button
-                variant="soft"
-                color="gray"
-                onClick={handleReset}
-              >
+              <Button variant="soft" color="gray" onClick={handleReset}>
                 Reset
               </Button>
-              
+
               <div className="flex gap-3">
-                <Button
-                  variant="soft"
-                  color="gray"
-                  onClick={onClose}
-                >
+                <Button variant="soft" color="gray" onClick={onClose}>
                   Cancel
                 </Button>
-                <Button
-                  onClick={handleApplyFilter}
-                >
-                  Apply Filters
-                </Button>
+                <Button onClick={handleApplyFilter}>Apply Filters</Button>
               </div>
             </div>
           </motion.div>

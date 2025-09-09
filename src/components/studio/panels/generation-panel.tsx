@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   MagicWandIcon,
   ImageIcon,
@@ -13,11 +13,11 @@ import {
   UpdateIcon,
   DownloadIcon,
   CopyIcon,
-  ShuffleIcon
-} from '@radix-ui/react-icons';
-import { Button, Progress, Badge, Separator, Slider } from '@radix-ui/themes';
-import * as Select from '@radix-ui/react-select';
-import * as Tabs from '@radix-ui/react-tabs';
+  ShuffleIcon,
+} from "@radix-ui/react-icons";
+import { Button, Progress, Badge, Separator, Slider } from "@radix-ui/themes";
+import * as Select from "@radix-ui/react-select";
+import * as Tabs from "@radix-ui/react-tabs";
 
 interface GenerationPanelProps {
   isOpen: boolean;
@@ -40,33 +40,33 @@ interface GenerationParams {
 
 const models = [
   {
-    id: 'gpt-image-1',
-    name: 'GPT-Image-1',
-    provider: 'Azure OpenAI',
-    capabilities: ['generation', 'editing', 'inpainting'],
-    premium: true
+    id: "gpt-image-1",
+    name: "GPT-Image-1",
+    provider: "Azure OpenAI",
+    capabilities: ["generation", "editing", "inpainting"],
+    premium: true,
   },
   {
-    id: 'dalle-3',
-    name: 'DALL-E 3',
-    provider: 'Azure OpenAI',
-    capabilities: ['generation'],
-    premium: false
+    id: "dalle-3",
+    name: "DALL-E 3",
+    provider: "Azure OpenAI",
+    capabilities: ["generation"],
+    premium: false,
   },
   {
-    id: 'flux-1-1-pro',
-    name: 'FLUX 1.1 Pro',
-    provider: 'Black Forest Labs',
-    capabilities: ['generation'],
-    premium: false
+    id: "flux-1-1-pro",
+    name: "FLUX 1.1 Pro",
+    provider: "Black Forest Labs",
+    capabilities: ["generation"],
+    premium: false,
   },
   {
-    id: 'flux-1-kontext-pro',
-    name: 'FLUX Kontext Pro',
-    provider: 'Black Forest Labs',
-    capabilities: ['generation', 'editing', 'context'],
-    premium: false
-  }
+    id: "flux-1-kontext-pro",
+    name: "FLUX Kontext Pro",
+    provider: "Black Forest Labs",
+    capabilities: ["generation", "editing", "context"],
+    premium: false,
+  },
 ];
 
 const presetPrompts = [
@@ -75,27 +75,33 @@ const presetPrompts = [
   "An astronaut floating in space with Earth in the background",
   "A cozy library with floating books and magical lighting",
   "A photorealistic portrait of a wise old wizard",
-  "A serene Japanese garden with cherry blossoms and koi pond"
+  "A serene Japanese garden with cherry blossoms and koi pond",
 ];
 
-export function GenerationPanel({ isOpen, onClose, onGenerate, isGenerating = false, progress = 0 }: GenerationPanelProps) {
-  const [activeTab, setActiveTab] = useState('generate');
-  const [prompt, setPrompt] = useState('');
-  const [selectedModel, setSelectedModel] = useState('dalle-3');
-  const [size, setSize] = useState('1024x1024');
-  const [style, setStyle] = useState('vivid');
-  const [quality, setQuality] = useState('hd');
+export function GenerationPanel({
+  isOpen,
+  onClose,
+  onGenerate,
+  isGenerating = false,
+  progress = 0,
+}: GenerationPanelProps) {
+  const [activeTab, setActiveTab] = useState("generate");
+  const [prompt, setPrompt] = useState("");
+  const [selectedModel, setSelectedModel] = useState("dalle-3");
+  const [size, setSize] = useState("1024x1024");
+  const [style, setStyle] = useState("vivid");
+  const [quality, setQuality] = useState("hd");
   const [count, setCount] = useState(1);
   const [seed, setSeed] = useState<number | undefined>();
-  const [negativePrompt, setNegativePrompt] = useState('');
+  const [negativePrompt, setNegativePrompt] = useState("");
   const [showAdvanced, setShowAdvanced] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const selectedModelData = models.find(m => m.id === selectedModel);
+  const selectedModelData = models.find((m) => m.id === selectedModel);
 
   const handleGenerate = () => {
     if (!prompt.trim()) return;
-    
+
     onGenerate({
       prompt,
       model: selectedModel,
@@ -104,7 +110,7 @@ export function GenerationPanel({ isOpen, onClose, onGenerate, isGenerating = fa
       quality,
       count,
       seed,
-      negativePrompt: negativePrompt.trim() || undefined
+      negativePrompt: negativePrompt.trim() || undefined,
     });
   };
 
@@ -152,7 +158,7 @@ export function GenerationPanel({ isOpen, onClose, onGenerate, isGenerating = fa
                 </p>
               </div>
             </div>
-            
+
             <Button variant="ghost" onClick={onClose}>
               <Cross2Icon className="w-5 h-5" />
             </Button>
@@ -182,21 +188,27 @@ export function GenerationPanel({ isOpen, onClose, onGenerate, isGenerating = fa
             </Tabs.List>
 
             {/* Generate Tab */}
-            <Tabs.Content value="generate" className="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
+            <Tabs.Content
+              value="generate"
+              className="p-6 overflow-y-auto max-h-[calc(90vh-200px)]"
+            >
               <div className="space-y-6">
                 {/* Model Selection */}
                 <div>
                   <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 block">
                     AI Model
                   </label>
-                  <Select.Root value={selectedModel} onValueChange={setSelectedModel}>
+                  <Select.Root
+                    value={selectedModel}
+                    onValueChange={setSelectedModel}
+                  >
                     <Select.Trigger className="w-full p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
                       <Select.Value />
                       <Select.Icon>
                         <ChevronDownIcon />
                       </Select.Icon>
                     </Select.Trigger>
-                    
+
                     <Select.Portal>
                       <Select.Content className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-xl p-2 z-50">
                         <Select.Viewport>
@@ -211,11 +223,14 @@ export function GenerationPanel({ isOpen, onClose, onGenerate, isGenerating = fa
                                   <div className="font-medium flex items-center gap-2">
                                     {model.name}
                                     {model.premium && (
-                                      <Badge size="1" color="gold">Pro</Badge>
+                                      <Badge size="1" color="gold">
+                                        Pro
+                                      </Badge>
                                     )}
                                   </div>
                                   <div className="text-xs text-gray-500 dark:text-gray-400">
-                                    {model.provider} • {model.capabilities.join(', ')}
+                                    {model.provider} •{" "}
+                                    {model.capabilities.join(", ")}
                                   </div>
                                 </div>
                               </div>
@@ -246,7 +261,7 @@ export function GenerationPanel({ isOpen, onClose, onGenerate, isGenerating = fa
                       {prompt.length}/500
                     </div>
                   </div>
-                  
+
                   {/* Preset Prompts */}
                   <div className="mt-3">
                     <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
@@ -276,18 +291,29 @@ export function GenerationPanel({ isOpen, onClose, onGenerate, isGenerating = fa
                     <Select.Root value={size} onValueChange={setSize}>
                       <Select.Trigger className="w-full p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl">
                         <Select.Value />
-                        <Select.Icon><ChevronDownIcon /></Select.Icon>
+                        <Select.Icon>
+                          <ChevronDownIcon />
+                        </Select.Icon>
                       </Select.Trigger>
                       <Select.Portal>
                         <Select.Content className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-xl p-2">
                           <Select.Viewport>
-                            <Select.Item value="1024x1024" className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">
+                            <Select.Item
+                              value="1024x1024"
+                              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded"
+                            >
                               1024 × 1024 (Square)
                             </Select.Item>
-                            <Select.Item value="1792x1024" className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">
+                            <Select.Item
+                              value="1792x1024"
+                              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded"
+                            >
                               1792 × 1024 (Landscape)
                             </Select.Item>
-                            <Select.Item value="1024x1792" className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">
+                            <Select.Item
+                              value="1024x1792"
+                              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded"
+                            >
                               1024 × 1792 (Portrait)
                             </Select.Item>
                           </Select.Viewport>
@@ -304,18 +330,29 @@ export function GenerationPanel({ isOpen, onClose, onGenerate, isGenerating = fa
                     <Select.Root value={quality} onValueChange={setQuality}>
                       <Select.Trigger className="w-full p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl">
                         <Select.Value />
-                        <Select.Icon><ChevronDownIcon /></Select.Icon>
+                        <Select.Icon>
+                          <ChevronDownIcon />
+                        </Select.Icon>
                       </Select.Trigger>
                       <Select.Portal>
                         <Select.Content className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-xl p-2">
                           <Select.Viewport>
-                            <Select.Item value="standard" className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">
+                            <Select.Item
+                              value="standard"
+                              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded"
+                            >
                               Standard
                             </Select.Item>
-                            <Select.Item value="hd" className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">
+                            <Select.Item
+                              value="hd"
+                              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded"
+                            >
                               HD
                             </Select.Item>
-                            <Select.Item value="high" className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">
+                            <Select.Item
+                              value="high"
+                              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded"
+                            >
                               High (GPT-Image)
                             </Select.Item>
                           </Select.Viewport>
@@ -334,14 +371,16 @@ export function GenerationPanel({ isOpen, onClose, onGenerate, isGenerating = fa
                   >
                     <GearIcon className="w-4 h-4 mr-2" />
                     Advanced Settings
-                    <ChevronDownIcon className={`w-4 h-4 ml-2 transition-transform ${showAdvanced ? 'rotate-180' : ''}`} />
+                    <ChevronDownIcon
+                      className={`w-4 h-4 ml-2 transition-transform ${showAdvanced ? "rotate-180" : ""}`}
+                    />
                   </Button>
 
                   <AnimatePresence>
                     {showAdvanced && (
                       <motion.div
                         initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
+                        animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
                         className="space-y-4"
                       >
@@ -354,12 +393,22 @@ export function GenerationPanel({ isOpen, onClose, onGenerate, isGenerating = fa
                             <div className="flex gap-2">
                               <input
                                 type="number"
-                                value={seed || ''}
-                                onChange={(e) => setSeed(e.target.value ? Number(e.target.value) : undefined)}
+                                value={seed || ""}
+                                onChange={(e) =>
+                                  setSeed(
+                                    e.target.value
+                                      ? Number(e.target.value)
+                                      : undefined,
+                                  )
+                                }
                                 placeholder="Random"
                                 className="flex-1 p-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm"
                               />
-                              <Button size="1" variant="ghost" onClick={randomizeSeed}>
+                              <Button
+                                size="1"
+                                variant="ghost"
+                                onClick={randomizeSeed}
+                              >
                                 <ShuffleIcon className="w-4 h-4" />
                               </Button>
                             </div>
@@ -440,7 +489,7 @@ export function GenerationPanel({ isOpen, onClose, onGenerate, isGenerating = fa
                       </>
                     )}
                   </Button>
-                  
+
                   {isGenerating && (
                     <Button variant="outline" size="3">
                       <StopIcon className="w-4 h-4" />

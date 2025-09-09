@@ -11,7 +11,6 @@ Azure Image Studio is a cutting-edge image generation and editing platform that 
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)
 ![React](https://img.shields.io/badge/React-19.1.0-blue?style=for-the-badge&logo=react)
 
-
 [![Version](https://img.shields.io/badge/Version-1.0.1-green?style=for-the-badge)](https://github.com/DrHazemAli/azure-image-studio)
 [![Community Project](https://img.shields.io/badge/Type-Community%20Project-orange?style=for-the-badge)](https://github.com/DrHazemAli/azure-image-studio)
 [![Microsoft MVP](https://img.shields.io/badge/Author-Microsoft%20MVP-purple?style=for-the-badge)](https://github.com/DrHazemAli)
@@ -29,9 +28,7 @@ Azure Image Studio is a cutting-edge image generation and editing platform that 
 
 </div>
 
-
 **A community-built image editing and generation platform that leverages Azure AI services**
-
 
 ## 📋 Table of Contents
 
@@ -62,6 +59,7 @@ Azure Image Studio is a community-developed, production-ready platform that inte
 ## ✨ Features
 
 ### 🎨 **Professional Image Studio**
+
 - **Advanced Canvas**: Full-featured image editing workspace with multiple tools
 - **Layer Management**: Professional layer-based editing system with Fabric.js
 - **Asset Library**: Built-in asset management and organization with IndexedDB
@@ -70,6 +68,7 @@ Azure Image Studio is a community-developed, production-ready platform that inte
 - **Tool System**: Comprehensive set of editing and generation tools
 
 ### 🖥️ **Command-Line Interface**
+
 - **CLI Tool**: Powerful command-line interface for automation and scripting
 - **Batch Processing**: Generate multiple images from files or scripts
 - **Asset Management**: Organize, export, and clean up generated images
@@ -78,6 +77,7 @@ Azure Image Studio is a community-developed, production-ready platform that inte
 - **CI/CD Ready**: Perfect for automated workflows and deployment pipelines
 
 ### 🤖 **AI Model Support**
+
 - **DALL-E 3**: High-quality image generation with precise instruction following
 - **FLUX 1.1 Pro**: Advanced image generation with superior quality
 - **FLUX 1 Kontext Pro**: Context-aware image generation and editing
@@ -85,6 +85,7 @@ Azure Image Studio is a community-developed, production-ready platform that inte
 - **Florence 2.0**: Microsoft's vision-language model for advanced image understanding
 
 ### 🛠️ **Advanced Capabilities**
+
 - **Text-to-Image**: Generate images from natural language descriptions
 - **Image Editing**: Modify existing images with AI-powered tools
 - **Inpainting/Outpainting**: Fill or extend image areas intelligently
@@ -94,6 +95,7 @@ Azure Image Studio is a community-developed, production-ready platform that inte
 - **Quality Control**: Multiple quality levels and output formats
 
 ### 🎯 **User Experience**
+
 - **Modern UI**: Beautiful, responsive interface built with Radix UI
 - **Dark/Light Theme**: Seamless theme switching
 - **Smooth Animations**: Framer Motion powered interactions
@@ -104,6 +106,7 @@ Azure Image Studio is a community-developed, production-ready platform that inte
 ## 🏗️ Architecture
 
 ### **Frontend Stack**
+
 - **Next.js 15.5.2** - React framework with App Router
 - **React 19.1.0** - Latest React with concurrent features
 - **TypeScript 5.0** - Type-safe development
@@ -113,6 +116,7 @@ Azure Image Studio is a community-developed, production-ready platform that inte
 - **Fabric.js** - Advanced canvas manipulation
 
 ### **Backend Integration**
+
 - **Azure OpenAI Service** - AI model integration
 - **Azure AI Foundry** - FLUX model integration
 - **RESTful API** - Clean API architecture
@@ -122,7 +126,8 @@ Azure Image Studio is a community-developed, production-ready platform that inte
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - Azure subscription with AI services access
 - Azure OpenAI Service account (for DALL-E 3 and GPT-Image-1)
 - Azure AI Foundry access (for FLUX models)
@@ -130,12 +135,14 @@ Azure Image Studio is a community-developed, production-ready platform that inte
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/DrHazemAli/azure-image-studio.git
    cd azure-image-studio
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
@@ -146,6 +153,7 @@ Azure Image Studio is a community-developed, production-ready platform that inte
    - Set up model deployments in `src/app/config/azure-models.json`
 
 4. **Run the development server**
+
    ```bash
    npm run dev
    ```
@@ -158,26 +166,29 @@ Azure Image Studio is a community-developed, production-ready platform that inte
 The project includes a powerful CLI tool for command-line image generation and automation:
 
 1. **Install CLI dependencies**
+
    ```bash
    npm run cli:install
    ```
 
 2. **Build the CLI**
+
    ```bash
    npm run cli:build
    ```
 
 3. **Use the CLI**
+
    ```bash
    # Initialize configuration
    npm run cli -- config init
-   
+
    # Generate images
    npm run cli -- generate --prompt "a beautiful sunset"
-   
+
    # Create a project
    npm run cli -- project create --name "My Project"
-   
+
    # List available models
    npm run cli -- models list
    ```
@@ -197,12 +208,14 @@ The CLI includes powerful project management capabilities:
 ## ⚙️ Configuration
 
 ### Azure Configuration
+
 The platform uses a flexible configuration system located in `src/app/config/`:
 
 - **`azure-config.json`**: Main configuration for endpoints and deployments
 - **`azure-models.json`**: Detailed model specifications and capabilities
 
 ### Environment Variables
+
 ```bash
 # Azure API Key (used for all models)
 AZURE_API_KEY=your_azure_api_key_here
@@ -216,12 +229,14 @@ AZURE_API_BASE_URL=your_azure_api_base_url_here
 ## 🎨 Usage
 
 ### Simple Generation
+
 1. Visit the home page
 2. Enter your image prompt
 3. Select model and parameters
 4. Click "Generate"
 
 ### Professional Studio
+
 1. Click "Launch Azure Image Studio"
 2. Use the toolbar to select tools
 3. Generate or import images
@@ -279,6 +294,7 @@ We're actively developing exciting new features:
 3. **Performance Optimization** - Improved caching, memory management, and database optimization
 
 **Future Plans:**
+
 - **Project Sharing** - Share projects with team members, clients, and the community
 - **Cloud Storage with Azure** - Seamless cloud-based asset management and cross-device access
 - **User Authentication** - User accounts and collaboration features
@@ -290,6 +306,7 @@ For detailed information about our development timeline and planned features, se
 ## 📚 Documentation
 
 ### User Documentation
+
 - 🚀 **[Getting Started](docs/getting-started.md)** - Complete setup and configuration guide
 - ⚙️ **[Configuration Guide](docs/configuration.md)** - Comprehensive configuration reference
 - 📖 **[User Guide](docs/user-guide.md)** - Detailed usage instructions for all features
@@ -297,6 +314,7 @@ For detailed information about our development timeline and planned features, se
 - 🛠️ **[Tools Reference](docs/tools-reference.md)** - Complete tools reference and usage guide
 
 ### Developer Documentation
+
 - 🔧 **[Developer Guide](docs/developer-guide.md)** - Development setup and architecture
 - 📡 **[API Documentation](docs/api-documentation.md)** - Technical reference and examples
 - 🏗️ **[Architecture Guide](docs/architecture.md)** - System design and technical details
@@ -305,11 +323,13 @@ For detailed information about our development timeline and planned features, se
 - ☁️ **[Deployment Guide](docs/deployment.md)** - Production deployment instructions
 
 ### Command-Line Interface
+
 - 🖥️ **[CLI Documentation](docs/cli-documentation.md)** - Comprehensive CLI guide
 - 📖 **[CLI User Guide](cli/docs/CLI-User-Guide.md)** - CLI usage instructions
 - 🔧 **[CLI API Documentation](cli/docs/CLI-API-Documentation.md)** - CLI technical reference
 
 ### Community & Development
+
 - 🤝 **[Contributing Guide](docs/contributing.md)** - How to contribute to the project
 - 🗺️ **[Development Roadmap](docs/roadmap.md)** - Current status and planned features
 - 🧪 **[Code Coverage & Testing](CODE_COVERAGE.md)** - Testing strategy and quality metrics
@@ -319,6 +339,7 @@ For detailed information about our development timeline and planned features, se
 This is a **community-driven project**! We welcome contributions from developers of all skill levels. This project is not affiliated with Microsoft or Azure, but rather is an independent community effort that integrates with Azure AI services.
 
 ### How to Contribute
+
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Commit your changes (`git commit -m 'Add amazing feature'`)
@@ -326,6 +347,7 @@ This is a **community-driven project**! We welcome contributions from developers
 5. Open a Pull Request
 
 ### Development Guidelines
+
 - Follow TypeScript best practices
 - Use meaningful commit messages
 - Add tests for new features
@@ -354,6 +376,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👨‍💻 Author
 
 **Hazem Ali** - Microsoft MVP
+
 - GitHub: [@DrHazemAli](https://github.com/DrHazemAli)
 - LinkedIn: [Hazem Ali](https://linkedin.com/in/hazemali)
 

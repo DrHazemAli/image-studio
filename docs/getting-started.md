@@ -67,7 +67,7 @@ cp .env.example .env.local
 
 ### Azure API Configuration
 
-1. **Get Azure API Key**: 
+1. **Get Azure API Key**:
    - Go to Azure Portal
    - Navigate to your Azure OpenAI resource
    - Copy your API key
@@ -143,16 +143,19 @@ Navigate to `http://localhost:3000` in your browser.
 Now that you have the basics working, explore these advanced features:
 
 ### For Users
+
 - **[User Guide](user-guide.md)** - Complete user manual
 - **[Image Generation Guide](image-generation.md)** - Advanced generation techniques
 - **[Tools Reference](tools-reference.md)** - All available tools and features
 
 ### For Developers
+
 - **[Developer Guide](developer-guide.md)** - Development setup and guidelines
 - **[Architecture Guide](architecture.md)** - System architecture overview
 - **[API Documentation](api-documentation.md)** - API reference and examples
 
 ### Additional Resources
+
 - **[Installation Guide](installation.md)** - Detailed installation instructions
 - **[Deployment Guide](deployment.md)** - Production deployment guide
 - **[CLI Documentation](cli-documentation.md)** - Command-line interface guide
@@ -162,16 +165,19 @@ Now that you have the basics working, explore these advanced features:
 ### Common Issues
 
 **Application won't start**:
+
 - Check Node.js version: `node --version`
 - Clear npm cache: `npm cache clean --force`
 - Delete node_modules and reinstall: `rm -rf node_modules && npm install`
 
 **Azure API errors**:
+
 - Verify your API key is correct
 - Check your Azure resource is active
 - Ensure you have sufficient quota
 
 **Images not generating**:
+
 - Check your internet connection
 - Verify Azure API configuration
 - Try a simpler prompt first

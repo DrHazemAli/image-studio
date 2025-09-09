@@ -12,6 +12,7 @@ This guide provides detailed installation instructions for Azure Image Studio on
 ### System Requirements
 
 #### Minimum Requirements
+
 - **Node.js**: 18.0.0 or higher
 - **npm**: 8.0.0 or higher
 - **RAM**: 4GB minimum, 8GB recommended
@@ -19,6 +20,7 @@ This guide provides detailed installation instructions for Azure Image Studio on
 - **Browser**: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
 
 #### Recommended Requirements
+
 - **Node.js**: 20.0.0 or higher
 - **RAM**: 16GB or more
 - **Storage**: 10GB free space
@@ -28,11 +30,13 @@ This guide provides detailed installation instructions for Azure Image Studio on
 ### Azure Services Requirements
 
 #### Required Azure Services
+
 - **Azure Subscription**: Active Azure subscription
 - **Azure OpenAI Service**: For DALL-E 3 and GPT-Image-1 models
 - **Azure AI Foundry**: For FLUX models access
 
 #### Required Permissions
+
 - **Cognitive Services User** role for Azure OpenAI
 - **AI Foundry User** role for FLUX models
 - Access to specific model deployments
@@ -42,6 +46,7 @@ This guide provides detailed installation instructions for Azure Image Studio on
 ### Windows Installation
 
 #### 1. Install Node.js
+
 ```bash
 # Download and install Node.js from https://nodejs.org/
 # Or use Chocolatey
@@ -52,18 +57,21 @@ winget install OpenJS.NodeJS
 ```
 
 #### 2. Verify Installation
+
 ```bash
 node --version
 npm --version
 ```
 
 #### 3. Clone Repository
+
 ```bash
 git clone https://github.com/DrHazemAli/azure-image-studio.git
 cd azure-image-studio
 ```
 
 #### 4. Install Dependencies
+
 ```bash
 npm install
 ```
@@ -71,6 +79,7 @@ npm install
 ### macOS Installation
 
 #### 1. Install Node.js
+
 ```bash
 # Using Homebrew (recommended)
 brew install node
@@ -79,18 +88,21 @@ brew install node
 ```
 
 #### 2. Verify Installation
+
 ```bash
 node --version
 npm --version
 ```
 
 #### 3. Clone Repository
+
 ```bash
 git clone https://github.com/DrHazemAli/azure-image-studio.git
 cd azure-image-studio
 ```
 
 #### 4. Install Dependencies
+
 ```bash
 npm install
 ```
@@ -98,6 +110,7 @@ npm install
 ### Linux Installation
 
 #### Ubuntu/Debian
+
 ```bash
 # Install Node.js
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
@@ -116,6 +129,7 @@ npm install
 ```
 
 #### CentOS/RHEL/Fedora
+
 ```bash
 # Install Node.js
 curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo bash -
@@ -137,6 +151,7 @@ npm install
 ```
 
 #### Arch Linux
+
 ```bash
 # Install Node.js
 sudo pacman -S nodejs npm
@@ -158,8 +173,9 @@ npm install
 ### Using Docker Compose
 
 #### 1. Create docker-compose.yml
+
 ```yaml
-version: '3.8'
+version: "3.8"
 services:
   azure-image-studio:
     build: .
@@ -174,6 +190,7 @@ services:
 ```
 
 #### 2. Create Dockerfile
+
 ```dockerfile
 FROM node:20-alpine
 
@@ -191,6 +208,7 @@ CMD ["npm", "start"]
 ```
 
 #### 3. Build and Run
+
 ```bash
 # Build the image
 docker-compose build
@@ -205,11 +223,13 @@ docker-compose logs -f
 ### Using Docker
 
 #### 1. Build Image
+
 ```bash
 docker build -t azure-image-studio .
 ```
 
 #### 2. Run Container
+
 ```bash
 docker run -p 3000:3000 \
   -e AZURE_API_KEY=your_api_key_here \
@@ -222,12 +242,14 @@ docker run -p 3000:3000 \
 ### Local Development Setup
 
 #### 1. Clone Repository
+
 ```bash
 git clone https://github.com/DrHazemAli/azure-image-studio.git
 cd azure-image-studio
 ```
 
 #### 2. Install Dependencies
+
 ```bash
 # Install all dependencies
 npm install
@@ -237,6 +259,7 @@ npm run cli:install
 ```
 
 #### 3. Environment Configuration
+
 ```bash
 # Copy environment template
 cp .env.example .env.local
@@ -246,6 +269,7 @@ nano .env.local
 ```
 
 #### 4. Start Development Server
+
 ```bash
 # Start the development server
 npm run dev
@@ -257,26 +281,31 @@ npm run dev -- -p 3001
 ### CLI Development Setup
 
 #### 1. Navigate to CLI Directory
+
 ```bash
 cd cli
 ```
 
 #### 2. Install CLI Dependencies
+
 ```bash
 npm install
 ```
 
 #### 3. Build CLI
+
 ```bash
 npm run build
 ```
 
 #### 4. Link CLI Globally (Optional)
+
 ```bash
 npm link
 ```
 
 #### 5. Test CLI
+
 ```bash
 # Test CLI installation
 azure-image-studio --help
@@ -290,6 +319,7 @@ npm run cli -- --help
 ### Environment Variables
 
 #### Create .env.local
+
 ```bash
 # Azure API Key (required)
 AZURE_API_KEY=your_azure_api_key_here
@@ -307,6 +337,7 @@ LOG_LEVEL=info
 ### Azure Configuration
 
 #### 1. Azure Config File
+
 Edit `src/app/config/azure-config.json`:
 
 ```json
@@ -333,6 +364,7 @@ Edit `src/app/config/azure-config.json`:
 ```
 
 #### 2. Model Configuration
+
 Edit `src/app/config/azure-models.json`:
 
 ```json
@@ -365,6 +397,7 @@ Edit `src/app/config/azure-models.json`:
 ## 🚀 Quick Start
 
 ### 1. Verify Installation
+
 ```bash
 # Check Node.js version
 node --version
@@ -377,6 +410,7 @@ npm list --depth=0
 ```
 
 ### 2. Start the Application
+
 ```bash
 # Start development server
 npm run dev
@@ -387,11 +421,13 @@ npm start
 ```
 
 ### 3. Access the Application
+
 - Open your browser
 - Navigate to `http://localhost:3000`
 - You should see the Azure Image Studio home page
 
 ### 4. Test Configuration
+
 ```bash
 # Test API configuration
 curl http://localhost:3000/api/config
@@ -405,6 +441,7 @@ curl http://localhost:3000/api/models
 ### Common Installation Issues
 
 #### Node.js Version Issues
+
 ```bash
 # Check current version
 node --version
@@ -416,6 +453,7 @@ node --version
 ```
 
 #### npm Installation Issues
+
 ```bash
 # Clear npm cache
 npm cache clean --force
@@ -428,6 +466,7 @@ npm install
 ```
 
 #### Permission Issues (Linux/macOS)
+
 ```bash
 # Fix npm permissions
 sudo chown -R $(whoami) ~/.npm
@@ -439,6 +478,7 @@ nvm use 20
 ```
 
 #### Port Already in Use
+
 ```bash
 # Find process using port 3000
 lsof -i :3000
@@ -453,16 +493,19 @@ npm run dev -- -p 3001
 ### Azure Configuration Issues
 
 #### API Key Not Working
+
 - Verify the API key is correct
 - Check if the key has proper permissions
 - Ensure the key is set in `.env.local`
 
 #### Endpoint Configuration Issues
+
 - Verify endpoint URLs are correct
 - Check if deployments exist in Azure
 - Ensure API versions are compatible
 
 #### Model Not Available
+
 - Check if the model is enabled in configuration
 - Verify the deployment exists in Azure
 - Ensure you have access to the required Azure service
@@ -470,6 +513,7 @@ npm run dev -- -p 3001
 ### Development Issues
 
 #### Build Failures
+
 ```bash
 # Clear build cache
 rm -rf .next
@@ -483,6 +527,7 @@ npm run build
 ```
 
 #### TypeScript Errors
+
 ```bash
 # Check TypeScript version
 npx tsc --version
@@ -497,6 +542,7 @@ npm run lint -- --fix
 ## 📚 Additional Resources
 
 ### Documentation
+
 - [Getting Started](getting-started.md) - Quick start guide
 - [User Guide](user-guide.md) - Complete user manual
 - [Development Guide](developer-guide.md) - Development setup
@@ -504,11 +550,13 @@ npm run lint -- --fix
 - [API Documentation](api-documentation.md) - Technical reference
 
 ### CLI Documentation
+
 - [CLI Installation](cli-documentation.md#installation) - CLI setup
 - [CLI Usage](cli-documentation.md#usage) - CLI commands
 - [CLI Configuration](cli-documentation.md#configuration) - CLI settings
 
 ### External Resources
+
 - [Node.js Documentation](https://nodejs.org/docs/)
 - [npm Documentation](https://docs.npmjs.com/)
 - [Docker Documentation](https://docs.docker.com/)
@@ -517,15 +565,18 @@ npm run lint -- --fix
 ## 🆘 Getting Help
 
 ### Self-Service
+
 - Check this installation guide
 - Review the [troubleshooting section](#troubleshooting)
 - Check the [GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
 
 ### Community Support
+
 - [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
 - [GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
 
 ### Contact
+
 - **Author**: Hazem Ali (Microsoft MVP)
 - **GitHub**: [@DrHazemAli](https://github.com/DrHazemAli)
 - **LinkedIn**: [Hazem Ali](https://linkedin.com/in/hazemali)
@@ -543,4 +594,5 @@ npm run lint -- --fix
 ---
 
 ## Next Steps
+
 continue to the [Configuration Guide](configuration.md) or the [User Guide](user-guide.md) to get started.

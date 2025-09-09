@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { LayersIcon } from '@radix-ui/react-icons';
-import { Button } from '@radix-ui/themes';
+import React from "react";
+import { motion } from "framer-motion";
+import { LayersIcon } from "@radix-ui/react-icons";
+import { Button } from "@radix-ui/themes";
 
 interface LayersToggleProps {
   showLayers: boolean;
@@ -12,7 +12,7 @@ interface LayersToggleProps {
 
 export default function LayersToggle({
   showLayers,
-  onToggleLayers
+  onToggleLayers,
 }: LayersToggleProps) {
   return (
     <motion.div

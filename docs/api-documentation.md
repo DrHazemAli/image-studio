@@ -31,12 +31,14 @@ The Azure GenAI Image Studio API provides programmatic access to AI-powered imag
 All API requests require authentication using Azure API keys.
 
 #### Headers
+
 ```http
 Authorization: Bearer YOUR_AZURE_API_KEY
 Content-Type: application/json
 ```
 
 #### Environment Variables
+
 ```bash
 AZURE_API_KEY=your_azure_api_key_here
 AZURE_API_BASE_URL=https://your-resource.openai.azure.com
@@ -45,6 +47,7 @@ AZURE_API_BASE_URL=https://your-resource.openai.azure.com
 ## Endpoints
 
 ### Base URL
+
 ```
 Production: https://your-app.vercel.app/api
 Development: http://localhost:3000/api
@@ -57,6 +60,7 @@ Development: http://localhost:3000/api
 Creates a new image from a text prompt.
 
 **Request Body:**
+
 ```json
 {
   "prompt": "A beautiful sunset over mountains",
@@ -67,6 +71,7 @@ Creates a new image from a text prompt.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -92,6 +97,7 @@ Creates a new image from a text prompt.
 Retrieves current application configuration.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -115,6 +121,7 @@ Retrieves current application configuration.
 Retrieves information about available AI models.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -157,22 +164,22 @@ Retrieves information about available AI models.
 ### Basic Image Generation
 
 ```javascript
-const response = await fetch('/api/generate', {
-  method: 'POST',
+const response = await fetch("/api/generate", {
+  method: "POST",
   headers: {
-    'Authorization': 'Bearer YOUR_API_KEY',
-    'Content-Type': 'application/json'
+    Authorization: "Bearer YOUR_API_KEY",
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    prompt: 'A futuristic city at night',
-    model: 'dall-e-3',
-    size: '1024x1024'
-  })
+    prompt: "A futuristic city at night",
+    model: "dall-e-3",
+    size: "1024x1024",
+  }),
 });
 
 const result = await response.json();
 if (result.success) {
-  console.log('Generated image:', result.data.images[0].url);
+  console.log("Generated image:", result.data.images[0].url);
 }
 ```
 

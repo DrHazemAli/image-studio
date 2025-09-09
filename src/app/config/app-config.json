@@ -59,7 +59,12 @@
           "name": "GPT-Image-1",
           "provider": "Azure OpenAI",
           "description": "Latest model with enhanced capabilities including image editing and inpainting",
-          "capabilities": ["background-removal", "image-editing", "inpainting", "outpainting"],
+          "capabilities": [
+            "background-removal",
+            "image-editing",
+            "inpainting",
+            "outpainting"
+          ],
           "recommended": false,
           "speed": "medium",
           "quality": "premium",

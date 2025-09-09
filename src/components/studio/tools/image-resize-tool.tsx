@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import React, { useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  FrameIcon, 
+import React, { useState, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  FrameIcon,
   Cross2Icon,
   RotateCounterClockwiseIcon,
   ViewHorizontalIcon,
-  ViewVerticalIcon
-} from '@radix-ui/react-icons';
-import { Button, Slider } from '@radix-ui/themes';
-import { FabricImage } from 'fabric';
+  ViewVerticalIcon,
+} from "@radix-ui/react-icons";
+import { Button, Slider } from "@radix-ui/themes";
+import { FabricImage } from "fabric";
 
 interface ImageResizeToolProps {
   isOpen: boolean;
@@ -32,20 +32,20 @@ interface PresetSize {
 }
 
 const PRESET_SIZES: PresetSize[] = [
-  { name: 'Original', width: 0, height: 0 },
-  { name: '50%', width: 0.5, height: 0.5 },
-  { name: '75%', width: 0.75, height: 0.75 },
-  { name: '100%', width: 1, height: 1 },
-  { name: '125%', width: 1.25, height: 1.25 },
-  { name: '150%', width: 1.5, height: 1.5 },
-  { name: '200%', width: 2, height: 2 },
+  { name: "Original", width: 0, height: 0 },
+  { name: "50%", width: 0.5, height: 0.5 },
+  { name: "75%", width: 0.75, height: 0.75 },
+  { name: "100%", width: 1, height: 1 },
+  { name: "125%", width: 1.25, height: 1.25 },
+  { name: "150%", width: 1.5, height: 1.5 },
+  { name: "200%", width: 2, height: 2 },
 ];
 
 export default function ImageResizeTool({
   isOpen,
   onClose,
   selectedImage,
-  onImageTransform
+  onImageTransform,
 }: ImageResizeToolProps) {
   const [scaleX, setScaleX] = useState(1);
   const [scaleY, setScaleY] = useState(1);
@@ -54,34 +54,45 @@ export default function ImageResizeTool({
   const [flipX, setFlipX] = useState(false);
   const [flipY, setFlipY] = useState(false);
 
-  const handlePresetSelect = useCallback((preset: PresetSize) => {
-    if (preset.name === 'Original' && selectedImage) {
-      const originalWidth = (selectedImage as any).originalWidth || selectedImage.width;
-      const originalHeight = (selectedImage as any).originalHeight || selectedImage.height;
-      const currentWidth = selectedImage.width! * selectedImage.scaleX!;
-      const currentHeight = selectedImage.height! * selectedImage.scaleY!;
-      
-      setScaleX(originalWidth / currentWidth);
-      setScaleY(originalHeight / currentHeight);
-    } else {
-      setScaleX(preset.width);
-      setScaleY(preset.height);
-    }
-  }, [selectedImage]);
+  const handlePresetSelect = useCallback(
+    (preset: PresetSize) => {
+      if (preset.name === "Original" && selectedImage) {
+        const originalWidth =
+          (selectedImage as any).originalWidth || selectedImage.width;
+        const originalHeight =
+          (selectedImage as any).originalHeight || selectedImage.height;
+        const currentWidth = selectedImage.width! * selectedImage.scaleX!;
+        const currentHeight = selectedImage.height! * selectedImage.scaleY!;
 
-  const handleScaleXChange = useCallback((value: number) => {
-    setScaleX(value);
-    if (maintainAspectRatio) {
-      setScaleY(value);
-    }
-  }, [maintainAspectRatio]);
+        setScaleX(originalWidth / currentWidth);
+        setScaleY(originalHeight / currentHeight);
+      } else {
+        setScaleX(preset.width);
+        setScaleY(preset.height);
+      }
+    },
+    [selectedImage],
+  );
 
-  const handleScaleYChange = useCallback((value: number) => {
-    setScaleY(value);
-    if (maintainAspectRatio) {
+  const handleScaleXChange = useCallback(
+    (value: number) => {
       setScaleX(value);
-    }
-  }, [maintainAspectRatio]);
+      if (maintainAspectRatio) {
+        setScaleY(value);
+      }
+    },
+    [maintainAspectRatio],
+  );
+
+  const handleScaleYChange = useCallback(
+    (value: number) => {
+      setScaleY(value);
+      if (maintainAspectRatio) {
+        setScaleX(value);
+      }
+    },
+    [maintainAspectRatio],
+  );
 
   const handleApply = useCallback(() => {
     onImageTransform({
@@ -89,21 +100,21 @@ export default function ImageResizeTool({
       scaleY,
       angle,
       flipX,
-      flipY
+      flipY,
     });
     onClose();
   }, [scaleX, scaleY, angle, flipX, flipY, onImageTransform, onClose]);
 
-  const handleRotate = useCallback((direction: 'left' | 'right') => {
-    const rotationAmount = direction === 'left' ? -90 : 90;
-    setAngle(prev => (prev + rotationAmount) % 360);
+  const handleRotate = useCallback((direction: "left" | "right") => {
+    const rotationAmount = direction === "left" ? -90 : 90;
+    setAngle((prev) => (prev + rotationAmount) % 360);
   }, []);
 
-  const handleFlip = useCallback((axis: 'horizontal' | 'vertical') => {
-    if (axis === 'horizontal') {
-      setFlipX(prev => !prev);
+  const handleFlip = useCallback((axis: "horizontal" | "vertical") => {
+    if (axis === "horizontal") {
+      setFlipX((prev) => !prev);
     } else {
-      setFlipY(prev => !prev);
+      setFlipY((prev) => !prev);
     }
   }, []);
 
@@ -159,8 +170,16 @@ export default function ImageResizeTool({
                   Current Image
                 </h3>
                 <div className="text-sm text-gray-600 dark:text-gray-400">
-                  <div>Size: {Math.round(selectedImage.width! * selectedImage.scaleX!)} × {Math.round(selectedImage.height! * selectedImage.scaleY!)} px</div>
-                  <div>Scale: {Math.round(selectedImage.scaleX! * 100)}% × {Math.round(selectedImage.scaleY! * 100)}%</div>
+                  <div>
+                    Size:{" "}
+                    {Math.round(selectedImage.width! * selectedImage.scaleX!)} ×{" "}
+                    {Math.round(selectedImage.height! * selectedImage.scaleY!)}{" "}
+                    px
+                  </div>
+                  <div>
+                    Scale: {Math.round(selectedImage.scaleX! * 100)}% ×{" "}
+                    {Math.round(selectedImage.scaleY! * 100)}%
+                  </div>
                   <div>Rotation: {Math.round(selectedImage.angle || 0)}°</div>
                 </div>
               </div>
@@ -188,7 +207,7 @@ export default function ImageResizeTool({
                 <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Scale
                 </h3>
-                
+
                 <div className="flex items-center gap-3">
                   <input
                     type="checkbox"
@@ -197,7 +216,10 @@ export default function ImageResizeTool({
                     onChange={(e) => setMaintainAspectRatio(e.target.checked)}
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="maintainAspectRatio" className="text-sm text-gray-700 dark:text-gray-300">
+                  <label
+                    htmlFor="maintainAspectRatio"
+                    className="text-sm text-gray-700 dark:text-gray-300"
+                  >
                     Maintain aspect ratio
                   </label>
                 </div>
@@ -213,11 +235,13 @@ export default function ImageResizeTool({
                       max="5"
                       step="0.01"
                       value={scaleX}
-                      onChange={(e) => handleScaleXChange(parseFloat(e.target.value))}
+                      onChange={(e) =>
+                        handleScaleXChange(parseFloat(e.target.value))
+                      }
                       className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer"
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
                       Height Scale: {Math.round(scaleY * 100)}%
@@ -228,7 +252,9 @@ export default function ImageResizeTool({
                       max="5"
                       step="0.01"
                       value={scaleY}
-                      onChange={(e) => handleScaleYChange(parseFloat(e.target.value))}
+                      onChange={(e) =>
+                        handleScaleYChange(parseFloat(e.target.value))
+                      }
                       className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer"
                       disabled={maintainAspectRatio}
                     />
@@ -241,16 +267,16 @@ export default function ImageResizeTool({
                 <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Rotation
                 </h3>
-                
+
                 <div className="flex items-center gap-3">
                   <button
-                    onClick={() => handleRotate('left')}
+                    onClick={() => handleRotate("left")}
                     className="p-2 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                     title="Rotate Left"
                   >
                     <RotateCounterClockwiseIcon className="w-4 h-4" />
                   </button>
-                  
+
                   <div className="flex-1">
                     <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
                       Angle: {Math.round(angle)}°
@@ -264,9 +290,9 @@ export default function ImageResizeTool({
                       className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer"
                     />
                   </div>
-                  
+
                   <button
-                    onClick={() => handleRotate('right')}
+                    onClick={() => handleRotate("right")}
                     className="p-2 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                     title="Rotate Right"
                   >
@@ -280,26 +306,26 @@ export default function ImageResizeTool({
                 <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Flip
                 </h3>
-                
+
                 <div className="flex gap-3">
                   <button
-                    onClick={() => handleFlip('horizontal')}
+                    onClick={() => handleFlip("horizontal")}
                     className={`flex-1 p-3 border rounded-lg transition-colors ${
-                      flipX 
-                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' 
-                        : 'border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
+                      flipX
+                        ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
+                        : "border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
                     }`}
                   >
                     <ViewHorizontalIcon className="w-4 h-4 mx-auto mb-1" />
                     <div className="text-xs">Horizontal</div>
                   </button>
-                  
+
                   <button
-                    onClick={() => handleFlip('vertical')}
+                    onClick={() => handleFlip("vertical")}
                     className={`flex-1 p-3 border rounded-lg transition-colors ${
-                      flipY 
-                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' 
-                        : 'border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
+                      flipY
+                        ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
+                        : "border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
                     }`}
                   >
                     <ViewVerticalIcon className="w-4 h-4 mx-auto mb-1" />
@@ -311,27 +337,15 @@ export default function ImageResizeTool({
 
             {/* Footer */}
             <div className="flex items-center justify-between p-6 border-t border-gray-200 dark:border-gray-700">
-              <Button
-                variant="soft"
-                color="gray"
-                onClick={handleReset}
-              >
+              <Button variant="soft" color="gray" onClick={handleReset}>
                 Reset
               </Button>
-              
+
               <div className="flex gap-3">
-                <Button
-                  variant="soft"
-                  color="gray"
-                  onClick={onClose}
-                >
+                <Button variant="soft" color="gray" onClick={onClose}>
                   Cancel
                 </Button>
-                <Button
-                  onClick={handleApply}
-                >
-                  Apply Transform
-                </Button>
+                <Button onClick={handleApply}>Apply Transform</Button>
               </div>
             </div>
           </motion.div>

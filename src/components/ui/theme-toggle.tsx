@@ -1,32 +1,29 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { SunIcon, MoonIcon, DesktopIcon } from '@radix-ui/react-icons';
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { Button } from '@radix-ui/themes';
-import { useTheme } from '@/hooks/use-theme';
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { SunIcon, MoonIcon, DesktopIcon } from "@radix-ui/react-icons";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { Button } from "@radix-ui/themes";
+import { useTheme } from "@/hooks/use-theme";
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [open, setOpen] = useState(false);
 
   const themes = [
-    { value: 'light', label: 'Light', icon: SunIcon },
-    { value: 'dark', label: 'Dark', icon: MoonIcon },
-    { value: 'system', label: 'System', icon: DesktopIcon },
+    { value: "light", label: "Light", icon: SunIcon },
+    { value: "dark", label: "Dark", icon: MoonIcon },
+    { value: "system", label: "System", icon: DesktopIcon },
   ] as const;
 
-  const currentTheme = themes.find(t => t.value === theme);
+  const currentTheme = themes.find((t) => t.value === theme);
   const CurrentIcon = currentTheme?.icon || SunIcon;
 
   return (
     <DropdownMenu.Root open={open} onOpenChange={setOpen}>
       <DropdownMenu.Trigger asChild>
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Button
             variant="ghost"
             size="2"

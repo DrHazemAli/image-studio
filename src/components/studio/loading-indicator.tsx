@@ -1,31 +1,27 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { 
-  UpdateIcon,
-  ImageIcon,
-  FrameIcon
-} from '@radix-ui/react-icons';
+import React from "react";
+import { motion } from "framer-motion";
+import { UpdateIcon, ImageIcon, FrameIcon } from "@radix-ui/react-icons";
 
 interface LoadingIndicatorProps {
   isVisible: boolean;
   message?: string;
-  type?: 'canvas' | 'image' | 'general';
+  type?: "canvas" | "image" | "general";
 }
 
 export default function LoadingIndicator({
   isVisible,
   message,
-  type = 'general'
+  type = "general",
 }: LoadingIndicatorProps) {
   if (!isVisible) return null;
 
   const getIcon = () => {
     switch (type) {
-      case 'canvas':
+      case "canvas":
         return <FrameIcon className="w-6 h-6" />;
-      case 'image':
+      case "image":
         return <ImageIcon className="w-6 h-6" />;
       default:
         return <UpdateIcon className="w-6 h-6" />;
@@ -34,12 +30,12 @@ export default function LoadingIndicator({
 
   const getDefaultMessage = () => {
     switch (type) {
-      case 'canvas':
-        return 'Initializing canvas...';
-      case 'image':
-        return 'Loading image...';
+      case "canvas":
+        return "Initializing canvas...";
+      case "image":
+        return "Loading image...";
       default:
-        return 'Loading...';
+        return "Loading...";
     }
   };
 

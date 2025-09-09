@@ -1,18 +1,26 @@
-import { ConfigManager, StorageType, ConfigOptions } from './types';
-import { LocalStorage } from './storage/local-storage';
-import { CookieStorage } from './storage/cookie-storage';
-import { SessionStorage } from './storage/session-storage';
-import { serialize, deserialize, getNestedValue, setNestedValue } from './utils/serialization';
+import { ConfigManager, StorageType, ConfigOptions } from "./types";
+import { LocalStorage } from "./storage/local-storage";
+import { CookieStorage } from "./storage/cookie-storage";
+import { SessionStorage } from "./storage/session-storage";
+import {
+  serialize,
+  deserialize,
+  getNestedValue,
+  setNestedValue,
+} from "./utils/serialization";
 
 export class AppSettings implements ConfigManager {
-  private storages: Record<StorageType, LocalStorage | CookieStorage | SessionStorage>;
-  private defaultStorage: StorageType = 'localStorage';
+  private storages: Record<
+    StorageType,
+    LocalStorage | CookieStorage | SessionStorage
+  >;
+  private defaultStorage: StorageType = "localStorage";
 
   constructor() {
     this.storages = {
       localStorage: new LocalStorage(),
       cookies: new CookieStorage(),
-      sessionStorage: new SessionStorage()
+      sessionStorage: new SessionStorage(),
     };
   }
 
@@ -23,24 +31,29 @@ export class AppSettings implements ConfigManager {
    * @param storage - Storage type to use
    * @param encrypted - Whether the value is encrypted
    */
-  get(key: string, defaultValue?: any, storage?: StorageType, encrypted?: boolean): any {
+  get(
+    key: string,
+    defaultValue?: any,
+    storage?: StorageType,
+    encrypted?: boolean,
+  ): any {
     const storageType = storage || this.defaultStorage;
     const storageInstance = this.storages[storageType];
-    
+
     try {
       const serializedValue = storageInstance.get(key);
-      
+
       if (serializedValue === null) {
         return defaultValue;
       }
-      
+
       const value = deserialize(serializedValue, encrypted);
-      
+
       // Support dot notation for nested values
-      if (key.includes('.')) {
+      if (key.includes(".")) {
         return getNestedValue(value, key) ?? defaultValue;
       }
-      
+
       return value ?? defaultValue;
     } catch (error) {
       console.warn(`Failed to get config key "${key}":`, error);
@@ -55,13 +68,18 @@ export class AppSettings implements ConfigManager {
    * @param storage - Storage type to use
    * @param encrypted - Whether to encrypt the value
    */
-  set(key: string, value: any, storage?: StorageType, encrypted?: boolean): void {
+  set(
+    key: string,
+    value: any,
+    storage?: StorageType,
+    encrypted?: boolean,
+  ): void {
     const storageType = storage || this.defaultStorage;
     const storageInstance = this.storages[storageType];
-    
+
     try {
       // Support dot notation for nested values
-      if (key.includes('.')) {
+      if (key.includes(".")) {
         const existingValue = this.get(key, {}, storageType, encrypted);
         const updatedValue = setNestedValue(existingValue, key, value);
         const serializedValue = serialize(updatedValue, encrypted);
@@ -83,7 +101,7 @@ export class AppSettings implements ConfigManager {
   has(key: string, storage?: StorageType): boolean {
     const storageType = storage || this.defaultStorage;
     const storageInstance = this.storages[storageType];
-    
+
     try {
       const value = storageInstance.get(key);
       return value !== null;
@@ -101,7 +119,7 @@ export class AppSettings implements ConfigManager {
   remove(key: string, storage?: StorageType): void {
     const storageType = storage || this.defaultStorage;
     const storageInstance = this.storages[storageType];
-    
+
     try {
       storageInstance.remove(key);
     } catch (error) {
@@ -116,7 +134,7 @@ export class AppSettings implements ConfigManager {
   clear(storage?: StorageType): void {
     const storageType = storage || this.defaultStorage;
     const storageInstance = this.storages[storageType];
-    
+
     try {
       storageInstance.clear();
     } catch (error) {
@@ -131,12 +149,12 @@ export class AppSettings implements ConfigManager {
   all(storage?: StorageType): Record<string, any> {
     const storageType = storage || this.defaultStorage;
     const storageInstance = this.storages[storageType];
-    
+
     try {
       const keys = storageInstance.keys();
       const result: Record<string, any> = {};
-      
-      keys.forEach(key => {
+
+      keys.forEach((key) => {
         try {
           const value = this.get(key, undefined, storageType);
           if (value !== undefined) {
@@ -146,10 +164,13 @@ export class AppSettings implements ConfigManager {
           console.warn(`Failed to get config key "${key}" for all():`, error);
         }
       });
-      
+
       return result;
     } catch (error) {
-      console.warn(`Failed to get all config values from "${storageType}":`, error);
+      console.warn(
+        `Failed to get all config values from "${storageType}":`,
+        error,
+      );
       return {};
     }
   }
@@ -161,7 +182,7 @@ export class AppSettings implements ConfigManager {
   keys(storage?: StorageType): string[] {
     const storageType = storage || this.defaultStorage;
     const storageInstance = this.storages[storageType];
-    
+
     try {
       return storageInstance.keys();
     } catch (error) {
@@ -192,19 +213,24 @@ export class AppSettings implements ConfigManager {
    * @param toStorage - Destination storage type
    * @param removeFromSource - Whether to remove from source after migration
    */
-  migrate(key: string, fromStorage: StorageType, toStorage: StorageType, removeFromSource: boolean = true): boolean {
+  migrate(
+    key: string,
+    fromStorage: StorageType,
+    toStorage: StorageType,
+    removeFromSource: boolean = true,
+  ): boolean {
     try {
       if (!this.has(key, fromStorage)) {
         return false;
       }
-      
+
       const value = this.get(key, undefined, fromStorage);
       this.set(key, value, toStorage);
-      
+
       if (removeFromSource) {
         this.remove(key, fromStorage);
       }
-      
+
       return true;
     } catch (error) {
       console.warn(`Failed to migrate config key "${key}":`, error);

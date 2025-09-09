@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { ContextMenu, type ContextMenuItem } from './context-menu';
-import { useMenuContext } from './menu-context';
+import { useState } from "react";
+import { ContextMenu, type ContextMenuItem } from "./context-menu";
+import { useMenuContext } from "./menu-context";
 
 interface ViewMenuProps {
   showConsole: boolean;
@@ -35,7 +35,7 @@ export function ViewMenu({
 }: ViewMenuProps) {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const { activeMenu, setActiveMenu } = useMenuContext();
-  const menuId = 'view';
+  const menuId = "view";
   const isOpen = activeMenu === menuId;
 
   const handleClick = (event: React.MouseEvent) => {
@@ -49,54 +49,54 @@ export function ViewMenu({
 
   const menuItems: ContextMenuItem[] = [
     {
-      label: 'Console',
+      label: "Console",
       action: onToggleConsole,
-      shortcut: showConsole ? 'Hide' : 'Show',
+      shortcut: showConsole ? "Hide" : "Show",
     },
     {
-      label: 'Assets Panel',
+      label: "Assets Panel",
       action: onToggleAssetsPanel,
-      shortcut: showAssetsPanel ? 'Hide' : 'Show',
+      shortcut: showAssetsPanel ? "Hide" : "Show",
     },
     {
-      label: 'History Panel',
+      label: "History Panel",
       action: onToggleHistoryPanel,
-      shortcut: showHistoryPanel ? 'Hide' : 'Show',
+      shortcut: showHistoryPanel ? "Hide" : "Show",
     },
     {
-      label: 'Prompt Box',
+      label: "Prompt Box",
       action: onTogglePromptBox,
-      shortcut: showPromptBox ? 'Hide' : 'Show',
+      shortcut: showPromptBox ? "Hide" : "Show",
     },
     {
       separator: true,
-      label: '',
+      label: "",
       action: () => {},
     },
     {
-      label: 'Zoom In',
+      label: "Zoom In",
       action: onZoomIn,
-      shortcut: 'Cmd++',
+      shortcut: "Cmd++",
     },
     {
-      label: 'Zoom Out',
+      label: "Zoom Out",
       action: onZoomOut,
-      shortcut: 'Cmd+-',
+      shortcut: "Cmd+-",
     },
     {
-      label: 'Reset Zoom',
+      label: "Reset Zoom",
       action: onResetZoom,
-      shortcut: 'Cmd+0',
+      shortcut: "Cmd+0",
     },
     {
       separator: true,
-      label: '',
+      label: "",
       action: () => {},
     },
     {
-      label: 'Toggle Fullscreen',
+      label: "Toggle Fullscreen",
       action: onToggleFullscreen,
-      shortcut: 'F11',
+      shortcut: "F11",
     },
   ];
 
@@ -105,9 +105,9 @@ export function ViewMenu({
       <button
         onClick={handleClick}
         className={`px-3 py-1 text-sm rounded transition-colors ${
-          isOpen 
-            ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' 
-            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+          isOpen
+            ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
         }`}
       >
         View

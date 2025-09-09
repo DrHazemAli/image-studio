@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import React, { useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  SquareIcon, 
-  CircleIcon, 
+import React, { useState, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  SquareIcon,
+  CircleIcon,
   TriangleUpIcon,
   Cross2Icon,
-  PaletteIcon,
+  ColorWheelIcon,
   BorderWidthIcon,
-  OpacityIcon
-} from '@radix-ui/react-icons';
-import { Button, Slider } from '@radix-ui/themes';
+  OpacityIcon,
+} from "@radix-ui/react-icons";
+import { Button, Slider } from "@radix-ui/themes";
 
 interface Shape {
-  type: 'rectangle' | 'circle' | 'triangle';
+  type: "rectangle" | "circle" | "triangle";
   name: string;
   icon: React.ReactNode;
 }
@@ -34,63 +34,81 @@ interface ShapesToolProps {
 
 const SHAPES: Shape[] = [
   {
-    type: 'rectangle',
-    name: 'Rectangle',
-    icon: <SquareIcon className="w-5 h-5" />
+    type: "rectangle",
+    name: "Rectangle",
+    icon: <SquareIcon className="w-5 h-5" />,
   },
   {
-    type: 'circle',
-    name: 'Circle',
-    icon: <CircleIcon className="w-5 h-5" />
+    type: "circle",
+    name: "Circle",
+    icon: <CircleIcon className="w-5 h-5" />,
   },
   {
-    type: 'triangle',
-    name: 'Triangle',
-    icon: <TriangleUpIcon className="w-5 h-5" />
-  }
+    type: "triangle",
+    name: "Triangle",
+    icon: <TriangleUpIcon className="w-5 h-5" />,
+  },
 ];
 
 const PRESET_COLORS = [
-  '#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF',
-  '#FFA500', '#800080', '#008000', '#000080', '#800000', '#808080',
-  '#000000', '#FFFFFF', '#C0C0C0', '#FFC0CB', '#A52A2A', '#FFD700'
+  "#FF0000",
+  "#00FF00",
+  "#0000FF",
+  "#FFFF00",
+  "#FF00FF",
+  "#00FFFF",
+  "#FFA500",
+  "#800080",
+  "#008000",
+  "#000080",
+  "#800000",
+  "#808080",
+  "#000000",
+  "#FFFFFF",
+  "#C0C0C0",
+  "#FFC0CB",
+  "#A52A2A",
+  "#FFD700",
 ];
 
 export default function ShapesTool({
   isOpen,
   onClose,
-  onAddShape
+  onAddShape,
 }: ShapesToolProps) {
   const [selectedShape, setSelectedShape] = useState<Shape>(SHAPES[0]);
   const [style, setStyle] = useState<ShapeStyle>({
-    fillColor: '#FF0000',
-    strokeColor: '#000000',
+    fillColor: "#FF0000",
+    strokeColor: "#000000",
     strokeWidth: 2,
-    opacity: 100
+    opacity: 100,
   });
 
   const handleShapeSelect = useCallback((shape: Shape) => {
     setSelectedShape(shape);
   }, []);
 
-  const handleColorChange = useCallback((colorType: 'fill' | 'stroke', color: string) => {
-    setStyle(prev => ({
-      ...prev,
-      [colorType === 'fill' ? 'fillColor' : 'strokeColor']: color
-    }));
-  }, []);
+  const handleColorChange = useCallback(
+    (colorType: "fill" | "stroke", color: string) => {
+      setStyle((prev) => ({
+        ...prev,
+        [colorType === "fill" ? "fillColor" : "strokeColor"]: color,
+      }));
+    },
+    [],
+  );
 
   const handleStrokeWidthChange = useCallback((width: number) => {
-    setStyle(prev => ({
+    setStyle((prev) => ({
       ...prev,
-      strokeWidth: width
+      strokeWidth: width,
     }));
   }, []);
 
   const handleOpacityChange = useCallback((opacity: number) => {
-    setStyle(prev => ({
+    setStyle((prev) => ({
       ...prev,
-      opacity: opacity
+      opacity: opacity,
     }));
   }, []);
 
@@ -101,10 +119,10 @@ export default function ShapesTool({
 
   const handleReset = useCallback(() => {
     setStyle({
-      fillColor: '#FF0000',
-      strokeColor: '#000000',
+      fillColor: "#FF0000",
+      strokeColor: "#000000",
       strokeWidth: 2,
-      opacity: 100
+      opacity: 100,
     });
   }, []);
 
@@ -156,13 +174,15 @@ export default function ShapesTool({
                       onClick={() => handleShapeSelect(shape)}
                       className={`p-4 border rounded-lg transition-colors ${
                         selectedShape.type === shape.type
-                          ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
-                          : 'border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
+                          ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
+                          : "border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
                       }`}
                     >
                       <div className="flex flex-col items-center gap-2">
                         {shape.icon}
-                        <span className="text-xs font-medium">{shape.name}</span>
+                        <span className="text-xs font-medium">
+                          {shape.name}
+                        </span>
                       </div>
                     </button>
                   ))}
@@ -179,25 +199,25 @@ export default function ShapesTool({
                     className="w-8 h-8 border border-gray-300 dark:border-gray-600 rounded cursor-pointer"
                     style={{ backgroundColor: style.fillColor }}
                     onClick={() => {
-                      const color = prompt('Enter hex color:', style.fillColor);
-                      if (color) handleColorChange('fill', color);
+                      const color = prompt("Enter hex color:", style.fillColor);
+                      if (color) handleColorChange("fill", color);
                     }}
                   />
                   <input
                     type="text"
                     value={style.fillColor}
-                    onChange={(e) => handleColorChange('fill', e.target.value)}
+                    onChange={(e) => handleColorChange("fill", e.target.value)}
                     className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm font-mono"
                     placeholder="#FF0000"
                   />
                 </div>
-                
+
                 {/* Color Presets */}
                 <div className="grid grid-cols-9 gap-1">
                   {PRESET_COLORS.map((color) => (
                     <button
                       key={color}
-                      onClick={() => handleColorChange('fill', color)}
+                      onClick={() => handleColorChange("fill", color)}
                       className="w-6 h-6 border border-gray-300 dark:border-gray-600 rounded cursor-pointer hover:scale-110 transition-transform"
                       style={{ backgroundColor: color }}
                       title={color}
@@ -216,14 +236,19 @@ export default function ShapesTool({
                     className="w-8 h-8 border border-gray-300 dark:border-gray-600 rounded cursor-pointer"
                     style={{ backgroundColor: style.strokeColor }}
                     onClick={() => {
-                      const color = prompt('Enter hex color:', style.strokeColor);
-                      if (color) handleColorChange('stroke', color);
+                      const color = prompt(
+                        "Enter hex color:",
+                        style.strokeColor,
+                      );
+                      if (color) handleColorChange("stroke", color);
                     }}
                   />
                   <input
                     type="text"
                     value={style.strokeColor}
-                    onChange={(e) => handleColorChange('stroke', e.target.value)}
+                    onChange={(e) =>
+                      handleColorChange("stroke", e.target.value)
+                    }
                     className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm font-mono"
                     placeholder="#000000"
                   />
@@ -240,7 +265,9 @@ export default function ShapesTool({
                   min="0"
                   max="20"
                   value={style.strokeWidth}
-                  onChange={(e) => handleStrokeWidthChange(parseInt(e.target.value))}
+                  onChange={(e) =>
+                    handleStrokeWidthChange(parseInt(e.target.value))
+                  }
                   className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer"
                 />
                 <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
@@ -259,7 +286,9 @@ export default function ShapesTool({
                   min="0"
                   max="100"
                   value={style.opacity}
-                  onChange={(e) => handleOpacityChange(parseInt(e.target.value))}
+                  onChange={(e) =>
+                    handleOpacityChange(parseInt(e.target.value))
+                  }
                   className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer"
                 />
                 <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
@@ -281,9 +310,16 @@ export default function ShapesTool({
                       borderColor: style.strokeColor,
                       borderWidth: `${style.strokeWidth}px`,
                       opacity: style.opacity / 100,
-                      borderRadius: selectedShape.type === 'circle' ? '50%' : 
-                                   selectedShape.type === 'triangle' ? '0' : '0',
-                      clipPath: selectedShape.type === 'triangle' ? 'polygon(50% 0%, 0% 100%, 100% 100%)' : 'none'
+                      borderRadius:
+                        selectedShape.type === "circle"
+                          ? "50%"
+                          : selectedShape.type === "triangle"
+                            ? "0"
+                            : "0",
+                      clipPath:
+                        selectedShape.type === "triangle"
+                          ? "polygon(50% 0%, 0% 100%, 100% 100%)"
+                          : "none",
                     }}
                   />
                 </div>
@@ -292,27 +328,15 @@ export default function ShapesTool({
 
             {/* Footer */}
             <div className="flex items-center justify-between p-6 border-t border-gray-200 dark:border-gray-700">
-              <Button
-                variant="soft"
-                color="gray"
-                onClick={handleReset}
-              >
+              <Button variant="soft" color="gray" onClick={handleReset}>
                 Reset
               </Button>
-              
+
               <div className="flex gap-3">
-                <Button
-                  variant="soft"
-                  color="gray"
-                  onClick={onClose}
-                >
+                <Button variant="soft" color="gray" onClick={onClose}>
                   Cancel
                 </Button>
-                <Button
-                  onClick={handleAddShape}
-                >
-                  Add Shape
-                </Button>
+                <Button onClick={handleAddShape}>Add Shape</Button>
               </div>
             </div>
           </motion.div>

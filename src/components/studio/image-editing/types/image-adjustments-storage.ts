@@ -3,7 +3,7 @@
  * For persisting image editing data in projects
  */
 
-import { ImageAdjustments } from '../hooks/use-real-time-preview';
+import { ImageAdjustments } from "../hooks/use-real-time-preview";
 
 /**
  * Stored image adjustments with metadata
@@ -12,10 +12,10 @@ export interface StoredImageAdjustments {
   // Image identification
   imageId: string; // Fabric.js object ID or image URL hash
   imageSrc?: string; // Source URL for reference
-  
+
   // Applied adjustments
   adjustments: ImageAdjustments;
-  
+
   // Metadata
   appliedAt: Date;
   version: string; // Adjustments format version

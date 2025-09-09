@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useEffect, useCallback, useState } from 'react';
-import { motion } from 'framer-motion';
-import { Cloud, Folder, FileText, Database, Check, Clock } from 'lucide-react';
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { MacStyleView } from '@/components/ui/mac-style-view';
-import { syncHelper } from '@/lib/sync-helper';
-import type { Project } from '@/lib/indexeddb';
+import { useEffect, useCallback, useState } from "react";
+import { motion } from "framer-motion";
+import { Cloud, Folder, FileText, Database, Check, Clock } from "lucide-react";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { MacStyleView } from "@/components/ui/mac-style-view";
+import { syncHelper } from "@/lib/sync-helper";
+import type { Project } from "@/lib/indexeddb";
 
 interface SyncManagerProps {
   currentProject: Project | null;
@@ -77,19 +77,19 @@ export function SyncManager({
   autoSave,
   autoSaveDuration,
   onToggleAutoSave,
-  onUpdateAutoSaveDuration
+  onUpdateAutoSaveDuration,
 }: SyncManagerProps) {
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [syncStats, setSyncStats] = useState({
     filesCount: 0,
-    totalSize: 0
+    totalSize: 0,
   });
 
   // Auto-save functionality (fully handled by sync helper)
   const triggerAutoSave = useCallback(() => {
     if (!autoSave || !currentProject) return;
-    
+
     // Update sync helper state
     syncHelper.updateState({
       projectName,
@@ -117,17 +117,37 @@ export function SyncManager({
       responseLog,
       // Undo/Redo History
       history,
-      historyIndex
+      historyIndex,
     });
-    
+
     // Schedule auto-save via sync helper
     syncHelper.scheduleAutoSave();
   }, [
-    autoSave, currentProject, projectName, currentModel, currentSize, 
-    isInpaintMode, currentImage, generatedImage, attachedImage, activeTool,
-    showGenerationPanel, showPromptBox, showAssetsPanel, showHistoryPanel,
-    showConsole, showSizeModal, showKeyboardShortcuts, showAbout, zoom,
-    isGenerating, generationProgress, requestLog, responseLog, history, historyIndex
+    autoSave,
+    currentProject,
+    projectName,
+    currentModel,
+    currentSize,
+    isInpaintMode,
+    currentImage,
+    generatedImage,
+    attachedImage,
+    activeTool,
+    showGenerationPanel,
+    showPromptBox,
+    showAssetsPanel,
+    showHistoryPanel,
+    showConsole,
+    showSizeModal,
+    showKeyboardShortcuts,
+    showAbout,
+    zoom,
+    isGenerating,
+    generationProgress,
+    requestLog,
+    responseLog,
+    history,
+    historyIndex,
   ]);
 
   // Set up sync helper when project is loaded
@@ -161,7 +181,7 @@ export function SyncManager({
           responseLog,
           // Undo/Redo History
           history,
-          historyIndex
+          historyIndex,
         },
         {
           onSyncStart: () => setIsSaving(true),
@@ -170,18 +190,37 @@ export function SyncManager({
             setLastSaved(stats.lastSync);
             setSyncStats({
               filesCount: stats.filesCount,
-              totalSize: stats.totalSize
+              totalSize: stats.totalSize,
             });
-          }
-        }
+          },
+        },
       );
     }
   }, [
-    currentProject, projectName, currentModel, currentSize, isInpaintMode, 
-    currentImage, generatedImage, attachedImage, activeTool, showGenerationPanel,
-    showPromptBox, showAssetsPanel, showHistoryPanel, showConsole, showSizeModal,
-    showKeyboardShortcuts, showAbout, zoom, isGenerating, generationProgress,
-    requestLog, responseLog, history, historyIndex
+    currentProject,
+    projectName,
+    currentModel,
+    currentSize,
+    isInpaintMode,
+    currentImage,
+    generatedImage,
+    attachedImage,
+    activeTool,
+    showGenerationPanel,
+    showPromptBox,
+    showAssetsPanel,
+    showHistoryPanel,
+    showConsole,
+    showSizeModal,
+    showKeyboardShortcuts,
+    showAbout,
+    zoom,
+    isGenerating,
+    generationProgress,
+    requestLog,
+    responseLog,
+    history,
+    historyIndex,
   ]);
 
   // Auto-save triggers - watch for changes to key state variables
@@ -189,7 +228,14 @@ export function SyncManager({
     if (currentProject) {
       triggerAutoSave();
     }
-  }, [projectName, currentImage, generatedImage, attachedImage, triggerAutoSave, currentProject]);
+  }, [
+    projectName,
+    currentImage,
+    generatedImage,
+    attachedImage,
+    triggerAutoSave,
+    currentProject,
+  ]);
 
   // Cleanup sync helper on unmount
   useEffect(() => {
@@ -205,11 +251,11 @@ export function SyncManager({
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className={`p-2 rounded-lg transition-colors relative ${
-            autoSave 
-              ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' 
-              : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+            autoSave
+              ? "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400"
+              : "hover:bg-gray-100 dark:hover:bg-gray-800"
           }`}
-          title={`Auto-save ${autoSave ? 'enabled' : 'disabled'}`}
+          title={`Auto-save ${autoSave ? "enabled" : "disabled"}`}
         >
           <Cloud className="w-4 h-4" />
           {isSaving && (
@@ -231,15 +277,15 @@ export function SyncManager({
             onToggle={onToggleAutoSave}
             stats={[
               {
-                label: 'Status',
-                value: autoSave ? 'Sync Enabled' : 'Sync Disabled',
-                color: autoSave ? 'green' : 'gray'
+                label: "Status",
+                value: autoSave ? "Sync Enabled" : "Sync Disabled",
+                color: autoSave ? "green" : "gray",
               },
               {
-                label: 'Last Sync',
-                value: lastSaved ? lastSaved.toLocaleTimeString() : 'Never',
-                color: lastSaved ? 'blue' : 'gray'
-              }
+                label: "Last Sync",
+                value: lastSaved ? lastSaved.toLocaleTimeString() : "Never",
+                color: lastSaved ? "blue" : "gray",
+              },
             ]}
             className="m-0 rounded-lg"
           >
@@ -249,10 +295,12 @@ export function SyncManager({
                 <Folder className="w-4 h-4 text-blue-500" />
                 <div>
                   <div className="text-sm font-medium">Main Sync Folder</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">sync</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">
+                    sync
+                  </div>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-3 p-2 rounded-lg bg-gray-50/50 dark:bg-gray-800/50">
                 <Folder className="w-4 h-4 text-purple-500" />
                 <div>
@@ -268,21 +316,26 @@ export function SyncManager({
                 <div className="flex items-center gap-2 p-2 rounded-lg bg-gray-50/50 dark:bg-gray-800/50">
                   <FileText className="w-4 h-4 text-gray-500" />
                   <div>
-                    <div className="text-sm font-medium">{syncStats.filesCount}</div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">files</div>
+                    <div className="text-sm font-medium">
+                      {syncStats.filesCount}
+                    </div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400">
+                      files
+                    </div>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-2 p-2 rounded-lg bg-gray-50/50 dark:bg-gray-800/50">
                   <Database className="w-4 h-4 text-gray-500" />
                   <div>
                     <div className="text-sm font-medium">
-                      {syncStats.totalSize > 1024 
+                      {syncStats.totalSize > 1024
                         ? `${(syncStats.totalSize / 1024).toFixed(1)} KB`
-                        : `${syncStats.totalSize} B`
-                      }
+                        : `${syncStats.totalSize} B`}
                     </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">size</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400">
+                      size
+                    </div>
                   </div>
                 </div>
               </div>
@@ -293,7 +346,7 @@ export function SyncManager({
                   <Clock className="w-4 h-4 text-green-500" />
                   <span>Auto-sync every {autoSaveDuration}s</span>
                 </div>
-                
+
                 <div className="flex items-center gap-2 text-sm">
                   <Check className="w-4 h-4 text-green-500" />
                   <span>Sync on save enabled</span>
@@ -304,7 +357,9 @@ export function SyncManager({
               <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium">Sync Duration</span>
-                  <span className="text-xs text-gray-500">{autoSaveDuration}s</span>
+                  <span className="text-xs text-gray-500">
+                    {autoSaveDuration}s
+                  </span>
                 </div>
                 <div className="flex gap-1">
                   {[1, 3, 5, 10, 30].map((duration) => (
@@ -313,8 +368,8 @@ export function SyncManager({
                       onClick={() => onUpdateAutoSaveDuration(duration)}
                       className={`px-2 py-1 text-xs rounded transition-colors ${
                         autoSaveDuration === duration
-                          ? 'bg-blue-500 text-white'
-                          : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600'
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
                       }`}
                     >
                       {duration}s

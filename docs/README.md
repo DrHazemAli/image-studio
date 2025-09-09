@@ -14,6 +14,7 @@ This documentation provides complete guidance for using, developing, and underst
 ## 🎯 Quick Navigation
 
 ### 👥 For Users
+
 - **[User Guide](user-guide.md)** - Complete user manual for all features
 - **[Getting Started](getting-started.md)** - Setup and first steps
 - **[Configuration Guide](configuration.md)** - Complete configuration reference
@@ -21,6 +22,7 @@ This documentation provides complete guidance for using, developing, and underst
 - **[Tools Reference](tools-reference.md)** - All available tools
 
 ### 👨‍💻 For Developers
+
 - **[Developer Guide](developer-guide.md)** - Complete development documentation
 - **[Architecture Guide](architecture.md)** - System design and structure
 - **[API Documentation](api-documentation.md)** - Technical API reference
@@ -33,11 +35,13 @@ This documentation provides complete guidance for using, developing, and underst
 ## 🚀 Quick Start
 
 ### For New Users
+
 1. **[Getting Started](getting-started.md)** - Complete setup and configuration guide
 2. **[Configuration Guide](configuration.md)** - Detailed configuration reference
 3. **[User Guide](user-guide.md)** - Detailed usage instructions for all features
 
 ### For Developers
+
 1. **[Developer Guide](developer-guide.md)** - Development setup and architecture
 2. **[API Documentation](api-documentation.md)** - Technical reference and examples
 
@@ -46,7 +50,9 @@ This documentation provides complete guidance for using, developing, and underst
 ### 🎯 User Documentation
 
 #### [Getting Started](getting-started.md)
+
 Complete setup and configuration guide covering:
+
 - Prerequisites and system requirements
 - Installation and setup process
 - Azure service configuration
@@ -54,7 +60,9 @@ Complete setup and configuration guide covering:
 - Troubleshooting common issues
 
 #### [Configuration Guide](configuration.md)
+
 Comprehensive configuration reference covering:
+
 - Environment variables
 - Azure configuration files
 - Model configuration
@@ -63,7 +71,9 @@ Comprehensive configuration reference covering:
 - Configuration validation
 
 #### [User Guide](user-guide.md)
+
 Comprehensive user manual covering:
+
 - Studio interface overview
 - Canvas tools and navigation
 - AI generation workflows
@@ -72,16 +82,19 @@ Comprehensive user manual covering:
 - Advanced features and tips
 
 #### [Image Generation Guide](image-generation.md)
+
 AI-powered image creation covering:
+
 - Text-to-image generation
 - Model selection and configuration
 - Prompt writing best practices
 - Batch generation
 - Quality and style options
 
-
 #### [Tools Reference](tools-reference.md)
+
 Complete tools reference covering:
+
 - All available tools
 - Tool usage instructions
 - Keyboard shortcuts
@@ -91,7 +104,9 @@ Complete tools reference covering:
 ### 🔧 Developer Documentation
 
 #### [Developer Guide](developer-guide.md)
+
 Complete development documentation covering:
+
 - Development environment setup
 - Project structure
 - Code organization
@@ -99,7 +114,9 @@ Complete development documentation covering:
 - Testing and debugging
 
 #### [Architecture Guide](architecture.md)
+
 System design and technical details covering:
+
 - High-level architecture overview
 - Component structure and relationships
 - Data flow and storage
@@ -107,7 +124,9 @@ System design and technical details covering:
 - Security architecture
 
 #### [API Documentation](api-documentation.md)
+
 Technical reference for developers covering:
+
 - API endpoints and methods
 - Request/response formats
 - Azure provider integration
@@ -115,7 +134,9 @@ Technical reference for developers covering:
 - Error handling and codes
 
 #### [Database Guide](database-guide.md)
+
 Data storage and management covering:
+
 - IndexedDB implementation
 - Data models and schemas
 - Migration strategies
@@ -123,7 +144,9 @@ Data storage and management covering:
 - Backup and recovery
 
 #### [CLI Documentation](cli-documentation.md)
+
 Command-line interface covering:
+
 - CLI installation and setup
 - Command reference
 - Automation workflows
@@ -131,7 +154,9 @@ Command-line interface covering:
 - Integration examples
 
 #### [Deployment Guide](deployment.md)
+
 Azure deployment instructions covering:
+
 - Azure service setup
 - Environment configuration
 - Deployment strategies
@@ -139,7 +164,9 @@ Azure deployment instructions covering:
 - Scaling considerations
 
 #### [Contributing Guide](contributing.md)
+
 How to contribute covering:
+
 - Development setup
 - Code standards
 - Testing requirements
@@ -151,6 +178,7 @@ How to contribute covering:
 ### Current Capabilities
 
 #### AI-Powered Generation
+
 - **Text-to-Image**: Create images from natural language descriptions
 - **Image Editing**: Modify existing images with AI assistance
 - **Inpainting/Outpainting**: Fill or extend image areas intelligently
@@ -158,6 +186,7 @@ How to contribute covering:
 - **Batch Generation**: Create multiple images simultaneously
 
 #### Professional Studio
+
 - **Advanced Canvas**: Full-featured editing workspace with Fabric.js
 - **Tool System**: Comprehensive set of editing and generation tools
 - **Layer Management**: Professional layer-based editing system
@@ -166,6 +195,7 @@ How to contribute covering:
 - **Real-time Console**: API request/response logging and debugging
 
 #### Supported AI Models
+
 - **DALL-E 3**: High-quality image generation with style control
 - **FLUX 1.1 Pro**: Advanced photorealistic generation
 - **FLUX 1 Kontext Pro**: Context-aware generation and editing
@@ -175,6 +205,7 @@ How to contribute covering:
 ## 🛠️ Technology Stack
 
 ### Frontend
+
 - **Next.js 15.5.2** - React framework with App Router
 - **React 19.1.0** - Latest React with concurrent features
 - **TypeScript 5.0** - Type-safe development
@@ -184,6 +215,7 @@ How to contribute covering:
 - **Fabric.js** - Advanced canvas manipulation
 
 ### Backend
+
 - **Azure OpenAI Service** - AI model integration
 - **Azure AI Foundry** - FLUX model integration
 - **RESTful API** - Clean API architecture
@@ -191,6 +223,7 @@ How to contribute covering:
 - **Error Handling** - Comprehensive error management
 
 ### Data Storage
+
 - **IndexedDB** - Client-side data storage
 - **Local Storage** - Configuration and preferences
 - **Project Management** - Export/import functionality
@@ -199,17 +232,20 @@ How to contribute covering:
 ## 🚀 Getting Help
 
 ### Self-Service Resources
+
 - **Documentation**: Comprehensive guides and references
 - **Console Logs**: Real-time API logging and debugging
 - **Error Messages**: Detailed error information and solutions
 - **Configuration Validation**: Built-in configuration checking
 
 ### Community Support
+
 - **GitHub Issues**: Report bugs and request features
 - **GitHub Discussions**: Community discussions and Q&A
 - **GitHub Repository**: Source code and project information
 
 ### Contact Information
+
 - **Author**: Hazem Ali (Microsoft MVP)
 - **GitHub**: [@DrHazemAli](https://github.com/DrHazemAli)
 - **LinkedIn**: [Hazem Ali](https://linkedin.com/in/hazemali)
@@ -217,14 +253,17 @@ How to contribute covering:
 ## 📋 Project Information
 
 ### Version
+
 - **Current Version**: 1.0.1
 - **Last Updated**: September 8, 2025
 
 ### License
+
 - **License**: MIT License
 - **Open Source**: Yes, community-driven project
 
 ### Community
+
 - **Type**: Community project (not affiliated with Microsoft)
 - **Maintainer**: Microsoft Communities & MVPs
 - **Contributions**: Welcome from developers of all skill levels
@@ -232,6 +271,7 @@ How to contribute covering:
 ## 🔗 Quick Links
 
 ### Essential Documentation
+
 - [Getting Started](getting-started.md) - Setup and configuration
 - [User Guide](user-guide.md) - Usage instructions
 - [Developer Guide](developer-guide.md) - Development setup
@@ -239,13 +279,14 @@ How to contribute covering:
 - [Architecture Guide](architecture.md) - System design
 
 ### External Resources
+
 - [GitHub Repository](https://github.com/DrHazemAli/azure-image-studio)
 - [GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
 - [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
 
 ---
 
-**Ready to get started?** 
+**Ready to get started?**
 
 - **New Users**: Begin with the [Getting Started Guide](getting-started.md)
 - **Developers**: Start with the [Developer Guide](developer-guide.md)

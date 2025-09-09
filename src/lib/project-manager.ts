@@ -1,6 +1,11 @@
 // Project management utilities for export/import functionality
 /* eslint-disable */
-import { dbManager, type Asset, type HistoryEntry, type Project } from './indexeddb';
+import {
+  dbManager,
+  type Asset,
+  type HistoryEntry,
+  type Project,
+} from "./indexeddb";
 
 export interface ProjectData {
   version: string;
@@ -27,21 +32,24 @@ export interface ProjectData {
 }
 
 export class ProjectManager {
-  private static readonly PROJECT_VERSION = '1.0.0';
+  private static readonly PROJECT_VERSION = "1.0.0";
 
   // Generate a UUID v4
   private static generateUUID(): string {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      const r = Math.random() * 16 | 0;
-      const v = c === 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+      /[xy]/g,
+      function (c) {
+        const r = (Math.random() * 16) | 0;
+        const v = c === "x" ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+      },
+    );
   }
 
   // Create a new project
   static async createProject(
     userId: string,
-    name: string = 'Untitled Project',
+    name: string = "Untitled Project",
     description?: string,
     settings?: {
       currentModel: string;
@@ -52,7 +60,7 @@ export class ProjectManager {
       currentImage: string | null;
       generatedImage: string | null;
       attachedImage: string | null;
-    }
+    },
   ): Promise<Project> {
     const project: Project = {
       id: this.generateUUID(),
@@ -62,19 +70,41 @@ export class ProjectManager {
       created_at: new Date(),
       updated_at: new Date(),
       settings: settings || {
-        currentModel: 'FLUX.1-Kontext-pro',
-        currentSize: '1024x1024',
-        isInpaintMode: false
+        currentModel: "FLUX.1-Kontext-pro",
+        currentSize: "1024x1024",
+        isInpaintMode: false,
       },
       canvas: canvas || {
         currentImage: null,
         generatedImage: null,
-        attachedImage: null
+        attachedImage: null,
+      },
+      ui: {
+        activeTool: "select",
+        showGenerationPanel: true,
+        showPromptBox: true,
+        showAssetsPanel: false,
+        showHistoryPanel: false,
+        showConsole: false,
+        showSizeModal: false,
+        showKeyboardShortcuts: false,
+        showAbout: false,
+        zoom: 1,
+      },
+      generation: {
+        isGenerating: false,
+        generationProgress: 0,
+        requestLog: null,
+        responseLog: null,
+      },
+      history: {
+        states: [],
+        historyIndex: -1,
       },
       metadata: {
         tags: [],
-        author: 'Azure Image Studio'
-      }
+        author: "Azure Image Studio",
+      },
     };
 
     await dbManager.saveProject(project);
@@ -116,7 +146,7 @@ export class ProjectManager {
     currentImage: string | null,
     generatedImage: string | null,
     attachedImage: string | null,
-    metadata?: { description?: string; tags?: string[]; author?: string }
+    metadata?: { description?: string; tags?: string[]; author?: string },
   ): Promise<ProjectData> {
     try {
       // Get all assets and history from IndexedDB
@@ -145,8 +175,8 @@ export class ProjectManager {
 
       return projectData;
     } catch (error) {
-      console.error('Failed to export project:', error);
-      throw new Error('Failed to export project');
+      console.error("Failed to export project:", error);
+      throw new Error("Failed to export project");
     }
   }
 
@@ -171,8 +201,8 @@ export class ProjectManager {
 
       return projectData;
     } catch (error) {
-      console.error('Failed to export project from DB:', error);
-      throw new Error('Failed to export project from DB');
+      console.error("Failed to export project from DB:", error);
+      throw new Error("Failed to export project from DB");
     }
   }
 
@@ -182,8 +212,8 @@ export class ProjectManager {
     message: string;
     data?: {
       projectName: string;
-      settings: ProjectData['settings'];
-      canvas: ProjectData['canvas'];
+      settings: ProjectData["settings"];
+      canvas: ProjectData["canvas"];
       assetsCount: number;
       historyCount: number;
     };
@@ -193,7 +223,7 @@ export class ProjectManager {
       if (!this.validateProjectData(projectData)) {
         return {
           success: false,
-          message: 'Invalid project file format',
+          message: "Invalid project file format",
         };
       }
 
@@ -207,12 +237,12 @@ export class ProjectManager {
         try {
           await dbManager.saveAsset({
             ...asset,
-            project_id: '', // Will be set by the calling function
+            project_id: "", // Will be set by the calling function
             timestamp: new Date(asset.timestamp),
           });
           assetsImported++;
         } catch (error) {
-          console.warn('Failed to import asset:', asset.id, error);
+          console.warn("Failed to import asset:", asset.id, error);
         }
       }
 
@@ -222,12 +252,12 @@ export class ProjectManager {
         try {
           await dbManager.saveHistoryEntry({
             ...entry,
-            project_id: '', // Will be set by the calling function
+            project_id: "", // Will be set by the calling function
             timestamp: new Date(entry.timestamp),
           });
           historyImported++;
         } catch (error) {
-          console.warn('Failed to import history entry:', entry.id, error);
+          console.warn("Failed to import history entry:", entry.id, error);
         }
       }
 
@@ -243,10 +273,10 @@ export class ProjectManager {
         },
       };
     } catch (error) {
-      console.error('Failed to import project:', error);
+      console.error("Failed to import project:", error);
       return {
         success: false,
-        message: `Failed to import project: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        message: `Failed to import project: ${error instanceof Error ? error.message : "Unknown error"}`,
       };
     }
   }
@@ -254,7 +284,7 @@ export class ProjectManager {
   // Import project and save to IndexedDB
   static async importProjectToDB(
     projectData: ProjectData,
-    userId: string
+    userId: string,
   ): Promise<{
     success: boolean;
     message: string;
@@ -265,7 +295,7 @@ export class ProjectManager {
       if (!this.validateProjectData(projectData)) {
         return {
           success: false,
-          message: 'Invalid project file format',
+          message: "Invalid project file format",
         };
       }
 
@@ -275,7 +305,7 @@ export class ProjectManager {
         projectData.name,
         projectData.metadata.description,
         projectData.settings,
-        projectData.canvas
+        projectData.canvas,
       );
 
       // Update metadata
@@ -295,7 +325,7 @@ export class ProjectManager {
           });
           assetsImported++;
         } catch (error) {
-          console.warn('Failed to import asset:', asset.id, error);
+          console.warn("Failed to import asset:", asset.id, error);
         }
       }
 
@@ -310,7 +340,7 @@ export class ProjectManager {
           });
           historyImported++;
         } catch (error) {
-          console.warn('Failed to import history entry:', entry.id, error);
+          console.warn("Failed to import history entry:", entry.id, error);
         }
       }
 
@@ -319,54 +349,56 @@ export class ProjectManager {
         message: `Project "${projectData.name}" imported successfully. ${assetsImported} assets, ${historyImported} history entries.`,
         project,
       };
-      } catch (err) {
-        console.error('Failed to import project to DB:', err);
-        return {
-          success: false,
-          message: `Failed to import project: ${err instanceof Error ? err.message : 'Unknown error'}`,
-        };
-      }
+    } catch (err) {
+      console.error("Failed to import project to DB:", err);
+      return {
+        success: false,
+        message: `Failed to import project: ${err instanceof Error ? err.message : "Unknown error"}`,
+      };
+    }
   }
 
   // Validate project data structure
   private static validateProjectData(data: unknown): data is ProjectData {
     return (
       data !== null &&
-      typeof data === 'object' &&
-      'version' in data &&
-      'name' in data &&
-      'createdAt' in data &&
-      'lastModified' in data &&
-      'settings' in data &&
-      'canvas' in data &&
-      'assets' in data &&
-      'history' in data &&
-      'metadata' in data &&
-      typeof (data as any).version === 'string' &&
-      typeof (data as any).name === 'string' &&
-      typeof (data as any).createdAt === 'string' &&
-      typeof (data as any).lastModified === 'string' &&
+      typeof data === "object" &&
+      "version" in data &&
+      "name" in data &&
+      "createdAt" in data &&
+      "lastModified" in data &&
+      "settings" in data &&
+      "canvas" in data &&
+      "assets" in data &&
+      "history" in data &&
+      "metadata" in data &&
+      typeof (data as any).version === "string" &&
+      typeof (data as any).name === "string" &&
+      typeof (data as any).createdAt === "string" &&
+      typeof (data as any).lastModified === "string" &&
       (data as any).settings &&
-      typeof (data as any).settings.currentModel === 'string' &&
-      typeof (data as any).settings.currentSize === 'string' &&
-      typeof (data as any).settings.isInpaintMode === 'boolean' &&
+      typeof (data as any).settings.currentModel === "string" &&
+      typeof (data as any).settings.currentSize === "string" &&
+      typeof (data as any).settings.isInpaintMode === "boolean" &&
       (data as any).canvas &&
       Array.isArray((data as any).assets) &&
       Array.isArray((data as any).history) &&
       (data as any).metadata &&
-      typeof (data as any).metadata === 'object'
+      typeof (data as any).metadata === "object"
     );
   }
 
   // Download project as JSON file
   static downloadProject(projectData: ProjectData, filename?: string): void {
     const jsonString = JSON.stringify(projectData, null, 2);
-    const blob = new Blob([jsonString], { type: 'application/json' });
+    const blob = new Blob([jsonString], { type: "application/json" });
     const url = URL.createObjectURL(blob);
-    
-    const link = document.createElement('a');
+
+    const link = document.createElement("a");
     link.href = url;
-    link.download = filename || `${projectData.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.json`;
+    link.download =
+      filename ||
+      `${projectData.name.replace(/[^a-z0-9]/gi, "_").toLowerCase()}.json`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -377,27 +409,27 @@ export class ProjectManager {
   static async readProjectFromFile(file: File): Promise<ProjectData> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      
+
       reader.onload = (event) => {
         try {
           const jsonString = event.target?.result as string;
           const projectData = JSON.parse(jsonString);
-          
+
           if (!this.validateProjectData(projectData)) {
-            reject(new Error('Invalid project file format'));
+            reject(new Error("Invalid project file format"));
             return;
           }
-          
+
           resolve(projectData);
         } catch (error) {
-          reject(new Error('Failed to parse project file'));
+          reject(new Error("Failed to parse project file"));
         }
       };
-      
+
       reader.onerror = () => {
-        reject(new Error('Failed to read project file'));
+        reject(new Error("Failed to read project file"));
       };
-      
+
       reader.readAsText(file);
     });
   }

@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Canvas as FabricCanvas, FabricObject } from 'fabric';
-import * as Tooltip from '@radix-ui/react-tooltip';
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Canvas as FabricCanvas, FabricObject } from "fabric";
+import * as Tooltip from "@radix-ui/react-tooltip";
 import {
   ScissorsIcon,
   BlendingModeIcon,
@@ -15,20 +15,20 @@ import {
   ChevronRightIcon,
   MoveIcon,
   MixerHorizontalIcon,
-  ColorWheelIcon
-} from '@radix-ui/react-icons';
+  ColorWheelIcon,
+} from "@radix-ui/react-icons";
 
 // Import our custom components
-import { ImageToolButton } from './image-tool-button';
-import { ToolEffectOverlay } from './tool-effect-overlay';
+import { ImageToolButton } from "./image-tool-button";
+import { ToolEffectOverlay } from "./tool-effect-overlay";
 
 // Import new sliding panel components
-import { 
-  ImageFiltersPanel, 
-  ColorAdjustmentsPanel, 
+import {
+  ImageFiltersPanel,
+  ColorAdjustmentsPanel,
   ImageAdjustments,
-  useAdjustmentsPersistence 
-} from '../image-editing';
+  useAdjustmentsPersistence,
+} from "../image-editing";
 
 /**
  * Interface for individual image tools
@@ -40,7 +40,7 @@ export interface ImageTool {
   icon: React.ComponentType<{ className?: string }>;
   tooltip: string;
   shortcut?: string;
-  variant?: 'default' | 'primary' | 'danger';
+  variant?: "default" | "primary" | "danger";
   requiresModal?: boolean;
   action: () => void | Promise<void>;
   isProcessing?: boolean;
@@ -53,14 +53,14 @@ export interface ImageTool {
 export interface FloatingImageToolbarProps {
   // Canvas reference for Fabric.js integration
   fabricCanvas: FabricCanvas | null;
-  
+
   // Selected objects from canvas
   selectedObjects: FabricObject[];
-  
+
   // Positioning and visibility
   isVisible: boolean;
   position?: { x: number; y: number };
-  
+
   // Tool handlers
   onBackgroundRemoval?: (image: FabricObject) => Promise<void>;
   onDuplicate?: (objects: FabricObject[]) => void;
@@ -69,14 +69,14 @@ export interface FloatingImageToolbarProps {
   onBlendMode?: (objects: FabricObject[]) => void;
   onAdjustments?: (objects: FabricObject[]) => void;
   onFilters?: (objects: FabricObject[]) => void;
-  
+
   // New callbacks for the sliding panels
   onApplyAdjustments?: (adjustments: ImageAdjustments) => void;
   onApplyFilters?: (adjustments: ImageAdjustments) => void;
-  
+
   // Project persistence
   projectId?: string;
-  
+
   // Visual effects
   effectOverlay?: {
     isVisible: boolean;
@@ -106,54 +106,58 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
   onApplyAdjustments,
   onApplyFilters,
   projectId,
-  effectOverlay
+  effectOverlay,
 }) => {
   // Component state
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-  const [toolbarPosition, setToolbarPosition] = useState(position || { x: 100, y: 100 });
-  const [processingTools, setProcessingTools] = useState<Set<string>>(new Set());
+  const [toolbarPosition, setToolbarPosition] = useState(
+    position || { x: 100, y: 100 },
+  );
+  const [processingTools, setProcessingTools] = useState<Set<string>>(
+    new Set(),
+  );
   const [hoveredTool, setHoveredTool] = useState<string | null>(null);
-  
+
   // New state for sliding panels
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [isAdjustmentsOpen, setIsAdjustmentsOpen] = useState(false);
 
   // Persistence hook for saving/loading image adjustments
-  const {
-    saveImageAdjustments,
-    loadImageAdjustments,
-    hasStoredAdjustments
-  } = useAdjustmentsPersistence(fabricCanvas, {
-    projectId,
-    autoSave: true,
-    saveDebounceMs: 1000,
-    onSave: async (projId, adjustments) => {
-      // Save to IndexedDB or project storage
-      try {
-        console.log('Saving project adjustments:', projId, adjustments);
-        // TODO: Integrate with your project storage system
-        localStorage.setItem(`project_adjustments_${projId}`, JSON.stringify(adjustments));
-      } catch (error) {
-        console.error('Failed to save project adjustments:', error);
-      }
-    },
-    onLoad: async (projId) => {
-      // Load from IndexedDB or project storage
-      try {
-        const stored = localStorage.getItem(`project_adjustments_${projId}`);
-        if (stored) {
-          return JSON.parse(stored);
+  const { saveImageAdjustments, loadImageAdjustments, hasStoredAdjustments } =
+    useAdjustmentsPersistence(fabricCanvas, {
+      projectId,
+      autoSave: true,
+      saveDebounceMs: 1000,
+      onSave: async (projId, adjustments) => {
+        // Save to IndexedDB or project storage
+        try {
+          console.log("Saving project adjustments:", projId, adjustments);
+          // TODO: Integrate with your project storage system
+          localStorage.setItem(
+            `project_adjustments_${projId}`,
+            JSON.stringify(adjustments),
+          );
+        } catch (error) {
+          console.error("Failed to save project adjustments:", error);
         }
-      } catch (error) {
-        console.error('Failed to load project adjustments:', error);
-      }
-      return null;
-    },
-    onError: (error) => console.error('Persistence error:', error)
-  });
-  
+      },
+      onLoad: async (projId) => {
+        // Load from IndexedDB or project storage
+        try {
+          const stored = localStorage.getItem(`project_adjustments_${projId}`);
+          if (stored) {
+            return JSON.parse(stored);
+          }
+        } catch (error) {
+          console.error("Failed to load project adjustments:", error);
+        }
+        return null;
+      },
+      onError: (error) => console.error("Persistence error:", error),
+    });
+
   // Refs
   const toolbarRef = useRef<HTMLDivElement>(null);
   const dragStartRef = useRef({ x: 0, y: 0 });
@@ -176,23 +180,29 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
     const objBounds = selectedObj.getBoundingRect();
     const canvasElement = fabricCanvas.getElement();
     const canvasRect = canvasElement.getBoundingClientRect();
-    
+
     // Calculate position relative to viewport
     const objCenterX = canvasRect.left + objBounds.left + objBounds.width / 2;
     const objTop = canvasRect.top + objBounds.top;
-    
+
     // Position toolbar above the selected object with some padding
     const toolbarWidth = isCollapsed ? 48 : 400; // Wider for horizontal layout
     const toolbarHeight = 48; // Single line height
-    
-    const newX = Math.max(20, Math.min(window.innerWidth - toolbarWidth - 20, objCenterX - toolbarWidth / 2));
+
+    const newX = Math.max(
+      20,
+      Math.min(
+        window.innerWidth - toolbarWidth - 20,
+        objCenterX - toolbarWidth / 2,
+      ),
+    );
     let newY = Math.max(20, objTop - toolbarHeight - 20);
-    
+
     // If there's not enough space above, position below
     if (newY < 20) {
       newY = canvasRect.top + objBounds.top + objBounds.height + 20;
     }
-    
+
     return { x: newX, y: newY };
   }, [selectedObjects, fabricCanvas, isCollapsed]);
 
@@ -202,30 +212,39 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
       const smartPos = calculateSmartPosition();
       setToolbarPosition(smartPos);
     }
-  }, [isVisible, selectedObjects.length, fabricCanvas, isCollapsed, calculateSmartPosition]);
+  }, [
+    isVisible,
+    selectedObjects.length,
+    fabricCanvas,
+    isCollapsed,
+    calculateSmartPosition,
+  ]);
 
   // Handle tool processing state
-  const setToolProcessing = useCallback((toolId: string, processing: boolean) => {
-    setProcessingTools(prev => {
-      const newSet = new Set(prev);
-      if (processing) {
-        newSet.add(toolId);
-      } else {
-        newSet.delete(toolId);
-      }
-      return newSet;
-    });
-  }, []);
+  const setToolProcessing = useCallback(
+    (toolId: string, processing: boolean) => {
+      setProcessingTools((prev) => {
+        const newSet = new Set(prev);
+        if (processing) {
+          newSet.add(toolId);
+        } else {
+          newSet.delete(toolId);
+        }
+        return newSet;
+      });
+    },
+    [],
+  );
 
   // Tool action handlers with processing states
   const handleBackgroundRemoval = useCallback(async () => {
     if (!selectedObjects.length || !onBackgroundRemoval) return;
-    
-    setToolProcessing('background-removal', true);
+
+    setToolProcessing("background-removal", true);
     try {
       await onBackgroundRemoval(selectedObjects[0]);
     } finally {
-      setToolProcessing('background-removal', false);
+      setToolProcessing("background-removal", false);
     }
   }, [selectedObjects, onBackgroundRemoval, setToolProcessing]);
 
@@ -266,91 +285,97 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
   }, []);
 
   // Apply handlers with persistence
-  const handleApplyFilters = useCallback((adjustments: ImageAdjustments) => {
-    // Call the original handler
-    onApplyFilters?.(adjustments);
-    
-    // Save adjustments for persistence
-    if (selectedObjects.length > 0) {
-      saveImageAdjustments(selectedObjects[0], adjustments, 'filters');
-    }
-  }, [onApplyFilters, selectedObjects, saveImageAdjustments]);
+  const handleApplyFilters = useCallback(
+    (adjustments: ImageAdjustments) => {
+      // Call the original handler
+      onApplyFilters?.(adjustments);
 
-  const handleApplyAdjustments = useCallback((adjustments: ImageAdjustments) => {
-    // Call the original handler
-    onApplyAdjustments?.(adjustments);
-    
-    // Save adjustments for persistence
-    if (selectedObjects.length > 0) {
-      saveImageAdjustments(selectedObjects[0], adjustments, 'adjustments');
-    }
-  }, [onApplyAdjustments, selectedObjects, saveImageAdjustments]);
+      // Save adjustments for persistence
+      if (selectedObjects.length > 0) {
+        saveImageAdjustments(selectedObjects[0], adjustments, "filters");
+      }
+    },
+    [onApplyFilters, selectedObjects, saveImageAdjustments],
+  );
+
+  const handleApplyAdjustments = useCallback(
+    (adjustments: ImageAdjustments) => {
+      // Call the original handler
+      onApplyAdjustments?.(adjustments);
+
+      // Save adjustments for persistence
+      if (selectedObjects.length > 0) {
+        saveImageAdjustments(selectedObjects[0], adjustments, "adjustments");
+      }
+    },
+    [onApplyAdjustments, selectedObjects, saveImageAdjustments],
+  );
 
   // Define available tools
   const tools: ImageTool[] = [
     {
-      id: 'background-removal',
-      name: 'Remove Background',
+      id: "background-removal",
+      name: "Remove Background",
       icon: ScissorsIcon,
-      tooltip: 'Remove image background using AI',
-      shortcut: 'Cmd+Shift+B',
-      variant: 'primary',
+      tooltip: "Remove image background using AI",
+      shortcut: "Cmd+Shift+B",
+      variant: "primary",
       action: handleBackgroundRemoval,
-      isProcessing: processingTools.has('background-removal'),
-      requiresModal: false
+      isProcessing: processingTools.has("background-removal"),
+      requiresModal: false,
     },
     {
-      id: 'filters',
-      name: 'Filters',
+      id: "filters",
+      name: "Filters",
       icon: MixerHorizontalIcon,
-      tooltip: 'Apply image filters and presets',
-      shortcut: 'Cmd+Shift+F',
+      tooltip: "Apply image filters and presets",
+      shortcut: "Cmd+Shift+F",
       action: handleFilters,
-      requiresModal: true
+      requiresModal: true,
     },
     {
-      id: 'adjustments',
-      name: 'Adjustments',
+      id: "adjustments",
+      name: "Adjustments",
       icon: ColorWheelIcon,
-      tooltip: 'Professional color and lighting adjustments',
-      shortcut: 'Cmd+Shift+A',
+      tooltip: "Professional color and lighting adjustments",
+      shortcut: "Cmd+Shift+A",
       action: handleAdjustments,
-      requiresModal: true
+      requiresModal: true,
     },
     {
-      id: 'transform',
-      name: 'Transform',
+      id: "transform",
+      name: "Transform",
       icon: TransformIcon,
-      tooltip: 'Resize, rotate, and flip',
-      shortcut: 'Cmd+T',
+      tooltip: "Resize, rotate, and flip",
+      shortcut: "Cmd+T",
       action: handleTransform,
-      requiresModal: false
+      requiresModal: false,
     },
     {
-      id: 'blend-mode',
-      name: 'Blend Mode',
+      id: "blend-mode",
+      name: "Blend Mode",
       icon: BlendingModeIcon,
-      tooltip: 'Change blend mode and opacity',
+      tooltip: "Change blend mode and opacity",
       action: handleBlendMode,
-      requiresModal: true
+      requiresModal: true,
     },
     {
-      id: 'duplicate',
-      name: 'Duplicate',
+      id: "duplicate",
+      name: "Duplicate",
       icon: CopyIcon,
-      tooltip: 'Duplicate selected image',
-      shortcut: 'Cmd+D',
-      action: handleDuplicate
+      tooltip: "Duplicate selected image",
+      shortcut: "Cmd+D",
+      action: handleDuplicate,
     },
     {
-      id: 'delete',
-      name: 'Delete',
+      id: "delete",
+      name: "Delete",
       icon: TrashIcon,
-      tooltip: 'Delete selected image',
-      shortcut: 'Del',
-      variant: 'danger',
-      action: handleDelete
-    }
+      tooltip: "Delete selected image",
+      shortcut: "Del",
+      variant: "danger",
+      action: handleDelete,
+    },
   ];
 
   // Handle drag operations
@@ -358,34 +383,43 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
     // Prevent default to avoid text selection
     e.preventDefault();
     e.stopPropagation();
-    
+
     setIsDragging(true);
     const rect = toolbarRef.current?.getBoundingClientRect();
     if (rect) {
       setDragOffset({
         x: e.clientX - rect.left,
-        y: e.clientY - rect.top
+        y: e.clientY - rect.top,
       });
       dragStartRef.current = { x: e.clientX, y: e.clientY };
     }
   }, []);
 
-  const handleDragMove = useCallback((e: MouseEvent) => {
-    if (!isDragging) return;
-    
-    e.preventDefault();
-    
-    const newX = e.clientX - dragOffset.x;
-    const newY = e.clientY - dragOffset.y;
-    
-    // Constrain to viewport bounds
-    const toolbarWidth = isCollapsed ? 48 : 400; // Wider for horizontal layout
-    const toolbarHeight = 48; // Single line height
-    const constrainedX = Math.max(0, Math.min(window.innerWidth - toolbarWidth, newX));
-    const constrainedY = Math.max(0, Math.min(window.innerHeight - toolbarHeight, newY));
-    
-    setToolbarPosition({ x: constrainedX, y: constrainedY });
-  }, [isDragging, dragOffset, isCollapsed]);
+  const handleDragMove = useCallback(
+    (e: MouseEvent) => {
+      if (!isDragging) return;
+
+      e.preventDefault();
+
+      const newX = e.clientX - dragOffset.x;
+      const newY = e.clientY - dragOffset.y;
+
+      // Constrain to viewport bounds
+      const toolbarWidth = isCollapsed ? 48 : 400; // Wider for horizontal layout
+      const toolbarHeight = 48; // Single line height
+      const constrainedX = Math.max(
+        0,
+        Math.min(window.innerWidth - toolbarWidth, newX),
+      );
+      const constrainedY = Math.max(
+        0,
+        Math.min(window.innerHeight - toolbarHeight, newY),
+      );
+
+      setToolbarPosition({ x: constrainedX, y: constrainedY });
+    },
+    [isDragging, dragOffset, isCollapsed],
+  );
 
   const handleDragEnd = useCallback(() => {
     setIsDragging(false);
@@ -394,11 +428,11 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
   // Set up drag event listeners
   useEffect(() => {
     if (isDragging) {
-      document.addEventListener('mousemove', handleDragMove);
-      document.addEventListener('mouseup', handleDragEnd);
+      document.addEventListener("mousemove", handleDragMove);
+      document.addEventListener("mouseup", handleDragEnd);
       return () => {
-        document.removeEventListener('mousemove', handleDragMove);
-        document.removeEventListener('mouseup', handleDragEnd);
+        document.removeEventListener("mousemove", handleDragMove);
+        document.removeEventListener("mouseup", handleDragEnd);
       };
     }
   }, [isDragging, handleDragMove, handleDragEnd]);
@@ -430,7 +464,7 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
             {/* Main toolbar */}
             <motion.div
               ref={toolbarRef}
-              className={`fixed z-50 select-none ${isDragging ? 'cursor-grabbing' : ''}`}
+              className={`fixed z-50 select-none ${isDragging ? "cursor-grabbing" : ""}`}
               style={{
                 left: toolbarPosition.x,
                 top: toolbarPosition.y,
@@ -442,7 +476,7 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
                 type: "spring",
                 stiffness: 300,
                 damping: 30,
-                duration: 0.3
+                duration: 0.3,
               }}
             >
               <div
@@ -452,17 +486,17 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
                   rounded-2xl shadow-2xl
                   
                   transition-all duration-300 ease-out
-                  ${isDragging ? 'ring-2 ring-blue-500/30 shadow-3xl' : ''}
-                  ${isCollapsed ? 'w-12' : 'min-w-[400px]'}
+                  ${isDragging ? "ring-2 ring-blue-500/30 shadow-3xl" : ""}
+                  ${isCollapsed ? "w-12" : "min-w-[400px]"}
                   h-[48px] flex items-center
                 `}
               >
                 <div className="flex items-center h-full px-3 gap-2">
                   {/* Drag handle */}
-                  <div 
+                  <div
                     className="p-1 cursor-grab active:cursor-grabbing rounded hover:bg-gray-100 dark:hover:bg-zinc-800/50 transition-colors touch-none"
                     onMouseDown={handleDragStart}
-                    style={{ userSelect: 'none' }}
+                    style={{ userSelect: "none" }}
                   >
                     <MoveIcon className="w-4 h-4 text-gray-400 dark:text-zinc-300" />
                   </div>
@@ -492,11 +526,11 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
                             onMouseLeave={() => setHoveredTool(null)}
                             size="small"
                             className={`
-                              ${hoveredTool === tool.id ? 'ring-2 ring-blue-500/20' : ''}
+                              ${hoveredTool === tool.id ? "ring-2 ring-blue-500/20" : ""}
                             `}
                           />
                         ))}
-                        
+
                         {/* Selection count */}
                         <div className="ml-2 px-2 py-1 bg-gray-100 dark:bg-zinc-800/50 rounded text-xs text-gray-600 dark:text-zinc-300">
                           {selectedObjects.length}
@@ -504,7 +538,7 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
                       </motion.div>
                     )}
                   </AnimatePresence>
-                  
+
                   {/* Collapse toggle */}
                   <button
                     onClick={() => setIsCollapsed(!isCollapsed)}
@@ -533,7 +567,7 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
                 speed="normal"
               />
             )}
-            
+
             {/* Image Filters Panel */}
             <ImageFiltersPanel
               isOpen={isFiltersOpen}
@@ -541,9 +575,9 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
               fabricCanvas={fabricCanvas}
               selectedImage={selectedObjects[0] || null}
               onApplyFilters={handleApplyFilters}
-              onResetFilters={() => console.log('Filters reset')}
+              onResetFilters={() => console.log("Filters reset")}
             />
-            
+
             {/* Color Adjustments Panel */}
             <ColorAdjustmentsPanel
               isOpen={isAdjustmentsOpen}
@@ -551,7 +585,7 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
               fabricCanvas={fabricCanvas}
               selectedImage={selectedObjects[0] || null}
               onApplyAdjustments={handleApplyAdjustments}
-              onResetAdjustments={() => console.log('Adjustments reset')}
+              onResetAdjustments={() => console.log("Adjustments reset")}
             />
           </>
         )}

@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { FileMenu } from './file-menu';
-import { InsertMenu } from './insert-menu';
-import { ViewMenu } from './view-menu';
-import { ToolsMenu } from './tools-menu';
-import { HelpMenu } from './help-menu';
-import type { Tool } from '@/components/studio/toolbar';
+import { FileMenu } from "./file-menu";
+import { InsertMenu } from "./insert-menu";
+import { ViewMenu } from "./view-menu";
+import { ToolsMenu } from "./tools-menu";
+import { HelpMenu } from "./help-menu";
+import type { Tool } from "@/components/studio/toolbar";
 
 interface MenuBarProps {
   // File menu props
@@ -15,7 +15,7 @@ interface MenuBarProps {
   onExportProject: () => void;
   onImportProject: () => void;
   onClose: () => void;
-  
+
   // Insert menu props
   onInsertImage: () => void;
   onInsertLayer: () => void;
@@ -24,7 +24,7 @@ interface MenuBarProps {
   onInsertRectangle: () => void;
   onInsertCircle: () => void;
   onInsertLine: () => void;
-  
+
   // View menu props
   showConsole: boolean;
   showAssetsPanel: boolean;
@@ -38,7 +38,7 @@ interface MenuBarProps {
   onZoomOut: () => void;
   onResetZoom: () => void;
   onToggleFullscreen: () => void;
-  
+
   // Tools menu props
   activeTool: Tool;
   onToolChange: (tool: Tool) => void;
@@ -46,7 +46,7 @@ interface MenuBarProps {
   onClearCanvas: () => void;
   onUndo: () => void;
   onRedo: () => void;
-  
+
   // Help menu props
   onShowKeyboardShortcuts: () => void;
   onShowAbout: () => void;
@@ -103,7 +103,7 @@ export function MenuBar({
         onImportProject={onImportProject}
         onClose={onClose}
       />
-      
+
       <InsertMenu
         onInsertImage={onInsertImage}
         onInsertLayer={onInsertLayer}
@@ -113,7 +113,7 @@ export function MenuBar({
         onInsertCircle={onInsertCircle}
         onInsertLine={onInsertLine}
       />
-      
+
       <ViewMenu
         showConsole={showConsole}
         showAssetsPanel={showAssetsPanel}
@@ -128,7 +128,7 @@ export function MenuBar({
         onResetZoom={onResetZoom}
         onToggleFullscreen={onToggleFullscreen}
       />
-      
+
       <ToolsMenu
         activeTool={activeTool}
         onToolChange={onToolChange}
@@ -137,7 +137,7 @@ export function MenuBar({
         onUndo={onUndo}
         onRedo={onRedo}
       />
-      
+
       <HelpMenu
         onShowKeyboardShortcuts={onShowKeyboardShortcuts}
         onShowAbout={onShowAbout}

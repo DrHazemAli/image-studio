@@ -1,26 +1,26 @@
 /* eslint-disable */
-'use client';
-import React, { useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  FrameIcon, 
-  CropIcon, 
-  SquareIcon, 
-  TextIcon, 
+"use client";
+import React, { useState, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  FrameIcon,
+  CropIcon,
+  SquareIcon,
+  TextIcon,
   MixerHorizontalIcon,
   ImageIcon,
   LayersIcon,
   ChevronRightIcon,
-  ChevronDownIcon
-} from '@radix-ui/react-icons';
-import { FabricObject } from 'fabric';
+  ChevronDownIcon,
+} from "@radix-ui/react-icons";
+import { FabricObject } from "fabric";
 
 // Import all tool components
-import ImageResizeTool from '@/components/studio/tools/image-resize-tool';
-import CropTool from '@/components/studio/tools/crop-tool';
-import ShapesTool from '@/components/studio/tools/shapes-tool';
-import TextTool from '@/components/studio/tools/text-tool';
-import FiltersTool from '@/components/studio/tools/filters-tool';
+import ImageResizeTool from "@/components/studio/tools/image-resize-tool";
+import CropTool from "@/components/studio/tools/crop-tool";
+import ShapesTool from "@/components/studio/tools/shapes-tool";
+import TextTool from "@/components/studio/tools/text-tool";
+import FiltersTool from "@/components/studio/tools/filters-tool";
 
 interface ToolsPanelProps {
   selectedObject: FabricObject | null;
@@ -49,59 +49,59 @@ interface Tool {
 
 const TOOL_SECTIONS: ToolSection[] = [
   {
-    id: 'image',
-    name: 'Image Tools',
+    id: "image",
+    name: "Image Tools",
     icon: <ImageIcon className="w-4 h-4" />,
     tools: [
       {
-        id: 'resize',
-        name: 'Resize & Transform',
+        id: "resize",
+        name: "Resize & Transform",
         icon: <FrameIcon className="w-4 h-4" />,
         component: ImageResizeTool,
         props: {},
-        disabled: false
+        disabled: false,
       },
       {
-        id: 'crop',
-        name: 'Crop Image',
+        id: "crop",
+        name: "Crop Image",
         icon: <CropIcon className="w-4 h-4" />,
         component: CropTool,
         props: {},
-        disabled: false
+        disabled: false,
       },
       {
-        id: 'filters',
-        name: 'Apply Filters',
+        id: "filters",
+        name: "Apply Filters",
         icon: <MixerHorizontalIcon className="w-4 h-4" />,
         component: FiltersTool,
         props: {},
-        disabled: false
-      }
-    ]
+        disabled: false,
+      },
+    ],
   },
   {
-    id: 'shapes',
-    name: 'Shapes & Text',
+    id: "shapes",
+    name: "Shapes & Text",
     icon: <SquareIcon className="w-4 h-4" />,
     tools: [
       {
-        id: 'shapes',
-        name: 'Add Shapes',
+        id: "shapes",
+        name: "Add Shapes",
         icon: <SquareIcon className="w-4 h-4" />,
         component: ShapesTool,
         props: {},
-        disabled: false
+        disabled: false,
       },
       {
-        id: 'text',
-        name: 'Add Text',
+        id: "text",
+        name: "Add Text",
         icon: <TextIcon className="w-4 h-4" />,
         component: TextTool,
         props: {},
-        disabled: false
-      }
-    ]
-  }
+        disabled: false,
+      },
+    ],
+  },
 ];
 
 export default function ToolsPanel({
@@ -110,13 +110,15 @@ export default function ToolsPanel({
   onCrop,
   onAddShape,
   onAddText,
-  onApplyFilter
+  onApplyFilter,
 }: ToolsPanelProps) {
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['image']));
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(
+    new Set(["image"]),
+  );
   const [activeTool, setActiveTool] = useState<string | null>(null);
 
   const toggleSection = useCallback((sectionId: string) => {
-    setExpandedSections(prev => {
+    setExpandedSections((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(sectionId)) {
         newSet.delete(sectionId);
@@ -135,56 +137,71 @@ export default function ToolsPanel({
     setActiveTool(null);
   }, []);
 
-  const getToolProps = useCallback((toolId: string) => {
-    const baseProps = {
-      isOpen: activeTool === toolId,
-      onClose: closeTool
-    };
+  const getToolProps = useCallback(
+    (toolId: string) => {
+      const baseProps = {
+        isOpen: activeTool === toolId,
+        onClose: closeTool,
+      };
 
-    switch (toolId) {
-      case 'resize':
-        return {
-          ...baseProps,
-          selectedImage: selectedObject,
-          onImageTransform
-        };
-      case 'crop':
-        return {
-          ...baseProps,
-          selectedImage: selectedObject,
-          onCrop
-        };
-      case 'shapes':
-        return {
-          ...baseProps,
-          onAddShape
-        };
-      case 'text':
-        return {
-          ...baseProps,
-          onAddText
-        };
-      case 'filters':
-        return {
-          ...baseProps,
-          selectedImage: selectedObject,
-          onApplyFilter
-        };
-      default:
-        return baseProps;
-    }
-  }, [activeTool, selectedObject, onImageTransform, onCrop, onAddShape, onAddText, onApplyFilter, closeTool]);
+      switch (toolId) {
+        case "resize":
+          return {
+            ...baseProps,
+            selectedImage: selectedObject,
+            onImageTransform,
+          };
+        case "crop":
+          return {
+            ...baseProps,
+            selectedImage: selectedObject,
+            onCrop,
+          };
+        case "shapes":
+          return {
+            ...baseProps,
+            onAddShape,
+          };
+        case "text":
+          return {
+            ...baseProps,
+            onAddText,
+          };
+        case "filters":
+          return {
+            ...baseProps,
+            selectedImage: selectedObject,
+            onApplyFilter,
+          };
+        default:
+          return baseProps;
+      }
+    },
+    [
+      activeTool,
+      selectedObject,
+      onImageTransform,
+      onCrop,
+      onAddShape,
+      onAddText,
+      onApplyFilter,
+      closeTool,
+    ],
+  );
 
-  const isToolDisabled = useCallback((tool: Tool) => {
-    if (tool.disabled) return true;
-    
-    // Image tools require an image to be selected
-    if (['resize', 'crop', 'filters'].includes(tool.id)) {
-      return !selectedObject || selectedObject.type !== 'image';
-    }
-    
-    return false;
-  }, [selectedObject]);
+  const isToolDisabled = useCallback(
+    (tool: Tool) => {
+      if (tool.disabled) return true;
+
+      // Image tools require an image to be selected
+      if (["resize", "crop", "filters"].includes(tool.id)) {
+        return !selectedObject || selectedObject.type !== "image";
+      }
+
+      return false;
+    },
+    [selectedObject],
+  );
 
   return (
     <div className="w-64 bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 flex flex-col h-full">
@@ -199,7 +216,10 @@ export default function ToolsPanel({
       {/* Tools List */}
       <div className="flex-1 overflow-y-auto">
         {TOOL_SECTIONS.map((section) => (
-          <div key={section.id} className="border-b border-gray-100 dark:border-gray-700">
+          <div
+            key={section.id}
+            className="border-b border-gray-100 dark:border-gray-700"
+          >
             {/* Section Header */}
             <button
               onClick={() => toggleSection(section.id)}
@@ -223,7 +243,7 @@ export default function ToolsPanel({
               {expandedSections.has(section.id) && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
+                  animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.2 }}
                   className="overflow-hidden"
@@ -232,16 +252,16 @@ export default function ToolsPanel({
                     {section.tools.map((tool) => {
                       const disabled = isToolDisabled(tool);
                       const ToolComponent = tool.component;
-                      
+
                       return (
                         <div key={tool.id}>
                           <button
                             onClick={() => !disabled && openTool(tool.id)}
                             disabled={disabled}
                             className={`w-full p-3 pl-12 text-left hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors flex items-center gap-3 ${
-                              disabled 
-                                ? 'opacity-50 cursor-not-allowed' 
-                                : 'cursor-pointer'
+                              disabled
+                                ? "opacity-50 cursor-not-allowed"
+                                : "cursor-pointer"
                             }`}
                           >
                             {tool.icon}
@@ -249,7 +269,7 @@ export default function ToolsPanel({
                               {tool.name}
                             </span>
                           </button>
-                          
+
                           {/* Render Tool Component */}
                           <ToolComponent {...getToolProps(tool.id)} />
                         </div>
@@ -270,15 +290,21 @@ export default function ToolsPanel({
             <div>
               <div className="font-medium">Selected: {selectedObject.type}</div>
               <div className="text-xs mt-1">
-                {selectedObject.type === 'image' && (
+                {selectedObject.type === "image" && (
                   <>
-                    Size: {Math.round(selectedObject.width! * selectedObject.scaleX!)} × {Math.round(selectedObject.height! * selectedObject.scaleY!)} px
+                    Size:{" "}
+                    {Math.round(selectedObject.width! * selectedObject.scaleX!)}{" "}
+                    ×{" "}
+                    {Math.round(
+                      selectedObject.height! * selectedObject.scaleY!,
+                    )}{" "}
+                    px
                   </>
                 )}
               </div>
             </div>
           ) : (
-            'No object selected'
+            "No object selected"
           )}
         </div>
       </div>

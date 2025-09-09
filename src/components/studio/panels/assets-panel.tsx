@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   StackIcon,
   Cross2Icon,
@@ -10,10 +10,10 @@ import {
   TrashIcon,
   MagnifyingGlassIcon,
   GridIcon,
-  ListBulletIcon
-} from '@radix-ui/react-icons';
-import { Button, TextField } from '@radix-ui/themes';
-import { dbManager, type Asset } from '@/lib/indexeddb';
+  ListBulletIcon,
+} from "@radix-ui/react-icons";
+import { Button, TextField } from "@radix-ui/themes";
+import { dbManager, type Asset } from "@/lib/indexeddb";
 
 interface AssetsPanelProps {
   isOpen: boolean;
@@ -22,11 +22,18 @@ interface AssetsPanelProps {
   projectId?: string;
 }
 
-export function AssetsPanel({ isOpen, onClose, onAssetSelect, projectId }: AssetsPanelProps) {
+export function AssetsPanel({
+  isOpen,
+  onClose,
+  onAssetSelect,
+  projectId,
+}: AssetsPanelProps) {
   const [assets, setAssets] = useState<Asset[]>([]);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filter, setFilter] = useState<'all' | 'generation' | 'edit' | 'upload'>('all');
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filter, setFilter] = useState<
+    "all" | "generation" | "edit" | "upload"
+  >("all");
 
   // Load assets from IndexedDB on mount
   useEffect(() => {
@@ -35,7 +42,7 @@ export function AssetsPanel({ isOpen, onClose, onAssetSelect, projectId }: Asset
         const loadedAssets = await dbManager.getAssets(projectId);
         setAssets(loadedAssets);
       } catch (error) {
-        console.error('Failed to load assets:', error);
+        console.error("Failed to load assets:", error);
       }
     };
     loadAssets();
@@ -45,30 +52,34 @@ export function AssetsPanel({ isOpen, onClose, onAssetSelect, projectId }: Asset
   useEffect(() => {
     if (assets.length > 0) {
       // Save each asset individually to IndexedDB
-      assets.forEach(asset => {
+      assets.forEach((asset) => {
         dbManager.saveAsset(asset).catch(console.error);
       });
     }
   }, [assets]);
 
-  const filteredAssets = assets.filter(asset => {
-    const matchesFilter = filter === 'all' || asset.type === filter;
-    const matchesSearch = asset.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         (asset.prompt && asset.prompt.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchesFilter && matchesSearch;
-  }).sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+  const filteredAssets = assets
+    .filter((asset) => {
+      const matchesFilter = filter === "all" || asset.type === filter;
+      const matchesSearch =
+        asset.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (asset.prompt &&
+          asset.prompt.toLowerCase().includes(searchQuery.toLowerCase()));
+      return matchesFilter && matchesSearch;
+    })
+    .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
 
   const handleDeleteAsset = async (assetId: string) => {
     try {
       await dbManager.deleteAsset(assetId);
-      setAssets(prev => prev.filter(asset => asset.id !== assetId));
+      setAssets((prev) => prev.filter((asset) => asset.id !== assetId));
     } catch (error) {
-      console.error('Failed to delete asset:', error);
+      console.error("Failed to delete asset:", error);
     }
   };
 
   const handleDownloadAsset = (asset: Asset) => {
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = asset.url;
     link.download = `${asset.name}.png`;
     document.body.appendChild(link);
@@ -109,7 +120,7 @@ export function AssetsPanel({ isOpen, onClose, onAssetSelect, projectId }: Asset
                 </p>
               </div>
             </div>
-            
+
             <Button variant="ghost" onClick={onClose}>
               <Cross2Icon className="w-5 h-5" />
             </Button>
@@ -122,7 +133,9 @@ export function AssetsPanel({ isOpen, onClose, onAssetSelect, projectId }: Asset
               <TextField.Root
                 placeholder="Search assets..."
                 value={searchQuery}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setSearchQuery(e.target.value)
+                }
                 className="w-64"
               >
                 <TextField.Slot>
@@ -132,14 +145,18 @@ export function AssetsPanel({ isOpen, onClose, onAssetSelect, projectId }: Asset
 
               {/* Filter */}
               <div className="flex gap-1 bg-gray-200 dark:bg-gray-800 rounded-lg p-1">
-                {['all', 'generation', 'edit', 'upload'].map((type) => (
+                {["all", "generation", "edit", "upload"].map((type) => (
                   <button
                     key={type}
-                    onClick={() => setFilter(type as 'all' | 'generation' | 'edit' | 'upload')}
+                    onClick={() =>
+                      setFilter(
+                        type as "all" | "generation" | "edit" | "upload",
+                      )
+                    }
                     className={`px-3 py-1.5 text-sm rounded-md transition-colors capitalize ${
                       filter === type
-                        ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                        ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm"
+                        : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                     }`}
                   >
                     {type}
@@ -151,21 +168,21 @@ export function AssetsPanel({ isOpen, onClose, onAssetSelect, projectId }: Asset
             {/* View Mode */}
             <div className="flex gap-1 bg-gray-200 dark:bg-gray-800 rounded-lg p-1">
               <button
-                onClick={() => setViewMode('grid')}
+                onClick={() => setViewMode("grid")}
                 className={`p-2 rounded-md transition-colors ${
-                  viewMode === 'grid'
-                    ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  viewMode === "grid"
+                    ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                 }`}
               >
                 <GridIcon className="w-4 h-4" />
               </button>
               <button
-                onClick={() => setViewMode('list')}
+                onClick={() => setViewMode("list")}
                 className={`p-2 rounded-md transition-colors ${
-                  viewMode === 'list'
-                    ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  viewMode === "list"
+                    ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                 }`}
               >
                 <ListBulletIcon className="w-4 h-4" />
@@ -182,10 +199,11 @@ export function AssetsPanel({ isOpen, onClose, onAssetSelect, projectId }: Asset
                   No assets yet
                 </h3>
                 <p className="text-gray-500 dark:text-gray-400 max-w-sm">
-                  Your generated images and uploads will appear here. Start by creating or uploading images.
+                  Your generated images and uploads will appear here. Start by
+                  creating or uploading images.
                 </p>
               </div>
-            ) : viewMode === 'grid' ? (
+            ) : viewMode === "grid" ? (
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 {filteredAssets.map((asset) => (
                   <motion.div
@@ -199,7 +217,7 @@ export function AssetsPanel({ isOpen, onClose, onAssetSelect, projectId }: Asset
                       alt={asset.name}
                       className="w-full h-full object-cover"
                     />
-                    
+
                     {/* Overlay */}
                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                       <Button
@@ -227,11 +245,15 @@ export function AssetsPanel({ isOpen, onClose, onAssetSelect, projectId }: Asset
 
                     {/* Type Badge */}
                     <div className="absolute top-2 left-2">
-                      <div className={`px-2 py-1 rounded-md text-xs font-medium ${
-                        asset.type === 'generation' ? 'bg-blue-500 text-white' :
-                        asset.type === 'edit' ? 'bg-purple-500 text-white' :
-                        'bg-green-500 text-white'
-                      }`}>
+                      <div
+                        className={`px-2 py-1 rounded-md text-xs font-medium ${
+                          asset.type === "generation"
+                            ? "bg-blue-500 text-white"
+                            : asset.type === "edit"
+                              ? "bg-purple-500 text-white"
+                              : "bg-green-500 text-white"
+                        }`}
+                      >
                         {asset.type}
                       </div>
                     </div>
@@ -252,17 +274,21 @@ export function AssetsPanel({ isOpen, onClose, onAssetSelect, projectId }: Asset
                       alt={asset.name}
                       className="w-12 h-12 rounded-lg object-cover"
                     />
-                    
+
                     <div className="flex-1">
                       <div className="font-medium text-gray-900 dark:text-white">
                         {asset.name}
                       </div>
                       <div className="text-sm text-gray-500 dark:text-gray-400">
                         {asset.prompt && (
-                          <span className="block truncate max-w-md">{asset.prompt}</span>
+                          <span className="block truncate max-w-md">
+                            {asset.prompt}
+                          </span>
                         )}
                         <span>{asset.timestamp.toLocaleDateString()}</span>
-                        {asset.model && <span className="ml-2">• {asset.model}</span>}
+                        {asset.model && (
+                          <span className="ml-2">• {asset.model}</span>
+                        )}
                       </div>
                     </div>
 

@@ -25,6 +25,7 @@ We welcome contributions from developers of all skill levels. There are many way
 ### Development Setup
 
 1. **Fork the repository**
+
    ```bash
    # Fork the repo on GitHub, then clone your fork
    git clone https://github.com/YOUR_USERNAME/azure-image-studio.git
@@ -32,11 +33,13 @@ We welcome contributions from developers of all skill levels. There are many way
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment**
+
    ```bash
    # Copy the example environment file
    cp .env.example .env.local
@@ -44,6 +47,7 @@ We welcome contributions from developers of all skill levels. There are many way
    ```
 
 4. **Start development server**
+
    ```bash
    npm run dev
    ```
@@ -143,6 +147,7 @@ A clear and concise description of what the bug is.
 
 **To Reproduce**
 Steps to reproduce the behavior:
+
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
@@ -155,6 +160,7 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Environment:**
+
 - OS: [e.g. Windows, macOS, Linux]
 - Browser: [e.g. Chrome, Firefox, Safari]
 - Version: [e.g. 1.0.0]
@@ -265,6 +271,7 @@ npm run test:coverage
 ### Version Numbering
 
 We follow [Semantic Versioning](https://semver.org/):
+
 - **MAJOR**: Breaking changes
 - **MINOR**: New features (backward compatible)
 - **PATCH**: Bug fixes (backward compatible)
@@ -288,6 +295,7 @@ If you have questions about contributing:
 ## 🙏 Recognition
 
 Contributors will be recognized in:
+
 - **README**: Listed as contributors
 - **Release Notes**: Mentioned in relevant releases
 - **GitHub**: Appear in the contributors list

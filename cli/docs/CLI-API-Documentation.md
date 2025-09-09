@@ -24,6 +24,7 @@ azure-image-studio [command] [options] [--global-options]
 ```
 
 **Global Options:**
+
 - `-v, --verbose`: Enable verbose output
 - `--no-color`: Disable colored output
 - `--config <path>`: Path to configuration file
@@ -41,14 +42,17 @@ azure-image-studio config init [options]
 ```
 
 **Options:**
+
 - `-f, --force`: Overwrite existing configuration
 
 **Exit Codes:**
+
 - `0`: Success
 - `1`: Error (configuration already exists and --force not used)
 - `2`: Error (failed to create configuration)
 
 **Example:**
+
 ```bash
 azure-image-studio config init --force
 ```
@@ -62,10 +66,12 @@ azure-image-studio config validate
 ```
 
 **Exit Codes:**
+
 - `0`: Configuration is valid
 - `1`: Configuration is invalid
 
 **Output Format:**
+
 ```json
 {
   "isValid": true,
@@ -82,9 +88,11 @@ azure-image-studio config set-api-key [options]
 ```
 
 **Options:**
+
 - `-k, --key <key>`: API key to set
 
 **Exit Codes:**
+
 - `0`: Success
 - `1`: Error (invalid API key format)
 
@@ -97,9 +105,11 @@ azure-image-studio config show [options]
 ```
 
 **Options:**
+
 - `--hide-sensitive`: Hide sensitive information
 
 **Output Format:**
+
 ```json
 {
   "endpoints": [...],
@@ -118,9 +128,11 @@ azure-image-studio config test [options]
 ```
 
 **Options:**
+
 - `-m, --model <model>`: Model to test with
 
 **Exit Codes:**
+
 - `0`: Test successful
 - `1`: Test failed
 
@@ -135,6 +147,7 @@ azure-image-studio generate single [options]
 ```
 
 **Options:**
+
 - `-p, --prompt <prompt>`: Text prompt for image generation
 - `-m, --model <model>`: Model to use for generation
 - `-s, --size <size>`: Image size (e.g., 1024x1024)
@@ -148,11 +161,13 @@ azure-image-studio generate single [options]
 - `--verbose`: Show detailed output
 
 **Exit Codes:**
+
 - `0`: Generation successful
 - `1`: Generation failed
 - `2`: Invalid parameters
 
 **Output Files:**
+
 - Generated images saved to specified output directory
 - Metadata files (`.json`) with generation details
 
@@ -165,6 +180,7 @@ azure-image-studio generate batch [options]
 ```
 
 **Options:**
+
 - `-f, --file <file>`: File containing prompts (one per line)
 - `-m, --model <model>`: Model to use for generation
 - `-s, --size <size>`: Image size (e.g., 1024x1024)
@@ -175,6 +191,7 @@ azure-image-studio generate batch [options]
 - `--verbose`: Show detailed output
 
 **Input File Format:**
+
 ```
 A beautiful sunset over mountains
 A futuristic city with flying cars
@@ -182,6 +199,7 @@ A peaceful lake with swans
 ```
 
 **Exit Codes:**
+
 - `0`: All generations successful
 - `1`: Some generations failed
 - `2`: Invalid input file
@@ -195,6 +213,7 @@ azure-image-studio generate interactive
 ```
 
 **Interactive Prompts:**
+
 1. Image prompt (required)
 2. Model selection (from available models)
 3. Image size (1024x1024, 1024x1792, 1792x1024)
@@ -202,6 +221,7 @@ azure-image-studio generate interactive
 5. Number of images (1-4)
 
 **Exit Codes:**
+
 - `0`: Generation successful
 - `1`: Generation failed
 - `2`: User cancelled
@@ -217,10 +237,12 @@ azure-image-studio models list [options]
 ```
 
 **Options:**
+
 - `--format <format>`: Output format (table, json)
 - `--verbose`: Show detailed information
 
 **Output Format (JSON):**
+
 ```json
 {
   "models": [
@@ -253,6 +275,7 @@ azure-image-studio models info --model <model-id>
 ```
 
 **Output Format:**
+
 ```json
 {
   "id": "dalle-3",
@@ -276,11 +299,13 @@ azure-image-studio models test [options]
 ```
 
 **Options:**
+
 - `-m, --model <model>`: Model ID to test
 - `-p, --prompt <prompt>`: Test prompt (default: "A simple test image")
 - `--no-save`: Don't save the generated image
 
 **Exit Codes:**
+
 - `0`: Test successful
 - `1`: Test failed
 - `2`: Model not found
@@ -294,6 +319,7 @@ azure-image-studio models status
 ```
 
 **Output Format:**
+
 ```json
 {
   "models": [
@@ -319,12 +345,14 @@ azure-image-studio assets list [options]
 ```
 
 **Options:**
+
 - `--format <format>`: Output format (table, json)
 - `--type <type>`: Filter by type (generation, upload, edit)
 - `--limit <number>`: Limit number of results (default: 50)
 - `--sort <field>`: Sort by field (name, date, size)
 
 **Output Format (JSON):**
+
 ```json
 {
   "assets": [
@@ -354,6 +382,7 @@ azure-image-studio assets export [options]
 ```
 
 **Options:**
+
 - `-f, --format <format>`: Export format (png, jpeg, webp)
 - `-o, --output <path>`: Output directory (default: ./exports)
 - `--quality <quality>`: Export quality (1-100, default: 90)
@@ -361,6 +390,7 @@ azure-image-studio assets export [options]
 - `--filter <type>`: Filter by type (generation, upload, edit)
 
 **Exit Codes:**
+
 - `0`: Export successful
 - `1`: Export failed
 - `2`: No assets found
@@ -374,17 +404,20 @@ azure-image-studio assets clean [options]
 ```
 
 **Options:**
+
 - `--older-than <time>`: Remove files older than specified time (e.g., 7d, 30d, 1y)
 - `--dry-run`: Show what would be deleted without actually deleting
 - `--confirm`: Skip confirmation prompt
 
 **Time Format:**
+
 - `7d`: 7 days
 - `30d`: 30 days
 - `1m`: 1 month
 - `1y`: 1 year
 
 **Exit Codes:**
+
 - `0`: Cleanup successful
 - `1`: Cleanup failed
 - `2`: User cancelled
@@ -398,12 +431,14 @@ azure-image-studio assets organize [options]
 ```
 
 **Options:**
+
 - `--by-date`: Organize by creation date
 - `--by-model`: Organize by AI model
 - `--by-type`: Organize by asset type
 - `--dry-run`: Show what would be organized without actually moving files
 
 **Exit Codes:**
+
 - `0`: Organization successful
 - `1`: Organization failed
 - `2`: User cancelled
@@ -419,10 +454,12 @@ azure-image-studio dev start [options]
 ```
 
 **Options:**
+
 - `-p, --port <port>`: Port to run on (default: 3000)
 - `--no-open`: Don't open browser automatically
 
 **Exit Codes:**
+
 - `0`: Server started successfully
 - `1`: Server failed to start
 - `2`: Port already in use
@@ -436,10 +473,12 @@ azure-image-studio dev setup [options]
 ```
 
 **Options:**
+
 - `--skip-deps`: Skip dependency installation
 - `--skip-config`: Skip configuration setup
 
 **Exit Codes:**
+
 - `0`: Setup successful
 - `1`: Setup failed
 
@@ -452,10 +491,12 @@ azure-image-studio dev test [options]
 ```
 
 **Options:**
+
 - `-e, --endpoint <url>`: Endpoint URL to test
 - `-k, --key <key>`: API key to use for testing
 
 **Exit Codes:**
+
 - `0`: Test successful
 - `1`: Test failed
 - `2`: Invalid endpoint
@@ -469,10 +510,12 @@ azure-image-studio dev logs [options]
 ```
 
 **Options:**
+
 - `-f, --follow`: Follow log output
 - `--lines <number>`: Number of lines to show (default: 50)
 
 **Exit Codes:**
+
 - `0`: Success
 - `1`: No logs found
 
@@ -555,11 +598,13 @@ interface SizeOption {
 The CLI integrates with Azure OpenAI services using the following endpoints:
 
 #### Image Generation Endpoint
+
 ```
 POST {baseUrl}/openai/deployments/{deploymentName}/images/generations?api-version={apiVersion}
 ```
 
 **Request Body:**
+
 ```json
 {
   "prompt": "a beautiful sunset",
@@ -572,6 +617,7 @@ POST {baseUrl}/openai/deployments/{deploymentName}/images/generations?api-versio
 ```
 
 **Response:**
+
 ```json
 {
   "created": 1640995200,
@@ -585,11 +631,13 @@ POST {baseUrl}/openai/deployments/{deploymentName}/images/generations?api-versio
 ```
 
 #### Image Editing Endpoint
+
 ```
 POST {baseUrl}/openai/deployments/{deploymentName}/images/edits?api-version={apiVersion}
 ```
 
 **Request (multipart/form-data):**
+
 - `image`: Image file
 - `mask`: Mask file (optional)
 - `prompt`: Text prompt
@@ -657,17 +705,17 @@ POST {baseUrl}/openai/deployments/{deploymentName}/images/edits?api-version={api
 
 ## 🔢 Exit Codes
 
-| Code | Description |
-|------|-------------|
-| 0 | Success |
-| 1 | General error |
-| 2 | Invalid parameters |
-| 3 | Configuration error |
-| 4 | API error |
-| 5 | File system error |
-| 6 | Network error |
-| 7 | User cancelled |
-| 8 | Permission denied |
+| Code | Description         |
+| ---- | ------------------- |
+| 0    | Success             |
+| 1    | General error       |
+| 2    | Invalid parameters  |
+| 3    | Configuration error |
+| 4    | API error           |
+| 5    | File system error   |
+| 6    | Network error       |
+| 7    | User cancelled      |
+| 8    | Permission denied   |
 
 ## 🌍 Environment Variables
 
@@ -759,8 +807,8 @@ Structured log entries:
 ### Node.js Integration
 
 ```javascript
-const { spawn } = require('child_process');
-const path = require('path');
+const { spawn } = require("child_process");
+const path = require("path");
 
 class AzureImageStudioCLI {
   constructor(configPath) {
@@ -769,30 +817,30 @@ class AzureImageStudioCLI {
 
   async generateImage(prompt, options = {}) {
     return new Promise((resolve, reject) => {
-      const args = ['generate', 'single', '--prompt', prompt];
-      
-      if (options.model) args.push('--model', options.model);
-      if (options.size) args.push('--size', options.size);
-      if (options.quality) args.push('--quality', options.quality);
-      if (options.output) args.push('--output', options.output);
-      if (options.format) args.push('--format', options.format);
-      
-      const child = spawn('azure-image-studio', args, {
-        stdio: ['pipe', 'pipe', 'pipe']
+      const args = ["generate", "single", "--prompt", prompt];
+
+      if (options.model) args.push("--model", options.model);
+      if (options.size) args.push("--size", options.size);
+      if (options.quality) args.push("--quality", options.quality);
+      if (options.output) args.push("--output", options.output);
+      if (options.format) args.push("--format", options.format);
+
+      const child = spawn("azure-image-studio", args, {
+        stdio: ["pipe", "pipe", "pipe"],
       });
 
-      let stdout = '';
-      let stderr = '';
+      let stdout = "";
+      let stderr = "";
 
-      child.stdout.on('data', (data) => {
+      child.stdout.on("data", (data) => {
         stdout += data.toString();
       });
 
-      child.stderr.on('data', (data) => {
+      child.stderr.on("data", (data) => {
         stderr += data.toString();
       });
 
-      child.on('close', (code) => {
+      child.on("close", (code) => {
         if (code === 0) {
           resolve({ success: true, output: stdout });
         } else {
@@ -804,28 +852,32 @@ class AzureImageStudioCLI {
 
   async listModels() {
     return new Promise((resolve, reject) => {
-      const child = spawn('azure-image-studio', ['models', 'list', '--format', 'json'], {
-        stdio: ['pipe', 'pipe', 'pipe']
-      });
+      const child = spawn(
+        "azure-image-studio",
+        ["models", "list", "--format", "json"],
+        {
+          stdio: ["pipe", "pipe", "pipe"],
+        },
+      );
 
-      let stdout = '';
-      let stderr = '';
+      let stdout = "";
+      let stderr = "";
 
-      child.stdout.on('data', (data) => {
+      child.stdout.on("data", (data) => {
         stdout += data.toString();
       });
 
-      child.stderr.on('data', (data) => {
+      child.stderr.on("data", (data) => {
         stderr += data.toString();
       });
 
-      child.on('close', (code) => {
+      child.on("close", (code) => {
         if (code === 0) {
           try {
             const models = JSON.parse(stdout);
             resolve(models);
           } catch (error) {
-            reject(new Error('Failed to parse models JSON'));
+            reject(new Error("Failed to parse models JSON"));
           }
         } else {
           reject(new Error(`CLI failed with code ${code}: ${stderr}`));
@@ -837,9 +889,10 @@ class AzureImageStudioCLI {
 
 // Usage
 const cli = new AzureImageStudioCLI();
-cli.generateImage('a beautiful sunset', { model: 'dalle-3', size: '1024x1024' })
-  .then(result => console.log('Success:', result))
-  .catch(error => console.error('Error:', error));
+cli
+  .generateImage("a beautiful sunset", { model: "dalle-3", size: "1024x1024" })
+  .then((result) => console.log("Success:", result))
+  .catch((error) => console.error("Error:", error));
 ```
 
 ### Python Integration
@@ -858,7 +911,7 @@ class AzureImageStudioCLI:
 
     def generate_image(self, prompt, **options):
         args = ['azure-image-studio', 'generate', 'single', '--prompt', prompt]
-        
+
         if 'model' in options:
             args.extend(['--model', options['model']])
         if 'size' in options:
@@ -869,7 +922,7 @@ class AzureImageStudioCLI:
             args.extend(['--output', options['output']])
         if 'format' in options:
             args.extend(['--format', options['format']])
-        
+
         try:
             result = subprocess.run(args, capture_output=True, text=True, env=self.env)
             if result.returncode == 0:
@@ -881,7 +934,7 @@ class AzureImageStudioCLI:
 
     def list_models(self):
         args = ['azure-image-studio', 'models', 'list', '--format', 'json']
-        
+
         try:
             result = subprocess.run(args, capture_output=True, text=True, env=self.env)
             if result.returncode == 0:
@@ -915,9 +968,9 @@ generate_image() {
     local model="${2:-dalle-3}"
     local size="${3:-1024x1024}"
     local quality="${4:-standard}"
-    
+
     echo "Generating image: $prompt"
-    
+
     if $CLI generate single \
         --prompt "$prompt" \
         --model "$model" \

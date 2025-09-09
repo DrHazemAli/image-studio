@@ -37,6 +37,7 @@ Azure Image Studio uses a client-side database architecture built on IndexedDB f
 ### Database Schema
 
 #### Database Information
+
 - **Database Name**: `AzureStudioDB`
 - **Version**: 3
 - **Object Stores**: 3 (assets, history, projects)
@@ -47,22 +48,24 @@ Azure Image Studio uses a client-side database architecture built on IndexedDB f
 
 ```typescript
 interface Asset {
-  id: string;                    // Unique identifier
-  project_id: string;            // Foreign key to Project
-  url: string;                   // Asset URL or data URL
-  name: string;                  // Asset name
-  type: 'generation' | 'edit' | 'upload'; // Asset type
-  timestamp: Date;               // Creation timestamp
-  prompt?: string;               // Generation prompt (if applicable)
-  model?: string;                // AI model used (if applicable)
-  metadata?: {                   // Additional metadata
-    size?: number;               // File size in bytes
-    format?: string;             // File format (png, jpeg, etc.)
-    dimensions?: {               // Image dimensions
+  id: string; // Unique identifier
+  project_id: string; // Foreign key to Project
+  url: string; // Asset URL or data URL
+  name: string; // Asset name
+  type: "generation" | "edit" | "upload"; // Asset type
+  timestamp: Date; // Creation timestamp
+  prompt?: string; // Generation prompt (if applicable)
+  model?: string; // AI model used (if applicable)
+  metadata?: {
+    // Additional metadata
+    size?: number; // File size in bytes
+    format?: string; // File format (png, jpeg, etc.)
+    dimensions?: {
+      // Image dimensions
       width: number;
       height: number;
     };
-    tags?: string[];             // User-defined tags
+    tags?: string[]; // User-defined tags
   };
 }
 ```
@@ -71,23 +74,24 @@ interface Asset {
 
 ```typescript
 interface HistoryEntry {
-  id: string;                    // Unique identifier
-  project_id: string;            // Foreign key to Project
-  type: 'generation' | 'edit' | 'upload'; // Operation type
-  timestamp: Date;               // Operation timestamp
-  prompt?: string;               // Generation prompt
-  model?: string;                // AI model used
+  id: string; // Unique identifier
+  project_id: string; // Foreign key to Project
+  type: "generation" | "edit" | "upload"; // Operation type
+  timestamp: Date; // Operation timestamp
+  prompt?: string; // Generation prompt
+  model?: string; // AI model used
   settings?: Record<string, unknown>; // Generation settings
-  imageUrl?: string;             // Result image URL
-  thumbnailUrl?: string;         // Thumbnail URL
-  status: 'completed' | 'failed' | 'in-progress'; // Operation status
-  error?: string;                // Error message (if failed)
-  duration?: number;             // Processing time in milliseconds
-  metadata?: {                   // Additional metadata
-    size?: string;               // Image size (1024x1024, etc.)
-    quality?: string;            // Quality level
-    style?: string;              // Style option
-    count?: number;              // Number of images generated
+  imageUrl?: string; // Result image URL
+  thumbnailUrl?: string; // Thumbnail URL
+  status: "completed" | "failed" | "in-progress"; // Operation status
+  error?: string; // Error message (if failed)
+  duration?: number; // Processing time in milliseconds
+  metadata?: {
+    // Additional metadata
+    size?: string; // Image size (1024x1024, etc.)
+    quality?: string; // Quality level
+    style?: string; // Style option
+    count?: number; // Number of images generated
   };
 }
 ```
@@ -96,34 +100,38 @@ interface HistoryEntry {
 
 ```typescript
 interface Project {
-  id: string;                    // UUID
-  user_id: string;               // Owner of the project
-  name: string;                  // Project name
-  description?: string;          // Project description
-  created_at: Date;              // Creation timestamp
-  updated_at: Date;              // Last modification timestamp
-  settings: {                    // Project settings
-    currentModel: string;        // Default AI model
-    currentSize: string;         // Default image size
-    isInpaintMode: boolean;      // Inpaint mode flag
-    defaultQuality: string;      // Default quality level
-    defaultStyle: string;        // Default style
+  id: string; // UUID
+  user_id: string; // Owner of the project
+  name: string; // Project name
+  description?: string; // Project description
+  created_at: Date; // Creation timestamp
+  updated_at: Date; // Last modification timestamp
+  settings: {
+    // Project settings
+    currentModel: string; // Default AI model
+    currentSize: string; // Default image size
+    isInpaintMode: boolean; // Inpaint mode flag
+    defaultQuality: string; // Default quality level
+    defaultStyle: string; // Default style
   };
-  canvas: {                      // Canvas state
+  canvas: {
+    // Canvas state
     currentImage: string | null; // Current canvas image
     generatedImage: string | null; // Last generated image
     attachedImage: string | null; // Attached reference image
-    zoom: number;                // Canvas zoom level
-    pan: {                       // Canvas pan position
+    zoom: number; // Canvas zoom level
+    pan: {
+      // Canvas pan position
       x: number;
       y: number;
     };
   };
-  metadata: {                    // Project metadata
-    tags?: string[];             // Project tags
-    author?: string;             // Project author
-    version?: string;            // Project version
-    template?: string;           // Project template used
+  metadata: {
+    // Project metadata
+    tags?: string[]; // Project tags
+    author?: string; // Project author
+    version?: string; // Project version
+    template?: string; // Project template used
   };
 }
 ```
@@ -134,7 +142,7 @@ interface Project {
 
 ```typescript
 class IndexedDBManager {
-  private dbName = 'AzureStudioDB';
+  private dbName = "AzureStudioDB";
   private version = 3;
   private db: IDBDatabase | null = null;
 
@@ -163,7 +171,11 @@ class IndexedDBManager {
   async clearProjects(): Promise<void>;
 
   // Utility operations
-  async getStorageInfo(): Promise<{ assets: number; history: number; projects: number }>;
+  async getStorageInfo(): Promise<{
+    assets: number;
+    history: number;
+    projects: number;
+  }>;
   async migrateFromLocalStorage(): Promise<void>;
 }
 ```
@@ -218,6 +230,7 @@ async init(): Promise<void> {
 ### Asset Management
 
 #### Save Asset
+
 ```typescript
 async saveAsset(asset: Asset): Promise<void> {
   const db = await this.ensureDB();
@@ -225,7 +238,7 @@ async saveAsset(asset: Asset): Promise<void> {
     const transaction = db.transaction(['assets'], 'readwrite');
     const store = transaction.objectStore('assets');
     const request = store.put(asset);
-    
+
     request.onsuccess = () => resolve();
     request.onerror = () => reject(request.error);
   });
@@ -233,13 +246,14 @@ async saveAsset(asset: Asset): Promise<void> {
 ```
 
 #### Get Assets
+
 ```typescript
 async getAssets(projectId?: string): Promise<Asset[]> {
   const db = await this.ensureDB();
   return new Promise((resolve, reject) => {
     const transaction = db.transaction(['assets'], 'readonly');
     const store = transaction.objectStore('assets');
-    
+
     let request: IDBRequest;
     if (projectId) {
       const index = store.index('project_id');
@@ -247,7 +261,7 @@ async getAssets(projectId?: string): Promise<Asset[]> {
     } else {
       request = store.getAll();
     }
-    
+
     request.onsuccess = () => {
       const assets = request.result.map((asset: any) => ({
         ...asset,
@@ -261,6 +275,7 @@ async getAssets(projectId?: string): Promise<Asset[]> {
 ```
 
 #### Delete Asset
+
 ```typescript
 async deleteAsset(id: string): Promise<void> {
   const db = await this.ensureDB();
@@ -268,7 +283,7 @@ async deleteAsset(id: string): Promise<void> {
     const transaction = db.transaction(['assets'], 'readwrite');
     const store = transaction.objectStore('assets');
     const request = store.delete(id);
-    
+
     request.onsuccess = () => resolve();
     request.onerror = () => reject(request.error);
   });
@@ -278,6 +293,7 @@ async deleteAsset(id: string): Promise<void> {
 ### History Management
 
 #### Save History Entry
+
 ```typescript
 async saveHistoryEntry(entry: HistoryEntry): Promise<void> {
   const db = await this.ensureDB();
@@ -285,7 +301,7 @@ async saveHistoryEntry(entry: HistoryEntry): Promise<void> {
     const transaction = db.transaction(['history'], 'readwrite');
     const store = transaction.objectStore('history');
     const request = store.put(entry);
-    
+
     request.onsuccess = () => resolve();
     request.onerror = () => reject(request.error);
   });
@@ -293,13 +309,14 @@ async saveHistoryEntry(entry: HistoryEntry): Promise<void> {
 ```
 
 #### Get History
+
 ```typescript
 async getHistory(projectId?: string): Promise<HistoryEntry[]> {
   const db = await this.ensureDB();
   return new Promise((resolve, reject) => {
     const transaction = db.transaction(['history'], 'readonly');
     const store = transaction.objectStore('history');
-    
+
     let request: IDBRequest;
     if (projectId) {
       const index = store.index('project_id');
@@ -307,7 +324,7 @@ async getHistory(projectId?: string): Promise<HistoryEntry[]> {
     } else {
       request = store.getAll();
     }
-    
+
     request.onsuccess = () => {
       const history = request.result.map((entry: any) => ({
         ...entry,
@@ -323,6 +340,7 @@ async getHistory(projectId?: string): Promise<HistoryEntry[]> {
 ### Project Management
 
 #### Save Project
+
 ```typescript
 async saveProject(project: Project): Promise<void> {
   const db = await this.ensureDB();
@@ -330,7 +348,7 @@ async saveProject(project: Project): Promise<void> {
     const transaction = db.transaction(['projects'], 'readwrite');
     const store = transaction.objectStore('projects');
     const request = store.put(project);
-    
+
     request.onsuccess = () => resolve();
     request.onerror = () => reject(request.error);
   });
@@ -338,6 +356,7 @@ async saveProject(project: Project): Promise<void> {
 ```
 
 #### Get Project
+
 ```typescript
 async getProject(id: string): Promise<Project | null> {
   const db = await this.ensureDB();
@@ -345,7 +364,7 @@ async getProject(id: string): Promise<Project | null> {
     const transaction = db.transaction(['projects'], 'readonly');
     const store = transaction.objectStore('projects');
     const request = store.get(id);
-    
+
     request.onsuccess = () => {
       if (request.result) {
         const project = {
@@ -377,7 +396,7 @@ export async function migrateFromLocalStorage(): Promise<MigrationResult> {
     success: true,
     assetsMigrated: 0,
     historyMigrated: 0,
-    errors: []
+    errors: [],
   };
 
   try {
@@ -385,19 +404,21 @@ export async function migrateFromLocalStorage(): Promise<MigrationResult> {
     await dbManager.init();
 
     // Migrate assets
-    const savedAssets = localStorage.getItem('azure-studio-assets');
+    const savedAssets = localStorage.getItem("azure-studio-assets");
     if (savedAssets) {
       try {
         const assets = JSON.parse(savedAssets);
         for (const asset of assets) {
           await dbManager.saveAsset({
             ...asset,
-            timestamp: new Date(asset.timestamp)
+            timestamp: new Date(asset.timestamp),
           });
           result.assetsMigrated++;
         }
-        localStorage.removeItem('azure-studio-assets');
-        console.log(`Migrated ${result.assetsMigrated} assets from localStorage to IndexedDB`);
+        localStorage.removeItem("azure-studio-assets");
+        console.log(
+          `Migrated ${result.assetsMigrated} assets from localStorage to IndexedDB`,
+        );
       } catch (error) {
         const errorMsg = `Failed to migrate assets: ${error}`;
         result.errors.push(errorMsg);
@@ -406,19 +427,21 @@ export async function migrateFromLocalStorage(): Promise<MigrationResult> {
     }
 
     // Migrate history
-    const savedHistory = localStorage.getItem('azure-studio-history');
+    const savedHistory = localStorage.getItem("azure-studio-history");
     if (savedHistory) {
       try {
         const history = JSON.parse(savedHistory);
         for (const entry of history) {
           await dbManager.saveHistoryEntry({
             ...entry,
-            timestamp: new Date(entry.timestamp)
+            timestamp: new Date(entry.timestamp),
           });
           result.historyMigrated++;
         }
-        localStorage.removeItem('azure-studio-history');
-        console.log(`Migrated ${result.historyMigrated} history entries from localStorage to IndexedDB`);
+        localStorage.removeItem("azure-studio-history");
+        console.log(
+          `Migrated ${result.historyMigrated} history entries from localStorage to IndexedDB`,
+        );
       } catch (error) {
         const errorMsg = `Failed to migrate history: ${error}`;
         result.errors.push(errorMsg);
@@ -429,11 +452,10 @@ export async function migrateFromLocalStorage(): Promise<MigrationResult> {
     if (result.errors.length > 0) {
       result.success = false;
     }
-
   } catch (error) {
     result.success = false;
     result.errors.push(`Migration failed: ${error}`);
-    console.error('Migration failed:', error);
+    console.error("Migration failed:", error);
   }
 
   return result;
@@ -445,10 +467,10 @@ export async function migrateFromLocalStorage(): Promise<MigrationResult> {
 ```typescript
 export function needsMigration(): boolean {
   return (
-    typeof window !== 'undefined' &&
-    typeof localStorage !== 'undefined' &&
-    (localStorage.getItem('azure-studio-assets') !== null ||
-     localStorage.getItem('azure-studio-history') !== null)
+    typeof window !== "undefined" &&
+    typeof localStorage !== "undefined" &&
+    (localStorage.getItem("azure-studio-assets") !== null ||
+      localStorage.getItem("azure-studio-history") !== null)
   );
 }
 ```
@@ -473,18 +495,18 @@ export async function getStorageInfo(): Promise<{
   const localStorageInfo = {
     assets: 0,
     history: 0,
-    totalSize: 0
+    totalSize: 0,
   };
 
   // Check localStorage
-  const savedAssets = localStorage.getItem('azure-studio-assets');
+  const savedAssets = localStorage.getItem("azure-studio-assets");
   if (savedAssets) {
     const assets = JSON.parse(savedAssets);
     localStorageInfo.assets = assets.length;
     localStorageInfo.totalSize += savedAssets.length;
   }
 
-  const savedHistory = localStorage.getItem('azure-studio-history');
+  const savedHistory = localStorage.getItem("azure-studio-history");
   if (savedHistory) {
     const history = JSON.parse(savedHistory);
     localStorageInfo.history = history.length;
@@ -496,7 +518,7 @@ export async function getStorageInfo(): Promise<{
 
   return {
     localStorage: localStorageInfo,
-    indexedDB: indexedDBInfo
+    indexedDB: indexedDBInfo,
   };
 }
 ```
@@ -512,14 +534,14 @@ export async function clearAllData(): Promise<void> {
     await dbManager.clearProjects();
 
     // Clear localStorage
-    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-      localStorage.removeItem('azure-studio-assets');
-      localStorage.removeItem('azure-studio-history');
+    if (typeof window !== "undefined" && typeof localStorage !== "undefined") {
+      localStorage.removeItem("azure-studio-assets");
+      localStorage.removeItem("azure-studio-history");
     }
 
-    console.log('All data cleared successfully');
+    console.log("All data cleared successfully");
   } catch (error) {
-    console.error('Failed to clear data:', error);
+    console.error("Failed to clear data:", error);
     throw error;
   }
 }
@@ -684,6 +706,7 @@ static async importProject(projectData: ProjectData): Promise<{
 ### Asset Queries
 
 #### Get Assets by Type
+
 ```typescript
 async getAssetsByType(type: 'generation' | 'edit' | 'upload'): Promise<Asset[]> {
   const db = await this.ensureDB();
@@ -692,7 +715,7 @@ async getAssetsByType(type: 'generation' | 'edit' | 'upload'): Promise<Asset[]> 
     const store = transaction.objectStore('assets');
     const index = store.index('type');
     const request = index.getAll(type);
-    
+
     request.onsuccess = () => {
       const assets = request.result.map((asset: any) => ({
         ...asset,
@@ -706,6 +729,7 @@ async getAssetsByType(type: 'generation' | 'edit' | 'upload'): Promise<Asset[]> 
 ```
 
 #### Get Recent Assets
+
 ```typescript
 async getRecentAssets(limit: number = 10): Promise<Asset[]> {
   const db = await this.ensureDB();
@@ -714,7 +738,7 @@ async getRecentAssets(limit: number = 10): Promise<Asset[]> {
     const store = transaction.objectStore('assets');
     const index = store.index('timestamp');
     const request = index.getAll();
-    
+
     request.onsuccess = () => {
       const assets = request.result
         .map((asset: any) => ({
@@ -733,6 +757,7 @@ async getRecentAssets(limit: number = 10): Promise<Asset[]> {
 ### History Queries
 
 #### Get History by Status
+
 ```typescript
 async getHistoryByStatus(status: 'completed' | 'failed' | 'in-progress'): Promise<HistoryEntry[]> {
   const db = await this.ensureDB();
@@ -740,7 +765,7 @@ async getHistoryByStatus(status: 'completed' | 'failed' | 'in-progress'): Promis
     const transaction = db.transaction(['history'], 'readonly');
     const store = transaction.objectStore('history');
     const request = store.getAll();
-    
+
     request.onsuccess = () => {
       const history = request.result
         .map((entry: any) => ({
@@ -756,6 +781,7 @@ async getHistoryByStatus(status: 'completed' | 'failed' | 'in-progress'): Promis
 ```
 
 #### Get History by Model
+
 ```typescript
 async getHistoryByModel(model: string): Promise<HistoryEntry[]> {
   const db = await this.ensureDB();
@@ -763,7 +789,7 @@ async getHistoryByModel(model: string): Promise<HistoryEntry[]> {
     const transaction = db.transaction(['history'], 'readonly');
     const store = transaction.objectStore('history');
     const request = store.getAll();
-    
+
     request.onsuccess = () => {
       const history = request.result
         .map((entry: any) => ({
@@ -785,16 +811,19 @@ async getHistoryByModel(model: string): Promise<HistoryEntry[]> {
 The database uses strategic indexing for optimal query performance:
 
 #### Asset Store Indexes
+
 - `timestamp`: For chronological queries
 - `type`: For filtering by asset type
 - `project_id`: For project-specific queries
 
 #### History Store Indexes
+
 - `timestamp`: For chronological queries
 - `type`: For filtering by operation type
 - `project_id`: For project-specific queries
 
 #### Project Store Indexes
+
 - `user_id`: For user-specific queries
 - `created_at`: For chronological queries
 - `updated_at`: For recent activity queries
@@ -802,17 +831,18 @@ The database uses strategic indexing for optimal query performance:
 ### Batch Operations
 
 #### Batch Asset Import
+
 ```typescript
 async batchImportAssets(assets: Asset[]): Promise<{ success: number; failed: number }> {
   const db = await this.ensureDB();
   return new Promise((resolve, reject) => {
     const transaction = db.transaction(['assets'], 'readwrite');
     const store = transaction.objectStore('assets');
-    
+
     let success = 0;
     let failed = 0;
     let completed = 0;
-    
+
     assets.forEach(asset => {
       const request = store.put(asset);
       request.onsuccess = () => {
@@ -837,27 +867,28 @@ async batchImportAssets(assets: Asset[]): Promise<{ success: number; failed: num
 ### Memory Management
 
 #### Cleanup Old Data
+
 ```typescript
 async cleanupOldData(daysOld: number = 30): Promise<{ assetsDeleted: number; historyDeleted: number }> {
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - daysOld);
-  
+
   const assets = await this.getAssets();
   const history = await this.getHistory();
-  
+
   const oldAssets = assets.filter(asset => asset.timestamp < cutoffDate);
   const oldHistory = history.filter(entry => entry.timestamp < cutoffDate);
-  
+
   // Delete old assets
   for (const asset of oldAssets) {
     await this.deleteAsset(asset.id);
   }
-  
+
   // Delete old history
   for (const entry of oldHistory) {
     await this.deleteHistoryEntry(entry.id);
   }
-  
+
   return {
     assetsDeleted: oldAssets.length,
     historyDeleted: oldHistory.length
@@ -870,28 +901,30 @@ async cleanupOldData(daysOld: number = 30): Promise<{ assetsDeleted: number; his
 ### Data Validation
 
 #### Asset Validation
+
 ```typescript
 function validateAsset(asset: any): asset is Asset {
   return (
-    typeof asset.id === 'string' &&
-    typeof asset.project_id === 'string' &&
-    typeof asset.url === 'string' &&
-    typeof asset.name === 'string' &&
-    ['generation', 'edit', 'upload'].includes(asset.type) &&
+    typeof asset.id === "string" &&
+    typeof asset.project_id === "string" &&
+    typeof asset.url === "string" &&
+    typeof asset.name === "string" &&
+    ["generation", "edit", "upload"].includes(asset.type) &&
     asset.timestamp instanceof Date
   );
 }
 ```
 
 #### History Entry Validation
+
 ```typescript
 function validateHistoryEntry(entry: any): entry is HistoryEntry {
   return (
-    typeof entry.id === 'string' &&
-    typeof entry.project_id === 'string' &&
-    ['generation', 'edit', 'upload'].includes(entry.type) &&
+    typeof entry.id === "string" &&
+    typeof entry.project_id === "string" &&
+    ["generation", "edit", "upload"].includes(entry.type) &&
     entry.timestamp instanceof Date &&
-    ['completed', 'failed', 'in-progress'].includes(entry.status)
+    ["completed", "failed", "in-progress"].includes(entry.status)
   );
 }
 ```
@@ -899,6 +932,7 @@ function validateHistoryEntry(entry: any): entry is HistoryEntry {
 ### Data Sanitization
 
 #### Sanitize Asset Data
+
 ```typescript
 function sanitizeAsset(asset: any): Asset {
   return {
@@ -906,11 +940,16 @@ function sanitizeAsset(asset: any): Asset {
     project_id: String(asset.project_id),
     url: String(asset.url),
     name: String(asset.name).substring(0, 255), // Limit name length
-    type: ['generation', 'edit', 'upload'].includes(asset.type) ? asset.type : 'upload',
+    type: ["generation", "edit", "upload"].includes(asset.type)
+      ? asset.type
+      : "upload",
     timestamp: new Date(asset.timestamp),
     prompt: asset.prompt ? String(asset.prompt).substring(0, 4000) : undefined,
     model: asset.model ? String(asset.model) : undefined,
-    metadata: asset.metadata && typeof asset.metadata === 'object' ? asset.metadata : undefined
+    metadata:
+      asset.metadata && typeof asset.metadata === "object"
+        ? asset.metadata
+        : undefined,
   };
 }
 ```
@@ -920,6 +959,7 @@ function sanitizeAsset(asset: any): Asset {
 ### Storage Metrics
 
 #### Get Storage Statistics
+
 ```typescript
 async getStorageStatistics(): Promise<{
   totalAssets: number;
@@ -933,21 +973,21 @@ async getStorageStatistics(): Promise<{
   const assets = await this.getAssets();
   const history = await this.getHistory();
   const projects = await this.getProjects();
-  
+
   const modelUsage = history.reduce((acc, entry) => {
     if (entry.model) {
       acc[entry.model] = (acc[entry.model] || 0) + 1;
     }
     return acc;
   }, {} as Record<string, number>);
-  
+
   const mostUsedModel = Object.entries(modelUsage)
     .sort(([,a], [,b]) => b - a)[0]?.[0];
-  
+
   const timestamps = assets.map(asset => asset.timestamp);
   const oldestAsset = timestamps.length > 0 ? new Date(Math.min(...timestamps.map(t => t.getTime()))) : undefined;
   const newestAsset = timestamps.length > 0 ? new Date(Math.max(...timestamps.map(t => t.getTime()))) : undefined;
-  
+
   return {
     totalAssets: assets.length,
     totalHistory: history.length,
@@ -965,6 +1005,7 @@ async getStorageStatistics(): Promise<{
 ### Database Inspector
 
 #### Debug Database State
+
 ```typescript
 async debugDatabaseState(): Promise<{
   databaseExists: boolean;
@@ -981,7 +1022,7 @@ async debugDatabaseState(): Promise<{
     const assets = await this.getAssets();
     const history = await this.getHistory();
     const projects = await this.getProjects();
-    
+
     return {
       databaseExists: true,
       version: db.version,
@@ -1010,12 +1051,14 @@ async debugDatabaseState(): Promise<{
 ## 📚 Additional Resources
 
 ### Documentation
+
 - [Architecture Guide](architecture.md) - System design overview
 - [API Documentation](api-documentation.md) - Technical API reference
 - [Developer Guide](developer-guide.md) - Development setup
 - [User Guide](user-guide.md) - Usage instructions
 
 ### External Resources
+
 - [IndexedDB MDN Documentation](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
 - [IndexedDB Tutorial](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB)
 - [TypeScript Documentation](https://www.typescriptlang.org/docs)
