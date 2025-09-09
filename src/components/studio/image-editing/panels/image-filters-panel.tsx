@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Canvas as FabricCanvas, FabricObject } from 'fabric';
-import * as Collapsible from '@radix-ui/react-collapsible';
-import { Button } from '@radix-ui/themes';
+import React, { useState, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Canvas as FabricCanvas, FabricObject } from "fabric";
+import * as Collapsible from "@radix-ui/react-collapsible";
+import { Button } from "@radix-ui/themes";
 import {
   MixerHorizontalIcon,
   SunIcon,
@@ -16,17 +16,17 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
   MagicWandIcon,
-} from '@radix-ui/react-icons';
+} from "@radix-ui/react-icons";
 
 // Import our components
-import { SlidingPanel } from './sliding-panel';
-import { AdjustmentSlider } from '../controls/adjustment-slider';
-import { ImagePreview } from '../controls/image-preview';
+import { SlidingPanel } from "./sliding-panel";
+import { AdjustmentSlider } from "../controls/adjustment-slider";
+import { ImagePreview } from "../controls/image-preview";
 import {
   useRealTimePreview,
   ImageAdjustments,
   DEFAULT_ADJUSTMENTS,
-} from '../hooks/use-real-time-preview';
+} from "../hooks/use-real-time-preview";
 
 /**
  * Props interface for the ImageFiltersPanel component
@@ -62,43 +62,43 @@ interface FilterPreset {
  */
 const FILTER_PRESETS: FilterPreset[] = [
   {
-    id: 'original',
-    name: 'Original',
+    id: "original",
+    name: "Original",
     icon: <ColorWheelIcon className="w-4 h-4" />,
-    description: 'No filters applied',
+    description: "No filters applied",
     adjustments: DEFAULT_ADJUSTMENTS,
-    color: 'bg-gray-100 dark:bg-gray-800',
+    color: "bg-gray-100 dark:bg-gray-800",
   },
   {
-    id: 'bright',
-    name: 'Bright',
+    id: "bright",
+    name: "Bright",
     icon: <SunIcon className="w-4 h-4" />,
-    description: 'Increase brightness and contrast',
+    description: "Increase brightness and contrast",
     adjustments: {
       brightness: 20,
       contrast: 15,
       saturation: 10,
     },
-    color: 'bg-yellow-100 dark:bg-yellow-900/20',
+    color: "bg-yellow-100 dark:bg-yellow-900/20",
   },
   {
-    id: 'dramatic',
-    name: 'Dramatic',
+    id: "dramatic",
+    name: "Dramatic",
     icon: <MoonIcon className="w-4 h-4" />,
-    description: 'High contrast with deep shadows',
+    description: "High contrast with deep shadows",
     adjustments: {
       brightness: -10,
       contrast: 35,
       saturation: -5,
       clarity: 25,
     },
-    color: 'bg-purple-100 dark:bg-purple-900/20',
+    color: "bg-purple-100 dark:bg-purple-900/20",
   },
   {
-    id: 'vintage',
-    name: 'Vintage',
+    id: "vintage",
+    name: "Vintage",
     icon: <ShadowIcon className="w-4 h-4" />,
-    description: 'Warm, nostalgic sepia tones',
+    description: "Warm, nostalgic sepia tones",
     adjustments: {
       sepia: 40,
       contrast: 10,
@@ -106,25 +106,25 @@ const FILTER_PRESETS: FilterPreset[] = [
       saturation: -25,
       temperature: 15,
     },
-    color: 'bg-amber-100 dark:bg-amber-900/20',
+    color: "bg-amber-100 dark:bg-amber-900/20",
   },
   {
-    id: 'blackwhite',
-    name: 'B&W',
+    id: "blackwhite",
+    name: "B&W",
     icon: <EyeClosedIcon className="w-4 h-4" />,
-    description: 'High contrast black and white',
+    description: "High contrast black and white",
     adjustments: {
       grayscale: 100,
       contrast: 25,
       brightness: 5,
     },
-    color: 'bg-slate-100 dark:bg-slate-800',
+    color: "bg-slate-100 dark:bg-slate-800",
   },
   {
-    id: 'cinematic',
-    name: 'Cinematic',
+    id: "cinematic",
+    name: "Cinematic",
     icon: <MagicWandIcon className="w-4 h-4" />,
-    description: 'Film-like color grading',
+    description: "Film-like color grading",
     adjustments: {
       contrast: 20,
       saturation: -10,
@@ -132,7 +132,7 @@ const FILTER_PRESETS: FilterPreset[] = [
       vignette: 25,
       clarity: 15,
     },
-    color: 'bg-blue-100 dark:bg-blue-900/20',
+    color: "bg-blue-100 dark:bg-blue-900/20",
   },
 ];
 
@@ -149,11 +149,11 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
   onResetFilters,
 }) => {
   // State
-  const [selectedPreset, setSelectedPreset] = useState<string>('original');
+  const [selectedPreset, setSelectedPreset] = useState<string>("original");
   const [currentAdjustments, setCurrentAdjustments] =
     useState<ImageAdjustments>(DEFAULT_ADJUSTMENTS);
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
-    new Set(['basic'])
+    new Set(["basic"]),
   );
 
   // Real-time preview hook
@@ -165,7 +165,7 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
   } = useRealTimePreview(fabricCanvas, selectedImage, {
     debounceMs: 16, // 60fps
     showProcessingIndicator: true,
-    onError: (error) => console.error('Preview error:', error),
+    onError: (error) => console.error("Preview error:", error),
   });
 
   // Handle preset selection
@@ -176,7 +176,7 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
       setCurrentAdjustments(newAdjustments);
       applyAdjustments(newAdjustments, false);
     },
-    [applyAdjustments]
+    [applyAdjustments],
   );
 
   // Handle individual adjustment changes
@@ -187,11 +187,11 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
       applyAdjustments(newAdjustments, false);
 
       // Clear preset selection if manually adjusting
-      if (selectedPreset !== 'original') {
-        setSelectedPreset('custom');
+      if (selectedPreset !== "original") {
+        setSelectedPreset("custom");
       }
     },
-    [currentAdjustments, applyAdjustments, selectedPreset]
+    [currentAdjustments, applyAdjustments, selectedPreset],
   );
 
   // Handle section expand/collapse
@@ -209,7 +209,7 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
 
   // Handle reset all
   const handleResetAll = useCallback(() => {
-    setSelectedPreset('original');
+    setSelectedPreset("original");
     setCurrentAdjustments(DEFAULT_ADJUSTMENTS);
     resetAdjustments();
     onResetFilters?.();
@@ -294,8 +294,8 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
                   p-3 rounded-xl border-2 transition-all text-left
                   ${
                     selectedPreset === preset.id
-                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                      ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
+                      : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
                   }
                   ${preset.color}
                 `}
@@ -322,15 +322,15 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
 
             {/* Basic Adjustments Section */}
             <Collapsible.Root
-              open={expandedSections.has('basic')}
-              onOpenChange={() => toggleSection('basic')}
+              open={expandedSections.has("basic")}
+              onOpenChange={() => toggleSection("basic")}
             >
               <Collapsible.Trigger asChild>
                 <button className="flex items-center justify-between w-full p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                   <span className="font-medium text-gray-900 dark:text-white">
                     Basic
                   </span>
-                  {expandedSections.has('basic') ? (
+                  {expandedSections.has("basic") ? (
                     <ChevronDownIcon className="w-4 h-4 text-gray-500" />
                   ) : (
                     <ChevronRightIcon className="w-4 h-4 text-gray-500" />
@@ -338,11 +338,11 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
                 </button>
               </Collapsible.Trigger>
               <AnimatePresence>
-                {expandedSections.has('basic') && (
+                {expandedSections.has("basic") && (
                   <Collapsible.Content asChild forceMount>
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
+                      animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.2 }}
                       className="overflow-hidden"
@@ -352,7 +352,7 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
                           label="Brightness"
                           value={currentAdjustments.brightness}
                           onChange={(value) =>
-                            handleAdjustmentChange('brightness', value)
+                            handleAdjustmentChange("brightness", value)
                           }
                           min={-100}
                           max={100}
@@ -365,7 +365,7 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
                           label="Contrast"
                           value={currentAdjustments.contrast}
                           onChange={(value) =>
-                            handleAdjustmentChange('contrast', value)
+                            handleAdjustmentChange("contrast", value)
                           }
                           min={-100}
                           max={100}
@@ -378,7 +378,7 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
                           label="Saturation"
                           value={currentAdjustments.saturation}
                           onChange={(value) =>
-                            handleAdjustmentChange('saturation', value)
+                            handleAdjustmentChange("saturation", value)
                           }
                           min={-100}
                           max={100}
@@ -396,15 +396,15 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
 
             {/* Color Section */}
             <Collapsible.Root
-              open={expandedSections.has('color')}
-              onOpenChange={() => toggleSection('color')}
+              open={expandedSections.has("color")}
+              onOpenChange={() => toggleSection("color")}
             >
               <Collapsible.Trigger asChild>
                 <button className="flex items-center justify-between w-full p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                   <span className="font-medium text-gray-900 dark:text-white">
                     Color
                   </span>
-                  {expandedSections.has('color') ? (
+                  {expandedSections.has("color") ? (
                     <ChevronDownIcon className="w-4 h-4 text-gray-500" />
                   ) : (
                     <ChevronRightIcon className="w-4 h-4 text-gray-500" />
@@ -412,11 +412,11 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
                 </button>
               </Collapsible.Trigger>
               <AnimatePresence>
-                {expandedSections.has('color') && (
+                {expandedSections.has("color") && (
                   <Collapsible.Content asChild forceMount>
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
+                      animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.2 }}
                       className="overflow-hidden"
@@ -426,7 +426,7 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
                           label="Hue"
                           value={currentAdjustments.hue}
                           onChange={(value) =>
-                            handleAdjustmentChange('hue', value)
+                            handleAdjustmentChange("hue", value)
                           }
                           min={-180}
                           max={180}
@@ -439,7 +439,7 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
                           label="Temperature"
                           value={currentAdjustments.temperature}
                           onChange={(value) =>
-                            handleAdjustmentChange('temperature', value)
+                            handleAdjustmentChange("temperature", value)
                           }
                           min={-100}
                           max={100}
@@ -448,16 +448,16 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
                           color="orange"
                           description="Adjust warm/cool tones"
                           marks={[
-                            { value: -100, label: 'Cool' },
-                            { value: 0, label: 'Neutral' },
-                            { value: 100, label: 'Warm' },
+                            { value: -100, label: "Cool" },
+                            { value: 0, label: "Neutral" },
+                            { value: 100, label: "Warm" },
                           ]}
                         />
                         <AdjustmentSlider
                           label="Vibrance"
                           value={currentAdjustments.vibrance}
                           onChange={(value) =>
-                            handleAdjustmentChange('vibrance', value)
+                            handleAdjustmentChange("vibrance", value)
                           }
                           min={-100}
                           max={100}
@@ -475,15 +475,15 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
 
             {/* Effects Section */}
             <Collapsible.Root
-              open={expandedSections.has('effects')}
-              onOpenChange={() => toggleSection('effects')}
+              open={expandedSections.has("effects")}
+              onOpenChange={() => toggleSection("effects")}
             >
               <Collapsible.Trigger asChild>
                 <button className="flex items-center justify-between w-full p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                   <span className="font-medium text-gray-900 dark:text-white">
                     Effects
                   </span>
-                  {expandedSections.has('effects') ? (
+                  {expandedSections.has("effects") ? (
                     <ChevronDownIcon className="w-4 h-4 text-gray-500" />
                   ) : (
                     <ChevronRightIcon className="w-4 h-4 text-gray-500" />
@@ -491,11 +491,11 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
                 </button>
               </Collapsible.Trigger>
               <AnimatePresence>
-                {expandedSections.has('effects') && (
+                {expandedSections.has("effects") && (
                   <Collapsible.Content asChild forceMount>
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
+                      animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.2 }}
                       className="overflow-hidden"
@@ -505,7 +505,7 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
                           label="Blur"
                           value={currentAdjustments.blur}
                           onChange={(value) =>
-                            handleAdjustmentChange('blur', value)
+                            handleAdjustmentChange("blur", value)
                           }
                           min={0}
                           max={20}
@@ -518,7 +518,7 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
                           label="Sepia"
                           value={currentAdjustments.sepia}
                           onChange={(value) =>
-                            handleAdjustmentChange('sepia', value)
+                            handleAdjustmentChange("sepia", value)
                           }
                           min={0}
                           max={100}
@@ -531,7 +531,7 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
                           label="Grayscale"
                           value={currentAdjustments.grayscale}
                           onChange={(value) =>
-                            handleAdjustmentChange('grayscale', value)
+                            handleAdjustmentChange("grayscale", value)
                           }
                           min={0}
                           max={100}
@@ -544,7 +544,7 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
                           label="Vignette"
                           value={currentAdjustments.vignette}
                           onChange={(value) =>
-                            handleAdjustmentChange('vignette', value)
+                            handleAdjustmentChange("vignette", value)
                           }
                           min={0}
                           max={100}
@@ -557,7 +557,7 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
                           label="Opacity"
                           value={currentAdjustments.opacity}
                           onChange={(value) =>
-                            handleAdjustmentChange('opacity', value)
+                            handleAdjustmentChange("opacity", value)
                           }
                           min={0}
                           max={100}
@@ -593,7 +593,7 @@ export const ImageFiltersPanel: React.FC<ImageFiltersPanelProps> = ({
               selectedImage={selectedImage}
               adjustments={currentAdjustments}
               showBeforeAfter={true}
-              onToggleBeforeAfter={() => console.log('Toggle before/after')}
+              onToggleBeforeAfter={() => console.log("Toggle before/after")}
             />
           </div>
         </div>
