@@ -267,3 +267,121 @@ body {
 .animate-float {
   animation: float 3s ease-in-out infinite;
 }
+
+/* Image Editing Panel Specific Styles */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thumb-gray-300 {
+  scrollbar-color: #d1d5db transparent;
+}
+
+.dark .scrollbar-thumb-zinc-600 {
+  scrollbar-color: #52525b transparent;
+}
+
+.scrollbar-track-transparent {
+  scrollbar-color: transparent transparent;
+}
+
+/* Enhanced scrollbar styles for sliding panels */
+.image-editing-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.image-editing-panel::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 4px;
+}
+
+.image-editing-panel::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.5);
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.dark .image-editing-panel::-webkit-scrollbar-thumb {
+  background: rgba(82, 82, 91, 0.5);
+}
+
+.image-editing-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.8);
+}
+
+.dark .image-editing-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(82, 82, 91, 0.8);
+}
+
+/* Slider input range styles */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-track {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+}
+
+.dark input[type="range"]::-webkit-slider-track {
+  background: #374151;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.dark input[type="range"]::-webkit-slider-thumb {
+  border: 2px solid #111827;
+}
+
+input[type="range"]::-moz-range-track {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  border: none;
+}
+
+.dark input[type="range"]::-moz-range-track {
+  background: #374151;
+}
+
+input[type="range"]::-moz-range-thumb {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.dark input[type="range"]::-moz-range-thumb {
+  border: 2px solid #111827;
+}
+
+/* Focus states for accessibility */
+input[type="range"]:focus {
+  outline: none;
+}
+
+input[type="range"]:focus::-webkit-slider-thumb {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+input[type="range"]:focus::-moz-range-thumb {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}

@@ -13,12 +13,22 @@ import {
   TrashIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  MoveIcon
+  MoveIcon,
+  MixerHorizontalIcon,
+  ColorWheelIcon
 } from '@radix-ui/react-icons';
 
 // Import our custom components
 import { ImageToolButton } from './image-tool-button';
 import { ToolEffectOverlay } from './tool-effect-overlay';
+
+// Import new sliding panel components
+import { 
+  ImageFiltersPanel, 
+  ColorAdjustmentsPanel, 
+  ImageAdjustments,
+  useAdjustmentsPersistence 
+} from '../image-editing';
 
 /**
  * Interface for individual image tools
@@ -58,6 +68,14 @@ export interface FloatingImageToolbarProps {
   onTransform?: (objects: FabricObject[]) => void;
   onBlendMode?: (objects: FabricObject[]) => void;
   onAdjustments?: (objects: FabricObject[]) => void;
+  onFilters?: (objects: FabricObject[]) => void;
+  
+  // New callbacks for the sliding panels
+  onApplyAdjustments?: (adjustments: ImageAdjustments) => void;
+  onApplyFilters?: (adjustments: ImageAdjustments) => void;
+  
+  // Project persistence
+  projectId?: string;
   
   // Visual effects
   effectOverlay?: {
@@ -84,6 +102,10 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
   onTransform,
   onBlendMode,
   onAdjustments,
+  onFilters,
+  onApplyAdjustments,
+  onApplyFilters,
+  projectId,
   effectOverlay
 }) => {
   // Component state
@@ -93,6 +115,44 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
   const [toolbarPosition, setToolbarPosition] = useState(position || { x: 100, y: 100 });
   const [processingTools, setProcessingTools] = useState<Set<string>>(new Set());
   const [hoveredTool, setHoveredTool] = useState<string | null>(null);
+  
+  // New state for sliding panels
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  const [isAdjustmentsOpen, setIsAdjustmentsOpen] = useState(false);
+
+  // Persistence hook for saving/loading image adjustments
+  const {
+    saveImageAdjustments,
+    loadImageAdjustments,
+    hasStoredAdjustments
+  } = useAdjustmentsPersistence(fabricCanvas, {
+    projectId,
+    autoSave: true,
+    saveDebounceMs: 1000,
+    onSave: async (projId, adjustments) => {
+      // Save to IndexedDB or project storage
+      try {
+        console.log('Saving project adjustments:', projId, adjustments);
+        // TODO: Integrate with your project storage system
+        localStorage.setItem(`project_adjustments_${projId}`, JSON.stringify(adjustments));
+      } catch (error) {
+        console.error('Failed to save project adjustments:', error);
+      }
+    },
+    onLoad: async (projId) => {
+      // Load from IndexedDB or project storage
+      try {
+        const stored = localStorage.getItem(`project_adjustments_${projId}`);
+        if (stored) {
+          return JSON.parse(stored);
+        }
+      } catch (error) {
+        console.error('Failed to load project adjustments:', error);
+      }
+      return null;
+    },
+    onError: (error) => console.error('Persistence error:', error)
+  });
   
   // Refs
   const toolbarRef = useRef<HTMLDivElement>(null);
@@ -185,9 +245,46 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
     onBlendMode?.(selectedObjects);
   }, [selectedObjects, onBlendMode]);
 
+  // Updated handlers for sliding panels
+  const handleFilters = useCallback(() => {
+    setIsFiltersOpen(true);
+    onFilters?.(selectedObjects);
+  }, [selectedObjects, onFilters]);
+
   const handleAdjustments = useCallback(() => {
+    setIsAdjustmentsOpen(true);
     onAdjustments?.(selectedObjects);
   }, [selectedObjects, onAdjustments]);
+
+  // Panel close handlers
+  const handleFiltersClose = useCallback(() => {
+    setIsFiltersOpen(false);
+  }, []);
+
+  const handleAdjustmentsClose = useCallback(() => {
+    setIsAdjustmentsOpen(false);
+  }, []);
+
+  // Apply handlers with persistence
+  const handleApplyFilters = useCallback((adjustments: ImageAdjustments) => {
+    // Call the original handler
+    onApplyFilters?.(adjustments);
+    
+    // Save adjustments for persistence
+    if (selectedObjects.length > 0) {
+      saveImageAdjustments(selectedObjects[0], adjustments, 'filters');
+    }
+  }, [onApplyFilters, selectedObjects, saveImageAdjustments]);
+
+  const handleApplyAdjustments = useCallback((adjustments: ImageAdjustments) => {
+    // Call the original handler
+    onApplyAdjustments?.(adjustments);
+    
+    // Save adjustments for persistence
+    if (selectedObjects.length > 0) {
+      saveImageAdjustments(selectedObjects[0], adjustments, 'adjustments');
+    }
+  }, [onApplyAdjustments, selectedObjects, saveImageAdjustments]);
 
   // Define available tools
   const tools: ImageTool[] = [
@@ -203,10 +300,19 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
       requiresModal: false
     },
     {
+      id: 'filters',
+      name: 'Filters',
+      icon: MixerHorizontalIcon,
+      tooltip: 'Apply image filters and presets',
+      shortcut: 'Cmd+Shift+F',
+      action: handleFilters,
+      requiresModal: true
+    },
+    {
       id: 'adjustments',
       name: 'Adjustments',
-      icon: MagicWandIcon,
-      tooltip: 'Color and lighting adjustments',
+      icon: ColorWheelIcon,
+      tooltip: 'Professional color and lighting adjustments',
       shortcut: 'Cmd+Shift+A',
       action: handleAdjustments,
       requiresModal: true
@@ -427,6 +533,26 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
                 speed="normal"
               />
             )}
+            
+            {/* Image Filters Panel */}
+            <ImageFiltersPanel
+              isOpen={isFiltersOpen}
+              onClose={handleFiltersClose}
+              fabricCanvas={fabricCanvas}
+              selectedImage={selectedObjects[0] || null}
+              onApplyFilters={handleApplyFilters}
+              onResetFilters={() => console.log('Filters reset')}
+            />
+            
+            {/* Color Adjustments Panel */}
+            <ColorAdjustmentsPanel
+              isOpen={isAdjustmentsOpen}
+              onClose={handleAdjustmentsClose}
+              fabricCanvas={fabricCanvas}
+              selectedImage={selectedObjects[0] || null}
+              onApplyAdjustments={handleApplyAdjustments}
+              onResetAdjustments={() => console.log('Adjustments reset')}
+            />
           </>
         )}
       </AnimatePresence>

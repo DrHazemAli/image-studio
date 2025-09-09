@@ -87,6 +87,24 @@ export default function ProjectStudioPage() {
   // Canvas ref for insert functionality
   const canvasRef = useRef<MainCanvasRef>(null);
 
+  // Unified function to update page title
+  const updatePageTitle = useCallback((projectNameParam?: string) => {
+    const name = projectNameParam || projectName;
+    if (name && name !== 'Untitled Project') {
+      const newTitle = `${name} - ${appConfig.app.name}`;
+      document.title = newTitle;
+      console.log('Page title updated to:', newTitle);
+    } else {
+      document.title = appConfig.app.name;
+      console.log('Page title updated to:', appConfig.app.name);
+    }
+  }, [projectName]);
+
+  // Update page title when projectName state changes (additional safety)
+  useEffect(() => {
+    updatePageTitle();
+  }, [projectName, updatePageTitle]);
+
   // Load project on mount
   useEffect(() => {
     const loadProject = async () => {
@@ -105,6 +123,9 @@ export default function ProjectStudioPage() {
             setCurrentImage(project.canvas.currentImage);
             setGeneratedImage(project.canvas.generatedImage);
             setAttachedImage(project.canvas.attachedImage);
+            
+            // Update page title with project name
+            updatePageTitle(project.name);
           } else {
             setError('Project not found');
             // Redirect to studio without project ID
@@ -243,29 +264,36 @@ export default function ProjectStudioPage() {
     reader.readAsDataURL(file);
   }, [saveToHistory]);
 
-  // Fetch models on component mount
+  // Fetch models on component mount (only once)
+  const [modelsFetched, setModelsFetched] = useState(false);
   useEffect(() => {
     const fetchModels = async () => {
+      if (modelsFetched) return; // Prevent multiple fetches
+      
       try {
         const response = await fetch('/api/models');
         const data = await response.json();
         setModels(data.models);
-        if (!currentProject) {
+        
+        // Only set defaults if we don't have a current project AND haven't set model yet
+        if (!currentProject && !currentModel) {
           setCurrentModel(data.defaultModel);
           setCurrentSize(data.defaultSize);
         }
+        setModelsFetched(true);
       } catch (error) {
         console.error('Failed to fetch models:', error);
         // Fallback to default values if API fails
-        if (!currentProject) {
+        if (!currentProject && !currentModel) {
           setCurrentModel('FLUX.1-Kontext-pro');
           setCurrentSize('1024x1024');
         }
+        setModelsFetched(true);
       }
     };
 
     fetchModels();
-  }, [currentProject]);
+  }, [modelsFetched, currentProject, currentModel]); // Include dependencies but use modelsFetched flag
 
   // Get model name helper - memoized to prevent unnecessary recalculations
   const getModelName = useCallback((modelId: string) => {
@@ -311,6 +339,10 @@ export default function ProjectStudioPage() {
   const handleProjectNameSave = useCallback(async () => {
     if (tempProjectName.trim()) {
       setProjectName(tempProjectName.trim());
+      
+      // Update page title immediately
+      updatePageTitle(tempProjectName.trim());
+      
       // Immediately save the project name change
       if (currentProject) {
         try {

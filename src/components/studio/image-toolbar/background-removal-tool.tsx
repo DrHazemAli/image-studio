@@ -106,7 +106,7 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
           // Set default options from config
           setOptions(prev => ({
             ...prev,
-            model: bgRemovalConfig.defaultModel,
+            model: bgRemovalConfig.defaultModel as BackgroundRemovalOptions['model'],
             quality: bgRemovalConfig.defaultSettings.quality,
             edgeRefinement: bgRemovalConfig.defaultSettings.edgeRefinement,
             transparencyMode: bgRemovalConfig.defaultSettings.transparencyMode

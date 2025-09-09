@@ -330,8 +330,8 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(({
     setIsLoadingImage(false);
   }, [canvasWidth, canvasHeight, setZoom]);
 
-  // Load image to Fabric.js canvas
-  const loadImageToCanvas = useCallback((imageData: string) => {
+  // Load image to Fabric.js canvas with optional force parameter
+  const loadImageToCanvas = useCallback((imageData: string, forceUpdate = false) => {
     if (!fabricCanvasRef.current || isLoadingImage || isProcessingResize) return;
     
     // Validate image data before processing
@@ -341,10 +341,15 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(({
       return;
     }
     
-    // Prevent loading the same image multiple times
-    if (lastLoadedImageRef.current === imageData) {
+    // Prevent loading the same image multiple times (unless forced)
+    if (!forceUpdate && lastLoadedImageRef.current === imageData) {
       console.log('Image already loaded, skipping...');
       return;
+    }
+    
+    // When forcing update, log the reason
+    if (forceUpdate && lastLoadedImageRef.current === imageData) {
+      console.log('Force updating image with filters/adjustments...');
     }
 
     console.log('Loading image to canvas:', imageData.substring(0, 50) + '...');
