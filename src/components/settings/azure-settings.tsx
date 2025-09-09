@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import {
   Globe,
   Key,
@@ -13,64 +13,64 @@ import {
   Eye,
   EyeOff,
   Sliders,
-} from "lucide-react";
-import { config } from "@/lib/settings";
-import { AzureConfig, AzureEndpoint } from "@/types/azure";
+} from 'lucide-react';
+import { config } from '@/lib/settings';
+import { AzureConfig, AzureEndpoint } from '@/types/azure';
 
 export function AzureSettings() {
   const [endpoints, setEndpoints] = useState<AzureEndpoint[]>([]);
-  const [apiKey, setApiKey] = useState("");
+  const [apiKey, setApiKey] = useState('');
   const [showApiKey, setShowApiKey] = useState(false);
   const [isValidating, setIsValidating] = useState(false);
   const [validationStatus, setValidationStatus] = useState<
-    "idle" | "success" | "error"
-  >("idle");
-  const [validationMessage, setValidationMessage] = useState("");
+    'idle' | 'success' | 'error'
+  >('idle');
+  const [validationMessage, setValidationMessage] = useState('');
 
   useEffect(() => {
     // Load saved endpoints from cookies
-    const savedEndpoints = config("azure.endpoints", [], "cookies");
+    const savedEndpoints = config('azure.endpoints', [], 'cookies');
     if (savedEndpoints && Array.isArray(savedEndpoints)) {
       setEndpoints(savedEndpoints);
     }
 
     // Load API key from cookies (encrypted)
-    const savedApiKey = config("azure.apiKey", "", "cookies", true);
+    const savedApiKey = config('azure.apiKey', '', 'cookies', true);
     setApiKey(savedApiKey);
   }, []);
 
   const saveEndpoints = (newEndpoints: AzureEndpoint[]) => {
     setEndpoints(newEndpoints);
-    config("azure.endpoints", newEndpoints, "cookies");
+    config('azure.endpoints', newEndpoints, 'cookies');
   };
 
   const saveApiKey = (key: string) => {
     setApiKey(key);
-    config("azure.apiKey", key, "cookies", true);
+    config('azure.apiKey', key, 'cookies', true);
   };
 
   const validateConfiguration = async () => {
     if (!apiKey || endpoints.length === 0) {
-      setValidationStatus("error");
+      setValidationStatus('error');
       setValidationMessage(
-        "Please configure API key and at least one endpoint",
+        'Please configure API key and at least one endpoint'
       );
       return;
     }
 
     setIsValidating(true);
-    setValidationStatus("idle");
+    setValidationStatus('idle');
 
     try {
       // Simulate validation - in real implementation, you'd call your API
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      setValidationStatus("success");
-      setValidationMessage("Configuration is valid and ready to use");
+      setValidationStatus('success');
+      setValidationMessage('Configuration is valid and ready to use');
     } catch (error) {
-      setValidationStatus("error");
+      setValidationStatus('error');
       setValidationMessage(
-        "Failed to validate configuration. Please check your settings.",
+        'Failed to validate configuration. Please check your settings.'
       );
     } finally {
       setIsValidating(false);
@@ -80,9 +80,9 @@ export function AzureSettings() {
   const addEndpoint = () => {
     const newEndpoint: AzureEndpoint = {
       id: `endpoint-${Date.now()}`,
-      name: "New Endpoint",
-      baseUrl: "",
-      apiVersion: "2025-04-01-preview",
+      name: 'New Endpoint',
+      baseUrl: '',
+      apiVersion: '2025-04-01-preview',
       deployments: [],
     };
     saveEndpoints([...endpoints, newEndpoint]);
@@ -90,7 +90,7 @@ export function AzureSettings() {
 
   const updateEndpoint = (id: string, updates: Partial<AzureEndpoint>) => {
     const updated = endpoints.map((ep) =>
-      ep.id === id ? { ...ep, ...updates } : ep,
+      ep.id === id ? { ...ep, ...updates } : ep
     );
     saveEndpoints(updated);
   };
@@ -125,7 +125,7 @@ export function AzureSettings() {
               </label>
               <div className="relative">
                 <input
-                  type={showApiKey ? "text" : "password"}
+                  type={showApiKey ? 'text' : 'password'}
                   value={apiKey}
                   onChange={(e) => saveApiKey(e.target.value)}
                   placeholder="Enter your Azure API key"
@@ -171,12 +171,12 @@ export function AzureSettings() {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 className={`p-3 rounded-lg flex items-center gap-2 ${
-                  validationStatus === "success"
-                    ? "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400"
-                    : "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400"
+                  validationStatus === 'success'
+                    ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400'
+                    : 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400'
                 }`}
               >
-                {validationStatus === "success" ? (
+                {validationStatus === 'success' ? (
                   <Check className="w-4 h-4" />
                 ) : (
                   <X className="w-4 h-4" />
@@ -266,7 +266,7 @@ function EndpointCard({
               {endpoint.name}
             </h5>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              {endpoint.baseUrl || "No URL configured"}
+              {endpoint.baseUrl || 'No URL configured'}
             </p>
           </div>
         </div>
@@ -276,7 +276,7 @@ function EndpointCard({
             className="p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors"
           >
             <ChevronDown
-              className={`w-4 h-4 text-gray-500 transition-transform ${isExpanded ? "rotate-180" : ""}`}
+              className={`w-4 h-4 text-gray-500 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
             />
           </button>
           <button
@@ -291,7 +291,7 @@ function EndpointCard({
       {isExpanded && (
         <motion.div
           initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
+          animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
           className="mt-4 space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700"
         >

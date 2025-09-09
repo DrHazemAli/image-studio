@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { AppConfig, AppConfigService } from "@/types/app-config";
-import { GearIcon, CheckIcon, CrossCircledIcon } from "@radix-ui/react-icons";
+import React, { useState, useEffect } from 'react';
+import { AppConfig, AppConfigService } from '@/types/app-config';
+import { GearIcon, CheckIcon, CrossCircledIcon } from '@radix-ui/react-icons';
 
 /**
  * Configuration Info Component
@@ -21,7 +21,7 @@ export const ConfigInfo: React.FC = () => {
         const appConfig = await AppConfigService.loadConfig();
         setConfig(appConfig);
       } catch (error) {
-        console.error("Failed to load config:", error);
+        console.error('Failed to load config:', error);
       } finally {
         setIsLoading(false);
       }
@@ -73,10 +73,10 @@ export const ConfigInfo: React.FC = () => {
         </div>
         <div className="flex items-center gap-2">
           <span
-            className={`w-2 h-2 rounded-full ${bgRemovalConfig.enabled ? "bg-green-500" : "bg-red-500"}`}
+            className={`w-2 h-2 rounded-full ${bgRemovalConfig.enabled ? 'bg-green-500' : 'bg-red-500'}`}
           ></span>
           <span className="text-xs text-gray-500">
-            {isExpanded ? "▼" : "▶"}
+            {isExpanded ? '▼' : '▶'}
           </span>
         </div>
       </div>
@@ -170,7 +170,7 @@ export const ConfigInfo: React.FC = () => {
                 >
                   <span className="text-gray-700 dark:text-gray-300">
                     {model.name}
-                    {model.recommended && " ⭐"}
+                    {model.recommended && ' ⭐'}
                   </span>
                   <div className="flex gap-1">
                     <span className="px-1 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded text-xs">
@@ -196,11 +196,11 @@ export const ConfigInfo: React.FC = () => {
                   Image Toolbar:
                 </span>
                 <span
-                  className={`${config.features.floatingImageToolbar.enabled ? "text-green-600" : "text-red-600"}`}
+                  className={`${config.features.floatingImageToolbar.enabled ? 'text-green-600' : 'text-red-600'}`}
                 >
                   {config.features.floatingImageToolbar.enabled
-                    ? "Enabled"
-                    : "Disabled"}
+                    ? 'Enabled'
+                    : 'Disabled'}
                 </span>
               </div>
               <div className="flex items-center justify-between text-xs">
@@ -208,11 +208,11 @@ export const ConfigInfo: React.FC = () => {
                   Image Generation:
                 </span>
                 <span
-                  className={`${config.features.imageGeneration.enabled ? "text-green-600" : "text-red-600"}`}
+                  className={`${config.features.imageGeneration.enabled ? 'text-green-600' : 'text-red-600'}`}
                 >
                   {config.features.imageGeneration.enabled
-                    ? "Enabled"
-                    : "Disabled"}
+                    ? 'Enabled'
+                    : 'Disabled'}
                 </span>
               </div>
               <div className="flex items-center justify-between text-xs">
@@ -220,11 +220,11 @@ export const ConfigInfo: React.FC = () => {
                   Image Editing:
                 </span>
                 <span
-                  className={`${config.features.imageEditing.enabled ? "text-green-600" : "text-red-600"}`}
+                  className={`${config.features.imageEditing.enabled ? 'text-green-600' : 'text-red-600'}`}
                 >
                   {config.features.imageEditing.enabled
-                    ? "Enabled"
-                    : "Disabled"}
+                    ? 'Enabled'
+                    : 'Disabled'}
                 </span>
               </div>
             </div>
@@ -233,7 +233,7 @@ export const ConfigInfo: React.FC = () => {
           {/* Configuration File Info */}
           <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
             <div className="text-xs text-gray-500 dark:text-gray-400">
-              Config:{" "}
+              Config:{' '}
               <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
                 app/config/app-config.json
               </code>

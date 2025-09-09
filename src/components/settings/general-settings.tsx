@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
+import React from 'react';
+import { motion } from 'framer-motion';
 import {
   Sun,
   Moon,
@@ -11,35 +11,35 @@ import {
   EyeOff,
   Sliders,
   Layers,
-} from "lucide-react";
-import { config } from "@/lib/settings";
-import { useTheme } from "@/hooks/use-theme";
+} from 'lucide-react';
+import { config } from '@/lib/settings';
+import { useTheme } from '@/hooks/use-theme';
 
 export function GeneralSettings() {
   const { theme, setTheme, resolvedTheme } = useTheme();
 
   const themeOptions = [
     {
-      value: "light" as const,
-      label: "Light",
-      description: "Clean and bright interface",
+      value: 'light' as const,
+      label: 'Light',
+      description: 'Clean and bright interface',
       icon: Sun,
     },
     {
-      value: "dark" as const,
-      label: "Dark",
-      description: "Easy on the eyes in low light",
+      value: 'dark' as const,
+      label: 'Dark',
+      description: 'Easy on the eyes in low light',
       icon: Moon,
     },
     {
-      value: "system" as const,
-      label: "System",
-      description: "Follow your system preference",
+      value: 'system' as const,
+      label: 'System',
+      description: 'Follow your system preference',
       icon: Monitor,
     },
   ];
 
-  const handleThemeChange = (newTheme: "light" | "dark" | "system") => {
+  const handleThemeChange = (newTheme: 'light' | 'dark' | 'system') => {
     setTheme(newTheme);
   };
 
@@ -47,9 +47,9 @@ export function GeneralSettings() {
     config(key, !currentValue);
     // Force re-render by updating a dummy state or using a callback
     window.dispatchEvent(
-      new CustomEvent("settingsChanged", {
+      new CustomEvent('settingsChanged', {
         detail: { key, value: !currentValue },
-      }),
+      })
     );
   };
 
@@ -85,8 +85,8 @@ export function GeneralSettings() {
                     relative p-3 rounded-lg border transition-all duration-200 text-left group
                     ${
                       isSelected
-                        ? "border-blue-500/50 bg-blue-50/50 dark:bg-blue-900/20 shadow-sm"
-                        : "border-gray-200/50 dark:border-gray-700/50 hover:border-gray-300/50 dark:hover:border-gray-600/50 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm"
+                        ? 'border-blue-500/50 bg-blue-50/50 dark:bg-blue-900/20 shadow-sm'
+                        : 'border-gray-200/50 dark:border-gray-700/50 hover:border-gray-300/50 dark:hover:border-gray-600/50 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm'
                     }
                   `}
                   whileHover={{ scale: 1.01 }}
@@ -98,8 +98,8 @@ export function GeneralSettings() {
                       w-8 h-8 rounded-lg flex items-center justify-center transition-colors
                       ${
                         isSelected
-                          ? "bg-blue-500 text-white"
-                          : "bg-gray-100/50 dark:bg-gray-700/50 text-gray-600 dark:text-gray-300 group-hover:bg-gray-200/50 dark:group-hover:bg-gray-600/50"
+                          ? 'bg-blue-500 text-white'
+                          : 'bg-gray-100/50 dark:bg-gray-700/50 text-gray-600 dark:text-gray-300 group-hover:bg-gray-200/50 dark:group-hover:bg-gray-600/50'
                       }
                     `}
                     >
@@ -151,11 +151,11 @@ export function GeneralSettings() {
               </div>
             </div>
             <ToggleSwitch
-              checked={config("ui.animations", true)}
+              checked={config('ui.animations', true)}
               onChange={() =>
                 handleToggleSetting(
-                  "ui.animations",
-                  config("ui.animations", true),
+                  'ui.animations',
+                  config('ui.animations', true)
                 )
               }
             />
@@ -172,11 +172,11 @@ export function GeneralSettings() {
               </div>
             </div>
             <ToggleSwitch
-              checked={config("ui.showConsole", false)}
+              checked={config('ui.showConsole', false)}
               onChange={() =>
                 handleToggleSetting(
-                  "ui.showConsole",
-                  config("ui.showConsole", false),
+                  'ui.showConsole',
+                  config('ui.showConsole', false)
                 )
               }
             />
@@ -193,11 +193,11 @@ export function GeneralSettings() {
               </div>
             </div>
             <ToggleSwitch
-              checked={config("ui.showLayers", false)}
+              checked={config('ui.showLayers', false)}
               onChange={() =>
                 handleToggleSetting(
-                  "ui.showLayers",
-                  config("ui.showLayers", false),
+                  'ui.showLayers',
+                  config('ui.showLayers', false)
                 )
               }
             />
@@ -214,11 +214,11 @@ export function GeneralSettings() {
               </div>
             </div>
             <ToggleSwitch
-              checked={config("ui.showHistory", true)}
+              checked={config('ui.showHistory', true)}
               onChange={() =>
                 handleToggleSetting(
-                  "ui.showHistory",
-                  config("ui.showHistory", true),
+                  'ui.showHistory',
+                  config('ui.showHistory', true)
                 )
               }
             />
@@ -247,21 +247,21 @@ export function GeneralSettings() {
               </div>
             </div>
             <ToggleSwitch
-              checked={config("autoSave.enabled", true)}
+              checked={config('autoSave.enabled', true)}
               onChange={() =>
                 handleToggleSetting(
-                  "autoSave.enabled",
-                  config("autoSave.enabled", true),
+                  'autoSave.enabled',
+                  config('autoSave.enabled', true)
                 )
               }
             />
           </div>
 
           {/* Auto-save Duration */}
-          {config("autoSave.enabled", true) && (
+          {config('autoSave.enabled', true) && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
+              animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               className="p-3 rounded-lg bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50"
             >
@@ -278,22 +278,22 @@ export function GeneralSettings() {
                   type="range"
                   min="1"
                   max="30"
-                  value={config("autoSave.duration", 3)}
+                  value={config('autoSave.duration', 3)}
                   onChange={(e) => {
-                    config("autoSave.duration", parseInt(e.target.value));
+                    config('autoSave.duration', parseInt(e.target.value));
                     window.dispatchEvent(
-                      new CustomEvent("settingsChanged", {
+                      new CustomEvent('settingsChanged', {
                         detail: {
-                          key: "autoSave.duration",
+                          key: 'autoSave.duration',
                           value: parseInt(e.target.value),
                         },
-                      }),
+                      })
                     );
                   }}
                   className="flex-1 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
                 />
                 <div className="w-12 text-xs font-medium text-gray-900 dark:text-white">
-                  {config("autoSave.duration", 3)}s
+                  {config('autoSave.duration', 3)}s
                 </div>
               </div>
             </motion.div>
@@ -317,7 +317,7 @@ function ToggleSwitch({
       onClick={onChange}
       className={`
         relative inline-flex h-5 w-9 items-center rounded-full transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500/50
-        ${checked ? "bg-blue-500" : "bg-gray-300 dark:bg-gray-600"}
+        ${checked ? 'bg-blue-500' : 'bg-gray-300 dark:bg-gray-600'}
       `}
     >
       <motion.span
@@ -325,7 +325,7 @@ function ToggleSwitch({
           inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform duration-200 ease-in-out
         `}
         animate={{ x: checked ? 16 : 1 }}
-        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
       />
     </button>
   );

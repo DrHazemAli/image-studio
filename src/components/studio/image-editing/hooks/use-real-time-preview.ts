@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Canvas as FabricCanvas, FabricObject, FabricImage } from "fabric";
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Canvas as FabricCanvas, FabricObject, FabricImage } from 'fabric';
 
 // Declare fabric for filter access
 declare const fabric: any;
@@ -89,7 +89,7 @@ export const DEFAULT_ADJUSTMENTS: ImageAdjustments = {
 export const useRealTimePreview = (
   fabricCanvas: FabricCanvas | null,
   selectedImage: FabricObject | null,
-  config: PreviewConfig = {},
+  config: PreviewConfig = {}
 ) => {
   const {
     debounceMs = 16,
@@ -104,7 +104,7 @@ export const useRealTimePreview = (
   // State
   const [isProcessing, setIsProcessing] = useState(false);
   const [isApplyingFilters, setIsApplyingFilters] = useState(false);
-  const [originalFilters, setOriginalFilters] = useState<string>("");
+  const [originalFilters, setOriginalFilters] = useState<string>('');
 
   // Refs
   const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -144,7 +144,7 @@ export const useRealTimePreview = (
         filters.push(`grayscale(${adjustments.grayscale}%)`);
       }
       if (adjustments.invert) {
-        filters.push("invert(100%)");
+        filters.push('invert(100%)');
       }
 
       // Advanced adjustments approximations
@@ -184,9 +184,9 @@ export const useRealTimePreview = (
         filters.push(`contrast(${sharpnessContrast}%)`);
       }
 
-      return filters.join(" ");
+      return filters.join(' ');
     },
-    [],
+    []
   );
 
   /**
@@ -214,7 +214,7 @@ export const useRealTimePreview = (
           // Store original properties if this is the first adjustment
           if (!originalImagePropsRef.current) {
             originalImagePropsRef.current = {
-              filters: (selectedImage as any).filters || "",
+              filters: (selectedImage as any).filters || '',
               opacity: selectedImage.opacity || 1,
             };
           }
@@ -223,7 +223,7 @@ export const useRealTimePreview = (
           const filterString = adjustmentsToCSSFilter(adjustments);
 
           // Debug logging
-          console.log("Applying filters:", filterString, adjustments);
+          console.log('Applying filters:', filterString, adjustments);
 
           // Manual canvas filter implementation since Fabric.js native filters aren't working
           let filtersApplied = false;
@@ -242,12 +242,12 @@ export const useRealTimePreview = (
                 try {
                   ctx.filter = canvasFilterString;
                   console.log(
-                    "Applied canvas context filter:",
-                    canvasFilterString,
+                    'Applied canvas context filter:',
+                    canvasFilterString
                   );
                   filtersApplied = true;
                 } catch (ctxError) {
-                  console.warn("Canvas context filter failed:", ctxError);
+                  console.warn('Canvas context filter failed:', ctxError);
                 }
 
                 // Method 2: Apply filter to canvas element directly (fallback)
@@ -255,12 +255,12 @@ export const useRealTimePreview = (
                   try {
                     canvasElement.style.filter = canvasFilterString;
                     console.log(
-                      "Applied canvas element filter:",
-                      canvasFilterString,
+                      'Applied canvas element filter:',
+                      canvasFilterString
                     );
                     filtersApplied = true;
                   } catch (elementError) {
-                    console.warn("Canvas element filter failed:", elementError);
+                    console.warn('Canvas element filter failed:', elementError);
                   }
                 }
 
@@ -273,8 +273,8 @@ export const useRealTimePreview = (
                     ).getElement();
                     if (imageElement) {
                       // Create a temporary canvas to apply filters
-                      const tempCanvas = document.createElement("canvas");
-                      const tempCtx = tempCanvas.getContext("2d");
+                      const tempCanvas = document.createElement('canvas');
+                      const tempCtx = tempCanvas.getContext('2d');
 
                       if (tempCtx) {
                         tempCanvas.width =
@@ -293,25 +293,25 @@ export const useRealTimePreview = (
 
                         // Replace the Fabric image source with the filtered version
                         (selectedImage as FabricImage).setSrc(
-                          filteredImageData,
+                          filteredImageData
                         );
                         fabricCanvas.renderAll();
-                        console.log("Applied manual image filter processing");
+                        console.log('Applied manual image filter processing');
 
                         filtersApplied = true;
                       }
                     }
                   } catch (manualError) {
                     console.warn(
-                      "Manual filter processing failed:",
-                      manualError,
+                      'Manual filter processing failed:',
+                      manualError
                     );
                   }
                 }
               }
             }
           } catch (error) {
-            console.error("Canvas filter application failed:", error);
+            console.error('Canvas filter application failed:', error);
           }
 
           // Fallback approach: Apply CSS filters (works for preview but not canvas)
@@ -320,27 +320,27 @@ export const useRealTimePreview = (
             if (imageElement && imageElement.style) {
               imageElement.style.filter = filterString;
               console.log(
-                "Applied CSS filters as fallback:",
-                imageElement.style.filter,
+                'Applied CSS filters as fallback:',
+                imageElement.style.filter
               );
             }
           }
 
           // Apply opacity to the Fabric object
           if (adjustments.opacity !== 100) {
-            selectedImage.set("opacity", adjustments.opacity / 100);
+            selectedImage.set('opacity', adjustments.opacity / 100);
           } else if (originalImagePropsRef.current.opacity !== undefined) {
-            selectedImage.set("opacity", originalImagePropsRef.current.opacity);
+            selectedImage.set('opacity', originalImagePropsRef.current.opacity);
           }
 
           // Force update the object - ensure canvas knows it needs to redraw
-          selectedImage.set("dirty", true);
+          selectedImage.set('dirty', true);
           (selectedImage as any)._setImageSmoothing?.(false);
 
           // For Fabric.js filters, we need to ensure proper rendering sequence
           if (filtersApplied) {
             // Mark the image as requiring a full re-render and clear all caches
-            selectedImage.set("dirty", true);
+            selectedImage.set('dirty', true);
 
             // Clear the object's cache completely to force regeneration with filters
             (selectedImage as any)._cacheCanvas = null;
@@ -349,7 +349,7 @@ export const useRealTimePreview = (
             (selectedImage as any).ownCaching = false;
 
             // Force immediate cache regeneration
-            (selectedImage as FabricImage).set("dirty", true);
+            (selectedImage as FabricImage).set('dirty', true);
 
             // Trigger multiple render cycles to ensure filters are applied
             fabricCanvas.renderAll();
@@ -362,7 +362,7 @@ export const useRealTimePreview = (
               requestAnimationFrame(() => {
                 // Final render to ensure everything is visible
                 fabricCanvas.renderAll();
-                console.log("Canvas fully re-rendered with filters applied");
+                console.log('Canvas fully re-rendered with filters applied');
 
                 // Trigger a final invalidation to ensure the change is visible
                 fabricCanvas.requestRenderAll();
@@ -381,7 +381,7 @@ export const useRealTimePreview = (
           // Store the last applied adjustments
           lastAdjustmentsRef.current = { ...adjustments };
         } catch (error) {
-          console.error("Error applying adjustments:", error);
+          console.error('Error applying adjustments:', error);
           onError?.(error as Error);
         } finally {
           setIsApplyingFilters(false); // Clear flag
@@ -414,7 +414,7 @@ export const useRealTimePreview = (
       onProcessingEnd,
       onError,
       debounceMs,
-    ],
+    ]
   );
 
   /**
@@ -431,11 +431,11 @@ export const useRealTimePreview = (
 
     // Prevent reset if we're currently applying filters
     if (isApplyingFilters) {
-      console.log("Reset blocked - currently applying filters");
+      console.log('Reset blocked - currently applying filters');
       return;
     }
 
-    console.log("resetAdjustments called - investigating source");
+    console.log('resetAdjustments called - investigating source');
     console.trace(); // This will show the call stack
 
     try {
@@ -444,19 +444,19 @@ export const useRealTimePreview = (
         const imageElement = (selectedImage as FabricImage).getElement();
         if (imageElement && imageElement.style) {
           imageElement.style.filter =
-            originalImagePropsRef.current.filters || "";
+            originalImagePropsRef.current.filters || '';
         }
 
         if (originalImagePropsRef.current.opacity !== undefined) {
-          selectedImage.set("opacity", originalImagePropsRef.current.opacity);
+          selectedImage.set('opacity', originalImagePropsRef.current.opacity);
         }
       } else {
         // Fallback to clearing all filters
         const imageElement = (selectedImage as FabricImage).getElement();
         if (imageElement && imageElement.style) {
-          imageElement.style.filter = "";
+          imageElement.style.filter = '';
         }
-        selectedImage.set("opacity", 1);
+        selectedImage.set('opacity', 1);
       }
 
       // Reset canvas filters using the same approaches as apply
@@ -464,15 +464,15 @@ export const useRealTimePreview = (
         // Method 1: Reset canvas context filter
         const ctx = fabricCanvas.getContext();
         if (ctx) {
-          ctx.filter = "none";
-          console.log("Reset canvas context filter");
+          ctx.filter = 'none';
+          console.log('Reset canvas context filter');
         }
 
         // Method 2: Reset canvas element filter
         const canvasElement = fabricCanvas.getElement();
         if (canvasElement) {
-          canvasElement.style.filter = "";
-          console.log("Reset canvas element filter");
+          canvasElement.style.filter = '';
+          console.log('Reset canvas element filter');
         }
 
         // Method 3: If we have stored the original image source, restore it
@@ -483,39 +483,39 @@ export const useRealTimePreview = (
           try {
             const currentSrc = (selectedImage as FabricImage).getSrc();
             // If the current source looks like a data URL (filtered), we might need to restore original
-            if (currentSrc && currentSrc.startsWith("data:image/")) {
+            if (currentSrc && currentSrc.startsWith('data:image/')) {
               console.log(
-                "Image may have been modified by filters, but no original stored",
+                'Image may have been modified by filters, but no original stored'
               );
               // For now, just ensure filters are cleared from the object
               (selectedImage as FabricImage).filters = [];
             }
           } catch (srcError) {
-            console.warn("Could not check image source:", srcError);
+            console.warn('Could not check image source:', srcError);
           }
         }
 
         // Clear any Fabric.js filters as fallback
         if ((selectedImage as FabricImage).filters) {
           (selectedImage as FabricImage).filters = [];
-          console.log("Cleared Fabric image filters array");
+          console.log('Cleared Fabric image filters array');
         }
       } catch (resetError) {
-        console.warn("Could not reset canvas filters:", resetError);
+        console.warn('Could not reset canvas filters:', resetError);
         // Ensure basic cleanup
         try {
           (selectedImage as FabricImage).filters = [];
           const canvasElement = fabricCanvas.getElement();
           if (canvasElement) {
-            canvasElement.style.filter = "";
+            canvasElement.style.filter = '';
           }
         } catch (fallbackError) {
-          console.error("Fallback reset also failed:", fallbackError);
+          console.error('Fallback reset also failed:', fallbackError);
         }
       }
 
       // Force update and clear cache completely to ensure reset is visible
-      selectedImage.set("dirty", true);
+      selectedImage.set('dirty', true);
 
       // Clear the object's cache completely to force regeneration without filters
       (selectedImage as any)._cacheCanvas = null;
@@ -532,7 +532,7 @@ export const useRealTimePreview = (
 
         requestAnimationFrame(() => {
           fabricCanvas.renderAll();
-          console.log("Canvas re-rendered after filter reset");
+          console.log('Canvas re-rendered after filter reset');
 
           // Final invalidation
           fabricCanvas.requestRenderAll();
@@ -542,7 +542,7 @@ export const useRealTimePreview = (
       // Reset stored adjustments
       lastAdjustmentsRef.current = { ...DEFAULT_ADJUSTMENTS };
     } catch (error) {
-      console.error("Error resetting adjustments:", error);
+      console.error('Error resetting adjustments:', error);
       onError?.(error as Error);
     }
   }, [fabricCanvas, selectedImage, onError, isApplyingFilters]);

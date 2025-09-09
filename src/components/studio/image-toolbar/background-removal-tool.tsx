@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React, { useState, useCallback, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Canvas as FabricCanvas, FabricObject, FabricImage } from "fabric";
-import * as AlertDialog from "@radix-ui/react-alert-dialog";
-import { AppConfigService, BackgroundRemovalModel } from "@/types/app-config";
+import React, { useState, useCallback, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Canvas as FabricCanvas, FabricObject, FabricImage } from 'fabric';
+import * as AlertDialog from '@radix-ui/react-alert-dialog';
+import { AppConfigService, BackgroundRemovalModel } from '@/types/app-config';
 import {
   ScissorsIcon,
   CheckCircledIcon,
@@ -12,10 +12,10 @@ import {
   ReloadIcon,
   DownloadIcon,
   Cross2Icon,
-} from "@radix-ui/react-icons";
+} from '@radix-ui/react-icons';
 
 // Import our effect overlay
-import { ToolEffectOverlay } from "./tool-effect-overlay";
+import { ToolEffectOverlay } from './tool-effect-overlay';
 
 /**
  * Props interface for the BackgroundRemovalTool component
@@ -32,7 +32,7 @@ export interface BackgroundRemovalToolProps {
   // Processing callbacks
   onRemoveBackground: (
     image: FabricObject,
-    options?: BackgroundRemovalOptions,
+    options?: BackgroundRemovalOptions
   ) => Promise<string | null>;
   onError?: (error: string) => void;
   onSuccess?: (processedImageUrl: string) => void;
@@ -42,10 +42,10 @@ export interface BackgroundRemovalToolProps {
  * Configuration options for background removal
  */
 export interface BackgroundRemovalOptions {
-  model?: "gpt-image-1" | "florence-2";
-  quality?: "standard" | "high";
+  model?: 'gpt-image-1' | 'florence-2';
+  quality?: 'standard' | 'high';
   edgeRefinement?: boolean;
-  transparencyMode?: "full" | "soft";
+  transparencyMode?: 'full' | 'soft';
   prompt?: string; // For AI-guided removal
 }
 
@@ -53,13 +53,13 @@ export interface BackgroundRemovalOptions {
  * Processing stages for the background removal operation
  */
 type ProcessingStage =
-  | "idle"
-  | "preparing"
-  | "uploading"
-  | "processing"
-  | "downloading"
-  | "complete"
-  | "error";
+  | 'idle'
+  | 'preparing'
+  | 'uploading'
+  | 'processing'
+  | 'downloading'
+  | 'complete'
+  | 'error';
 
 /**
  * Background Removal Tool Component
@@ -76,14 +76,14 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
 }) => {
   // Component state
   const [processingStage, setProcessingStage] =
-    useState<ProcessingStage>("idle");
+    useState<ProcessingStage>('idle');
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [options, setOptions] = useState<BackgroundRemovalOptions>({
-    model: "florence-2", // Will be updated from app config
-    quality: "standard",
+    model: 'florence-2', // Will be updated from app config
+    quality: 'standard',
     edgeRefinement: true,
-    transparencyMode: "full",
+    transparencyMode: 'full',
   });
   const [effectBounds, setEffectBounds] = useState<{
     x: number;
@@ -92,7 +92,7 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
     height: number;
   } | null>(null);
   const [processedImageUrl, setProcessedImageUrl] = useState<string | null>(
-    null,
+    null
   );
   const [originalImageUrl, setOriginalImageUrl] = useState<string | null>(null);
 
@@ -104,12 +104,12 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
 
   // Stage messages for user feedback
   const stageMessages = {
-    preparing: "Preparing image...",
-    uploading: "Uploading to Azure AI...",
-    processing: "Removing background...",
-    downloading: "Finalizing results...",
-    complete: "Background removed successfully!",
-    error: "Processing failed",
+    preparing: 'Preparing image...',
+    uploading: 'Uploading to Azure AI...',
+    processing: 'Removing background...',
+    downloading: 'Finalizing results...',
+    complete: 'Background removed successfully!',
+    error: 'Processing failed',
   };
 
   // Load app configuration on component mount
@@ -127,35 +127,35 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
           setOptions((prev) => ({
             ...prev,
             model:
-              bgRemovalConfig.defaultModel as BackgroundRemovalOptions["model"],
+              bgRemovalConfig.defaultModel as BackgroundRemovalOptions['model'],
             quality: bgRemovalConfig.defaultSettings.quality,
             edgeRefinement: bgRemovalConfig.defaultSettings.edgeRefinement,
             transparencyMode: bgRemovalConfig.defaultSettings.transparencyMode,
           }));
         }
       } catch (error) {
-        console.error("Failed to load app configuration:", error);
+        console.error('Failed to load app configuration:', error);
         // Set fallback models if config loading fails
         setAvailableModels([
           {
-            id: "florence-2",
-            name: "Florence 2.0",
-            provider: "Microsoft Azure",
+            id: 'florence-2',
+            name: 'Florence 2.0',
+            provider: 'Microsoft Azure',
             description: "Microsoft's advanced vision-language model",
-            capabilities: ["background-removal"],
+            capabilities: ['background-removal'],
             recommended: true,
-            speed: "fast",
-            quality: "high",
+            speed: 'fast',
+            quality: 'high',
           },
           {
-            id: "gpt-image-1",
-            name: "GPT-Image-1",
-            provider: "Azure OpenAI",
-            description: "Advanced image editing model (requires approval)",
-            capabilities: ["background-removal"],
+            id: 'gpt-image-1',
+            name: 'GPT-Image-1',
+            provider: 'Azure OpenAI',
+            description: 'Advanced image editing model (requires approval)',
+            capabilities: ['background-removal'],
             recommended: false,
-            speed: "medium",
-            quality: "premium",
+            speed: 'medium',
+            quality: 'premium',
             requiresApproval: true,
           },
         ]);
@@ -193,7 +193,7 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
 
   // Update effect bounds when image changes
   useEffect(() => {
-    if (selectedImage && processingStage !== "idle") {
+    if (selectedImage && processingStage !== 'idle') {
       const bounds = calculateEffectBounds();
       setEffectBounds(bounds);
     }
@@ -218,33 +218,33 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
       setEffectBounds(bounds);
 
       // Start processing stages
-      setProcessingStage("preparing");
+      setProcessingStage('preparing');
       setProgress(10);
 
       await new Promise((resolve) => setTimeout(resolve, 500)); // UX delay
 
-      setProcessingStage("uploading");
+      setProcessingStage('uploading');
       setProgress(30);
 
       await new Promise((resolve) => setTimeout(resolve, 800)); // UX delay
 
-      setProcessingStage("processing");
+      setProcessingStage('processing');
       setProgress(60);
 
       // Call the actual background removal function
       const result = await onRemoveBackground(selectedImage, options);
 
       if (!result) {
-        throw new Error("Failed to process image - no result returned");
+        throw new Error('Failed to process image - no result returned');
       }
 
-      setProcessingStage("downloading");
+      setProcessingStage('downloading');
       setProgress(90);
 
       await new Promise((resolve) => setTimeout(resolve, 500)); // UX delay
 
       setProcessedImageUrl(result);
-      setProcessingStage("complete");
+      setProcessingStage('complete');
       setProgress(100);
 
       // Call success callback
@@ -256,9 +256,9 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
       }, 2000);
     } catch (err) {
       const errorMessage =
-        err instanceof Error ? err.message : "Unknown error occurred";
+        err instanceof Error ? err.message : 'Unknown error occurred';
       setError(errorMessage);
-      setProcessingStage("error");
+      setProcessingStage('error');
       onError?.(errorMessage);
     }
   }, [
@@ -273,7 +273,7 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
   // Handle modal close
   const handleClose = useCallback(() => {
     // Reset all state
-    setProcessingStage("idle");
+    setProcessingStage('idle');
     setProgress(0);
     setError(null);
     setEffectBounds(null);
@@ -285,7 +285,7 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
 
   // Handle retry
   const handleRetry = useCallback(() => {
-    setProcessingStage("idle");
+    setProcessingStage('idle');
     setProgress(0);
     setError(null);
     setEffectBounds(null);
@@ -295,7 +295,7 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
   const handleDownload = useCallback(() => {
     if (!processedImageUrl) return;
 
-    const link = document.createElement("a");
+    const link = document.createElement('a');
     link.href = processedImageUrl;
     link.download = `background-removed-${Date.now()}.png`;
     document.body.appendChild(link);
@@ -330,8 +330,8 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
                 onClick={handleClose}
                 className="p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 disabled={
-                  processingStage === "processing" ||
-                  processingStage === "uploading"
+                  processingStage === 'processing' ||
+                  processingStage === 'uploading'
                 }
               >
                 <Cross2Icon className="w-4 h-4 text-gray-500" />
@@ -339,7 +339,7 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
             </div>
 
             {/* Options section (only show when idle) */}
-            {processingStage === "idle" && (
+            {processingStage === 'idle' && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -365,7 +365,7 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
                           setOptions((prev) => ({
                             ...prev,
                             model: e.target
-                              .value as BackgroundRemovalOptions["model"],
+                              .value as BackgroundRemovalOptions['model'],
                           }))
                         }
                         className="w-full p-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
@@ -374,8 +374,8 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
                         {availableModels.map((model) => (
                           <option key={model.id} value={model.id}>
                             {model.name}
-                            {model.recommended && " (Recommended)"}
-                            {model.requiresApproval && " (Requires Approval)"}
+                            {model.recommended && ' (Recommended)'}
+                            {model.requiresApproval && ' (Requires Approval)'}
                           </option>
                         ))}
                       </select>
@@ -387,7 +387,7 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
                             <span className="font-medium">
                               {
                                 availableModels.find(
-                                  (m) => m.id === options.model,
+                                  (m) => m.id === options.model
                                 )?.provider
                               }
                             </span>
@@ -395,14 +395,14 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
                               <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded text-xs">
                                 {
                                   availableModels.find(
-                                    (m) => m.id === options.model,
+                                    (m) => m.id === options.model
                                   )?.speed
                                 }
                               </span>
                               <span className="px-2 py-0.5 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded text-xs">
                                 {
                                   availableModels.find(
-                                    (m) => m.id === options.model,
+                                    (m) => m.id === options.model
                                   )?.quality
                                 }
                               </span>
@@ -411,7 +411,7 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
                           <p>
                             {
                               availableModels.find(
-                                (m) => m.id === options.model,
+                                (m) => m.id === options.model
                               )?.description
                             }
                           </p>
@@ -429,7 +429,7 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
                           setOptions((prev) => ({
                             ...prev,
                             quality: e.target
-                              .value as BackgroundRemovalOptions["quality"],
+                              .value as BackgroundRemovalOptions['quality'],
                           }))
                         }
                         className="w-full p-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
@@ -465,7 +465,7 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
             )}
 
             {/* Processing status */}
-            {processingStage !== "idle" && (
+            {processingStage !== 'idle' && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -473,9 +473,9 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
               >
                 {/* Status message */}
                 <div className="flex items-center gap-3">
-                  {processingStage === "error" ? (
+                  {processingStage === 'error' ? (
                     <CrossCircledIcon className="w-5 h-5 text-red-500 flex-shrink-0" />
-                  ) : processingStage === "complete" ? (
+                  ) : processingStage === 'complete' ? (
                     <CheckCircledIcon className="w-5 h-5 text-green-500 flex-shrink-0" />
                   ) : (
                     <motion.div
@@ -483,7 +483,7 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
                       transition={{
                         duration: 1,
                         repeat: Infinity,
-                        ease: "linear",
+                        ease: 'linear',
                       }}
                     >
                       <ReloadIcon className="w-5 h-5 text-blue-500 flex-shrink-0" />
@@ -495,14 +495,14 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
                 </div>
 
                 {/* Progress bar */}
-                {processingStage !== "error" &&
-                  processingStage !== "complete" && (
+                {processingStage !== 'error' &&
+                  processingStage !== 'complete' && (
                     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                       <motion.div
                         className="bg-blue-500 h-2 rounded-full"
-                        initial={{ width: "0%" }}
+                        initial={{ width: '0%' }}
                         animate={{ width: `${progress}%` }}
-                        transition={{ duration: 0.3, ease: "easeOut" }}
+                        transition={{ duration: 0.3, ease: 'easeOut' }}
                       />
                     </div>
                   )}
@@ -517,7 +517,7 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
                 )}
 
                 {/* Success message with download option */}
-                {processingStage === "complete" && processedImageUrl && (
+                {processingStage === 'complete' && processedImageUrl && (
                   <div className="p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
                     <p className="text-sm text-green-700 dark:text-green-300 mb-2">
                       Background removed successfully! The image has been
@@ -537,7 +537,7 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
 
             {/* Action buttons */}
             <div className="flex gap-2 pt-2">
-              {processingStage === "idle" && (
+              {processingStage === 'idle' && (
                 <>
                   <AlertDialog.Cancel asChild>
                     <motion.button
@@ -560,7 +560,7 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
                 </>
               )}
 
-              {processingStage === "error" && (
+              {processingStage === 'error' && (
                 <>
                   <motion.button
                     onClick={handleClose}
@@ -582,7 +582,7 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
                 </>
               )}
 
-              {processingStage === "complete" && (
+              {processingStage === 'complete' && (
                 <motion.button
                   onClick={handleClose}
                   className="w-full inline-flex h-10 items-center justify-center rounded-lg bg-green-600 hover:bg-green-700 px-4 py-2 text-sm font-medium text-white transition-colors"
@@ -594,9 +594,9 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
                 </motion.button>
               )}
 
-              {(processingStage === "processing" ||
-                processingStage === "uploading" ||
-                processingStage === "downloading") && (
+              {(processingStage === 'processing' ||
+                processingStage === 'uploading' ||
+                processingStage === 'downloading') && (
                 <motion.button
                   disabled
                   className="w-full inline-flex h-10 items-center justify-center rounded-lg bg-blue-500/50 px-4 py-2 text-sm font-medium text-white cursor-not-allowed"
@@ -606,7 +606,7 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
                     transition={{
                       duration: 1,
                       repeat: Infinity,
-                      ease: "linear",
+                      ease: 'linear',
                     }}
                     className="mr-2"
                   >
@@ -622,9 +622,9 @@ export const BackgroundRemovalTool: React.FC<BackgroundRemovalToolProps> = ({
 
       {/* Effect overlay on canvas */}
       {effectBounds &&
-        (processingStage === "processing" ||
-          processingStage === "uploading" ||
-          processingStage === "downloading") && (
+        (processingStage === 'processing' ||
+          processingStage === 'uploading' ||
+          processingStage === 'downloading') && (
           <ToolEffectOverlay
             isVisible={true}
             effectType="ray"

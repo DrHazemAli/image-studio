@@ -1,14 +1,14 @@
-import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
-import { AppConfig } from "@/types/app-config";
+import { NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
+import { AppConfig } from '@/types/app-config';
 
 export async function GET() {
   try {
     // Read the app configuration from the JSON file
     const configPath = path.join(
       process.cwd(),
-      "src/app/config/app-config.json",
+      'src/app/config/app-config.json'
     );
 
     if (!fs.existsSync(configPath)) {
@@ -17,21 +17,21 @@ export async function GET() {
       return NextResponse.json(defaultConfig);
     }
 
-    const configData = fs.readFileSync(configPath, "utf8");
+    const configData = fs.readFileSync(configPath, 'utf8');
     const config: AppConfig = JSON.parse(configData);
 
     // Validate configuration structure
     const validation = validateConfig(config);
     if (!validation.isValid) {
       console.warn(
-        "App configuration validation warnings:",
-        validation.warnings,
+        'App configuration validation warnings:',
+        validation.warnings
       );
     }
 
     return NextResponse.json(config);
   } catch (error) {
-    console.error("Error reading app configuration:", error);
+    console.error('Error reading app configuration:', error);
 
     // Return default config as fallback
     const defaultConfig = getDefaultConfig();
@@ -50,30 +50,30 @@ function validateConfig(config: AppConfig): {
 
   // Check required fields
   if (!config.app?.name) {
-    warnings.push("App name is missing");
+    warnings.push('App name is missing');
   }
 
   if (!config.features?.backgroundRemoval) {
-    warnings.push("Background removal configuration is missing");
+    warnings.push('Background removal configuration is missing');
   } else {
     const bgRemoval = config.features.backgroundRemoval;
 
     if (!bgRemoval.defaultModel) {
-      warnings.push("Default background removal model is not specified");
+      warnings.push('Default background removal model is not specified');
     }
 
     if (!bgRemoval.models || bgRemoval.models.length === 0) {
-      warnings.push("No background removal models configured");
+      warnings.push('No background removal models configured');
     }
 
     // Validate default model exists in models list
     if (bgRemoval.defaultModel && bgRemoval.models) {
       const modelExists = bgRemoval.models.some(
-        (model) => model.id === bgRemoval.defaultModel,
+        (model) => model.id === bgRemoval.defaultModel
       );
       if (!modelExists) {
         warnings.push(
-          `Default model '${bgRemoval.defaultModel}' not found in models list`,
+          `Default model '${bgRemoval.defaultModel}' not found in models list`
         );
       }
     }
@@ -91,10 +91,10 @@ function validateConfig(config: AppConfig): {
 function getDefaultConfig(): AppConfig {
   return {
     app: {
-      name: "Azure Image Studio",
-      version: "1.0.1",
-      description: "AI-powered image generation and editing platform",
-      environment: "development",
+      name: 'Azure Image Studio',
+      version: '1.0.1',
+      description: 'AI-powered image generation and editing platform',
+      environment: 'development',
     },
     features: {
       floatingImageToolbar: {
@@ -105,42 +105,42 @@ function getDefaultConfig(): AppConfig {
       },
       backgroundRemoval: {
         enabled: true,
-        defaultModel: "florence-2",
+        defaultModel: 'florence-2',
         models: [
           {
-            id: "florence-2",
-            name: "Florence 2.0",
-            provider: "Microsoft Azure",
+            id: 'florence-2',
+            name: 'Florence 2.0',
+            provider: 'Microsoft Azure',
             description:
               "Microsoft's advanced vision-language model for image understanding and editing",
-            capabilities: ["background-removal", "image-editing", "inpainting"],
+            capabilities: ['background-removal', 'image-editing', 'inpainting'],
             recommended: true,
-            speed: "fast",
-            quality: "high",
+            speed: 'fast',
+            quality: 'high',
           },
           {
-            id: "gpt-image-1",
-            name: "GPT-Image-1",
-            provider: "Azure OpenAI",
+            id: 'gpt-image-1',
+            name: 'GPT-Image-1',
+            provider: 'Azure OpenAI',
             description:
-              "Latest model with enhanced capabilities including image editing and inpainting",
+              'Latest model with enhanced capabilities including image editing and inpainting',
             capabilities: [
-              "background-removal",
-              "image-editing",
-              "inpainting",
-              "outpainting",
+              'background-removal',
+              'image-editing',
+              'inpainting',
+              'outpainting',
             ],
             recommended: false,
-            speed: "medium",
-            quality: "premium",
+            speed: 'medium',
+            quality: 'premium',
             requiresApproval: true,
           },
         ],
         defaultSettings: {
-          quality: "standard",
+          quality: 'standard',
           edgeRefinement: true,
-          transparencyMode: "full",
-          outputFormat: "png",
+          transparencyMode: 'full',
+          outputFormat: 'png',
         },
         advanced: {
           enableBatchProcessing: false,
@@ -151,9 +151,9 @@ function getDefaultConfig(): AppConfig {
       },
       imageGeneration: {
         enabled: true,
-        defaultModel: "FLUX.1-Kontext-pro",
-        defaultSize: "1024x1024",
-        defaultOutputFormat: "png",
+        defaultModel: 'FLUX.1-Kontext-pro',
+        defaultSize: '1024x1024',
+        defaultOutputFormat: 'png',
       },
       imageEditing: {
         enabled: true,
@@ -169,16 +169,16 @@ function getDefaultConfig(): AppConfig {
     },
     ui: {
       theme: {
-        default: "system",
-        options: ["light", "dark", "system"],
+        default: 'system',
+        options: ['light', 'dark', 'system'],
       },
       animations: {
         enabled: true,
-        duration: "normal",
-        easing: "ease-out",
+        duration: 'normal',
+        easing: 'ease-out',
       },
       toolbar: {
-        position: "left",
+        position: 'left',
         collapsible: true,
         showShortcuts: true,
       },
@@ -204,7 +204,7 @@ function getDefaultConfig(): AppConfig {
         enableWebWorkers: true,
       },
       canvas: {
-        renderingMode: "webgl",
+        renderingMode: 'webgl',
         enableImageCache: true,
         maxCacheSize: 100,
       },
@@ -217,7 +217,7 @@ function getDefaultConfig(): AppConfig {
     security: {
       fileUpload: {
         maxFileSize: 10485760,
-        allowedFormats: ["jpg", "jpeg", "png", "webp", "bmp"],
+        allowedFormats: ['jpg', 'jpeg', 'png', 'webp', 'bmp'],
         validateImageHeaders: true,
       },
       api: {
@@ -232,8 +232,8 @@ function getDefaultConfig(): AppConfig {
     integrations: {
       azure: {
         enabled: true,
-        configFile: "azure-config.json",
-        modelsFile: "azure-models.json",
+        configFile: 'azure-config.json',
+        modelsFile: 'azure-models.json',
       },
       analytics: {
         enabled: false,
@@ -242,7 +242,7 @@ function getDefaultConfig(): AppConfig {
     },
     debugging: {
       enableConsoleLogging: false,
-      logLevel: "info",
+      logLevel: 'info',
       enablePerformanceMonitoring: false,
     },
   };

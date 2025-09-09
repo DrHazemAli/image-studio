@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { FileMenu } from "./file-menu";
-import { InsertMenu } from "./insert-menu";
-import { ViewMenu } from "./view-menu";
-import { ToolsMenu } from "./tools-menu";
-import { HelpMenu } from "./help-menu";
-import type { Tool } from "@/components/studio/toolbar";
+import { FileMenu } from './file-menu';
+import { InsertMenu } from './insert-menu';
+import { ViewMenu } from './view-menu';
+import { ToolsMenu } from './tools-menu';
+import { HelpMenu } from './help-menu';
+import type { Tool } from '@/components/studio/toolbar';
 
 interface MenuBarProps {
   // File menu props

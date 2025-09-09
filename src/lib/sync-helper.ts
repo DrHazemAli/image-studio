@@ -3,7 +3,7 @@
  * This helper manages the auto-save/sync functionality for projects
  */
 
-import { dbManager, type Project } from "./indexeddb";
+import { dbManager, type Project } from './indexeddb';
 
 export interface SyncStats {
   filesCount: number;
@@ -79,14 +79,14 @@ export class SyncHelper {
    * Load sync options from localStorage
    */
   private loadOptions(): void {
-    if (typeof window === "undefined") return;
+    if (typeof window === 'undefined') return;
 
-    const stored = localStorage.getItem("sync-options");
+    const stored = localStorage.getItem('sync-options');
     if (stored) {
       try {
         this.options = { ...this.options, ...JSON.parse(stored) };
       } catch (error) {
-        console.warn("Failed to parse sync options:", error);
+        console.warn('Failed to parse sync options:', error);
       }
     }
   }
@@ -95,8 +95,8 @@ export class SyncHelper {
    * Save sync options to localStorage
    */
   private saveOptions(): void {
-    if (typeof window === "undefined") return;
-    localStorage.setItem("sync-options", JSON.stringify(this.options));
+    if (typeof window === 'undefined') return;
+    localStorage.setItem('sync-options', JSON.stringify(this.options));
   }
 
   /**
@@ -157,7 +157,7 @@ export class SyncHelper {
       onSyncStart?: () => void;
       onSyncEnd?: () => void;
       onSyncComplete?: (stats: SyncStats) => void;
-    },
+    }
   ): void {
     this.currentProject = project;
     this.currentState = currentState;
@@ -229,7 +229,7 @@ export class SyncHelper {
    */
   public async performAutoSave(): Promise<SyncStats> {
     if (!this.currentProject || !this.currentState || !this.options.enabled) {
-      throw new Error("Sync helper not properly set up or disabled");
+      throw new Error('Sync helper not properly set up or disabled');
     }
 
     try {
@@ -287,7 +287,7 @@ export class SyncHelper {
       const assets = await dbManager.getAssets(this.currentProject.id);
       const totalSize = assets.reduce(
         (sum, asset) => sum + (asset.url?.length || 0),
-        0,
+        0
       );
 
       const stats: SyncStats = {
@@ -301,10 +301,10 @@ export class SyncHelper {
         this.onSyncCallback(stats);
       }
 
-      console.log("Auto-save completed via sync helper:", stats);
+      console.log('Auto-save completed via sync helper:', stats);
       return stats;
     } catch (error) {
-      console.error("Auto-save failed:", error);
+      console.error('Auto-save failed:', error);
       throw error;
     } finally {
       // Call sync end callback
@@ -331,7 +331,7 @@ export class SyncHelper {
       try {
         await this.performAutoSave();
       } catch (error) {
-        console.error("Scheduled auto-save failed:", error);
+        console.error('Scheduled auto-save failed:', error);
       }
     }, this.options.duration * 1000);
   }
@@ -350,7 +350,7 @@ export class SyncHelper {
 
     // Perform auto-save immediately
     this.performAutoSave().catch((error) => {
-      console.error("Immediate auto-save failed:", error);
+      console.error('Immediate auto-save failed:', error);
     });
   }
 
@@ -368,13 +368,13 @@ export class SyncHelper {
    * Get project sync statistics
    */
   public async getProjectStats(
-    projectId: string,
-  ): Promise<Omit<SyncStats, "lastSync">> {
+    projectId: string
+  ): Promise<Omit<SyncStats, 'lastSync'>> {
     try {
       const assets = await dbManager.getAssets(projectId);
       const totalSize = assets.reduce(
         (sum, asset) => sum + (asset.url?.length || 0),
-        0,
+        0
       );
 
       return {
@@ -382,7 +382,7 @@ export class SyncHelper {
         totalSize: totalSize,
       };
     } catch (error) {
-      console.error("Failed to get project stats:", error);
+      console.error('Failed to get project stats:', error);
       return {
         filesCount: 0,
         totalSize: 0,
@@ -394,10 +394,10 @@ export class SyncHelper {
    * Format file size for display
    */
   public formatFileSize(bytes: number): string {
-    if (bytes === 0) return "0 B";
+    if (bytes === 0) return '0 B';
 
     const k = 1024;
-    const sizes = ["B", "KB", "MB", "GB"];
+    const sizes = ['B', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
 
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${sizes[i]}`;
@@ -407,23 +407,23 @@ export class SyncHelper {
    * Get sync status message
    */
   public getStatusMessage(enabled: boolean, lastSync: Date | null): string {
-    if (!enabled) return "Sync Disabled";
-    if (!lastSync) return "Never synced";
+    if (!enabled) return 'Sync Disabled';
+    if (!lastSync) return 'Never synced';
 
     const now = new Date();
     const diffMs = now.getTime() - lastSync.getTime();
     const diffMins = Math.floor(diffMs / (1000 * 60));
 
-    if (diffMins < 1) return "Just now";
-    if (diffMins === 1) return "1 minute ago";
+    if (diffMins < 1) return 'Just now';
+    if (diffMins === 1) return '1 minute ago';
     if (diffMins < 60) return `${diffMins} minutes ago`;
 
     const diffHours = Math.floor(diffMins / 60);
-    if (diffHours === 1) return "1 hour ago";
+    if (diffHours === 1) return '1 hour ago';
     if (diffHours < 24) return `${diffHours} hours ago`;
 
     const diffDays = Math.floor(diffHours / 24);
-    if (diffDays === 1) return "1 day ago";
+    if (diffDays === 1) return '1 day ago';
     return `${diffDays} days ago`;
   }
 }

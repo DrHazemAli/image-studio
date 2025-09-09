@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import * as Dialog from "@radix-ui/react-dialog";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState } from 'react';
+import * as Dialog from '@radix-ui/react-dialog';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   X,
   Settings,
@@ -12,69 +12,69 @@ import {
   Search,
   User,
   ChevronDown,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
-import { GeneralSettings } from "@/components/settings/general-settings";
-import { AzureSettings } from "@/components/settings/azure-settings";
-import { AdvancedSettings } from "@/components/settings/advanced-settings";
-import { AboutSettings } from "@/components/settings/about-settings";
-import appConfig from "@/app/config/app-config.json";
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { GeneralSettings } from '@/components/settings/general-settings';
+import { AzureSettings } from '@/components/settings/azure-settings';
+import { AdvancedSettings } from '@/components/settings/advanced-settings';
+import { AboutSettings } from '@/components/settings/about-settings';
+import appConfig from '@/app/config/app-config.json';
 
 interface SettingsDialogProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-type SettingsTab = "general" | "azure" | "advanced" | "about";
+type SettingsTab = 'general' | 'azure' | 'advanced' | 'about';
 
 const tabs = [
   {
-    id: "general" as const,
-    label: "General",
+    id: 'general' as const,
+    label: 'General',
     icon: Settings,
-    description: "Appearance, interface, and auto-save settings",
+    description: 'Appearance, interface, and auto-save settings',
   },
   {
-    id: "azure" as const,
-    label: "Azure",
+    id: 'azure' as const,
+    label: 'Azure',
     icon: Globe,
-    description: "API keys, endpoints, and cloud configuration",
+    description: 'API keys, endpoints, and cloud configuration',
   },
   {
-    id: "advanced" as const,
-    label: "Advanced",
+    id: 'advanced' as const,
+    label: 'Advanced',
     icon: Sliders,
-    description: "Data management and system settings",
+    description: 'Data management and system settings',
   },
   {
-    id: "about" as const,
-    label: "About",
+    id: 'about' as const,
+    label: 'About',
     icon: Info,
-    description: "Application information and features",
+    description: 'Application information and features',
   },
 ];
 
 export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
-  const [activeTab, setActiveTab] = useState<SettingsTab>("general");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState<SettingsTab>('general');
+  const [searchQuery, setSearchQuery] = useState('');
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   const filteredTabs = tabs.filter(
     (tab) =>
       tab.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      tab.description.toLowerCase().includes(searchQuery.toLowerCase()),
+      tab.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const renderTabContent = () => {
     switch (activeTab) {
-      case "general":
+      case 'general':
         return <GeneralSettings />;
-      case "azure":
+      case 'azure':
         return <AzureSettings />;
-      case "advanced":
+      case 'advanced':
         return <AdvancedSettings />;
-      case "about":
+      case 'about':
         return <AboutSettings />;
       default:
         return <GeneralSettings />;
@@ -95,7 +95,7 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
             className="w-full max-w-5xl h-[85vh] max-h-[700px] bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-200/50 dark:border-gray-700/50 overflow-hidden"
           >
             {/* macOS Window Controls */}
@@ -142,7 +142,7 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
                       className="p-1 hover:bg-gray-200/50 dark:hover:bg-gray-600/50 rounded-lg transition-colors"
                     >
                       <ChevronDown
-                        className={`w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform ${showUserMenu ? "rotate-180" : ""}`}
+                        className={`w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform ${showUserMenu ? 'rotate-180' : ''}`}
                       />
                     </button>
                   </div>
@@ -150,7 +150,7 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
                   {showUserMenu && (
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
+                      animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
                       className="mt-2 p-2 bg-white/20 dark:bg-gray-700/20 backdrop-blur-sm rounded-lg border border-gray-200/30 dark:border-gray-600/30"
                     >
@@ -177,8 +177,8 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className={cn(
-                        "w-full pl-10 pr-4 py-2 bg-white/50 dark:bg-gray-900/50 border border-gray-200/50 dark:border-gray-700/50 rounded-lg text-sm placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-all duration-200",
-                        isSearchExpanded ? "opacity-100" : "opacity-70",
+                        'w-full pl-10 pr-4 py-2 bg-white/50 dark:bg-gray-900/50 border border-gray-200/50 dark:border-gray-700/50 rounded-lg text-sm placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-all duration-200',
+                        isSearchExpanded ? 'opacity-100' : 'opacity-70'
                       )}
                     />
                   </div>
@@ -201,20 +201,20 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
                         className={cn(
-                          "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-all duration-200 group relative",
+                          'w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-all duration-200 group relative',
                           activeTab === tab.id
-                            ? "bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-700/50"
-                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100/50 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-white",
+                            ? 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-700/50'
+                            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100/50 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-white',
                           isHighlighted &&
-                            "bg-yellow-100/50 dark:bg-yellow-900/20 border border-yellow-200/50 dark:border-yellow-700/50",
+                            'bg-yellow-100/50 dark:bg-yellow-900/20 border border-yellow-200/50 dark:border-yellow-700/50'
                         )}
                       >
                         <IconComponent
                           className={cn(
-                            "w-4 h-4 transition-colors flex-shrink-0",
+                            'w-4 h-4 transition-colors flex-shrink-0',
                             activeTab === tab.id
-                              ? "text-blue-600 dark:text-blue-400"
-                              : "text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300",
+                              ? 'text-blue-600 dark:text-blue-400'
+                              : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300'
                           )}
                         />
                         <div className="flex-1 min-w-0">
@@ -250,7 +250,7 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.2, ease: "easeInOut" }}
+                    transition={{ duration: 0.2, ease: 'easeInOut' }}
                     className="h-full overflow-y-auto p-8"
                   >
                     {renderTabContent()}

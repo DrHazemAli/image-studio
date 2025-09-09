@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import * as Select from "@radix-ui/react-select";
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import * as Select from '@radix-ui/react-select';
 import {
   ChevronDownIcon,
   MagicWandIcon,
   ImageIcon,
-} from "@radix-ui/react-icons";
+} from '@radix-ui/react-icons';
 import {
   Card,
   Flex,
@@ -17,9 +17,9 @@ import {
   Box,
   Progress,
   Separator,
-} from "@radix-ui/themes";
-import { ModelSelector } from "./model-selector";
-import { AzureDeployment } from "@/types/azure";
+} from '@radix-ui/themes';
+import { ModelSelector } from './model-selector';
+import { AzureDeployment } from '@/types/azure';
 
 interface GenerationFormProps {
   deployments: AzureDeployment[];
@@ -36,23 +36,23 @@ interface GenerationFormProps {
 }
 
 const IMAGE_SIZES = [
-  { value: "512x512", label: "512×512" },
-  { value: "768x768", label: "768×768" },
-  { value: "1024x1024", label: "1024×1024" },
-  { value: "1024x1792", label: "1024×1792 (Portrait)" },
-  { value: "1792x1024", label: "1792×1024 (Landscape)" },
+  { value: '512x512', label: '512×512' },
+  { value: '768x768', label: '768×768' },
+  { value: '1024x1024', label: '1024×1024' },
+  { value: '1024x1792', label: '1024×1792 (Portrait)' },
+  { value: '1792x1024', label: '1792×1024 (Landscape)' },
 ];
 
 const IMAGE_FORMATS = [
-  { value: "png", label: "PNG" },
-  { value: "jpeg", label: "JPEG" },
+  { value: 'png', label: 'PNG' },
+  { value: 'jpeg', label: 'JPEG' },
 ];
 
 const IMAGE_COUNTS = [
-  { value: "1", label: "1 image" },
-  { value: "2", label: "2 images" },
-  { value: "3", label: "3 images" },
-  { value: "4", label: "4 images" },
+  { value: '1', label: '1 image' },
+  { value: '2', label: '2 images' },
+  { value: '3', label: '3 images' },
+  { value: '4', label: '4 images' },
 ];
 
 export function GenerationForm({
@@ -63,10 +63,10 @@ export function GenerationForm({
   isGenerating,
   progress,
 }: GenerationFormProps) {
-  const [prompt, setPrompt] = useState("");
-  const [size, setSize] = useState("1024x1024");
-  const [format, setFormat] = useState("png");
-  const [count, setCount] = useState("1");
+  const [prompt, setPrompt] = useState('');
+  const [size, setSize] = useState('1024x1024');
+  const [format, setFormat] = useState('png');
+  const [count, setCount] = useState('1');
 
   const selectedModel = deployments.find((d) => d.id === selectedDeployment);
 
@@ -192,7 +192,7 @@ export function GenerationForm({
                 </SelectTrigger>
                 <SelectContent>
                   {IMAGE_FORMATS.filter((fmt) =>
-                    selectedModel?.supportedFormats.includes(fmt.value),
+                    selectedModel?.supportedFormats.includes(fmt.value)
                   ).map((formatOption) => (
                     <SelectItem
                       key={formatOption.value}
@@ -258,7 +258,7 @@ export function GenerationForm({
             className="w-full"
           >
             <MagicWandIcon />
-            {isGenerating ? "Generating..." : "Generate Image"}
+            {isGenerating ? 'Generating...' : 'Generate Image'}
           </Button>
         </form>
       </Box>

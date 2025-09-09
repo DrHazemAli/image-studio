@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { ContextMenu, type ContextMenuItem } from "./context-menu";
-import { useMenuContext } from "./menu-context";
+import { useState } from 'react';
+import { ContextMenu, type ContextMenuItem } from './context-menu';
+import { useMenuContext } from './menu-context';
 
 interface FileMenuProps {
   onNewProject: () => void;
@@ -23,7 +23,7 @@ export function FileMenu({
 }: FileMenuProps) {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const { activeMenu, setActiveMenu } = useMenuContext();
-  const menuId = "file";
+  const menuId = 'file';
   const isOpen = activeMenu === menuId;
 
   const handleClick = (event: React.MouseEvent) => {
@@ -37,43 +37,43 @@ export function FileMenu({
 
   const menuItems: ContextMenuItem[] = [
     {
-      label: "New Project",
+      label: 'New Project',
       action: onNewProject,
-      shortcut: "Cmd+N",
+      shortcut: 'Cmd+N',
     },
     {
-      label: "Open Project",
+      label: 'Open Project',
       action: onOpenProject,
-      shortcut: "Cmd+O",
+      shortcut: 'Cmd+O',
     },
     {
       separator: true,
-      label: "",
+      label: '',
       action: () => {},
     },
     {
-      label: "Save Project",
+      label: 'Save Project',
       action: onSaveProject,
-      shortcut: "Cmd+S",
+      shortcut: 'Cmd+S',
     },
     {
-      label: "Export Project",
+      label: 'Export Project',
       action: onExportProject,
-      shortcut: "Cmd+E",
+      shortcut: 'Cmd+E',
     },
     {
-      label: "Import Project",
+      label: 'Import Project',
       action: onImportProject,
     },
     {
       separator: true,
-      label: "",
+      label: '',
       action: () => {},
     },
     {
-      label: "Close",
+      label: 'Close',
       action: onClose,
-      shortcut: "Cmd+W",
+      shortcut: 'Cmd+W',
     },
   ];
 
@@ -83,8 +83,8 @@ export function FileMenu({
         onClick={handleClick}
         className={`px-3 py-1 text-sm rounded transition-colors ${
           isOpen
-            ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
-            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+            ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
+            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
         }`}
       >
         File

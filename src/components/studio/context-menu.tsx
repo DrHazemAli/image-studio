@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React, { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   FrameIcon,
   DownloadIcon,
@@ -9,7 +9,7 @@ import {
   TrashIcon,
   CopyIcon,
   ClipboardIcon,
-} from "@radix-ui/react-icons";
+} from '@radix-ui/react-icons';
 
 interface ContextMenuProps {
   isOpen: boolean;
@@ -58,30 +58,30 @@ export default function ContextMenu({
     };
 
     if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
       return () =>
-        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener('mousedown', handleClickOutside);
     }
   }, [isOpen, onClose]);
 
   // Close menu on escape key
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
+      if (event.key === 'Escape') {
         onClose();
       }
     };
 
     if (isOpen) {
-      document.addEventListener("keydown", handleEscape, { passive: false });
-      return () => document.removeEventListener("keydown", handleEscape);
+      document.addEventListener('keydown', handleEscape, { passive: false });
+      return () => document.removeEventListener('keydown', handleEscape);
     }
   }, [isOpen, onClose]);
 
   const menuItems: ContextMenuItem[] = [
     {
-      id: "resize",
-      label: "Resize Canvas",
+      id: 'resize',
+      label: 'Resize Canvas',
       icon: <FrameIcon className="w-4 h-4" />,
       onClick: () => {
         onResize();
@@ -89,8 +89,8 @@ export default function ContextMenu({
       },
     },
     {
-      id: "fitToCanvas",
-      label: "Fit Image to Canvas",
+      id: 'fitToCanvas',
+      label: 'Fit Image to Canvas',
       icon: <FrameIcon className="w-4 h-4" />,
       onClick: () => {
         onFitToCanvas?.();
@@ -99,15 +99,15 @@ export default function ContextMenu({
       disabled: !hasImage || !onFitToCanvas,
     },
     {
-      id: "separator1",
-      label: "",
+      id: 'separator1',
+      label: '',
       icon: null,
       onClick: () => {},
       separator: true,
     },
     {
-      id: "upload",
-      label: "Upload Image",
+      id: 'upload',
+      label: 'Upload Image',
       icon: <UploadIcon className="w-4 h-4" />,
       onClick: () => {
         onUpload?.();
@@ -116,8 +116,8 @@ export default function ContextMenu({
       disabled: !onUpload,
     },
     {
-      id: "download",
-      label: "Download Image",
+      id: 'download',
+      label: 'Download Image',
       icon: <DownloadIcon className="w-4 h-4" />,
       onClick: () => {
         onDownload?.();
@@ -126,15 +126,15 @@ export default function ContextMenu({
       disabled: !hasImage || !onDownload,
     },
     {
-      id: "separator2",
-      label: "",
+      id: 'separator2',
+      label: '',
       icon: null,
       onClick: () => {},
       separator: true,
     },
     {
-      id: "copy",
-      label: "Copy Canvas",
+      id: 'copy',
+      label: 'Copy Canvas',
       icon: <CopyIcon className="w-4 h-4" />,
       onClick: () => {
         onCopy?.();
@@ -143,8 +143,8 @@ export default function ContextMenu({
       disabled: !hasImage || !onCopy,
     },
     {
-      id: "paste",
-      label: "Paste Image",
+      id: 'paste',
+      label: 'Paste Image',
       icon: <ClipboardIcon className="w-4 h-4" />,
       onClick: () => {
         onPaste?.();
@@ -153,15 +153,15 @@ export default function ContextMenu({
       disabled: !onPaste,
     },
     {
-      id: "separator3",
-      label: "",
+      id: 'separator3',
+      label: '',
       icon: null,
       onClick: () => {},
       separator: true,
     },
     {
-      id: "clear",
-      label: "Clear Canvas",
+      id: 'clear',
+      label: 'Clear Canvas',
       icon: <TrashIcon className="w-4 h-4" />,
       onClick: () => {
         onClear?.();
@@ -184,8 +184,8 @@ export default function ContextMenu({
           style={{
             left: position.x,
             top: position.y,
-            maxHeight: "400px",
-            overflowY: "auto",
+            maxHeight: '400px',
+            overflowY: 'auto',
           }}
         >
           {menuItems.map((item) => {

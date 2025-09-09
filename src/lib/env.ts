@@ -22,7 +22,7 @@
  * replaceEnvTags('<env.OPTIONAL_VAR>', 'default-value') // Returns 'default-value' if OPTIONAL_VAR is not set
  */
 export function replaceEnvTags(str: string, fallback?: string): string {
-  if (!str || typeof str !== "string") {
+  if (!str || typeof str !== 'string') {
     return str;
   }
 
@@ -42,7 +42,7 @@ export function replaceEnvTags(str: string, fallback?: string): string {
 
     // If no fallback provided and env var not found, return the original tag
     console.warn(
-      `Environment variable '${envVarName}' not found in <env.${envVarName}>`,
+      `Environment variable '${envVarName}' not found in <env.${envVarName}>`
     );
     return match;
   });
@@ -69,7 +69,7 @@ export function replaceEnvTagsInObject<T>(obj: T, fallback?: string): T {
     return obj;
   }
 
-  if (typeof obj === "string") {
+  if (typeof obj === 'string') {
     return replaceEnvTags(obj, fallback) as T;
   }
 
@@ -77,12 +77,12 @@ export function replaceEnvTagsInObject<T>(obj: T, fallback?: string): T {
     return obj.map((item) => replaceEnvTagsInObject(item, fallback)) as T;
   }
 
-  if (typeof obj === "object") {
+  if (typeof obj === 'object') {
     const result = {} as T;
     for (const [key, value] of Object.entries(obj)) {
       (result as Record<string, unknown>)[key] = replaceEnvTagsInObject(
         value,
-        fallback,
+        fallback
       );
     }
     return result;
@@ -110,8 +110,8 @@ export function validateRequiredEnvVars(requiredVars: string[]): void {
 
   if (missingVars.length > 0) {
     throw new Error(
-      `Missing required environment variables: ${missingVars.join(", ")}\n` +
-        `Please set these variables in your .env file or environment.`,
+      `Missing required environment variables: ${missingVars.join(', ')}\n` +
+        `Please set these variables in your .env file or environment.`
     );
   }
 }
@@ -157,7 +157,7 @@ export function getEnvVarAsNumber(varName: string, fallback?: number): number {
     const numValue = Number(value);
     if (isNaN(numValue)) {
       throw new Error(
-        `Environment variable '${varName}' is not a valid number: ${value}`,
+        `Environment variable '${varName}' is not a valid number: ${value}`
       );
     }
     return numValue;
@@ -182,20 +182,20 @@ export function getEnvVarAsNumber(varName: string, fallback?: number): number {
  */
 export function getEnvVarAsBoolean(
   varName: string,
-  fallback?: boolean,
+  fallback?: boolean
 ): boolean {
   const value = process.env[varName];
 
   if (value !== undefined) {
     const lowerValue = value.toLowerCase();
-    if (["true", "1", "yes", "on"].includes(lowerValue)) {
+    if (['true', '1', 'yes', 'on'].includes(lowerValue)) {
       return true;
     }
-    if (["false", "0", "no", "off"].includes(lowerValue)) {
+    if (['false', '0', 'no', 'off'].includes(lowerValue)) {
       return false;
     }
     throw new Error(
-      `Environment variable '${varName}' is not a valid boolean: ${value}`,
+      `Environment variable '${varName}' is not a valid boolean: ${value}`
     );
   }
 
@@ -212,7 +212,7 @@ export function getEnvVarAsBoolean(
 export interface EnvConfig {
   AZURE_API_BASE_URL: string;
   AZURE_API_KEY?: string;
-  NODE_ENV: "development" | "production" | "test";
+  NODE_ENV: 'development' | 'production' | 'test';
   PORT?: number;
   DEBUG?: boolean;
 }
@@ -223,10 +223,10 @@ export interface EnvConfig {
  */
 export function getEnvConfig(): EnvConfig {
   return {
-    AZURE_API_BASE_URL: getEnvVar("AZURE_API_BASE_URL"),
+    AZURE_API_BASE_URL: getEnvVar('AZURE_API_BASE_URL'),
     AZURE_API_KEY: process.env.AZURE_API_KEY,
-    NODE_ENV: (process.env.NODE_ENV as EnvConfig["NODE_ENV"]) || "development",
-    PORT: getEnvVarAsNumber("PORT", 3000),
-    DEBUG: getEnvVarAsBoolean("DEBUG", false),
+    NODE_ENV: (process.env.NODE_ENV as EnvConfig['NODE_ENV']) || 'development',
+    PORT: getEnvVarAsNumber('PORT', 3000),
+    DEBUG: getEnvVarAsBoolean('DEBUG', false),
   };
 }

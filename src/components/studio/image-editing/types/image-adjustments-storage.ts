@@ -3,7 +3,7 @@
  * For persisting image editing data in projects
  */
 
-import { ImageAdjustments } from "../hooks/use-real-time-preview";
+import { ImageAdjustments } from '../hooks/use-real-time-preview';
 
 /**
  * Stored image adjustments with metadata

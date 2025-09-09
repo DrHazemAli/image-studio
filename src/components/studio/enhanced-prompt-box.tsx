@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useState, useCallback, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Button, Badge } from "@radix-ui/themes";
+import React from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Button, Badge } from '@radix-ui/themes';
 import {
   PlusIcon,
   ShuffleIcon,
@@ -16,8 +16,8 @@ import {
   Cross2Icon,
   FileIcon,
   CameraIcon,
-} from "@radix-ui/react-icons";
-import type { ModelInfo } from "@/app/api/models/route";
+} from '@radix-ui/react-icons';
+import type { ModelInfo } from '@/app/api/models/route';
 
 export interface GenerationProgress {
   stage: string;
@@ -69,9 +69,9 @@ export default function EnhancedPromptBox({
   error,
   generatedImages,
   onShowImages,
-  size = "1024x1024",
+  size = '1024x1024',
   count = 1,
-  currentModel = "dalle-3",
+  currentModel = 'dalle-3',
   onModelChange,
   prompt,
   onPromptChange,
@@ -83,7 +83,7 @@ export default function EnhancedPromptBox({
   models = [],
   getModelName = (id) => id,
 }: EnhancedPromptBoxProps) {
-  const [localPrompt, setLocalPrompt] = useState("");
+  const [localPrompt, setLocalPrompt] = useState('');
   const [showModelSelector, setShowModelSelector] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [textareaHeight, setTextareaHeight] = useState(24);
@@ -99,16 +99,16 @@ export default function EnhancedPromptBox({
 
       // Auto-resize textarea
       const textarea = e.target;
-      textarea.style.height = "auto";
+      textarea.style.height = 'auto';
       const newHeight = Math.min(Math.max(textarea.scrollHeight, 18), 200);
       textarea.style.height = `${newHeight}px`;
       setTextareaHeight(newHeight);
     },
-    [onPromptChange],
+    [onPromptChange]
   );
 
   const updateTextareaHeight = useCallback((textarea: HTMLTextAreaElement) => {
-    textarea.style.height = "auto";
+    textarea.style.height = 'auto';
     const newHeight = Math.min(Math.max(textarea.scrollHeight, 18), 200);
     textarea.style.height = `${newHeight}px`;
     setTextareaHeight(newHeight);
@@ -121,13 +121,13 @@ export default function EnhancedPromptBox({
 
       // Update height after state change
       setTimeout(() => {
-        const textarea = containerRef.current?.querySelector("textarea");
+        const textarea = containerRef.current?.querySelector('textarea');
         if (textarea) {
           updateTextareaHeight(textarea);
         }
       }, 0);
     },
-    [updateTextareaHeight, onPromptChange],
+    [updateTextareaHeight, onPromptChange]
   );
 
   // Handle external prompt changes
@@ -150,8 +150,8 @@ export default function EnhancedPromptBox({
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleFocus = useCallback(() => {
@@ -169,12 +169,12 @@ export default function EnhancedPromptBox({
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      if (e.key === "Enter" && !e.shiftKey) {
+      if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         handleGenerate();
       }
     },
-    [handleGenerate],
+    [handleGenerate]
   );
 
   const generateRandomPrompt = useCallback(() => {
@@ -191,24 +191,24 @@ export default function EnhancedPromptBox({
         y: 0,
         scale: 1,
       }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
     >
       <motion.div
         ref={containerRef}
         className="w-full max-w-full "
         animate={{
-          width: isFocused || localPrompt.trim() ? "860px" : "640px",
+          width: isFocused || localPrompt.trim() ? '860px' : '640px',
         }}
         transition={{
           duration: 0.4,
-          ease: "easeOut",
-          type: "tween",
+          ease: 'easeOut',
+          type: 'tween',
         }}
         initial={{
-          width: "640px",
+          width: '640px',
         }}
         style={{
-          maxWidth: isFocused || localPrompt.trim() ? "860px" : "640px",
+          maxWidth: isFocused || localPrompt.trim() ? '860px' : '640px',
         }}
       >
         <div className="relative">
@@ -219,7 +219,7 @@ export default function EnhancedPromptBox({
             animate={{
               height: Math.max(textareaHeight + 32, 56), // 32px for padding, minimum 56px
             }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
           ></motion.div>
 
           {/* Content */}
@@ -228,7 +228,7 @@ export default function EnhancedPromptBox({
             animate={{
               height: Math.max(textareaHeight + 32, 56), // 32px for padding, minimum 56px
             }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
           >
             {/* Left side controls */}
             <div className="flex items-center gap-3">
@@ -244,8 +244,8 @@ export default function EnhancedPromptBox({
                     variant="ghost"
                     className={`text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100/50 dark:hover:bg-white/10 !rounded-full transition-all duration-300 hover:shadow-lg ${
                       showAttachMenuLocal
-                        ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-                        : ""
+                        ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white'
+                        : ''
                     }`}
                     onClick={() => {
                       setShowAttachMenuLocal((prev) => !prev);
@@ -253,7 +253,7 @@ export default function EnhancedPromptBox({
                   >
                     <motion.div
                       animate={{ rotate: showAttachMenuLocal ? 45 : 0 }}
-                      transition={{ duration: 0.2, ease: "easeInOut" }}
+                      transition={{ duration: 0.2, ease: 'easeInOut' }}
                     >
                       <PlusIcon className="w-5 h-5" />
                     </motion.div>
@@ -284,8 +284,8 @@ export default function EnhancedPromptBox({
                             </div>
                             <div className="text-xs text-gray-500 dark:text-gray-400">
                               {isInpaintMode
-                                ? "Select image to edit"
-                                : "Add reference image"}
+                                ? 'Select image to edit'
+                                : 'Add reference image'}
                             </div>
                           </div>
                         </div>
@@ -345,7 +345,7 @@ export default function EnhancedPromptBox({
                       animate={{ scale: 1 }}
                       transition={{
                         delay: 0.2,
-                        type: "spring",
+                        type: 'spring',
                         stiffness: 200,
                       }}
                     >
@@ -393,8 +393,8 @@ export default function EnhancedPromptBox({
                           }}
                           className={`w-full flex items-center justify-between p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 text-left ${
                             currentModel === model.id
-                              ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
-                              : ""
+                              ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
+                              : ''
                           }`}
                         >
                           <div>
@@ -525,8 +525,8 @@ export default function EnhancedPromptBox({
                 <textarea
                   placeholder={
                     isInpaintMode
-                      ? "Describe how to edit the selected area..."
-                      : "Describe your image..."
+                      ? 'Describe how to edit the selected area...'
+                      : 'Describe your image...'
                   }
                   value={localPrompt}
                   onChange={handlePromptChange}
@@ -536,10 +536,10 @@ export default function EnhancedPromptBox({
                   onBlur={handleBlur}
                   className="w-full bg-transparent border-0 outline-none resize-none text-sm mt-1 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 transition-all duration-300 focus:placeholder:text-gray-400 dark:focus:placeholder:text-gray-500"
                   style={{
-                    minHeight: "18px",
-                    maxHeight: "200px",
+                    minHeight: '18px',
+                    maxHeight: '200px',
                     height: `${textareaHeight}px`,
-                    minWidth: "200px",
+                    minWidth: '200px',
                   }}
                 />
               </div>
@@ -577,7 +577,7 @@ export default function EnhancedPromptBox({
                     animate={isGenerating ? { rotate: 360 } : { rotate: 0 }}
                     transition={
                       isGenerating
-                        ? { duration: 1, repeat: Infinity, ease: "linear" }
+                        ? { duration: 1, repeat: Infinity, ease: 'linear' }
                         : { duration: 0.3 }
                     }
                   >
@@ -598,7 +598,7 @@ export default function EnhancedPromptBox({
               initial={{ opacity: 0, y: 20, scale: 0.9 }}
               animate={{ opacity: error ? 0 : 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.9 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
               className="bg-white/90 dark:bg-black/90 border-gray-200/50 dark:border-white/10 absolute right-0 bottom-full left-0 mb-2 rounded-2xl border p-4 shadow-lg backdrop-blur-sm"
             >
               <div className="mb-2 flex items-center justify-between text-sm">
@@ -614,7 +614,7 @@ export default function EnhancedPromptBox({
                   className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full"
                   initial={{ width: 0 }}
                   animate={{ width: `${progress.progress}%` }}
-                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  transition={{ duration: 0.5, ease: 'easeOut' }}
                 />
               </div>
               <p className="text-gray-600 dark:text-gray-400 text-sm">
@@ -635,7 +635,7 @@ export default function EnhancedPromptBox({
               initial={{ opacity: 0, y: 20, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.9 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
               className="absolute right-0 bottom-full left-0 mb-2"
             >
               <motion.div
@@ -660,15 +660,15 @@ export default function EnhancedPromptBox({
               initial={{ opacity: 0, y: 20, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.9 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
               className="absolute right-0 bottom-full left-0 mb-2"
             >
               <div className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl rounded-2xl border border-gray-200 dark:border-gray-700 shadow-xl p-6 max-w-md mx-auto">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                     {isInpaintMode
-                      ? "🎨 Inpaint Mode Guide"
-                      : "✨ Generation Guide"}
+                      ? '🎨 Inpaint Mode Guide'
+                      : '✨ Generation Guide'}
                   </h3>
                   <button
                     onClick={() => setShowHelpGuide(false)}

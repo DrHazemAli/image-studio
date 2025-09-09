@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { DownloadIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { DownloadIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import {
   Card,
   Box,
@@ -11,9 +11,9 @@ import {
   Text,
   Dialog,
   AspectRatio,
-} from "@radix-ui/themes";
-import Image from "next/image";
-import { ImageGenerationResponse } from "@/types/azure";
+} from '@radix-ui/themes';
+import Image from 'next/image';
+import { ImageGenerationResponse } from '@/types/azure';
 
 interface ImageResultProps {
   result: ImageGenerationResponse | null;
@@ -28,7 +28,7 @@ export function ImageResult({ result, prompt }: ImageResultProps) {
   }
 
   const downloadImage = (base64Data: string, index: number) => {
-    const link = document.createElement("a");
+    const link = document.createElement('a');
     link.href = `data:image/png;base64,${base64Data}`;
     link.download = `generated-image-${index + 1}-${Date.now()}.png`;
     document.body.appendChild(link);
@@ -55,7 +55,7 @@ export function ImageResult({ result, prompt }: ImageResultProps) {
               </Text>
             </Box>
             <Text size="1" color="gray">
-              {result.data.length} image{result.data.length !== 1 ? "s" : ""}
+              {result.data.length} image{result.data.length !== 1 ? 's' : ''}
             </Text>
           </Flex>
 
@@ -80,12 +80,12 @@ export function ImageResult({ result, prompt }: ImageResultProps) {
                         onClick={() => {
                           if (image.b64_json) {
                             setSelectedImage(
-                              `data:image/png;base64,${image.b64_json}`,
+                              `data:image/png;base64,${image.b64_json}`
                             );
                           } else {
                             console.error(
-                              "Image b64_json is undefined for image:",
-                              index,
+                              'Image b64_json is undefined for image:',
+                              index
                             );
                           }
                         }}
@@ -114,11 +114,11 @@ export function ImageResult({ result, prompt }: ImageResultProps) {
                           onClick={() => {
                             if (image.b64_json) {
                               setSelectedImage(
-                                `data:image/png;base64,${image.b64_json}`,
+                                `data:image/png;base64,${image.b64_json}`
                               );
                             } else {
                               console.error(
-                                "Cannot view image - b64_json is undefined",
+                                'Cannot view image - b64_json is undefined'
                               );
                             }
                           }}
@@ -135,7 +135,7 @@ export function ImageResult({ result, prompt }: ImageResultProps) {
                               downloadImage(image.b64_json, index);
                             } else {
                               console.error(
-                                "Cannot download image - b64_json is undefined",
+                                'Cannot download image - b64_json is undefined'
                               );
                             }
                           }}

@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { Theme, Flex, Container, Box } from "@radix-ui/themes";
-import * as AlertDialog from "@radix-ui/react-alert-dialog";
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
-import { motion } from "framer-motion";
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { Theme, Flex, Container, Box } from '@radix-ui/themes';
+import * as AlertDialog from '@radix-ui/react-alert-dialog';
+import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
+import { motion } from 'framer-motion';
 
-import { AzureConfig } from "@/types/azure";
+import { AzureConfig } from '@/types/azure';
 
 interface ConfigResponse {
   config: AzureConfig;
@@ -26,7 +26,7 @@ export default function Home() {
   useEffect(() => {
     const loadConfig = async () => {
       try {
-        const response = await fetch("/api/config");
+        const response = await fetch('/api/config');
         const data: ConfigResponse = await response.json();
 
         setConfig(data.config);
@@ -36,12 +36,12 @@ export default function Home() {
           setShowConfigAlert(true);
         } else {
           // If no errors, redirect to studio
-          router.push("/studio");
+          router.push('/studio');
           return;
         }
       } catch (error) {
-        console.error("Failed to load config:", error);
-        setConfigErrors(["Failed to load configuration"]);
+        console.error('Failed to load config:', error);
+        setConfigErrors(['Failed to load configuration']);
         setShowConfigAlert(true);
       } finally {
         setLoading(false);
@@ -60,7 +60,7 @@ export default function Home() {
     // Reload the configuration
     const loadConfig = async () => {
       try {
-        const response = await fetch("/api/config");
+        const response = await fetch('/api/config');
         const data: ConfigResponse = await response.json();
 
         setConfig(data.config);
@@ -70,12 +70,12 @@ export default function Home() {
           setShowConfigAlert(true);
         } else {
           // If no errors, redirect to studio
-          router.push("/studio");
+          router.push('/studio');
           return;
         }
       } catch (error) {
-        console.error("Failed to load config:", error);
-        setConfigErrors(["Failed to load configuration"]);
+        console.error('Failed to load config:', error);
+        setConfigErrors(['Failed to load configuration']);
         setShowConfigAlert(true);
       } finally {
         setLoading(false);
@@ -89,7 +89,7 @@ export default function Home() {
     return (
       <Theme>
         <Container size="2" className="py-8">
-          <Flex justify="center" align="center" style={{ minHeight: "50vh" }}>
+          <Flex justify="center" align="center" style={{ minHeight: '50vh' }}>
             <Box>Loading configuration...</Box>
           </Flex>
         </Container>
@@ -101,7 +101,7 @@ export default function Home() {
     return (
       <Theme>
         <Container size="2" className="py-8">
-          <Flex justify="center" align="center" style={{ minHeight: "50vh" }}>
+          <Flex justify="center" align="center" style={{ minHeight: '50vh' }}>
             <Box>Failed to load configuration</Box>
           </Flex>
         </Container>

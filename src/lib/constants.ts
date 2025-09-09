@@ -21,7 +21,7 @@ export const TOOL_CONSTANTS = {
   MAX_BRUSH_SIZE: 100 as number,
 
   // Default colors
-  DEFAULT_BRUSH_COLOR: "#000000" as string,
+  DEFAULT_BRUSH_COLOR: '#000000' as string,
 };
 
 // Canvas settings

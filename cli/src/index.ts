@@ -1,54 +1,54 @@
 #!/usr/bin/env node
 
-import { Command } from "commander";
-import chalk from "chalk";
-import figlet from "figlet";
-import gradient from "gradient-string";
-import boxen from "boxen";
-import { createConfigCommand } from "./commands/config";
-import { createGenerateCommand } from "./commands/generate";
-import { createModelsCommand } from "./commands/models";
-import { createAssetsCommand } from "./commands/assets";
-import { createDevCommand } from "./commands/dev";
-import { createProjectCommand } from "./commands/project";
+import { Command } from 'commander';
+import chalk from 'chalk';
+import figlet from 'figlet';
+import gradient from 'gradient-string';
+import boxen from 'boxen';
+import { createConfigCommand } from './commands/config';
+import { createGenerateCommand } from './commands/generate';
+import { createModelsCommand } from './commands/models';
+import { createAssetsCommand } from './commands/assets';
+import { createDevCommand } from './commands/dev';
+import { createProjectCommand } from './commands/project';
 
 const program = new Command();
 
 // ASCII Art Banner
 function showBanner() {
-  const banner = figlet.textSync("Azure Image Studio", {
-    font: "ANSI Shadow",
-    horizontalLayout: "default",
-    verticalLayout: "default",
+  const banner = figlet.textSync('Azure Image Studio', {
+    font: 'ANSI Shadow',
+    horizontalLayout: 'default',
+    verticalLayout: 'default',
   });
 
   const gradientBanner = gradient.rainbow(banner);
 
   console.log(
     boxen(gradientBanner, {
-      title: "CLI v1.0.0",
-      titleAlignment: "center",
+      title: 'CLI v1.0.0',
+      titleAlignment: 'center',
       padding: 1,
       margin: 1,
-      borderStyle: "round",
-      borderColor: "blue",
-    }),
+      borderStyle: 'round',
+      borderColor: 'blue',
+    })
   );
 }
 
 // Main program setup
 program
-  .name("azure-image-studio")
+  .name('azure-image-studio')
   .description(
-    "Command-line interface for Azure Image Studio - AI-powered image generation and editing",
+    'Command-line interface for Azure Image Studio - AI-powered image generation and editing'
   )
-  .version("1.0.0")
-  .addHelpText("before", () => {
+  .version('1.0.0')
+  .addHelpText('before', () => {
     showBanner();
-    return "";
+    return '';
   })
   .addHelpText(
-    "after",
+    'after',
     `
 Examples:
   $ azure-image-studio config init
@@ -63,7 +63,7 @@ Documentation:
 
 Support:
   https://github.com/DrHazemAli/azure-image-studio/issues
-  `,
+  `
   );
 
 // Add commands
@@ -76,10 +76,10 @@ program.addCommand(createProjectCommand());
 
 // Global options
 program
-  .option("-v, --verbose", "Enable verbose output")
-  .option("--no-color", "Disable colored output")
-  .option("--config <path>", "Path to configuration file")
-  .hook("preAction", (thisCommand) => {
+  .option('-v, --verbose', 'Enable verbose output')
+  .option('--no-color', 'Disable colored output')
+  .option('--config <path>', 'Path to configuration file')
+  .hook('preAction', (thisCommand) => {
     const options = thisCommand.opts();
 
     // Disable colors if requested
@@ -89,7 +89,7 @@ program
 
     // Set verbose mode
     if (options.verbose) {
-      process.env.VERBOSE = "true";
+      process.env.VERBOSE = 'true';
     }
   });
 
@@ -97,20 +97,20 @@ program
 program.exitOverride();
 
 // Handle uncaught errors
-process.on("uncaughtException", (error) => {
-  console.error(chalk.red("❌ Uncaught Exception:"), error.message);
+process.on('uncaughtException', (error) => {
+  console.error(chalk.red('❌ Uncaught Exception:'), error.message);
   if (process.env.VERBOSE) {
     console.error(error.stack);
   }
   process.exit(1);
 });
 
-process.on("unhandledRejection", (reason, promise) => {
+process.on('unhandledRejection', (reason, promise) => {
   console.error(
-    chalk.red("❌ Unhandled Rejection at:"),
+    chalk.red('❌ Unhandled Rejection at:'),
     promise,
-    "reason:",
-    reason,
+    'reason:',
+    reason
   );
   process.exit(1);
 });
@@ -120,9 +120,9 @@ try {
   program.parse();
 } catch (error) {
   if (error instanceof Error) {
-    console.error(chalk.red("❌ Error:"), error.message);
+    console.error(chalk.red('❌ Error:'), error.message);
   } else {
-    console.error(chalk.red("❌ Unknown error occurred"));
+    console.error(chalk.red('❌ Unknown error occurred'));
   }
   process.exit(1);
 }

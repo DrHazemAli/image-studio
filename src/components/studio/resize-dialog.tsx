@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Cross2Icon, FrameIcon } from "@radix-ui/react-icons";
-import { Button } from "@radix-ui/themes";
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Cross2Icon, FrameIcon } from '@radix-ui/react-icons';
+import { Button } from '@radix-ui/themes';
 
 interface ResizeDialogProps {
   isOpen: boolean;
@@ -20,18 +20,18 @@ interface PresetSize {
 }
 
 const PRESET_SIZES: PresetSize[] = [
-  { name: "Square (1:1)", width: 512, height: 512 },
-  { name: "Portrait (3:4)", width: 768, height: 1024 },
-  { name: "Landscape (4:3)", width: 1024, height: 768 },
-  { name: "Wide (16:9)", width: 1920, height: 1080 },
-  { name: "Ultra Wide (21:9)", width: 2560, height: 1080 },
-  { name: "Instagram Square", width: 1080, height: 1080 },
-  { name: "Instagram Portrait", width: 1080, height: 1350 },
-  { name: "Instagram Landscape", width: 1080, height: 608 },
-  { name: "Facebook Cover", width: 1200, height: 630 },
-  { name: "Twitter Header", width: 1500, height: 500 },
-  { name: "YouTube Thumbnail", width: 1280, height: 720 },
-  { name: "LinkedIn Banner", width: 1584, height: 396 },
+  { name: 'Square (1:1)', width: 512, height: 512 },
+  { name: 'Portrait (3:4)', width: 768, height: 1024 },
+  { name: 'Landscape (4:3)', width: 1024, height: 768 },
+  { name: 'Wide (16:9)', width: 1920, height: 1080 },
+  { name: 'Ultra Wide (21:9)', width: 2560, height: 1080 },
+  { name: 'Instagram Square', width: 1080, height: 1080 },
+  { name: 'Instagram Portrait', width: 1080, height: 1350 },
+  { name: 'Instagram Landscape', width: 1080, height: 608 },
+  { name: 'Facebook Cover', width: 1200, height: 630 },
+  { name: 'Twitter Header', width: 1500, height: 500 },
+  { name: 'YouTube Thumbnail', width: 1280, height: 720 },
+  { name: 'LinkedIn Banner', width: 1584, height: 396 },
 ];
 
 export default function ResizeDialog({
@@ -81,9 +81,9 @@ export default function ResizeDialog({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       handleResize();
-    } else if (e.key === "Escape") {
+    } else if (e.key === 'Escape') {
       onClose();
     }
   };

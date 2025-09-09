@@ -1,20 +1,20 @@
-import { ConfigManager, StorageType, ConfigOptions } from "./types";
-import { LocalStorage } from "./storage/local-storage";
-import { CookieStorage } from "./storage/cookie-storage";
-import { SessionStorage } from "./storage/session-storage";
+import { ConfigManager, StorageType, ConfigOptions } from './types';
+import { LocalStorage } from './storage/local-storage';
+import { CookieStorage } from './storage/cookie-storage';
+import { SessionStorage } from './storage/session-storage';
 import {
   serialize,
   deserialize,
   getNestedValue,
   setNestedValue,
-} from "./utils/serialization";
+} from './utils/serialization';
 
 export class AppSettings implements ConfigManager {
   private storages: Record<
     StorageType,
     LocalStorage | CookieStorage | SessionStorage
   >;
-  private defaultStorage: StorageType = "localStorage";
+  private defaultStorage: StorageType = 'localStorage';
 
   constructor() {
     this.storages = {
@@ -35,7 +35,7 @@ export class AppSettings implements ConfigManager {
     key: string,
     defaultValue?: any,
     storage?: StorageType,
-    encrypted?: boolean,
+    encrypted?: boolean
   ): any {
     const storageType = storage || this.defaultStorage;
     const storageInstance = this.storages[storageType];
@@ -50,7 +50,7 @@ export class AppSettings implements ConfigManager {
       const value = deserialize(serializedValue, encrypted);
 
       // Support dot notation for nested values
-      if (key.includes(".")) {
+      if (key.includes('.')) {
         return getNestedValue(value, key) ?? defaultValue;
       }
 
@@ -72,14 +72,14 @@ export class AppSettings implements ConfigManager {
     key: string,
     value: any,
     storage?: StorageType,
-    encrypted?: boolean,
+    encrypted?: boolean
   ): void {
     const storageType = storage || this.defaultStorage;
     const storageInstance = this.storages[storageType];
 
     try {
       // Support dot notation for nested values
-      if (key.includes(".")) {
+      if (key.includes('.')) {
         const existingValue = this.get(key, {}, storageType, encrypted);
         const updatedValue = setNestedValue(existingValue, key, value);
         const serializedValue = serialize(updatedValue, encrypted);
@@ -169,7 +169,7 @@ export class AppSettings implements ConfigManager {
     } catch (error) {
       console.warn(
         `Failed to get all config values from "${storageType}":`,
-        error,
+        error
       );
       return {};
     }
@@ -217,7 +217,7 @@ export class AppSettings implements ConfigManager {
     key: string,
     fromStorage: StorageType,
     toStorage: StorageType,
-    removeFromSource: boolean = true,
+    removeFromSource: boolean = true
   ): boolean {
     try {
       if (!this.has(key, fromStorage)) {

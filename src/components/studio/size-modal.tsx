@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
-import { Cross2Icon, AspectRatioIcon } from "@radix-ui/react-icons";
-import type { ModelInfo, SizeOption } from "@/app/api/models/route";
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Cross2Icon, AspectRatioIcon } from '@radix-ui/react-icons';
+import type { ModelInfo, SizeOption } from '@/app/api/models/route';
 
 interface SizeModalProps {
   isOpen: boolean;
@@ -31,16 +31,16 @@ export function SizeModal({
       ? model.supportedSizes
       : [
           {
-            size: "1024x1024",
-            label: "Square (1:1)",
-            aspect: "1:1",
-            description: "Standard size",
+            size: '1024x1024',
+            label: 'Square (1:1)',
+            aspect: '1:1',
+            description: 'Standard size',
           },
           {
-            size: "1024x768",
-            label: "Standard (4:3)",
-            aspect: "4:3",
-            description: "Default size",
+            size: '1024x768',
+            label: 'Standard (4:3)',
+            aspect: '4:3',
+            description: 'Default size',
           },
         ];
   };
@@ -93,8 +93,8 @@ export function SizeModal({
               whileTap={{ scale: 0.98 }}
               className={`p-4 rounded-xl border-2 text-left transition-all duration-200 ${
                 currentSize === sizeOption.size
-                  ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300"
-                  : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
+                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
+                  : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800'
               }`}
             >
               <div className="flex items-center justify-between mb-2">
@@ -112,20 +112,20 @@ export function SizeModal({
                   className="border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800"
                   style={{
                     width:
-                      sizeOption.aspect === "1:1"
-                        ? "32px"
-                        : sizeOption.aspect.startsWith("16:") ||
-                            sizeOption.aspect.startsWith("3:2")
-                          ? "40px"
-                          : "24px",
+                      sizeOption.aspect === '1:1'
+                        ? '32px'
+                        : sizeOption.aspect.startsWith('16:') ||
+                            sizeOption.aspect.startsWith('3:2')
+                          ? '40px'
+                          : '24px',
                     height:
-                      sizeOption.aspect === "1:1"
-                        ? "32px"
-                        : sizeOption.aspect.includes(":9") ||
-                            sizeOption.aspect === "2:3" ||
-                            sizeOption.aspect === "3:4"
-                          ? "40px"
-                          : "24px",
+                      sizeOption.aspect === '1:1'
+                        ? '32px'
+                        : sizeOption.aspect.includes(':9') ||
+                            sizeOption.aspect === '2:3' ||
+                            sizeOption.aspect === '3:4'
+                          ? '40px'
+                          : '24px',
                   }}
                 />
               </div>
@@ -150,7 +150,7 @@ export function SizeModal({
               • <strong>Landscape (3:2, 16:9)</strong> - Perfect for headers,
               banners, and wide scenes
             </li>
-            {currentModel.includes("flux") && (
+            {currentModel.includes('flux') && (
               <li>
                 • <strong>Ultra sizes</strong> - High resolution for
                 professional use (slower generation)

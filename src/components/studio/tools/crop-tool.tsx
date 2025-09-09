@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import React, { useState, useCallback, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useCallback, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   CropIcon,
   Cross2Icon,
   FrameIcon,
   AspectRatioIcon,
-} from "@radix-ui/react-icons";
-import { Button } from "@radix-ui/themes";
-import { FabricImage, Rect } from "fabric";
+} from '@radix-ui/react-icons';
+import { Button } from '@radix-ui/themes';
+import { FabricImage, Rect } from 'fabric';
 
 interface CropToolProps {
   isOpen: boolean;
@@ -31,18 +31,18 @@ interface CropPreset {
 }
 
 const CROP_PRESETS: CropPreset[] = [
-  { name: "Free", ratio: 0, width: 0, height: 0 },
-  { name: "Square (1:1)", ratio: 1, width: 1, height: 1 },
-  { name: "Portrait (3:4)", ratio: 3 / 4, width: 3, height: 4 },
-  { name: "Landscape (4:3)", ratio: 4 / 3, width: 4, height: 3 },
-  { name: "Wide (16:9)", ratio: 16 / 9, width: 16, height: 9 },
-  { name: "Ultra Wide (21:9)", ratio: 21 / 9, width: 21, height: 9 },
-  { name: "Instagram Square", ratio: 1, width: 1, height: 1 },
-  { name: "Instagram Portrait", ratio: 4 / 5, width: 4, height: 5 },
-  { name: "Instagram Landscape", ratio: 1.91, width: 1.91, height: 1 },
-  { name: "Facebook Cover", ratio: 1.91, width: 1.91, height: 1 },
-  { name: "Twitter Header", ratio: 3, width: 3, height: 1 },
-  { name: "YouTube Thumbnail", ratio: 16 / 9, width: 16, height: 9 },
+  { name: 'Free', ratio: 0, width: 0, height: 0 },
+  { name: 'Square (1:1)', ratio: 1, width: 1, height: 1 },
+  { name: 'Portrait (3:4)', ratio: 3 / 4, width: 3, height: 4 },
+  { name: 'Landscape (4:3)', ratio: 4 / 3, width: 4, height: 3 },
+  { name: 'Wide (16:9)', ratio: 16 / 9, width: 16, height: 9 },
+  { name: 'Ultra Wide (21:9)', ratio: 21 / 9, width: 21, height: 9 },
+  { name: 'Instagram Square', ratio: 1, width: 1, height: 1 },
+  { name: 'Instagram Portrait', ratio: 4 / 5, width: 4, height: 5 },
+  { name: 'Instagram Landscape', ratio: 1.91, width: 1.91, height: 1 },
+  { name: 'Facebook Cover', ratio: 1.91, width: 1.91, height: 1 },
+  { name: 'Twitter Header', ratio: 3, width: 3, height: 1 },
+  { name: 'YouTube Thumbnail', ratio: 16 / 9, width: 16, height: 9 },
 ];
 
 export default function CropTool({
@@ -53,7 +53,7 @@ export default function CropTool({
 }: CropToolProps) {
   const [cropArea, setCropArea] = useState({ x: 0, y: 0, width: 0, height: 0 });
   const [selectedPreset, setSelectedPreset] = useState<CropPreset>(
-    CROP_PRESETS[0],
+    CROP_PRESETS[0]
   );
   const [isDragging, setIsDragging] = useState(false);
   const [dragHandle, setDragHandle] = useState<string | null>(null);
@@ -111,7 +111,7 @@ export default function CropTool({
         });
       }
     },
-    [selectedImage],
+    [selectedImage]
   );
 
   const handleMouseDown = useCallback(
@@ -127,7 +127,7 @@ export default function CropTool({
         crop: { ...cropArea },
       });
     },
-    [cropArea],
+    [cropArea]
   );
 
   const handleMouseMove = useCallback(
@@ -140,35 +140,35 @@ export default function CropTool({
       const newCrop = { ...dragStart.crop };
 
       switch (dragHandle) {
-        case "move":
+        case 'move':
           newCrop.x = Math.max(0, dragStart.crop.x + deltaX);
           newCrop.y = Math.max(0, dragStart.crop.y + deltaY);
           break;
-        case "nw":
+        case 'nw':
           newCrop.x = Math.max(0, dragStart.crop.x + deltaX);
           newCrop.y = Math.max(0, dragStart.crop.y + deltaY);
           newCrop.width = Math.max(20, dragStart.crop.width - deltaX);
           newCrop.height = Math.max(20, dragStart.crop.height - deltaY);
           break;
-        case "ne":
+        case 'ne':
           newCrop.y = Math.max(0, dragStart.crop.y + deltaY);
           newCrop.width = Math.max(20, dragStart.crop.width + deltaX);
           newCrop.height = Math.max(20, dragStart.crop.height - deltaY);
           break;
-        case "sw":
+        case 'sw':
           newCrop.x = Math.max(0, dragStart.crop.x + deltaX);
           newCrop.width = Math.max(20, dragStart.crop.width - deltaX);
           newCrop.height = Math.max(20, dragStart.crop.height + deltaY);
           break;
-        case "se":
+        case 'se':
           newCrop.width = Math.max(20, dragStart.crop.width + deltaX);
           newCrop.height = Math.max(20, dragStart.crop.height + deltaY);
           break;
       }
 
       // Maintain aspect ratio if preset is selected
-      if (selectedPreset.ratio > 0 && dragHandle !== "move") {
-        if (dragHandle.includes("e") || dragHandle.includes("w")) {
+      if (selectedPreset.ratio > 0 && dragHandle !== 'move') {
+        if (dragHandle.includes('e') || dragHandle.includes('w')) {
           newCrop.height = newCrop.width / selectedPreset.ratio;
         } else {
           newCrop.width = newCrop.height * selectedPreset.ratio;
@@ -177,7 +177,7 @@ export default function CropTool({
 
       setCropArea(newCrop);
     },
-    [isDragging, dragHandle, dragStart, selectedPreset],
+    [isDragging, dragHandle, dragStart, selectedPreset]
   );
 
   const handleMouseUp = useCallback(() => {
@@ -188,11 +188,11 @@ export default function CropTool({
   // Add mouse event listeners
   useEffect(() => {
     if (isDragging) {
-      document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener("mouseup", handleMouseUp);
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
       return () => {
-        document.removeEventListener("mousemove", handleMouseMove);
-        document.removeEventListener("mouseup", handleMouseUp);
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
       };
     }
   }, [isDragging, handleMouseMove, handleMouseUp]);
@@ -269,8 +269,8 @@ export default function CropTool({
                       onClick={() => handlePresetSelect(preset)}
                       className={`w-full p-3 text-left border rounded-lg transition-colors ${
                         selectedPreset.name === preset.name
-                          ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
-                          : "border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
+                          ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                          : 'border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
                       }`}
                     >
                       <div className="font-medium text-sm">{preset.name}</div>
@@ -290,11 +290,11 @@ export default function CropTool({
                   </h4>
                   <div className="text-xs text-gray-600 dark:text-gray-400 space-y-1">
                     <div>
-                      Size: {Math.round(cropArea.width)} ×{" "}
+                      Size: {Math.round(cropArea.width)} ×{' '}
                       {Math.round(cropArea.height)} px
                     </div>
                     <div>
-                      Position: {Math.round(cropArea.x)},{" "}
+                      Position: {Math.round(cropArea.x)},{' '}
                       {Math.round(cropArea.y)}
                     </div>
                     {selectedPreset.ratio > 0 && (
@@ -314,8 +314,8 @@ export default function CropTool({
                     style={{
                       width: imageWidth,
                       height: imageHeight,
-                      maxWidth: "100%",
-                      maxHeight: "60vh",
+                      maxWidth: '100%',
+                      maxHeight: '60vh',
                     }}
                   >
                     {/* Image Preview */}
@@ -323,9 +323,9 @@ export default function CropTool({
                       className="absolute inset-0 bg-gray-200 dark:bg-gray-800"
                       style={{
                         backgroundImage: `url(${selectedImage.getSrc()})`,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        filter: "brightness(0.5)",
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        filter: 'brightness(0.5)',
                       }}
                     />
 
@@ -337,30 +337,30 @@ export default function CropTool({
                         top: cropArea.y,
                         width: cropArea.width,
                         height: cropArea.height,
-                        cursor: isDragging ? "grabbing" : "grab",
+                        cursor: isDragging ? 'grabbing' : 'grab',
                       }}
-                      onMouseDown={(e) => handleMouseDown(e, "move")}
+                      onMouseDown={(e) => handleMouseDown(e, 'move')}
                     >
                       {/* Corner Handles */}
                       <div
                         className="absolute w-3 h-3 bg-blue-500 border border-white rounded-full cursor-nw-resize"
                         style={{ top: -6, left: -6 }}
-                        onMouseDown={(e) => handleMouseDown(e, "nw")}
+                        onMouseDown={(e) => handleMouseDown(e, 'nw')}
                       />
                       <div
                         className="absolute w-3 h-3 bg-blue-500 border border-white rounded-full cursor-ne-resize"
                         style={{ top: -6, right: -6 }}
-                        onMouseDown={(e) => handleMouseDown(e, "ne")}
+                        onMouseDown={(e) => handleMouseDown(e, 'ne')}
                       />
                       <div
                         className="absolute w-3 h-3 bg-blue-500 border border-white rounded-full cursor-sw-resize"
                         style={{ bottom: -6, left: -6 }}
-                        onMouseDown={(e) => handleMouseDown(e, "sw")}
+                        onMouseDown={(e) => handleMouseDown(e, 'sw')}
                       />
                       <div
                         className="absolute w-3 h-3 bg-blue-500 border border-white rounded-full cursor-se-resize"
                         style={{ bottom: -6, right: -6 }}
-                        onMouseDown={(e) => handleMouseDown(e, "se")}
+                        onMouseDown={(e) => handleMouseDown(e, 'se')}
                       />
                     </div>
                   </div>

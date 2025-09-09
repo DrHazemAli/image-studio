@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useRef } from "react";
-import { Canvas as FabricCanvas, FabricObject, FabricImage } from "fabric";
-import { ImageAdjustments, DEFAULT_ADJUSTMENTS } from "./use-real-time-preview";
+import { useCallback, useEffect, useRef } from 'react';
+import { Canvas as FabricCanvas, FabricObject, FabricImage } from 'fabric';
+import { ImageAdjustments, DEFAULT_ADJUSTMENTS } from './use-real-time-preview';
 import {
   StoredImageAdjustments,
   ProjectImageAdjustments,
-} from "../types/image-adjustments-storage";
+} from '../types/image-adjustments-storage';
 
 /**
  * Configuration for adjustments persistence
@@ -17,7 +17,7 @@ export interface AdjustmentsPersistenceConfig {
   saveDebounceMs?: number;
   onSave?: (
     projectId: string,
-    adjustments: ProjectImageAdjustments,
+    adjustments: ProjectImageAdjustments
   ) => Promise<void>;
   onLoad?: (projectId: string) => Promise<ProjectImageAdjustments | null>;
   onError?: (error: Error) => void;
@@ -29,7 +29,7 @@ export interface AdjustmentsPersistenceConfig {
  */
 export const useAdjustmentsPersistence = (
   fabricCanvas: FabricCanvas | null,
-  config: AdjustmentsPersistenceConfig = {},
+  config: AdjustmentsPersistenceConfig = {}
 ) => {
   const {
     projectId,
@@ -42,7 +42,7 @@ export const useAdjustmentsPersistence = (
 
   // Internal state
   const projectAdjustmentsRef = useRef<ProjectImageAdjustments>({
-    version: "1.0.0",
+    version: '1.0.0',
     images: {},
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -84,7 +84,7 @@ export const useAdjustmentsPersistence = (
     async (
       imageObject: FabricObject,
       adjustments: ImageAdjustments,
-      presetUsed?: string,
+      presetUsed?: string
     ) => {
       if (!projectId || !onSave) {
         return;
@@ -100,7 +100,7 @@ export const useAdjustmentsPersistence = (
           imageSrc,
           adjustments: { ...adjustments },
           appliedAt: new Date(),
-          version: "1.0.0",
+          version: '1.0.0',
           presetUsed,
         };
 
@@ -122,18 +122,18 @@ export const useAdjustmentsPersistence = (
         saveTimeoutRef.current = setTimeout(async () => {
           try {
             await onSave(projectId, projectAdjustmentsRef.current);
-            console.log("Image adjustments saved for project:", projectId);
+            console.log('Image adjustments saved for project:', projectId);
           } catch (error) {
-            console.error("Failed to save image adjustments:", error);
+            console.error('Failed to save image adjustments:', error);
             onError?.(error as Error);
           }
         }, saveDebounceMs);
       } catch (error) {
-        console.error("Error saving image adjustments:", error);
+        console.error('Error saving image adjustments:', error);
         onError?.(error as Error);
       }
     },
-    [projectId, onSave, generateImageId, saveDebounceMs, onError],
+    [projectId, onSave, generateImageId, saveDebounceMs, onError]
   );
 
   /**
@@ -151,19 +151,19 @@ export const useAdjustmentsPersistence = (
 
         if (storedAdjustments) {
           console.log(
-            "Loaded adjustments for image:",
+            'Loaded adjustments for image:',
             imageId,
-            storedAdjustments.adjustments,
+            storedAdjustments.adjustments
           );
           return { ...storedAdjustments.adjustments };
         }
       } catch (error) {
-        console.warn("Error loading image adjustments:", error);
+        console.warn('Error loading image adjustments:', error);
       }
 
       return { ...DEFAULT_ADJUSTMENTS };
     },
-    [projectId, generateImageId],
+    [projectId, generateImageId]
   );
 
   /**
@@ -190,13 +190,13 @@ export const useAdjustmentsPersistence = (
 
         // Save updated data
         await onSave(projectId, projectAdjustmentsRef.current);
-        console.log("Removed adjustments for image:", imageId);
+        console.log('Removed adjustments for image:', imageId);
       } catch (error) {
-        console.error("Error removing image adjustments:", error);
+        console.error('Error removing image adjustments:', error);
         onError?.(error as Error);
       }
     },
-    [projectId, onSave, generateImageId, onError],
+    [projectId, onSave, generateImageId, onError]
   );
 
   /**
@@ -212,14 +212,14 @@ export const useAdjustmentsPersistence = (
       if (projectData) {
         projectAdjustmentsRef.current = projectData;
         console.log(
-          "Loaded project adjustments:",
+          'Loaded project adjustments:',
           projectId,
           Object.keys(projectData.images).length,
-          "images",
+          'images'
         );
       }
     } catch (error) {
-      console.error("Error loading project adjustments:", error);
+      console.error('Error loading project adjustments:', error);
       onError?.(error as Error);
     }
   }, [projectId, onLoad, onError]);
@@ -244,7 +244,7 @@ export const useAdjustmentsPersistence = (
       const imageId = generateImageId(imageObject);
       return imageId in projectAdjustmentsRef.current.images;
     },
-    [projectId, generateImageId],
+    [projectId, generateImageId]
   );
 
   /**
@@ -254,8 +254,8 @@ export const useAdjustmentsPersistence = (
     (
       applyFunction: (
         imageObject: FabricObject,
-        adjustments: ImageAdjustments,
-      ) => void,
+        adjustments: ImageAdjustments
+      ) => void
     ) => {
       if (!fabricCanvas) return;
 
@@ -272,7 +272,7 @@ export const useAdjustmentsPersistence = (
               const defaultValue =
                 DEFAULT_ADJUSTMENTS[key as keyof ImageAdjustments];
               return value !== defaultValue;
-            },
+            }
           );
 
           if (hasAdjustments) {
@@ -286,7 +286,7 @@ export const useAdjustmentsPersistence = (
         console.log(`Applied stored adjustments to ${appliedCount} images`);
       }
     },
-    [fabricCanvas, loadImageAdjustments],
+    [fabricCanvas, loadImageAdjustments]
   );
 
   // Load project data on mount

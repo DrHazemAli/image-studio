@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
+import React from 'react';
+import { motion } from 'framer-motion';
 import {
   Info,
   Github,
@@ -11,18 +11,18 @@ import {
   Star,
   Sliders,
   Globe,
-} from "lucide-react";
-import { config } from "@/lib/settings";
+} from 'lucide-react';
+import { config } from '@/lib/settings';
 
 export function AboutSettings() {
   const appConfig = {
-    name: "Azure Image Studio",
-    version: "1.0.1",
-    description: "AI-powered image generation and editing platform",
-    author: "Hazem Ali",
-    github: "https://github.com/DrHazemAli/azure-image-studio",
-    linkedin: "https://linkedin.com/in/hazemali",
-    website: "https://www.skytells.ai",
+    name: 'Azure Image Studio',
+    version: '1.0.1',
+    description: 'AI-powered image generation and editing platform',
+    author: 'Hazem Ali',
+    github: 'https://github.com/DrHazemAli/azure-image-studio',
+    linkedin: 'https://linkedin.com/in/hazemali',
+    website: 'https://www.skytells.ai',
   };
 
   return (
@@ -79,34 +79,34 @@ export function AboutSettings() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[
             {
-              icon: "🎨",
-              title: "AI Image Generation",
-              desc: "Create stunning images with DALL-E 3 and FLUX models",
+              icon: '🎨',
+              title: 'AI Image Generation',
+              desc: 'Create stunning images with DALL-E 3 and FLUX models',
             },
             {
-              icon: "✏️",
-              title: "Image Editing",
-              desc: "Edit and enhance your images with powerful tools",
+              icon: '✏️',
+              title: 'Image Editing',
+              desc: 'Edit and enhance your images with powerful tools',
             },
             {
-              icon: "🎭",
-              title: "Background Removal",
-              desc: "AI-powered background removal and replacement",
+              icon: '🎭',
+              title: 'Background Removal',
+              desc: 'AI-powered background removal and replacement',
             },
             {
-              icon: "⚡",
-              title: "Real-time Processing",
-              desc: "Fast and efficient image processing",
+              icon: '⚡',
+              title: 'Real-time Processing',
+              desc: 'Fast and efficient image processing',
             },
             {
-              icon: "🎨",
-              title: "Multiple Formats",
-              desc: "Support for PNG, JPEG, and other formats",
+              icon: '🎨',
+              title: 'Multiple Formats',
+              desc: 'Support for PNG, JPEG, and other formats',
             },
             {
-              icon: "🔧",
-              title: "Customizable",
-              desc: "Highly customizable interface and settings",
+              icon: '🔧',
+              title: 'Customizable',
+              desc: 'Highly customizable interface and settings',
             },
           ].map((feature, index) => (
             <motion.div
@@ -205,7 +205,7 @@ export function AboutSettings() {
             <div>
               <span className="text-gray-500 dark:text-gray-400">Theme:</span>
               <span className="ml-2 text-gray-900 dark:text-white capitalize">
-                {config("theme", "system")}
+                {config('theme', 'system')}
               </span>
             </div>
             <div>
@@ -213,7 +213,7 @@ export function AboutSettings() {
                 Auto-save:
               </span>
               <span className="ml-2 text-gray-900 dark:text-white">
-                {config("autoSave.enabled", true) ? "Enabled" : "Disabled"}
+                {config('autoSave.enabled', true) ? 'Enabled' : 'Disabled'}
               </span>
             </div>
             <div>
@@ -221,13 +221,13 @@ export function AboutSettings() {
                 Animations:
               </span>
               <span className="ml-2 text-gray-900 dark:text-white">
-                {config("ui.animations", true) ? "Enabled" : "Disabled"}
+                {config('ui.animations', true) ? 'Enabled' : 'Disabled'}
               </span>
             </div>
             <div>
               <span className="text-gray-500 dark:text-gray-400">Console:</span>
               <span className="ml-2 text-gray-900 dark:text-white">
-                {config("ui.showConsole", false) ? "Visible" : "Hidden"}
+                {config('ui.showConsole', false) ? 'Visible' : 'Hidden'}
               </span>
             </div>
           </div>

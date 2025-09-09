@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
-import { AzureImageProvider } from "@/lib/azure-provider";
-import { AzureConfig } from "@/types/azure";
-import azureConfigData from "../../config/azure-config.json";
+import { NextResponse } from 'next/server';
+import { AzureImageProvider } from '@/lib/azure-provider';
+import { AzureConfig } from '@/types/azure';
+import azureConfigData from '../../config/azure-config.json';
 
 export async function GET() {
   try {
@@ -9,13 +9,13 @@ export async function GET() {
     const config = azureConfigData as AzureConfig;
 
     // Check if API key exists
-    const hasApiKey = !!apiKey && apiKey !== "your-api-key-here";
+    const hasApiKey = !!apiKey && apiKey !== 'your-api-key-here';
 
     let configErrors: string[] = [];
 
     if (!hasApiKey) {
       configErrors.push(
-        "Azure API key not found. Please set AZURE_API_KEY environment variable in .env.local file.",
+        'Azure API key not found. Please set AZURE_API_KEY environment variable in .env.local file.'
       );
     } else {
       // Validate configuration only if API key exists
@@ -37,16 +37,16 @@ export async function GET() {
       isValid: configErrors.length === 0,
     });
   } catch (error) {
-    console.error("Config validation error:", error);
+    console.error('Config validation error:', error);
 
     return NextResponse.json(
       {
-        error: "Failed to validate configuration",
-        configErrors: ["Failed to load Azure configuration"],
+        error: 'Failed to validate configuration',
+        configErrors: ['Failed to load Azure configuration'],
         isValid: false,
         hasApiKey: false,
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

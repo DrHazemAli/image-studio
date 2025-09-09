@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
-import { LayersIcon } from "@radix-ui/react-icons";
-import { Button } from "@radix-ui/themes";
+import React from 'react';
+import { motion } from 'framer-motion';
+import { LayersIcon } from '@radix-ui/react-icons';
+import { Button } from '@radix-ui/themes';
 
 interface LayersToggleProps {
   showLayers: boolean;
@@ -21,7 +21,7 @@ export default function LayersToggle({
       className="absolute bottom-4 right-4"
     >
       <Button
-        variant={showLayers ? "solid" : "ghost"}
+        variant={showLayers ? 'solid' : 'ghost'}
         size="2"
         onClick={onToggleLayers}
         className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl shadow-lg border border-gray-200 dark:border-gray-800"

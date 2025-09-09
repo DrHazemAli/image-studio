@@ -8,7 +8,7 @@ export interface AppConfig {
     name: string;
     version: string;
     description: string;
-    environment: "development" | "production" | "staging";
+    environment: 'development' | 'production' | 'staging';
   };
 
   features: {
@@ -24,9 +24,9 @@ export interface AppConfig {
       defaultModel: string;
       models: BackgroundRemovalModel[];
       defaultSettings: {
-        quality: "standard" | "high";
+        quality: 'standard' | 'high';
         edgeRefinement: boolean;
-        transparencyMode: "full" | "soft";
+        transparencyMode: 'full' | 'soft';
         outputFormat: string;
       };
       advanced: {
@@ -59,16 +59,16 @@ export interface AppConfig {
 
   ui: {
     theme: {
-      default: "light" | "dark" | "system";
-      options: ("light" | "dark" | "system")[];
+      default: 'light' | 'dark' | 'system';
+      options: ('light' | 'dark' | 'system')[];
     };
     animations: {
       enabled: boolean;
-      duration: "fast" | "normal" | "slow";
+      duration: 'fast' | 'normal' | 'slow';
       easing: string;
     };
     toolbar: {
-      position: "left" | "right" | "top" | "bottom";
+      position: 'left' | 'right' | 'top' | 'bottom';
       collapsible: boolean;
       showShortcuts: boolean;
     };
@@ -95,7 +95,7 @@ export interface AppConfig {
       enableWebWorkers: boolean;
     };
     canvas: {
-      renderingMode: "webgl" | "canvas2d";
+      renderingMode: 'webgl' | 'canvas2d';
       enableImageCache: boolean;
       maxCacheSize: number;
     };
@@ -136,7 +136,7 @@ export interface AppConfig {
 
   debugging: {
     enableConsoleLogging: boolean;
-    logLevel: "debug" | "info" | "warn" | "error";
+    logLevel: 'debug' | 'info' | 'warn' | 'error';
     enablePerformanceMonitoring: boolean;
   };
 }
@@ -148,8 +148,8 @@ export interface BackgroundRemovalModel {
   description: string;
   capabilities: string[];
   recommended: boolean;
-  speed: "fast" | "medium" | "slow";
-  quality: "standard" | "high" | "premium";
+  speed: 'fast' | 'medium' | 'slow';
+  quality: 'standard' | 'high' | 'premium';
   requiresApproval?: boolean;
 }
 
@@ -192,7 +192,7 @@ export class AppConfigService {
   private static async fetchConfig(): Promise<AppConfig> {
     try {
       // In client-side, we'll fetch from the config endpoint
-      const response = await fetch("/api/app-config");
+      const response = await fetch('/api/app-config');
       if (!response.ok) {
         throw new Error(`Failed to load app config: ${response.statusText}`);
       }
@@ -200,7 +200,7 @@ export class AppConfigService {
       this.config = await response.json();
       return this.config!;
     } catch (error) {
-      console.error("Error loading app configuration:", error);
+      console.error('Error loading app configuration:', error);
 
       // Return default config as fallback
       return this.getDefaultConfig();
@@ -218,7 +218,7 @@ export class AppConfigService {
    * Get background removal configuration
    */
   static getBackgroundRemovalConfig():
-    | AppConfig["features"]["backgroundRemoval"]
+    | AppConfig['features']['backgroundRemoval']
     | null {
     return this.config?.features.backgroundRemoval || null;
   }
@@ -234,13 +234,13 @@ export class AppConfigService {
    * Get default background removal model
    */
   static getDefaultBackgroundRemovalModel(): string {
-    return this.config?.features.backgroundRemoval.defaultModel || "florence-2";
+    return this.config?.features.backgroundRemoval.defaultModel || 'florence-2';
   }
 
   /**
    * Check if a feature is enabled
    */
-  static isFeatureEnabled(feature: keyof AppConfig["features"]): boolean {
+  static isFeatureEnabled(feature: keyof AppConfig['features']): boolean {
     return this.config?.features[feature]?.enabled || false;
   }
 
@@ -250,10 +250,10 @@ export class AppConfigService {
   private static getDefaultConfig(): AppConfig {
     return {
       app: {
-        name: "Azure Image Studio",
-        version: "1.0.1",
-        description: "AI-powered image generation and editing platform",
-        environment: "development",
+        name: 'Azure Image Studio',
+        version: '1.0.1',
+        description: 'AI-powered image generation and editing platform',
+        environment: 'development',
       },
       features: {
         floatingImageToolbar: {
@@ -264,24 +264,24 @@ export class AppConfigService {
         },
         backgroundRemoval: {
           enabled: true,
-          defaultModel: "florence-2",
+          defaultModel: 'florence-2',
           models: [
             {
-              id: "florence-2",
-              name: "Florence 2.0",
-              provider: "Microsoft Azure",
+              id: 'florence-2',
+              name: 'Florence 2.0',
+              provider: 'Microsoft Azure',
               description: "Microsoft's advanced vision-language model",
-              capabilities: ["background-removal"],
+              capabilities: ['background-removal'],
               recommended: true,
-              speed: "fast",
-              quality: "high",
+              speed: 'fast',
+              quality: 'high',
             },
           ],
           defaultSettings: {
-            quality: "standard",
+            quality: 'standard',
             edgeRefinement: true,
-            transparencyMode: "full",
-            outputFormat: "png",
+            transparencyMode: 'full',
+            outputFormat: 'png',
           },
           advanced: {
             enableBatchProcessing: false,
@@ -292,9 +292,9 @@ export class AppConfigService {
         },
         imageGeneration: {
           enabled: true,
-          defaultModel: "FLUX.1-Kontext-pro",
-          defaultSize: "1024x1024",
-          defaultOutputFormat: "png",
+          defaultModel: 'FLUX.1-Kontext-pro',
+          defaultSize: '1024x1024',
+          defaultOutputFormat: 'png',
         },
         imageEditing: {
           enabled: true,
@@ -310,16 +310,16 @@ export class AppConfigService {
       },
       ui: {
         theme: {
-          default: "system",
-          options: ["light", "dark", "system"],
+          default: 'system',
+          options: ['light', 'dark', 'system'],
         },
         animations: {
           enabled: true,
-          duration: "normal",
-          easing: "ease-out",
+          duration: 'normal',
+          easing: 'ease-out',
         },
         toolbar: {
-          position: "left",
+          position: 'left',
           collapsible: true,
           showShortcuts: true,
         },
@@ -345,7 +345,7 @@ export class AppConfigService {
           enableWebWorkers: true,
         },
         canvas: {
-          renderingMode: "webgl",
+          renderingMode: 'webgl',
           enableImageCache: true,
           maxCacheSize: 100,
         },
@@ -358,7 +358,7 @@ export class AppConfigService {
       security: {
         fileUpload: {
           maxFileSize: 10485760,
-          allowedFormats: ["jpg", "jpeg", "png", "webp", "bmp"],
+          allowedFormats: ['jpg', 'jpeg', 'png', 'webp', 'bmp'],
           validateImageHeaders: true,
         },
         api: {
@@ -373,8 +373,8 @@ export class AppConfigService {
       integrations: {
         azure: {
           enabled: true,
-          configFile: "azure-config.json",
-          modelsFile: "azure-models.json",
+          configFile: 'azure-config.json',
+          modelsFile: 'azure-models.json',
         },
         analytics: {
           enabled: false,
@@ -383,7 +383,7 @@ export class AppConfigService {
       },
       debugging: {
         enableConsoleLogging: false,
-        logLevel: "info",
+        logLevel: 'info',
         enablePerformanceMonitoring: false,
       },
     };

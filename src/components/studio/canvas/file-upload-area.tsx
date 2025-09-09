@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React, { useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ZoomInIcon } from "@radix-ui/react-icons";
+import React, { useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ZoomInIcon } from '@radix-ui/react-icons';
 
 interface FileUploadAreaProps {
   onImageLoad?: (imageData: string) => void;
@@ -20,22 +20,22 @@ export default function FileUploadArea({
       const file = e.target.files?.[0];
       if (!file || !onImageLoad) return;
 
-      console.log("File selected:", file.name, file.type, file.size);
+      console.log('File selected:', file.name, file.type, file.size);
 
       const reader = new FileReader();
       reader.onload = (event) => {
         const result = event.target?.result as string;
         if (result) {
-          console.log("File read successfully, calling onImageLoad...");
+          console.log('File read successfully, calling onImageLoad...');
           onImageLoad(result);
         }
       };
       reader.readAsDataURL(file);
 
       // Clear the input to allow selecting the same file again
-      e.target.value = "";
+      e.target.value = '';
     },
-    [onImageLoad, isLoadingImage],
+    [onImageLoad, isLoadingImage]
   );
 
   return (

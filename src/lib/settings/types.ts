@@ -2,7 +2,7 @@
  * Laravel-style config system types
  */
 
-export type StorageType = "localStorage" | "cookies" | "sessionStorage";
+export type StorageType = 'localStorage' | 'cookies' | 'sessionStorage';
 
 export interface ConfigOptions {
   storage?: StorageType;
@@ -33,13 +33,13 @@ export interface ConfigManager {
     key: string,
     defaultValue?: any,
     storage?: StorageType,
-    encrypted?: boolean,
+    encrypted?: boolean
   ): any;
   set(
     key: string,
     value: any,
     storage?: StorageType,
-    encrypted?: boolean,
+    encrypted?: boolean
   ): void;
   has(key: string, storage?: StorageType): boolean;
   remove(key: string, storage?: StorageType): void;

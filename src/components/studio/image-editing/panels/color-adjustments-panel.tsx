@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React, { useState, useCallback, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Canvas as FabricCanvas, FabricObject } from "fabric";
-import * as Collapsible from "@radix-ui/react-collapsible";
-import { Button } from "@radix-ui/themes";
+import React, { useState, useCallback, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Canvas as FabricCanvas, FabricObject } from 'fabric';
+import * as Collapsible from '@radix-ui/react-collapsible';
+import { Button } from '@radix-ui/themes';
 import {
   ColorWheelIcon,
   SunIcon,
@@ -16,17 +16,17 @@ import {
   MagicWandIcon,
   TargetIcon,
   ImageIcon,
-} from "@radix-ui/react-icons";
+} from '@radix-ui/react-icons';
 
 // Import our components
-import { SlidingPanel } from "./sliding-panel";
-import { AdjustmentSlider } from "../controls/adjustment-slider";
-import { ImagePreview } from "../controls/image-preview";
+import { SlidingPanel } from './sliding-panel';
+import { AdjustmentSlider } from '../controls/adjustment-slider';
+import { ImagePreview } from '../controls/image-preview';
 import {
   useRealTimePreview,
   ImageAdjustments,
   DEFAULT_ADJUSTMENTS,
-} from "../hooks/use-real-time-preview";
+} from '../hooks/use-real-time-preview';
 
 /**
  * Props interface for the ColorAdjustmentsPanel component
@@ -54,7 +54,7 @@ interface AdjustmentPreset {
   icon: React.ReactNode;
   description: string;
   adjustments: Partial<ImageAdjustments>;
-  category: "enhancement" | "correction" | "creative";
+  category: 'enhancement' | 'correction' | 'creative';
 }
 
 /**
@@ -62,10 +62,10 @@ interface AdjustmentPreset {
  */
 const ADJUSTMENT_PRESETS: AdjustmentPreset[] = [
   {
-    id: "auto-enhance",
-    name: "Auto Enhance",
+    id: 'auto-enhance',
+    name: 'Auto Enhance',
     icon: <MagicWandIcon className="w-4 h-4" />,
-    description: "Automatic color and exposure correction",
+    description: 'Automatic color and exposure correction',
     adjustments: {
       brightness: 10,
       contrast: 15,
@@ -73,13 +73,13 @@ const ADJUSTMENT_PRESETS: AdjustmentPreset[] = [
       vibrance: 12,
       clarity: 10,
     },
-    category: "enhancement",
+    category: 'enhancement',
   },
   {
-    id: "portrait",
-    name: "Portrait",
+    id: 'portrait',
+    name: 'Portrait',
     icon: <EyeOpenIcon className="w-4 h-4" />,
-    description: "Optimized for skin tones and portraits",
+    description: 'Optimized for skin tones and portraits',
     adjustments: {
       brightness: 5,
       contrast: 8,
@@ -88,13 +88,13 @@ const ADJUSTMENT_PRESETS: AdjustmentPreset[] = [
       sharpness: 20,
       temperature: 10,
     },
-    category: "enhancement",
+    category: 'enhancement',
   },
   {
-    id: "landscape",
-    name: "Landscape",
+    id: 'landscape',
+    name: 'Landscape',
     icon: <ImageIcon className="w-4 h-4" />,
-    description: "Enhanced colors and clarity for landscapes",
+    description: 'Enhanced colors and clarity for landscapes',
     adjustments: {
       contrast: 20,
       saturation: 15,
@@ -102,26 +102,26 @@ const ADJUSTMENT_PRESETS: AdjustmentPreset[] = [
       clarity: 25,
       sharpness: 15,
     },
-    category: "enhancement",
+    category: 'enhancement',
   },
   {
-    id: "fix-exposure",
-    name: "Fix Exposure",
+    id: 'fix-exposure',
+    name: 'Fix Exposure',
     icon: <SunIcon className="w-4 h-4" />,
-    description: "Correct over/under exposed images",
+    description: 'Correct over/under exposed images',
     adjustments: {
       exposure: 15,
       highlights: -25,
       shadows: 30,
       brightness: 8,
     },
-    category: "correction",
+    category: 'correction',
   },
   {
-    id: "moody",
-    name: "Moody",
+    id: 'moody',
+    name: 'Moody',
     icon: <TargetIcon className="w-4 h-4" />,
-    description: "Dark, atmospheric look",
+    description: 'Dark, atmospheric look',
     adjustments: {
       brightness: -15,
       contrast: 25,
@@ -130,7 +130,7 @@ const ADJUSTMENT_PRESETS: AdjustmentPreset[] = [
       vignette: 40,
       clarity: 20,
     },
-    category: "creative",
+    category: 'creative',
   },
 ];
 
@@ -147,11 +147,11 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
   onResetAdjustments,
 }) => {
   // State
-  const [selectedPreset, setSelectedPreset] = useState<string>("original");
+  const [selectedPreset, setSelectedPreset] = useState<string>('original');
   const [currentAdjustments, setCurrentAdjustments] =
     useState<ImageAdjustments>(DEFAULT_ADJUSTMENTS);
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
-    new Set(["basic", "light"]),
+    new Set(['basic', 'light'])
   );
   const [showBeforeAfter, setShowBeforeAfter] = useState(false);
 
@@ -164,7 +164,7 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
   } = useRealTimePreview(fabricCanvas, selectedImage, {
     debounceMs: 16, // 60fps for smooth real-time editing
     showProcessingIndicator: true,
-    onError: (error) => console.error("Preview error:", error),
+    onError: (error) => console.error('Preview error:', error),
   });
 
   // Handle preset selection
@@ -175,7 +175,7 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
       setCurrentAdjustments(newAdjustments);
       applyAdjustments(newAdjustments, false);
     },
-    [applyAdjustments],
+    [applyAdjustments]
   );
 
   // Handle individual adjustment changes
@@ -186,11 +186,11 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
       applyAdjustments(newAdjustments, false);
 
       // Clear preset selection if manually adjusting
-      if (selectedPreset !== "custom") {
-        setSelectedPreset("custom");
+      if (selectedPreset !== 'custom') {
+        setSelectedPreset('custom');
       }
     },
-    [currentAdjustments, applyAdjustments, selectedPreset],
+    [currentAdjustments, applyAdjustments, selectedPreset]
   );
 
   // Handle section expand/collapse
@@ -208,7 +208,7 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
 
   // Handle reset all
   const handleResetAll = useCallback(() => {
-    setSelectedPreset("original");
+    setSelectedPreset('original');
     setCurrentAdjustments(DEFAULT_ADJUSTMENTS);
     resetAdjustments();
     onResetAdjustments?.();
@@ -247,7 +247,7 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
     ([key, value]) => {
       const defaultValue = DEFAULT_ADJUSTMENTS[key as keyof ImageAdjustments];
       return value !== defaultValue;
-    },
+    }
   );
 
   // Footer actions
@@ -262,7 +262,7 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
           disabled={isProcessing}
           className="w-full"
         >
-          {showBeforeAfter ? "Show After" : "Show Before"}
+          {showBeforeAfter ? 'Show After' : 'Show Before'}
         </Button>
       )}
 
@@ -324,15 +324,15 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                   p-3 rounded-xl border-2 transition-all text-left
                   ${
                     selectedPreset === preset.id
-                      ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
-                      : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
+                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
                   }
                   ${
-                    preset.category === "enhancement"
-                      ? "bg-green-50 dark:bg-green-900/10"
-                      : preset.category === "correction"
-                        ? "bg-orange-50 dark:bg-orange-900/10"
-                        : "bg-purple-50 dark:bg-purple-900/10"
+                    preset.category === 'enhancement'
+                      ? 'bg-green-50 dark:bg-green-900/10'
+                      : preset.category === 'correction'
+                        ? 'bg-orange-50 dark:bg-orange-900/10'
+                        : 'bg-purple-50 dark:bg-purple-900/10'
                   }
                 `}
                   whileHover={{ scale: 1.02 }}
@@ -351,11 +351,11 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                           className={`
                         px-2 py-0.5 text-xs rounded-full
                         ${
-                          preset.category === "enhancement"
-                            ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
-                            : preset.category === "correction"
-                              ? "bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300"
-                              : "bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300"
+                          preset.category === 'enhancement'
+                            ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
+                            : preset.category === 'correction'
+                              ? 'bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300'
+                              : 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300'
                         }
                       `}
                         >
@@ -380,8 +380,8 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
 
             {/* Basic Adjustments Section */}
             <Collapsible.Root
-              open={expandedSections.has("basic")}
-              onOpenChange={() => toggleSection("basic")}
+              open={expandedSections.has('basic')}
+              onOpenChange={() => toggleSection('basic')}
             >
               <Collapsible.Trigger asChild>
                 <button className="flex items-center justify-between w-full p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
@@ -391,7 +391,7 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                       Basic
                     </span>
                   </div>
-                  {expandedSections.has("basic") ? (
+                  {expandedSections.has('basic') ? (
                     <ChevronDownIcon className="w-4 h-4 text-gray-500" />
                   ) : (
                     <ChevronRightIcon className="w-4 h-4 text-gray-500" />
@@ -399,11 +399,11 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                 </button>
               </Collapsible.Trigger>
               <AnimatePresence>
-                {expandedSections.has("basic") && (
+                {expandedSections.has('basic') && (
                   <Collapsible.Content asChild forceMount>
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
+                      animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.2 }}
                       className="overflow-hidden"
@@ -413,7 +413,7 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                           label="Exposure"
                           value={currentAdjustments.exposure}
                           onChange={(value) =>
-                            handleAdjustmentChange("exposure", value)
+                            handleAdjustmentChange('exposure', value)
                           }
                           min={-200}
                           max={200}
@@ -423,14 +423,14 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                           color="orange"
                           description="Adjust overall image brightness"
                           formatValue={(value) =>
-                            `${value > 0 ? "+" : ""}${(value / 100).toFixed(1)} stop`
+                            `${value > 0 ? '+' : ''}${(value / 100).toFixed(1)} stop`
                           }
                         />
                         <AdjustmentSlider
                           label="Brightness"
                           value={currentAdjustments.brightness}
                           onChange={(value) =>
-                            handleAdjustmentChange("brightness", value)
+                            handleAdjustmentChange('brightness', value)
                           }
                           min={-100}
                           max={100}
@@ -443,7 +443,7 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                           label="Contrast"
                           value={currentAdjustments.contrast}
                           onChange={(value) =>
-                            handleAdjustmentChange("contrast", value)
+                            handleAdjustmentChange('contrast', value)
                           }
                           min={-100}
                           max={100}
@@ -461,8 +461,8 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
 
             {/* Light Section */}
             <Collapsible.Root
-              open={expandedSections.has("light")}
-              onOpenChange={() => toggleSection("light")}
+              open={expandedSections.has('light')}
+              onOpenChange={() => toggleSection('light')}
             >
               <Collapsible.Trigger asChild>
                 <button className="flex items-center justify-between w-full p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
@@ -472,7 +472,7 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                       Light
                     </span>
                   </div>
-                  {expandedSections.has("light") ? (
+                  {expandedSections.has('light') ? (
                     <ChevronDownIcon className="w-4 h-4 text-gray-500" />
                   ) : (
                     <ChevronRightIcon className="w-4 h-4 text-gray-500" />
@@ -480,11 +480,11 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                 </button>
               </Collapsible.Trigger>
               <AnimatePresence>
-                {expandedSections.has("light") && (
+                {expandedSections.has('light') && (
                   <Collapsible.Content asChild forceMount>
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
+                      animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.2 }}
                       className="overflow-hidden"
@@ -494,7 +494,7 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                           label="Highlights"
                           value={currentAdjustments.highlights}
                           onChange={(value) =>
-                            handleAdjustmentChange("highlights", value)
+                            handleAdjustmentChange('highlights', value)
                           }
                           min={-100}
                           max={100}
@@ -507,7 +507,7 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                           label="Shadows"
                           value={currentAdjustments.shadows}
                           onChange={(value) =>
-                            handleAdjustmentChange("shadows", value)
+                            handleAdjustmentChange('shadows', value)
                           }
                           min={-100}
                           max={100}
@@ -520,7 +520,7 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                           label="Whites"
                           value={currentAdjustments.whites}
                           onChange={(value) =>
-                            handleAdjustmentChange("whites", value)
+                            handleAdjustmentChange('whites', value)
                           }
                           min={-100}
                           max={100}
@@ -533,7 +533,7 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                           label="Blacks"
                           value={currentAdjustments.blacks}
                           onChange={(value) =>
-                            handleAdjustmentChange("blacks", value)
+                            handleAdjustmentChange('blacks', value)
                           }
                           min={-100}
                           max={100}
@@ -551,8 +551,8 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
 
             {/* Color Section */}
             <Collapsible.Root
-              open={expandedSections.has("color")}
-              onOpenChange={() => toggleSection("color")}
+              open={expandedSections.has('color')}
+              onOpenChange={() => toggleSection('color')}
             >
               <Collapsible.Trigger asChild>
                 <button className="flex items-center justify-between w-full p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
@@ -562,7 +562,7 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                       Color
                     </span>
                   </div>
-                  {expandedSections.has("color") ? (
+                  {expandedSections.has('color') ? (
                     <ChevronDownIcon className="w-4 h-4 text-gray-500" />
                   ) : (
                     <ChevronRightIcon className="w-4 h-4 text-gray-500" />
@@ -570,11 +570,11 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                 </button>
               </Collapsible.Trigger>
               <AnimatePresence>
-                {expandedSections.has("color") && (
+                {expandedSections.has('color') && (
                   <Collapsible.Content asChild forceMount>
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
+                      animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.2 }}
                       className="overflow-hidden"
@@ -584,7 +584,7 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                           label="Temperature"
                           value={currentAdjustments.temperature}
                           onChange={(value) =>
-                            handleAdjustmentChange("temperature", value)
+                            handleAdjustmentChange('temperature', value)
                           }
                           min={-100}
                           max={100}
@@ -593,16 +593,16 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                           color="orange"
                           description="Adjust warm/cool color balance"
                           marks={[
-                            { value: -100, label: "Cool" },
-                            { value: 0, label: "Auto" },
-                            { value: 100, label: "Warm" },
+                            { value: -100, label: 'Cool' },
+                            { value: 0, label: 'Auto' },
+                            { value: 100, label: 'Warm' },
                           ]}
                         />
                         <AdjustmentSlider
                           label="Tint"
                           value={currentAdjustments.tint}
                           onChange={(value) =>
-                            handleAdjustmentChange("tint", value)
+                            handleAdjustmentChange('tint', value)
                           }
                           min={-100}
                           max={100}
@@ -611,16 +611,16 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                           color="green"
                           description="Adjust green/magenta color balance"
                           marks={[
-                            { value: -100, label: "Green" },
-                            { value: 0, label: "Auto" },
-                            { value: 100, label: "Magenta" },
+                            { value: -100, label: 'Green' },
+                            { value: 0, label: 'Auto' },
+                            { value: 100, label: 'Magenta' },
                           ]}
                         />
                         <AdjustmentSlider
                           label="Saturation"
                           value={currentAdjustments.saturation}
                           onChange={(value) =>
-                            handleAdjustmentChange("saturation", value)
+                            handleAdjustmentChange('saturation', value)
                           }
                           min={-100}
                           max={100}
@@ -633,7 +633,7 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                           label="Vibrance"
                           value={currentAdjustments.vibrance}
                           onChange={(value) =>
-                            handleAdjustmentChange("vibrance", value)
+                            handleAdjustmentChange('vibrance', value)
                           }
                           min={-100}
                           max={100}
@@ -651,8 +651,8 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
 
             {/* Detail Section */}
             <Collapsible.Root
-              open={expandedSections.has("detail")}
-              onOpenChange={() => toggleSection("detail")}
+              open={expandedSections.has('detail')}
+              onOpenChange={() => toggleSection('detail')}
             >
               <Collapsible.Trigger asChild>
                 <button className="flex items-center justify-between w-full p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
@@ -662,7 +662,7 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                       Detail
                     </span>
                   </div>
-                  {expandedSections.has("detail") ? (
+                  {expandedSections.has('detail') ? (
                     <ChevronDownIcon className="w-4 h-4 text-gray-500" />
                   ) : (
                     <ChevronRightIcon className="w-4 h-4 text-gray-500" />
@@ -670,11 +670,11 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                 </button>
               </Collapsible.Trigger>
               <AnimatePresence>
-                {expandedSections.has("detail") && (
+                {expandedSections.has('detail') && (
                   <Collapsible.Content asChild forceMount>
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
+                      animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.2 }}
                       className="overflow-hidden"
@@ -684,7 +684,7 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                           label="Sharpness"
                           value={currentAdjustments.sharpness}
                           onChange={(value) =>
-                            handleAdjustmentChange("sharpness", value)
+                            handleAdjustmentChange('sharpness', value)
                           }
                           min={0}
                           max={100}
@@ -697,7 +697,7 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                           label="Clarity"
                           value={currentAdjustments.clarity}
                           onChange={(value) =>
-                            handleAdjustmentChange("clarity", value)
+                            handleAdjustmentChange('clarity', value)
                           }
                           min={-100}
                           max={100}
@@ -710,7 +710,7 @@ export const ColorAdjustmentsPanel: React.FC<ColorAdjustmentsPanelProps> = ({
                           label="Denoise"
                           value={currentAdjustments.denoise}
                           onChange={(value) =>
-                            handleAdjustmentChange("denoise", value)
+                            handleAdjustmentChange('denoise', value)
                           }
                           min={0}
                           max={100}

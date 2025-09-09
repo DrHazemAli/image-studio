@@ -1,40 +1,40 @@
-"use client";
+'use client';
 
-import { useState, useCallback, useEffect, useRef } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { Theme } from "@radix-ui/themes";
-import { Toolbar, Tool } from "@/components/studio/toolbar";
-import { Canvas } from "@/components/studio/canvas";
-import { type MainCanvasRef } from "@/components/studio/canvas/main-canvas";
-import EnhancedPromptBox from "@/components/studio/enhanced-prompt-box";
+import { useState, useCallback, useEffect, useRef } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
+import { Theme } from '@radix-ui/themes';
+import { Toolbar, Tool } from '@/components/studio/toolbar';
+import { Canvas } from '@/components/studio/canvas';
+import { type MainCanvasRef } from '@/components/studio/canvas/main-canvas';
+import EnhancedPromptBox from '@/components/studio/enhanced-prompt-box';
 import {
   GenerationPanel,
   AssetsPanel,
   HistoryPanel,
-} from "@/components/studio/panels";
-import { ConsoleSidebar } from "@/components/ui/console-sidebar";
+} from '@/components/studio/panels';
+import { ConsoleSidebar } from '@/components/ui/console-sidebar';
 import {
   SizeModal,
   ErrorNotification,
   AboutModal,
   ShortcutsModal,
-} from "@/components/modals";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { SettingsDialog } from "@/components/settings";
-import { SyncManager } from "@/components/studio/sync-manager";
-import { StudioLoading } from "@/components/studio/studio-loading";
-import { MenuBar, MenuProvider } from "@/components/studio/menu-bar";
-import type { ModelInfo } from "@/app/api/models/route";
+} from '@/components/modals';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { SettingsDialog } from '@/components/settings';
+import { SyncManager } from '@/components/studio/sync-manager';
+import { StudioLoading } from '@/components/studio/studio-loading';
+import { MenuBar, MenuProvider } from '@/components/studio/menu-bar';
+import type { ModelInfo } from '@/app/api/models/route';
 import {
   dbManager,
   type Asset,
   type HistoryEntry,
   type Project,
-} from "@/lib/indexeddb";
-import { ProjectManager } from "@/lib/project-manager";
-import { syncHelper } from "@/lib/sync-helper";
-import { ZOOM_CONSTANTS, CANVAS_CONSTANTS } from "@/lib/constants";
+} from '@/lib/indexeddb';
+import { ProjectManager } from '@/lib/project-manager';
+import { syncHelper } from '@/lib/sync-helper';
+import { ZOOM_CONSTANTS, CANVAS_CONSTANTS } from '@/lib/constants';
 import {
   DownloadIcon,
   UploadIcon,
@@ -44,9 +44,9 @@ import {
   GitHubLogoIcon,
   LinkedInLogoIcon,
   GearIcon,
-} from "@radix-ui/react-icons";
-import { Code } from "lucide-react";
-import appConfig from "@/app/config/app-config.json";
+} from '@radix-ui/react-icons';
+import { Code } from 'lucide-react';
+import appConfig from '@/app/config/app-config.json';
 
 interface GenerationParams {
   prompt: string;
@@ -65,7 +65,7 @@ export default function ProjectStudioPage() {
   const projectId = params.projectId as string;
 
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTool, setActiveTool] = useState<Tool>("select");
+  const [activeTool, setActiveTool] = useState<Tool>('select');
   const [showGenerationPanel, setShowGenerationPanel] = useState(false);
   const [showPromptBox, setShowPromptBox] = useState(true);
   const [showAssetsPanel, setShowAssetsPanel] = useState(false);
@@ -77,13 +77,13 @@ export default function ProjectStudioPage() {
   const [generationProgress, setGenerationProgress] = useState(0);
   const [requestLog, setRequestLog] = useState<unknown>(null);
   const [responseLog, setResponseLog] = useState<unknown>(null);
-  const [projectName, setProjectName] = useState("Untitled Project");
+  const [projectName, setProjectName] = useState('Untitled Project');
   const [isEditingProjectName, setIsEditingProjectName] = useState(false);
-  const [tempProjectName, setTempProjectName] = useState("Untitled Project");
+  const [tempProjectName, setTempProjectName] = useState('Untitled Project');
   const [error, setError] = useState<string | null>(null);
-  const [currentModel, setCurrentModel] = useState("flux-kontext-pro");
+  const [currentModel, setCurrentModel] = useState('flux-kontext-pro');
   const [isInpaintMode, setIsInpaintMode] = useState(false);
-  const [currentSize, setCurrentSize] = useState("1024x1024");
+  const [currentSize, setCurrentSize] = useState('1024x1024');
   const [showSizeModal, setShowSizeModal] = useState(false);
   const [attachedImage, setAttachedImage] = useState<string | null>(null);
   const [models, setModels] = useState<ModelInfo[]>([]);
@@ -107,16 +107,16 @@ export default function ProjectStudioPage() {
 
   // Auto-save functionality
   const [autoSave, setAutoSave] = useState(() => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("auto-save-enabled");
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('auto-save-enabled');
       return stored !== null ? JSON.parse(stored) : true; // Default to enabled
     }
     return true;
   });
   // Auto-save duration settings
   const [autoSaveDuration, setAutoSaveDuration] = useState(() => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("auto-save-duration");
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('auto-save-duration');
       return stored ? parseInt(stored) : 3; // Default to 3 seconds
     }
     return 3;
@@ -128,15 +128,15 @@ export default function ProjectStudioPage() {
   const toggleAutoSave = useCallback(() => {
     const newAutoSave = !autoSave;
     setAutoSave(newAutoSave);
-    localStorage.setItem("auto-save-enabled", JSON.stringify(newAutoSave));
+    localStorage.setItem('auto-save-enabled', JSON.stringify(newAutoSave));
 
     // Update sync helper
     syncHelper.setEnabled(newAutoSave);
 
     if (newAutoSave) {
-      console.log("Auto-save enabled");
+      console.log('Auto-save enabled');
     } else {
-      console.log("Auto-save disabled");
+      console.log('Auto-save disabled');
       syncHelper.cancelSync(); // Cancel any pending auto-save
     }
   }, [autoSave]);
@@ -144,7 +144,7 @@ export default function ProjectStudioPage() {
   // Duration control for auto-save
   const updateAutoSaveDuration = useCallback((duration: number) => {
     setAutoSaveDuration(duration);
-    localStorage.setItem("auto-save-duration", duration.toString());
+    localStorage.setItem('auto-save-duration', duration.toString());
     syncHelper.setDuration(duration);
   }, []);
 
@@ -152,16 +152,16 @@ export default function ProjectStudioPage() {
   const updatePageTitle = useCallback(
     (projectNameParam?: string) => {
       const name = projectNameParam || projectName;
-      if (name && name !== "Untitled Project") {
+      if (name && name !== 'Untitled Project') {
         const newTitle = `${name} - ${appConfig.app.name}`;
         document.title = newTitle;
-        console.log("Page title updated to:", newTitle);
+        console.log('Page title updated to:', newTitle);
       } else {
         document.title = appConfig.app.name;
-        console.log("Page title updated to:", appConfig.app.name);
+        console.log('Page title updated to:', appConfig.app.name);
       }
     },
-    [projectName],
+    [projectName]
   );
 
   // Update page title when projectName state changes (additional safety)
@@ -219,9 +219,9 @@ export default function ProjectStudioPage() {
             // Update page title with project name
             updatePageTitle(project.name);
           } else {
-            setError("Project not found");
+            setError('Project not found');
             // Redirect to studio without project ID
-            router.push("/studio");
+            router.push('/studio');
             return;
           }
         } else {
@@ -229,18 +229,18 @@ export default function ProjectStudioPage() {
           const userId = appConfig.admin.user_id;
           const newProject = await ProjectManager.createProject(
             userId,
-            "Untitled Project",
+            'Untitled Project',
             undefined,
             {
-              currentModel: "FLUX.1-Kontext-pro",
-              currentSize: "1024x1024",
+              currentModel: 'FLUX.1-Kontext-pro',
+              currentSize: '1024x1024',
               isInpaintMode: false,
             },
             {
               currentImage: null,
               generatedImage: null,
               attachedImage: null,
-            },
+            }
           );
           setCurrentProject(newProject);
           // Redirect to the new project
@@ -248,8 +248,8 @@ export default function ProjectStudioPage() {
           return;
         }
       } catch (error) {
-        console.error("Failed to load project:", error);
-        setError("Failed to load project");
+        console.error('Failed to load project:', error);
+        setError('Failed to load project');
       } finally {
         setIsLoading(false);
       }
@@ -282,8 +282,8 @@ export default function ProjectStudioPage() {
       await ProjectManager.saveProject(updatedProject);
       setCurrentProject(updatedProject);
     } catch (error) {
-      console.error("Failed to save project:", error);
-      setError("Failed to save project");
+      console.error('Failed to save project:', error);
+      setError('Failed to save project');
     }
   }, [
     currentProject,
@@ -324,21 +324,21 @@ export default function ProjectStudioPage() {
 
     // Handle panel opening for different tools
     switch (tool) {
-      case "generate":
+      case 'generate':
         setShowPromptBox(true);
         setIsInpaintMode(false);
         break;
-      case "inpaint":
+      case 'inpaint':
         setShowPromptBox(true);
         setIsInpaintMode(true);
         break;
-      case "assets":
+      case 'assets':
         setShowAssetsPanel(true);
         break;
-      case "history":
+      case 'history':
         setShowHistoryPanel(true);
         break;
-      case "prompt":
+      case 'prompt':
         setShowPromptBox((prev) => !prev);
         break;
     }
@@ -361,7 +361,7 @@ export default function ProjectStudioPage() {
       return newHistory.slice(-CANVAS_CONSTANTS.MAX_HISTORY_STATES);
     });
     setHistoryIndex((prev) =>
-      Math.min(prev + 1, CANVAS_CONSTANTS.MAX_HISTORY_STATES - 1),
+      Math.min(prev + 1, CANVAS_CONSTANTS.MAX_HISTORY_STATES - 1)
     );
   }, [currentImage, generatedImage, attachedImage, zoom, historyIndex]);
 
@@ -378,7 +378,7 @@ export default function ProjectStudioPage() {
       };
       reader.readAsDataURL(file);
     },
-    [saveToHistory],
+    [saveToHistory]
   );
 
   // Fetch models on component mount (only once)
@@ -388,7 +388,7 @@ export default function ProjectStudioPage() {
       if (modelsFetched) return; // Prevent multiple fetches
 
       try {
-        const response = await fetch("/api/models");
+        const response = await fetch('/api/models');
         const data = await response.json();
         setModels(data.models);
 
@@ -399,11 +399,11 @@ export default function ProjectStudioPage() {
         }
         setModelsFetched(true);
       } catch (error) {
-        console.error("Failed to fetch models:", error);
+        console.error('Failed to fetch models:', error);
         // Fallback to default values if API fails
         if (!currentProject && !currentModel) {
-          setCurrentModel("FLUX.1-Kontext-pro");
-          setCurrentSize("1024x1024");
+          setCurrentModel('FLUX.1-Kontext-pro');
+          setCurrentSize('1024x1024');
         }
         setModelsFetched(true);
       }
@@ -418,7 +418,7 @@ export default function ProjectStudioPage() {
       const model = models.find((m) => m.id === modelId);
       return model ? model.name : modelId;
     },
-    [models],
+    [models]
   );
 
   // Memoized error dismiss handler to prevent unnecessary rerenders
@@ -482,8 +482,8 @@ export default function ProjectStudioPage() {
           await ProjectManager.saveProject(updatedProject);
           setCurrentProject(updatedProject);
         } catch (error) {
-          console.error("Failed to save project name:", error);
-          setError("Failed to save project name");
+          console.error('Failed to save project name:', error);
+          setError('Failed to save project name');
         }
       }
     }
@@ -497,13 +497,13 @@ export default function ProjectStudioPage() {
 
   const handleProjectNameKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      if (e.key === "Enter") {
+      if (e.key === 'Enter') {
         handleProjectNameSave();
-      } else if (e.key === "Escape") {
+      } else if (e.key === 'Escape') {
         handleProjectNameCancel();
       }
     },
-    [handleProjectNameSave, handleProjectNameCancel],
+    [handleProjectNameSave, handleProjectNameCancel]
   );
 
   // Menu bar handlers
@@ -512,42 +512,42 @@ export default function ProjectStudioPage() {
       const userId = appConfig.admin.user_id;
       const newProject = await ProjectManager.createProject(
         userId,
-        "Untitled Project",
+        'Untitled Project',
         undefined,
         {
-          currentModel: "FLUX.1-Kontext-pro",
-          currentSize: "1024x1024",
+          currentModel: 'FLUX.1-Kontext-pro',
+          currentSize: '1024x1024',
           isInpaintMode: false,
         },
         {
           currentImage: null,
           generatedImage: null,
           attachedImage: null,
-        },
+        }
       );
 
       // Redirect to new project
       router.push(`/studio/${newProject.id}`);
     } catch (error) {
-      console.error("Failed to create new project:", error);
-      setError("Failed to create new project");
+      console.error('Failed to create new project:', error);
+      setError('Failed to create new project');
     }
   }, [router]);
 
   const handleClose = useCallback(() => {
     // In a real app, this would close the window/tab
-    console.log("Close application");
+    console.log('Close application');
   }, []);
 
   const handleZoomIn = useCallback(() => {
     setZoom((prev) =>
-      Math.min(prev + ZOOM_CONSTANTS.ZOOM_STEP, ZOOM_CONSTANTS.MAX_ZOOM),
+      Math.min(prev + ZOOM_CONSTANTS.ZOOM_STEP, ZOOM_CONSTANTS.MAX_ZOOM)
     );
   }, []);
 
   const handleZoomOut = useCallback(() => {
     setZoom((prev) =>
-      Math.max(prev - ZOOM_CONSTANTS.ZOOM_STEP, ZOOM_CONSTANTS.MIN_ZOOM),
+      Math.max(prev - ZOOM_CONSTANTS.ZOOM_STEP, ZOOM_CONSTANTS.MIN_ZOOM)
     );
   }, []);
 
@@ -603,26 +603,26 @@ export default function ProjectStudioPage() {
   }, []);
 
   const handleShowDocumentation = useCallback(() => {
-    window.open("https://github.com/DrHazemAli/azure-image-studio", "_blank");
+    window.open('https://github.com/DrHazemAli/azure-image-studio', '_blank');
   }, []);
 
   const handleShowGitHub = useCallback(() => {
-    window.open("https://github.com/DrHazemAli/azure-image-studio", "_blank");
+    window.open('https://github.com/DrHazemAli/azure-image-studio', '_blank');
   }, []);
 
   const handleShowSupport = useCallback(() => {
     window.open(
-      "https://github.com/DrHazemAli/azure-image-studio/issues",
-      "_blank",
+      'https://github.com/DrHazemAli/azure-image-studio/issues',
+      '_blank'
     );
   }, []);
 
   // Insert menu handlers
   const handleInsertImage = useCallback(() => {
     // Trigger file upload for image
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/*";
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
     input.onchange = (event) => {
       const file = (event.target as HTMLInputElement).files?.[0];
       if (file) {
@@ -642,35 +642,35 @@ export default function ProjectStudioPage() {
 
   const handleInsertLayer = useCallback(() => {
     // Create a new layer - for now just show a notification
-    console.log("Insert new layer");
+    console.log('Insert new layer');
     // TODO: Implement layer creation logic
   }, []);
 
   const handleInsertText = useCallback(() => {
     // Switch to text tool
-    setActiveTool("text");
+    setActiveTool('text');
   }, []);
 
   const handleInsertShape = useCallback(() => {
     // Switch to shape tool
-    setActiveTool("shape");
+    setActiveTool('shape');
   }, []);
 
   const handleInsertRectangle = useCallback(() => {
     // Switch to shape tool and set rectangle mode
-    setActiveTool("shape");
+    setActiveTool('shape');
     // TODO: Set specific shape mode to rectangle
   }, []);
 
   const handleInsertCircle = useCallback(() => {
     // Switch to shape tool and set circle mode
-    setActiveTool("shape");
+    setActiveTool('shape');
     // TODO: Set specific shape mode to circle
   }, []);
 
   const handleInsertLine = useCallback(() => {
     // Switch to shape tool and set line mode
-    setActiveTool("shape");
+    setActiveTool('shape');
     // TODO: Set specific shape mode to line
   }, []);
 
@@ -683,8 +683,8 @@ export default function ProjectStudioPage() {
         await ProjectManager.exportProjectFromDB(currentProject);
       ProjectManager.downloadProject(projectData);
     } catch (error) {
-      console.error("Export failed:", error);
-      setError("Failed to export project");
+      console.error('Export failed:', error);
+      setError('Failed to export project');
     }
   }, [currentProject]);
 
@@ -694,9 +694,9 @@ export default function ProjectStudioPage() {
 
   // Handle project import
   const handleImportProject = useCallback(() => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = ".json";
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
     input.onchange = async (event) => {
       const file = (event.target as HTMLInputElement).files?.[0];
       if (!file) return;
@@ -706,7 +706,7 @@ export default function ProjectStudioPage() {
         const userId = appConfig.admin.user_id;
         const result = await ProjectManager.importProjectToDB(
           projectData,
-          userId,
+          userId
         );
 
         if (result.success && result.project) {
@@ -716,8 +716,8 @@ export default function ProjectStudioPage() {
           setError(result.message);
         }
       } catch (error) {
-        console.error("Import failed:", error);
-        setError("Failed to import project");
+        console.error('Import failed:', error);
+        setError('Failed to import project');
       }
     };
     input.click();
@@ -740,22 +740,22 @@ export default function ProjectStudioPage() {
           setGenerationProgress((prev) => Math.min(prev + 10, 90));
         }, 500);
 
-        const response = await fetch("/api/generate", {
-          method: "POST",
+        const response = await fetch('/api/generate', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             deploymentId: params.model,
             prompt: params.prompt,
             size: params.size,
-            outputFormat: "png",
+            outputFormat: 'png',
             count: params.count,
             quality: params.quality,
             style: params.style,
             seed: params.seed,
             negativePrompt: params.negativePrompt,
-            mode: isInpaintMode ? "edit" : "generate",
+            mode: isInpaintMode ? 'edit' : 'generate',
             image: isInpaintMode ? attachedImage : undefined,
             mask: undefined, // Could be added later for mask support
           }),
@@ -766,7 +766,7 @@ export default function ProjectStudioPage() {
         const data = await response.json();
 
         if (!response.ok || !data.success) {
-          throw new Error(data.error || "Generation failed");
+          throw new Error(data.error || 'Generation failed');
         }
 
         setGenerationProgress(100);
@@ -780,12 +780,12 @@ export default function ProjectStudioPage() {
           // Validate that b64_json exists and is not undefined
           if (!imageItem.b64_json) {
             console.error(
-              "Generated image data is missing b64_json field:",
-              imageItem,
+              'Generated image data is missing b64_json field:',
+              imageItem
             );
-            setError("Generated image data is invalid - missing image content");
+            setError('Generated image data is invalid - missing image content');
             setResponseLog(
-              "Error: Generated image data is missing b64_json field",
+              'Error: Generated image data is missing b64_json field'
             );
             return;
           }
@@ -797,10 +797,10 @@ export default function ProjectStudioPage() {
           // Save to assets using IndexedDB
           const asset: Asset = {
             id: Date.now().toString(),
-            project_id: currentProject?.id || "",
+            project_id: currentProject?.id || '',
             url: imageData,
             name: `Generated-${new Date().toISOString().slice(0, 16)}`,
-            type: "generation" as const,
+            type: 'generation' as const,
             timestamp: new Date(),
             prompt: params.prompt,
             model: params.model,
@@ -809,33 +809,33 @@ export default function ProjectStudioPage() {
           try {
             await dbManager.saveAsset(asset);
           } catch (error) {
-            console.warn("Failed to save to assets:", error);
+            console.warn('Failed to save to assets:', error);
           }
 
           // Save to history using IndexedDB
           const historyEntry: HistoryEntry = {
             id: Date.now().toString(),
-            project_id: currentProject?.id || "",
-            type: "generation" as const,
+            project_id: currentProject?.id || '',
+            type: 'generation' as const,
             timestamp: new Date(),
             prompt: params.prompt,
             model: params.model,
             settings: { size: params.size, quality: params.quality },
             imageUrl: imageData,
             thumbnailUrl: imageData,
-            status: "completed" as const,
+            status: 'completed' as const,
           };
 
           try {
             await dbManager.saveHistoryEntry(historyEntry);
           } catch (error) {
-            console.warn("Failed to save to history:", error);
+            console.warn('Failed to save to history:', error);
           }
         }
       } catch (error) {
-        console.error("Generation error:", error);
+        console.error('Generation error:', error);
         const errorMessage =
-          error instanceof Error ? error.message : "Unknown error occurred";
+          error instanceof Error ? error.message : 'Unknown error occurred';
         setError(errorMessage);
         setResponseLog(errorMessage);
       } finally {
@@ -843,7 +843,7 @@ export default function ProjectStudioPage() {
         setTimeout(() => setGenerationProgress(0), 2000);
       }
     },
-    [isInpaintMode, attachedImage, saveToHistory, currentProject?.id],
+    [isInpaintMode, attachedImage, saveToHistory, currentProject?.id]
   );
 
   // Migrate from localStorage to IndexedDB on mount
@@ -852,7 +852,7 @@ export default function ProjectStudioPage() {
       try {
         await dbManager.migrateFromLocalStorage();
       } catch (error) {
-        console.error("Migration failed:", error);
+        console.error('Migration failed:', error);
       }
     };
     migrateData();
@@ -870,19 +870,19 @@ export default function ProjectStudioPage() {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.metaKey || event.ctrlKey) {
         switch (event.key) {
-          case "s":
+          case 's':
             event.preventDefault();
             handleExportProject();
             break;
-          case "o":
+          case 'o':
             event.preventDefault();
             handleImportProject();
             break;
-          case "e":
+          case 'e':
             event.preventDefault();
             handleExportProject();
             break;
-          case "z":
+          case 'z':
             if (event.shiftKey) {
               event.preventDefault();
               handleRedo();
@@ -897,67 +897,67 @@ export default function ProjectStudioPage() {
       // Tool shortcuts - require Cmd key
       if (event.metaKey || event.ctrlKey) {
         switch (event.key) {
-          case "1":
+          case '1':
             event.preventDefault();
-            setActiveTool("select");
+            setActiveTool('select');
             break;
-          case "m":
+          case 'm':
             event.preventDefault();
-            setActiveTool("move");
+            setActiveTool('move');
             break;
-          case "h":
+          case 'h':
             event.preventDefault();
-            setActiveTool("hand");
+            setActiveTool('hand');
             break;
-          case "2":
+          case '2':
             event.preventDefault();
-            setActiveTool("zoom");
+            setActiveTool('zoom');
             break;
-          case "g":
+          case 'g':
             event.preventDefault();
-            setActiveTool("generate");
+            setActiveTool('generate');
             setShowPromptBox(true);
             break;
-          case "3":
+          case '3':
             event.preventDefault();
-            setActiveTool("assets");
+            setActiveTool('assets');
             setShowAssetsPanel(true);
             break;
-          case "e":
+          case 'e':
             event.preventDefault();
-            setActiveTool("edit");
+            setActiveTool('edit');
             break;
-          case "b":
+          case 'b':
             event.preventDefault();
-            setActiveTool("brush");
+            setActiveTool('brush');
             break;
-          case "T":
+          case 'T':
             if (event.shiftKey) {
               event.preventDefault();
-              setActiveTool("text");
+              setActiveTool('text');
             }
             break;
-          case "4":
+          case '4':
             event.preventDefault();
-            setActiveTool("crop");
+            setActiveTool('crop');
             break;
-          case "i":
+          case 'i':
             event.preventDefault();
-            setActiveTool("inpaint");
+            setActiveTool('inpaint');
             setShowPromptBox(true);
             break;
-          case "p":
+          case 'p':
             event.preventDefault();
-            setActiveTool("prompt");
+            setActiveTool('prompt');
             setShowPromptBox((prev) => !prev);
             break;
-          case "u":
+          case 'u':
             event.preventDefault();
-            setActiveTool("shape");
+            setActiveTool('shape');
             break;
-          case "y":
+          case 'y':
             event.preventDefault();
-            setActiveTool("history");
+            setActiveTool('history');
             setShowHistoryPanel(true);
             break;
         }
@@ -966,33 +966,33 @@ export default function ProjectStudioPage() {
       // Special tool shortcuts that don't use Cmd
       if (
         event.shiftKey &&
-        event.key === "E" &&
+        event.key === 'E' &&
         !event.metaKey &&
         !event.ctrlKey
       ) {
         event.preventDefault();
-        setActiveTool("eraser");
+        setActiveTool('eraser');
       }
 
       if (event.altKey && !event.metaKey && !event.ctrlKey && !event.shiftKey) {
         event.preventDefault();
-        setActiveTool("eyedropper");
+        setActiveTool('eyedropper');
       }
 
       if (
         event.shiftKey &&
         event.altKey &&
-        event.key === "B" &&
+        event.key === 'B' &&
         !event.metaKey &&
         !event.ctrlKey
       ) {
         event.preventDefault();
-        setActiveTool("blend");
+        setActiveTool('blend');
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown, { passive: false });
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown, { passive: false });
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleExportProject, handleImportProject, handleUndo, handleRedo]);
 
   if (isLoading) {
@@ -1138,8 +1138,8 @@ export default function ProjectStudioPage() {
               onClick={() => setShowConsole(!showConsole)}
               className={`p-2 rounded-lg transition-colors ${
                 showConsole
-                  ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
-                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                  ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
+                  : 'hover:bg-gray-100 dark:hover:bg-gray-800'
               }`}
               title="Toggle Console"
             >
@@ -1302,20 +1302,20 @@ export default function ProjectStudioPage() {
               handleGenerate({
                 prompt,
                 model: currentModel,
-                size: "1024x1024",
-                quality: "standard",
+                size: '1024x1024',
+                quality: 'standard',
                 count: 1,
               });
             }}
             onRandomPrompt={() => {
               const prompts = [
-                "A majestic mountain landscape at sunrise with golden light",
-                "A futuristic city with flying cars and neon lights",
-                "A cozy coffee shop on a rainy day with warm lighting",
-                "An underwater scene with colorful coral and tropical fish",
-                "A magical forest with glowing mushrooms and fairy lights",
-                "A beautiful sunset over a calm ocean with a yacht in the foreground",
-                "A man with a beard and a beard",
+                'A majestic mountain landscape at sunrise with golden light',
+                'A futuristic city with flying cars and neon lights',
+                'A cozy coffee shop on a rainy day with warm lighting',
+                'An underwater scene with colorful coral and tropical fish',
+                'A magical forest with glowing mushrooms and fairy lights',
+                'A beautiful sunset over a calm ocean with a yacht in the foreground',
+                'A man with a beard and a beard',
               ];
               return prompts[Math.floor(Math.random() * prompts.length)];
             }}
@@ -1323,12 +1323,12 @@ export default function ProjectStudioPage() {
             progress={
               generationProgress
                 ? {
-                    stage: "Generating",
+                    stage: 'Generating',
                     progress: generationProgress,
-                    message: "Creating your image...",
+                    message: 'Creating your image...',
                     estimatedTime: Math.max(
                       0,
-                      Math.round((100 - generationProgress) * 0.3),
+                      Math.round((100 - generationProgress) * 0.3)
                     ),
                   }
                 : null

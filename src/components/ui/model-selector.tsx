@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import * as Select from "@radix-ui/react-select";
+import * as Select from '@radix-ui/react-select';
 import {
   ChevronDownIcon,
   ChevronUpIcon,
   CheckIcon,
-} from "@radix-ui/react-icons";
-import { Text, Flex, Box } from "@radix-ui/themes";
-import { AzureDeployment } from "@/types/azure";
+} from '@radix-ui/react-icons';
+import { Text, Flex, Box } from '@radix-ui/themes';
+import { AzureDeployment } from '@/types/azure';
 
 interface ModelSelectorProps {
   deployments: AzureDeployment[];
@@ -42,8 +42,8 @@ export function ModelSelector({
                   {selectedModel.name}
                 </Text>
                 <Text size="1" color="gray">
-                  {selectedModel.maxSize} •{" "}
-                  {selectedModel.supportedFormats.join(", ")}
+                  {selectedModel.maxSize} •{' '}
+                  {selectedModel.supportedFormats.join(', ')}
                 </Text>
               </Flex>
             )}
@@ -75,13 +75,13 @@ export function ModelSelector({
                         Max size: {deployment.maxSize}
                       </Text>
                       <Text size="1" color="gray">
-                        Formats: {deployment.supportedFormats.join(", ")}
+                        Formats: {deployment.supportedFormats.join(', ')}
                       </Text>
                       {deployment.description && (
                         <Text
                           size="1"
                           color="gray"
-                          style={{ fontStyle: "italic" }}
+                          style={{ fontStyle: 'italic' }}
                         >
                           {deployment.description}
                         </Text>

@@ -1,35 +1,35 @@
-import { Command } from "commander";
-import inquirer from "inquirer";
-import chalk from "chalk";
-import fs from "fs-extra";
-import path from "path";
-import { table } from "table";
-import { AssetInfo } from "../types";
+import { Command } from 'commander';
+import inquirer from 'inquirer';
+import chalk from 'chalk';
+import fs from 'fs-extra';
+import path from 'path';
+import { table } from 'table';
+import { AssetInfo } from '../types';
 
 export function createAssetsCommand(): Command {
-  const assetsCommand = new Command("assets");
-  const assetsDir = path.join(process.cwd(), "assets");
+  const assetsCommand = new Command('assets');
+  const assetsDir = path.join(process.cwd(), 'assets');
 
-  assetsCommand.description("Manage generated images and assets").addHelpText(
-    "after",
+  assetsCommand.description('Manage generated images and assets').addHelpText(
+    'after',
     `
 Examples:
   $ azure-image-studio assets list
   $ azure-image-studio assets export --format png
   $ azure-image-studio assets clean --older-than 7d
   $ azure-image-studio assets organize --by-date
-    `,
+    `
   );
 
   // List assets
   assetsCommand
-    .command("list")
-    .alias("ls")
-    .description("List all assets")
-    .option("--format <format>", "Output format (table, json)", "table")
-    .option("--type <type>", "Filter by type (generation, upload, edit)")
-    .option("--limit <number>", "Limit number of results", "50")
-    .option("--sort <field>", "Sort by field (name, date, size)", "date")
+    .command('list')
+    .alias('ls')
+    .description('List all assets')
+    .option('--format <format>', 'Output format (table, json)', 'table')
+    .option('--type <type>', 'Filter by type (generation, upload, edit)')
+    .option('--limit <number>', 'Limit number of results', '50')
+    .option('--sort <field>', 'Sort by field (name, date, size)', 'date')
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .action(async (options: any) => {
       try {
@@ -38,7 +38,7 @@ Examples:
 
         if (files.length === 0) {
           console.log(
-            chalk.yellow("No assets found. Generate some images first!"),
+            chalk.yellow('No assets found. Generate some images first!')
           );
           return;
         }
@@ -54,7 +54,7 @@ Examples:
               id: path.basename(file, path.extname(file)),
               name: file,
               url: filepath,
-              type: "generation", // Default type
+              type: 'generation', // Default type
               timestamp: stats.mtime,
             };
 
@@ -67,7 +67,7 @@ Examples:
                 asset.model = metadata.model;
                 asset.size = metadata.size;
                 asset.quality = metadata.quality;
-                asset.type = metadata.type || "generation";
+                asset.type = metadata.type || 'generation';
               } catch (error) {
                 // Ignore metadata errors
               }
@@ -80,11 +80,11 @@ Examples:
         // Filter by type
         if (options.type) {
           const filteredAssets = assets.filter(
-            (asset) => asset.type === options.type,
+            (asset) => asset.type === options.type
           );
           if (filteredAssets.length === 0) {
             console.log(
-              chalk.yellow(`No assets found of type: ${options.type}`),
+              chalk.yellow(`No assets found of type: ${options.type}`)
             );
             return;
           }
@@ -92,14 +92,14 @@ Examples:
         }
 
         // Sort assets
-        const sortField = options.sort || "date";
+        const sortField = options.sort || 'date';
         assets.sort((a, b) => {
           switch (sortField) {
-            case "name":
+            case 'name':
               return a.name.localeCompare(b.name);
-            case "date":
+            case 'date':
               return b.timestamp.getTime() - a.timestamp.getTime();
-            case "size":
+            case 'size':
               return 0; // Would need file size for this
             default:
               return 0;
@@ -110,60 +110,60 @@ Examples:
         const limit = parseInt(options.limit);
         const limitedAssets = assets.slice(0, limit);
 
-        if (options.format === "json") {
+        if (options.format === 'json') {
           console.log(JSON.stringify(limitedAssets, null, 2));
           return;
         }
 
         // Create table
-        const tableData = [["Name", "Type", "Model", "Size", "Date", "Prompt"]];
+        const tableData = [['Name', 'Type', 'Model', 'Size', 'Date', 'Prompt']];
 
         limitedAssets.forEach((asset) => {
           tableData.push([
             asset.name,
-            asset.type || "-",
-            asset.model || "-",
-            asset.size || "-",
+            asset.type || '-',
+            asset.model || '-',
+            asset.size || '-',
             asset.timestamp.toLocaleDateString(),
             asset.prompt
               ? asset.prompt.length > 30
-                ? asset.prompt.substring(0, 30) + "..."
+                ? asset.prompt.substring(0, 30) + '...'
                 : asset.prompt
-              : "-",
+              : '-',
           ]);
         });
 
         console.log(
           table(tableData, {
             header: {
-              alignment: "center",
+              alignment: 'center',
               content: `Assets (${limitedAssets.length}/${assets.length})`,
             },
-          }),
+          })
         );
 
         if (assets.length > limit) {
           console.log(
             chalk.gray(
-              `\nShowing ${limit} of ${assets.length} assets. Use --limit to see more.`,
-            ),
+              `\nShowing ${limit} of ${assets.length} assets. Use --limit to see more.`
+            )
           );
         }
       } catch (error) {
-        console.error(chalk.red("❌ Failed to list assets:"), error);
+        console.error(chalk.red('❌ Failed to list assets:'), error);
         process.exit(1);
       }
     });
 
   // Export assets
   assetsCommand
-    .command("export")
-    .description("Export assets to a different format or location")
-    .option("-f, --format <format>", "Export format (png, jpeg, webp)", "png")
-    .option("-o, --output <path>", "Output directory", "./exports")
-    .option("--quality <quality>", "Export quality (1-100)", "90")
-    .option("--resize <size>", "Resize images (e.g., 512x512)")
-    .option("--filter <type>", "Filter by type (generation, upload, edit)")
+    .command('export')
+    .description('Export assets to a different format or location')
+    .option('-f, --format <format>', 'Export format (png, jpeg, webp)', 'png')
+    .option('-o, --output <path>', 'Output directory', './exports')
+    .option('--quality <quality>', 'Export quality (1-100)', '90')
+    .option('--resize <size>', 'Resize images (e.g., 512x512)')
+    .option('--filter <type>', 'Filter by type (generation, upload, edit)')
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .action(async (options: any) => {
       try {
@@ -171,14 +171,14 @@ Examples:
         const files = await fs.readdir(assetsDir);
 
         if (files.length === 0) {
-          console.log(chalk.yellow("No assets found to export."));
+          console.log(chalk.yellow('No assets found to export.'));
           return;
         }
 
         const outputDir = options.output;
         await fs.ensureDir(outputDir);
 
-        const sharp = await import("sharp");
+        const sharp = await import('sharp');
         let processedCount = 0;
 
         console.log(chalk.blue(`📤 Exporting assets to ${outputDir}...`));
@@ -190,7 +190,7 @@ Examples:
           const outputName = path.basename(file, path.extname(file));
           const outputPath = path.join(
             outputDir,
-            `${outputName}.${options.format}`,
+            `${outputName}.${options.format}`
           );
 
           try {
@@ -198,7 +198,7 @@ Examples:
 
             // Resize if specified
             if (options.resize) {
-              const [width, height] = options.resize.split("x").map(Number);
+              const [width, height] = options.resize.split('x').map(Number);
               image = image.resize(width, height);
             }
 
@@ -206,14 +206,14 @@ Examples:
             const quality = parseInt(options.quality);
 
             switch (options.format) {
-              case "jpeg":
-              case "jpg":
+              case 'jpeg':
+              case 'jpg':
                 image = image.jpeg({ quality });
                 break;
-              case "webp":
+              case 'webp':
                 image = image.webp({ quality });
                 break;
-              case "png":
+              case 'png':
                 image = image.png({ quality });
                 break;
             }
@@ -222,9 +222,7 @@ Examples:
             processedCount++;
 
             console.log(
-              chalk.green(
-                `✅ Exported: ${file} → ${path.basename(outputPath)}`,
-              ),
+              chalk.green(`✅ Exported: ${file} → ${path.basename(outputPath)}`)
             );
           } catch (error) {
             console.log(chalk.red(`❌ Failed to export ${file}: ${error}`));
@@ -232,25 +230,25 @@ Examples:
         }
 
         console.log(
-          chalk.blue(`\n📊 Export complete: ${processedCount} files processed`),
+          chalk.blue(`\n📊 Export complete: ${processedCount} files processed`)
         );
       } catch (error) {
-        console.error(chalk.red("❌ Failed to export assets:"), error);
+        console.error(chalk.red('❌ Failed to export assets:'), error);
         process.exit(1);
       }
     });
 
   // Clean assets
   assetsCommand
-    .command("clean")
-    .description("Clean up old or unused assets")
+    .command('clean')
+    .description('Clean up old or unused assets')
     .option(
-      "--older-than <time>",
-      "Remove files older than specified time (e.g., 7d, 30d, 1y)",
-      "30d",
+      '--older-than <time>',
+      'Remove files older than specified time (e.g., 7d, 30d, 1y)',
+      '30d'
     )
-    .option("--dry-run", "Show what would be deleted without actually deleting")
-    .option("--confirm", "Skip confirmation prompt")
+    .option('--dry-run', 'Show what would be deleted without actually deleting')
+    .option('--confirm', 'Skip confirmation prompt')
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .action(async (options: any) => {
       try {
@@ -258,7 +256,7 @@ Examples:
         const files = await fs.readdir(assetsDir);
 
         if (files.length === 0) {
-          console.log(chalk.yellow("No assets found to clean."));
+          console.log(chalk.yellow('No assets found to clean.'));
           return;
         }
 
@@ -266,7 +264,7 @@ Examples:
         const timeMatch = options.olderThan.match(/^(\d+)([dmy])$/);
         if (!timeMatch) {
           console.log(
-            chalk.red("❌ Invalid time format. Use format like 7d, 30d, 1y"),
+            chalk.red('❌ Invalid time format. Use format like 7d, 30d, 1y')
           );
           return;
         }
@@ -277,13 +275,13 @@ Examples:
         const cutoffDate = new Date();
 
         switch (unit) {
-          case "d":
+          case 'd':
             cutoffDate.setDate(now.getDate() - amountNum);
             break;
-          case "m":
+          case 'm':
             cutoffDate.setMonth(now.getMonth() - amountNum);
             break;
-          case "y":
+          case 'y':
             cutoffDate.setFullYear(now.getFullYear() - amountNum);
             break;
         }
@@ -300,14 +298,14 @@ Examples:
         }
 
         if (filesToDelete.length === 0) {
-          console.log(chalk.green("✅ No old files found to clean."));
+          console.log(chalk.green('✅ No old files found to clean.'));
           return;
         }
 
         console.log(
           chalk.yellow(
-            `Found ${filesToDelete.length} files older than ${options.olderThan}:`,
-          ),
+            `Found ${filesToDelete.length} files older than ${options.olderThan}:`
+          )
         );
         filesToDelete.forEach((file) => {
           console.log(chalk.gray(`  • ${file}`));
@@ -315,7 +313,7 @@ Examples:
 
         if (options.dryRun) {
           console.log(
-            chalk.blue("\n🔍 Dry run complete. No files were deleted."),
+            chalk.blue('\n🔍 Dry run complete. No files were deleted.')
           );
           return;
         }
@@ -323,15 +321,15 @@ Examples:
         if (!options.confirm) {
           const answers = await inquirer.prompt([
             {
-              type: "confirm",
-              name: "confirm",
-              message: "Are you sure you want to delete these files?",
+              type: 'confirm',
+              name: 'confirm',
+              message: 'Are you sure you want to delete these files?',
               default: false,
             },
           ]);
 
           if (!answers.confirm) {
-            console.log(chalk.yellow("Operation cancelled."));
+            console.log(chalk.yellow('Operation cancelled.'));
             return;
           }
         }
@@ -345,7 +343,7 @@ Examples:
             // Also remove metadata file if it exists
             const metadataFile = path.join(
               assetsDir,
-              `${path.basename(file, path.extname(file))}.json`,
+              `${path.basename(file, path.extname(file))}.json`
             );
             if (await fs.pathExists(metadataFile)) {
               await fs.remove(metadataFile);
@@ -359,24 +357,24 @@ Examples:
         }
 
         console.log(
-          chalk.blue(`\n📊 Cleanup complete: ${deletedCount} files deleted`),
+          chalk.blue(`\n📊 Cleanup complete: ${deletedCount} files deleted`)
         );
       } catch (error) {
-        console.error(chalk.red("❌ Failed to clean assets:"), error);
+        console.error(chalk.red('❌ Failed to clean assets:'), error);
         process.exit(1);
       }
     });
 
   // Organize assets
   assetsCommand
-    .command("organize")
-    .description("Organize assets into folders")
-    .option("--by-date", "Organize by creation date")
-    .option("--by-model", "Organize by AI model")
-    .option("--by-type", "Organize by asset type")
+    .command('organize')
+    .description('Organize assets into folders')
+    .option('--by-date', 'Organize by creation date')
+    .option('--by-model', 'Organize by AI model')
+    .option('--by-type', 'Organize by asset type')
     .option(
-      "--dry-run",
-      "Show what would be organized without actually moving files",
+      '--dry-run',
+      'Show what would be organized without actually moving files'
     )
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .action(async (options: any) => {
@@ -385,16 +383,16 @@ Examples:
         const files = await fs.readdir(assetsDir);
 
         if (files.length === 0) {
-          console.log(chalk.yellow("No assets found to organize."));
+          console.log(chalk.yellow('No assets found to organize.'));
           return;
         }
 
         const imageFiles = files.filter((file) =>
-          /\.(png|jpeg|jpg)$/i.test(file),
+          /\.(png|jpeg|jpg)$/i.test(file)
         );
 
         if (imageFiles.length === 0) {
-          console.log(chalk.yellow("No image files found to organize."));
+          console.log(chalk.yellow('No image files found to organize.'));
           return;
         }
 
@@ -404,42 +402,42 @@ Examples:
           const filepath = path.join(assetsDir, file);
           const stats = await fs.stat(filepath);
 
-          let folderName = "other";
+          let folderName = 'other';
 
           if (options.byDate) {
-            const date = stats.mtime.toISOString().split("T")[0]; // YYYY-MM-DD
+            const date = stats.mtime.toISOString().split('T')[0]; // YYYY-MM-DD
             folderName = date;
           } else if (options.byModel) {
             // Try to read metadata
             const metadataFile = path.join(
               assetsDir,
-              `${path.basename(file, path.extname(file))}.json`,
+              `${path.basename(file, path.extname(file))}.json`
             );
             if (await fs.pathExists(metadataFile)) {
               try {
                 const metadata = await fs.readJson(metadataFile);
-                folderName = metadata.model || "unknown";
+                folderName = metadata.model || 'unknown';
               } catch (error) {
-                folderName = "unknown";
+                folderName = 'unknown';
               }
             } else {
-              folderName = "unknown";
+              folderName = 'unknown';
             }
           } else if (options.byType) {
             // Try to read metadata
             const metadataFile = path.join(
               assetsDir,
-              `${path.basename(file, path.extname(file))}.json`,
+              `${path.basename(file, path.extname(file))}.json`
             );
             if (await fs.pathExists(metadataFile)) {
               try {
                 const metadata = await fs.readJson(metadataFile);
-                folderName = metadata.type || "generation";
+                folderName = metadata.type || 'generation';
               } catch (error) {
-                folderName = "generation";
+                folderName = 'generation';
               }
             } else {
-              folderName = "generation";
+              folderName = 'generation';
             }
           }
 
@@ -449,7 +447,7 @@ Examples:
           organizationPlan[folderName].push(file);
         }
 
-        console.log(chalk.blue("📁 Organization plan:"));
+        console.log(chalk.blue('📁 Organization plan:'));
         Object.entries(organizationPlan).forEach(([folder, files]) => {
           console.log(chalk.blue(`\n${folder}/ (${files.length} files):`));
           files.forEach((file) => {
@@ -459,22 +457,22 @@ Examples:
 
         if (options.dryRun) {
           console.log(
-            chalk.blue("\n🔍 Dry run complete. No files were moved."),
+            chalk.blue('\n🔍 Dry run complete. No files were moved.')
           );
           return;
         }
 
         const answers = await inquirer.prompt([
           {
-            type: "confirm",
-            name: "confirm",
-            message: "Are you sure you want to organize these files?",
+            type: 'confirm',
+            name: 'confirm',
+            message: 'Are you sure you want to organize these files?',
             default: false,
           },
         ]);
 
         if (!answers.confirm) {
-          console.log(chalk.yellow("Operation cancelled."));
+          console.log(chalk.yellow('Operation cancelled.'));
           return;
         }
 
@@ -493,12 +491,12 @@ Examples:
               // Also move metadata file if it exists
               const metadataFile = path.join(
                 assetsDir,
-                `${path.basename(file, path.extname(file))}.json`,
+                `${path.basename(file, path.extname(file))}.json`
               );
               if (await fs.pathExists(metadataFile)) {
                 const destMetadataPath = path.join(
                   folderPath,
-                  `${path.basename(file, path.extname(file))}.json`,
+                  `${path.basename(file, path.extname(file))}.json`
                 );
                 await fs.move(metadataFile, destMetadataPath);
               }
@@ -512,10 +510,10 @@ Examples:
         }
 
         console.log(
-          chalk.blue(`\n📊 Organization complete: ${movedCount} files moved`),
+          chalk.blue(`\n📊 Organization complete: ${movedCount} files moved`)
         );
       } catch (error) {
-        console.error(chalk.red("❌ Failed to organize assets:"), error);
+        console.error(chalk.red('❌ Failed to organize assets:'), error);
         process.exit(1);
       }
     });

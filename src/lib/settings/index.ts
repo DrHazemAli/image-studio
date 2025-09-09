@@ -1,5 +1,5 @@
-import { AppSettings } from "./app-settings";
-import { StorageType } from "./types";
+import { AppSettings } from './app-settings';
+import { StorageType } from './types';
 
 // Create singleton instance
 const appSettings = new AppSettings();
@@ -29,7 +29,7 @@ export function config(
   key: string,
   value?: any,
   storage?: StorageType,
-  encrypted?: boolean,
+  encrypted?: boolean
 ): any {
   if (value === undefined) {
     // Get mode
@@ -97,7 +97,7 @@ export function configMigrate(
   key: string,
   fromStorage: StorageType,
   toStorage: StorageType,
-  removeFromSource: boolean = true,
+  removeFromSource: boolean = true
 ): boolean {
   return appSettings.migrate(key, fromStorage, toStorage, removeFromSource);
 }
@@ -106,9 +106,9 @@ export function configMigrate(
 export { appSettings };
 
 // Export types
-export type { StorageType, ConfigOptions } from "./types";
+export type { StorageType, ConfigOptions } from './types';
 
 // Export storage classes for advanced usage
-export { LocalStorage } from "./storage/local-storage";
-export { CookieStorage } from "./storage/cookie-storage";
-export { SessionStorage } from "./storage/session-storage";
+export { LocalStorage } from './storage/local-storage';
+export { CookieStorage } from './storage/cookie-storage';
+export { SessionStorage } from './storage/session-storage';

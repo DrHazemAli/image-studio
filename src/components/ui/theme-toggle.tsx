@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { SunIcon, MoonIcon, DesktopIcon } from "@radix-ui/react-icons";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { Button } from "@radix-ui/themes";
-import { useTheme } from "@/hooks/use-theme";
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { SunIcon, MoonIcon, DesktopIcon } from '@radix-ui/react-icons';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { Button } from '@radix-ui/themes';
+import { useTheme } from '@/hooks/use-theme';
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [open, setOpen] = useState(false);
 
   const themes = [
-    { value: "light", label: "Light", icon: SunIcon },
-    { value: "dark", label: "Dark", icon: MoonIcon },
-    { value: "system", label: "System", icon: DesktopIcon },
+    { value: 'light', label: 'Light', icon: SunIcon },
+    { value: 'dark', label: 'Dark', icon: MoonIcon },
+    { value: 'system', label: 'System', icon: DesktopIcon },
   ] as const;
 
   const currentTheme = themes.find((t) => t.value === theme);

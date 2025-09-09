@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import React, { useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   FrameIcon,
   Cross2Icon,
   CheckIcon,
   ImageIcon,
   TrashIcon,
-} from "@radix-ui/react-icons";
-import { Button } from "@radix-ui/themes";
+} from '@radix-ui/react-icons';
+import { Button } from '@radix-ui/themes';
 
 interface ResizeCanvasModalProps {
   isOpen: boolean;
@@ -60,7 +60,7 @@ export default function ResizeCanvasModal({
 
   // Only log when modal is actually open to reduce noise
   if (isOpen) {
-    console.log("ResizeCanvasModal render:", {
+    console.log('ResizeCanvasModal render:', {
       isOpen,
       imageWidth,
       imageHeight,

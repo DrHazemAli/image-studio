@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { ContextMenu, type ContextMenuItem } from "./context-menu";
-import { useMenuContext } from "./menu-context";
-import appConfig from "@/app/config/app-config.json";
+import { useState } from 'react';
+import { ContextMenu, type ContextMenuItem } from './context-menu';
+import { useMenuContext } from './menu-context';
+import appConfig from '@/app/config/app-config.json';
 interface HelpMenuProps {
   onShowKeyboardShortcuts: () => void;
   onShowAbout: () => void;
@@ -21,7 +21,7 @@ export function HelpMenu({
 }: HelpMenuProps) {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const { activeMenu, setActiveMenu } = useMenuContext();
-  const menuId = "help";
+  const menuId = 'help';
   const isOpen = activeMenu === menuId;
 
   const handleClick = (event: React.MouseEvent) => {
@@ -35,30 +35,30 @@ export function HelpMenu({
 
   const menuItems: ContextMenuItem[] = [
     {
-      label: "Keyboard Shortcuts",
+      label: 'Keyboard Shortcuts',
       action: onShowKeyboardShortcuts,
-      shortcut: "?",
+      shortcut: '?',
     },
     {
-      label: "Documentation",
+      label: 'Documentation',
       action: onShowDocumentation,
     },
     {
       separator: true,
-      label: "",
+      label: '',
       action: () => {},
     },
     {
-      label: "GitHub Repository",
+      label: 'GitHub Repository',
       action: onShowGitHub,
     },
     {
-      label: "Support",
+      label: 'Support',
       action: onShowSupport,
     },
     {
       separator: true,
-      label: "",
+      label: '',
       action: () => {},
     },
     {
@@ -73,8 +73,8 @@ export function HelpMenu({
         onClick={handleClick}
         className={`px-3 py-1 text-sm rounded transition-colors ${
           isOpen
-            ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
-            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+            ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
+            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
         }`}
       >
         Help

@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useEffect, useCallback, useState } from "react";
-import { motion } from "framer-motion";
-import { Cloud, Folder, FileText, Database, Check, Clock } from "lucide-react";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { MacStyleView } from "@/components/ui/mac-style-view";
-import { syncHelper } from "@/lib/sync-helper";
-import type { Project } from "@/lib/indexeddb";
+import { useEffect, useCallback, useState } from 'react';
+import { motion } from 'framer-motion';
+import { Cloud, Folder, FileText, Database, Check, Clock } from 'lucide-react';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { MacStyleView } from '@/components/ui/mac-style-view';
+import { syncHelper } from '@/lib/sync-helper';
+import type { Project } from '@/lib/indexeddb';
 
 interface SyncManagerProps {
   currentProject: Project | null;
@@ -193,7 +193,7 @@ export function SyncManager({
               totalSize: stats.totalSize,
             });
           },
-        },
+        }
       );
     }
   }, [
@@ -252,10 +252,10 @@ export function SyncManager({
           whileTap={{ scale: 0.95 }}
           className={`p-2 rounded-lg transition-colors relative ${
             autoSave
-              ? "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400"
-              : "hover:bg-gray-100 dark:hover:bg-gray-800"
+              ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400'
+              : 'hover:bg-gray-100 dark:hover:bg-gray-800'
           }`}
-          title={`Auto-save ${autoSave ? "enabled" : "disabled"}`}
+          title={`Auto-save ${autoSave ? 'enabled' : 'disabled'}`}
         >
           <Cloud className="w-4 h-4" />
           {isSaving && (
@@ -277,14 +277,14 @@ export function SyncManager({
             onToggle={onToggleAutoSave}
             stats={[
               {
-                label: "Status",
-                value: autoSave ? "Sync Enabled" : "Sync Disabled",
-                color: autoSave ? "green" : "gray",
+                label: 'Status',
+                value: autoSave ? 'Sync Enabled' : 'Sync Disabled',
+                color: autoSave ? 'green' : 'gray',
               },
               {
-                label: "Last Sync",
-                value: lastSaved ? lastSaved.toLocaleTimeString() : "Never",
-                color: lastSaved ? "blue" : "gray",
+                label: 'Last Sync',
+                value: lastSaved ? lastSaved.toLocaleTimeString() : 'Never',
+                color: lastSaved ? 'blue' : 'gray',
               },
             ]}
             className="m-0 rounded-lg"
@@ -368,8 +368,8 @@ export function SyncManager({
                       onClick={() => onUpdateAutoSaveDuration(duration)}
                       className={`px-2 py-1 text-xs rounded transition-colors ${
                         autoSaveDuration === duration
-                          ? "bg-blue-500 text-white"
-                          : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+                          ? 'bg-blue-500 text-white'
+                          : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600'
                       }`}
                     >
                       {duration}s

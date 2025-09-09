@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
+import React from 'react';
+import { motion } from 'framer-motion';
 import {
   ZoomInIcon,
   ZoomOutIcon,
   ResetIcon,
   FrameIcon,
-} from "@radix-ui/react-icons";
-import { Button } from "@radix-ui/themes";
-import { ZOOM_CONSTANTS } from "@/lib/constants";
+} from '@radix-ui/react-icons';
+import { Button } from '@radix-ui/themes';
+import { ZOOM_CONSTANTS } from '@/lib/constants';
 
 interface ZoomControlsProps {
   zoom: number;
@@ -63,7 +63,7 @@ export default function ZoomControls({
         size="1"
         onClick={() => {
           // Fit to viewport logic would go here
-          console.log("Fit to viewport");
+          console.log('Fit to viewport');
         }}
         title="Fit to Viewport"
       >

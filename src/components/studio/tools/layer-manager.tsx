@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React, { useState, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   EyeOpenIcon,
   EyeClosedIcon,
@@ -15,14 +15,14 @@ import {
   SquareIcon,
   PlusIcon,
   ChevronDownIcon,
-} from "@radix-ui/react-icons";
-import { Button, DropdownMenu } from "@radix-ui/themes";
-import { FabricObject } from "fabric";
+} from '@radix-ui/react-icons';
+import { Button, DropdownMenu } from '@radix-ui/themes';
+import { FabricObject } from 'fabric';
 
 export interface Layer {
   id: string;
   name: string;
-  type: "image" | "text" | "shape" | "background";
+  type: 'image' | 'text' | 'shape' | 'background';
   visible: boolean;
   locked: boolean;
   opacity: number;
@@ -40,7 +40,7 @@ interface LayerManagerProps {
   onLayerDelete: (layerId: string) => void;
   onLayerDuplicate: (layerId: string) => void;
   onLayerReorder: (fromIndex: number, toIndex: number) => void;
-  onAddLayer: (type: "text" | "shape") => void;
+  onAddLayer: (type: 'text' | 'shape') => void;
 }
 
 export default function LayerManager({
@@ -57,15 +57,15 @@ export default function LayerManager({
 }: LayerManagerProps) {
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
-  const getLayerIcon = useCallback((type: Layer["type"]) => {
+  const getLayerIcon = useCallback((type: Layer['type']) => {
     switch (type) {
-      case "image":
+      case 'image':
         return <ImageIcon className="w-4 h-4" />;
-      case "text":
+      case 'text':
         return <TextIcon className="w-4 h-4" />;
-      case "shape":
+      case 'shape':
         return <SquareIcon className="w-4 h-4" />;
-      case "background":
+      case 'background':
         return <SquareIcon className="w-4 h-4" />;
       default:
         return <SquareIcon className="w-4 h-4" />;
@@ -76,7 +76,7 @@ export default function LayerManager({
   const handleDragStart = useCallback((e: any, index: number) => {
     setDraggedIndex(index);
     if (e.dataTransfer) {
-      e.dataTransfer.effectAllowed = "move";
+      e.dataTransfer.effectAllowed = 'move';
     }
   }, []);
 
@@ -84,7 +84,7 @@ export default function LayerManager({
   const handleDragOver = useCallback((e: any) => {
     e.preventDefault();
     if (e.dataTransfer) {
-      e.dataTransfer.dropEffect = "move";
+      e.dataTransfer.dropEffect = 'move';
     }
   }, []);
 
@@ -96,16 +96,16 @@ export default function LayerManager({
       }
       setDraggedIndex(null);
     },
-    [draggedIndex, onLayerReorder],
+    [draggedIndex, onLayerReorder]
   );
 
   // Memoized event handlers for buttons
   const handleAddTextLayer = useCallback(() => {
-    onAddLayer("text");
+    onAddLayer('text');
   }, [onAddLayer]);
 
   const handleAddShapeLayer = useCallback(() => {
-    onAddLayer("shape");
+    onAddLayer('shape');
   }, [onAddLayer]);
 
   // Memoized layer event handlers
@@ -113,7 +113,7 @@ export default function LayerManager({
     (layerId: string) => {
       return () => onLayerSelect(layerId);
     },
-    [onLayerSelect],
+    [onLayerSelect]
   );
 
   const createLayerVisibilityHandler = useCallback(
@@ -123,7 +123,7 @@ export default function LayerManager({
         onLayerToggleVisibility(layerId);
       };
     },
-    [onLayerToggleVisibility],
+    [onLayerToggleVisibility]
   );
 
   const createLayerLockHandler = useCallback(
@@ -133,7 +133,7 @@ export default function LayerManager({
         onLayerToggleLock(layerId);
       };
     },
-    [onLayerToggleLock],
+    [onLayerToggleLock]
   );
 
   const createLayerDuplicateHandler = useCallback(
@@ -143,7 +143,7 @@ export default function LayerManager({
         onLayerDuplicate(layerId);
       };
     },
-    [onLayerDuplicate],
+    [onLayerDuplicate]
   );
 
   const createLayerDeleteHandler = useCallback(
@@ -153,7 +153,7 @@ export default function LayerManager({
         onLayerDelete(layerId);
       };
     },
-    [onLayerDelete],
+    [onLayerDelete]
   );
 
   const createLayerOpacityHandler = useCallback(
@@ -162,7 +162,7 @@ export default function LayerManager({
         onLayerOpacityChange(layerId, parseInt(e.target.value));
       };
     },
-    [onLayerOpacityChange],
+    [onLayerOpacityChange]
   );
 
   return (
@@ -211,8 +211,8 @@ export default function LayerManager({
               className={`
                 group relative p-3 border-b border-gray-100 dark:border-zinc-800 cursor-pointer
                 transition-colors hover:bg-gray-50 dark:hover:bg-zinc-700/50
-                ${activeLayerId === layer.id ? "bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700" : ""}
-                ${draggedIndex === index ? "opacity-50" : ""}
+                ${activeLayerId === layer.id ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700' : ''}
+                ${draggedIndex === index ? 'opacity-50' : ''}
               `}
               onClick={createLayerSelectHandler(layer.id)}
             >
@@ -233,7 +233,7 @@ export default function LayerManager({
                     <span className="text-sm font-medium text-gray-900 dark:text-white break-words leading-tight">
                       {layer.name}
                     </span>
-                    {layer.type === "background" && (
+                    {layer.type === 'background' && (
                       <span className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded flex-shrink-0">
                         Background
                       </span>
@@ -263,7 +263,7 @@ export default function LayerManager({
                   <button
                     onClick={createLayerVisibilityHandler(layer.id)}
                     className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
-                    title={layer.visible ? "Hide Layer" : "Show Layer"}
+                    title={layer.visible ? 'Hide Layer' : 'Show Layer'}
                   >
                     {layer.visible ? (
                       <EyeOpenIcon className="w-3 h-3 text-gray-600 dark:text-gray-400" />
@@ -276,7 +276,7 @@ export default function LayerManager({
                   <button
                     onClick={createLayerLockHandler(layer.id)}
                     className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
-                    title={layer.locked ? "Unlock Layer" : "Lock Layer"}
+                    title={layer.locked ? 'Unlock Layer' : 'Lock Layer'}
                   >
                     {layer.locked ? (
                       <LockClosedIcon className="w-3 h-3 text-gray-600 dark:text-gray-400" />
@@ -295,7 +295,7 @@ export default function LayerManager({
                   </button>
 
                   {/* Delete */}
-                  {layer.type !== "background" && (
+                  {layer.type !== 'background' && (
                     <button
                       onClick={createLayerDeleteHandler(layer.id)}
                       className="p-1 hover:bg-red-100 dark:hover:bg-red-900/20 rounded transition-colors"
@@ -322,7 +322,7 @@ export default function LayerManager({
       {/* Footer */}
       <div className="p-3 border-t border-gray-200 dark:border-zinc-800">
         <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
-          {layers.length} layer{layers.length !== 1 ? "s" : ""}
+          {layers.length} layer{layers.length !== 1 ? 's' : ''}
         </div>
       </div>
     </div>

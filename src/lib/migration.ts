@@ -1,7 +1,7 @@
 // Migration utility to move data from localStorage to IndexedDB
 // This can be run independently or as part of the app initialization
 
-import { dbManager } from "./indexeddb";
+import { dbManager } from './indexeddb';
 
 export interface MigrationResult {
   success: boolean;
@@ -23,7 +23,7 @@ export async function migrateFromLocalStorage(): Promise<MigrationResult> {
     await dbManager.init();
 
     // Migrate assets
-    const savedAssets = localStorage.getItem("azure-studio-assets");
+    const savedAssets = localStorage.getItem('azure-studio-assets');
     if (savedAssets) {
       try {
         const assets = JSON.parse(savedAssets);
@@ -34,9 +34,9 @@ export async function migrateFromLocalStorage(): Promise<MigrationResult> {
           });
           result.assetsMigrated++;
         }
-        localStorage.removeItem("azure-studio-assets");
+        localStorage.removeItem('azure-studio-assets');
         console.log(
-          `Migrated ${result.assetsMigrated} assets from localStorage to IndexedDB`,
+          `Migrated ${result.assetsMigrated} assets from localStorage to IndexedDB`
         );
       } catch (error) {
         const errorMsg = `Failed to migrate assets: ${error}`;
@@ -46,7 +46,7 @@ export async function migrateFromLocalStorage(): Promise<MigrationResult> {
     }
 
     // Migrate history
-    const savedHistory = localStorage.getItem("azure-studio-history");
+    const savedHistory = localStorage.getItem('azure-studio-history');
     if (savedHistory) {
       try {
         const history = JSON.parse(savedHistory);
@@ -57,9 +57,9 @@ export async function migrateFromLocalStorage(): Promise<MigrationResult> {
           });
           result.historyMigrated++;
         }
-        localStorage.removeItem("azure-studio-history");
+        localStorage.removeItem('azure-studio-history');
         console.log(
-          `Migrated ${result.historyMigrated} history entries from localStorage to IndexedDB`,
+          `Migrated ${result.historyMigrated} history entries from localStorage to IndexedDB`
         );
       } catch (error) {
         const errorMsg = `Failed to migrate history: ${error}`;
@@ -74,7 +74,7 @@ export async function migrateFromLocalStorage(): Promise<MigrationResult> {
   } catch (error) {
     result.success = false;
     result.errors.push(`Migration failed: ${error}`);
-    console.error("Migration failed:", error);
+    console.error('Migration failed:', error);
   }
 
   return result;
@@ -83,8 +83,8 @@ export async function migrateFromLocalStorage(): Promise<MigrationResult> {
 // Check if migration is needed
 export function needsMigration(): boolean {
   return !!(
-    localStorage.getItem("azure-studio-assets") ||
-    localStorage.getItem("azure-studio-history")
+    localStorage.getItem('azure-studio-assets') ||
+    localStorage.getItem('azure-studio-history')
   );
 }
 
@@ -107,14 +107,14 @@ export async function getStorageInfo(): Promise<{
   };
 
   // Check localStorage
-  const savedAssets = localStorage.getItem("azure-studio-assets");
+  const savedAssets = localStorage.getItem('azure-studio-assets');
   if (savedAssets) {
     const assets = JSON.parse(savedAssets);
     localStorageInfo.assets = assets.length;
     localStorageInfo.totalSize += savedAssets.length;
   }
 
-  const savedHistory = localStorage.getItem("azure-studio-history");
+  const savedHistory = localStorage.getItem('azure-studio-history');
   if (savedHistory) {
     const history = JSON.parse(savedHistory);
     localStorageInfo.history = history.length;
@@ -135,11 +135,11 @@ export async function clearAllData(): Promise<void> {
   try {
     await dbManager.clearAssets();
     await dbManager.clearHistory();
-    localStorage.removeItem("azure-studio-assets");
-    localStorage.removeItem("azure-studio-history");
-    console.log("All data cleared");
+    localStorage.removeItem('azure-studio-assets');
+    localStorage.removeItem('azure-studio-history');
+    console.log('All data cleared');
   } catch (error) {
-    console.error("Failed to clear data:", error);
+    console.error('Failed to clear data:', error);
     throw error;
   }
 }

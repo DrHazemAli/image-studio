@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
+import React from 'react';
+import { motion } from 'framer-motion';
 import {
   Settings,
   Database,
@@ -11,52 +11,52 @@ import {
   RefreshCw,
   Sliders,
   Info,
-} from "lucide-react";
-import { config } from "@/lib/settings";
+} from 'lucide-react';
+import { config } from '@/lib/settings';
 
 export function AdvancedSettings() {
   const handleClearCache = () => {
     if (
       confirm(
-        "Are you sure you want to clear all cached data? This action cannot be undone.",
+        'Are you sure you want to clear all cached data? This action cannot be undone.'
       )
     ) {
       // Clear localStorage cache
-      config("cache.assets", [], "localStorage");
-      config("cache.history", [], "localStorage");
-      config("cache.projects", [], "localStorage");
+      config('cache.assets', [], 'localStorage');
+      config('cache.history', [], 'localStorage');
+      config('cache.projects', [], 'localStorage');
 
       // Show success message
-      alert("Cache cleared successfully!");
+      alert('Cache cleared successfully!');
     }
   };
 
   const handleExportSettings = () => {
     const settings = {
-      theme: config("theme"),
+      theme: config('theme'),
       autoSave: {
-        enabled: config("autoSave.enabled"),
-        duration: config("autoSave.duration"),
+        enabled: config('autoSave.enabled'),
+        duration: config('autoSave.duration'),
       },
       ui: {
-        animations: config("ui.animations"),
-        showConsole: config("ui.showConsole"),
-        showLayers: config("ui.showLayers"),
-        showHistory: config("ui.showHistory"),
+        animations: config('ui.animations'),
+        showConsole: config('ui.showConsole'),
+        showLayers: config('ui.showLayers'),
+        showHistory: config('ui.showHistory'),
       },
       azure: {
-        endpoints: config("azure.endpoints", [], "cookies"),
+        endpoints: config('azure.endpoints', [], 'cookies'),
         // Don't export API key for security
       },
     };
 
     const blob = new Blob([JSON.stringify(settings, null, 2)], {
-      type: "application/json",
+      type: 'application/json',
     });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     a.href = url;
-    a.download = "azure-image-studio-settings.json";
+    a.download = 'azure-image-studio-settings.json';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -73,25 +73,25 @@ export function AdvancedSettings() {
         const settings = JSON.parse(e.target?.result as string);
 
         // Import settings
-        if (settings.theme) config("theme", settings.theme);
+        if (settings.theme) config('theme', settings.theme);
         if (settings.autoSave) {
-          config("autoSave.enabled", settings.autoSave.enabled);
-          config("autoSave.duration", settings.autoSave.duration);
+          config('autoSave.enabled', settings.autoSave.enabled);
+          config('autoSave.duration', settings.autoSave.duration);
         }
         if (settings.ui) {
-          config("ui.animations", settings.ui.animations);
-          config("ui.showConsole", settings.ui.showConsole);
-          config("ui.showLayers", settings.ui.showLayers);
-          config("ui.showHistory", settings.ui.showHistory);
+          config('ui.animations', settings.ui.animations);
+          config('ui.showConsole', settings.ui.showConsole);
+          config('ui.showLayers', settings.ui.showLayers);
+          config('ui.showHistory', settings.ui.showHistory);
         }
         if (settings.azure?.endpoints) {
-          config("azure.endpoints", settings.azure.endpoints, "cookies");
+          config('azure.endpoints', settings.azure.endpoints, 'cookies');
         }
 
-        alert("Settings imported successfully!");
+        alert('Settings imported successfully!');
         window.location.reload(); // Reload to apply changes
       } catch (error) {
-        alert("Failed to import settings. Please check the file format.");
+        alert('Failed to import settings. Please check the file format.');
       }
     };
     reader.readAsText(file);
@@ -100,21 +100,21 @@ export function AdvancedSettings() {
   const handleResetSettings = () => {
     if (
       confirm(
-        "Are you sure you want to reset all settings to default? This action cannot be undone.",
+        'Are you sure you want to reset all settings to default? This action cannot be undone.'
       )
     ) {
       // Clear all settings
-      config("theme", "system");
-      config("autoSave.enabled", true);
-      config("autoSave.duration", 3);
-      config("ui.animations", true);
-      config("ui.showConsole", false);
-      config("ui.showLayers", false);
-      config("ui.showHistory", true);
-      config("azure.endpoints", [], "cookies");
-      config("azure.apiKey", "", "cookies", true);
+      config('theme', 'system');
+      config('autoSave.enabled', true);
+      config('autoSave.duration', 3);
+      config('ui.animations', true);
+      config('ui.showConsole', false);
+      config('ui.showLayers', false);
+      config('ui.showHistory', true);
+      config('azure.endpoints', [], 'cookies');
+      config('azure.apiKey', '', 'cookies', true);
 
-      alert("Settings reset to default!");
+      alert('Settings reset to default!');
       window.location.reload();
     }
   };
@@ -222,9 +222,9 @@ export function AdvancedSettings() {
             <div>
               <span className="text-gray-500 dark:text-gray-400">Browser:</span>
               <span className="ml-2 text-gray-900 dark:text-white">
-                {typeof navigator !== "undefined"
-                  ? navigator.userAgent.split(" ")[0]
-                  : "Unknown"}
+                {typeof navigator !== 'undefined'
+                  ? navigator.userAgent.split(' ')[0]
+                  : 'Unknown'}
               </span>
             </div>
             <div>
@@ -232,17 +232,17 @@ export function AdvancedSettings() {
                 Storage Available:
               </span>
               <span className="ml-2 text-gray-900 dark:text-white">
-                {typeof navigator !== "undefined" &&
-                "storage" in navigator &&
-                "estimate" in navigator.storage
-                  ? "Checking..."
-                  : "Unknown"}
+                {typeof navigator !== 'undefined' &&
+                'storage' in navigator &&
+                'estimate' in navigator.storage
+                  ? 'Checking...'
+                  : 'Unknown'}
               </span>
             </div>
             <div>
               <span className="text-gray-500 dark:text-gray-400">Theme:</span>
               <span className="ml-2 text-gray-900 dark:text-white capitalize">
-                {config("theme", "system")}
+                {config('theme', 'system')}
               </span>
             </div>
           </div>
