@@ -1,7 +1,6 @@
 'use client';
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
 import {
   Settings,
   Database,
@@ -9,12 +8,31 @@ import {
   Download,
   Upload,
   RefreshCw,
-  Sliders,
-  Info,
+  Code,
 } from 'lucide-react';
 import { config } from '@/lib/settings';
 
 export function AdvancedSettings() {
+  const [developerMode, setDeveloperMode] = useState(
+    config('developer.mode', false)
+  );
+
+  useEffect(() => {
+    // Update state when config changes
+    setDeveloperMode(config('developer.mode', false));
+  }, []);
+
+  const handleToggleDeveloperMode = () => {
+    const newValue = !developerMode;
+    setDeveloperMode(newValue);
+    config('developer.mode', newValue);
+    
+    // Dispatch event to notify other components
+    window.dispatchEvent(new CustomEvent('developerModeChanged', {
+      detail: { enabled: newValue }
+    }));
+  };
+
   const handleClearCache = () => {
     if (
       confirm(
@@ -33,7 +51,7 @@ export function AdvancedSettings() {
 
   const handleExportSettings = () => {
     const settings = {
-      theme: config('theme'),
+      theme: typeof window !== 'undefined' ? localStorage.getItem('theme') || 'system' : 'system',
       autoSave: {
         enabled: config('autoSave.enabled'),
         duration: config('autoSave.duration'),
@@ -73,7 +91,9 @@ export function AdvancedSettings() {
         const settings = JSON.parse(e.target?.result as string);
 
         // Import settings
-        if (settings.theme) config('theme', settings.theme);
+        if (settings.theme && typeof window !== 'undefined') {
+          localStorage.setItem('theme', settings.theme);
+        }
         if (settings.autoSave) {
           config('autoSave.enabled', settings.autoSave.enabled);
           config('autoSave.duration', settings.autoSave.duration);
@@ -90,7 +110,7 @@ export function AdvancedSettings() {
 
         alert('Settings imported successfully!');
         window.location.reload(); // Reload to apply changes
-      } catch (error) {
+      } catch {
         alert('Failed to import settings. Please check the file format.');
       }
     };
@@ -104,7 +124,9 @@ export function AdvancedSettings() {
       )
     ) {
       // Clear all settings
-      config('theme', 'system');
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('theme', 'system');
+      }
       config('autoSave.enabled', true);
       config('autoSave.duration', 3);
       config('ui.animations', true);
@@ -202,6 +224,44 @@ export function AdvancedSettings() {
         </div>
       </div>
 
+      {/* Developer Options */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 mb-4">
+          <Code className="w-5 h-5 text-purple-500" />
+          <h4 className="font-medium text-gray-900 dark:text-white">
+            Developer Options
+          </h4>
+        </div>
+
+        <div className="space-y-4">
+          {/* Developer Mode Toggle */}
+          <div className="flex items-center justify-between p-4 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+            <div>
+              <div className="font-medium text-gray-900 dark:text-white">
+                Developer Mode
+              </div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">
+                Enable advanced developer features and debugging tools
+              </div>
+            </div>
+            <button
+              onClick={handleToggleDeveloperMode}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                developerMode
+                  ? 'bg-purple-600'
+                  : 'bg-gray-200 dark:bg-gray-700'
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  developerMode ? 'translate-x-6' : 'translate-x-1'
+                }`}
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* System Information */}
       <div className="space-y-4">
         <div className="flex items-center gap-2 mb-4">
@@ -242,7 +302,7 @@ export function AdvancedSettings() {
             <div>
               <span className="text-gray-500 dark:text-gray-400">Theme:</span>
               <span className="ml-2 text-gray-900 dark:text-white capitalize">
-                {config('theme', 'system')}
+                {typeof window !== 'undefined' ? localStorage.getItem('theme') || 'system' : 'system'}
               </span>
             </div>
           </div>

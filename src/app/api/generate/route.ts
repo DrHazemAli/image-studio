@@ -3,9 +3,29 @@ import { AzureImageProvider } from '@/lib/azure-provider';
 import { AzureConfig } from '@/types/azure';
 import azureConfigData from '@/app/config/azure-config.json';
 import { replaceEnvTags } from '@/lib/env';
+import { AZURE_CONFIG_OBJECT_KEY } from '@/lib/constants';
 export async function POST(request: NextRequest) {
   try {
-    const apiKey = process.env.AZURE_API_KEY;
+
+    // Check API Key in cookies
+    const cookieConfig = request.cookies.get(AZURE_CONFIG_OBJECT_KEY)?.value;
+
+    if (!cookieConfig) {
+      return NextResponse.json(
+        { error: 'Azure is not configured, Please configure Azure first from settings' },
+        { status: 500 }
+      );
+    }
+
+    // Decode URL-encoded JSON and parse it
+    const decodedConfig = decodeURIComponent(cookieConfig);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const userConfig = JSON.parse(decodedConfig as any);
+    
+    // Extract the actual config value from the cookie structure
+    //const userConfig = userConfig.value;
+    console.log(userConfig);
+    const apiKey = userConfig.primaryApiKey || process.env.AZURE_API_KEY;
 
     if (!apiKey) {
       return NextResponse.json(
@@ -44,11 +64,26 @@ export async function POST(request: NextRequest) {
     // Add primary API key to config
     config.primaryApiKey = apiKey;
     
-    // loop to endpoints and replace the baseurl with the env tag
-    config.endpoints.forEach((endpoint) => {
-      endpoint.baseUrl = replaceEnvTags(endpoint.baseUrl);
-    });
+    // Process endpoints and replace the baseurl with the env tag
+    const appEndpoints = config.endpoints.map((endpoint) => ({
+      ...endpoint,
+      baseUrl: replaceEnvTags(endpoint.baseUrl)
+    }));
+
+    if (!userConfig.endpoints || userConfig.endpoints.length === 0) {
+      if (appEndpoints.length > 0) {
+        return NextResponse.json(
+          { error: 'Azure is not configured, Please configure Azure first from settings' },
+          { status: 500 }
+        );
+     }
+    }
+
+    const endpoints = userConfig.endpoints || appEndpoints;
+    
     const provider = new AzureImageProvider(config);
+    provider.setEndpoints(endpoints);
+
 
     const validation = provider.validateConfiguration();
     if (!validation.isValid) {

@@ -10,21 +10,23 @@ export function GeneralSettings() {
 
   // Cache config values to prevent redundant reads
   const [settings, setSettings] = useState({
-    animations: config('ui.animations', true),
-    showConsole: config('ui.showConsole', false),
-    showLayers: config('ui.showLayers', false),
-    showHistory: config('ui.showHistory', true),
-    autoSaveEnabled: config('autoSave.enabled', true),
-    autoSaveDuration: config('autoSave.duration', 3),
+    animations: config('ui.animations', true) as boolean,
+    showConsole: config('ui.showConsole', false) as boolean,
+    showLayers: config('ui.showLayers', false) as boolean,
+    showHistory: config('ui.showHistory', true) as boolean,
+    autoSaveEnabled: config('autoSave.enabled', true) as boolean,
+    autoSaveDuration: config('autoSave.duration', 3) as number,
   });
 
   // Update settings when config changes
   useEffect(() => {
     const handleSettingsChange = (event: CustomEvent) => {
       const { key, value } = event.detail;
+      // Map the config key to the state property name
+      const stateKey = key.replace('ui.', '').replace('autoSave.', 'autoSave');
       setSettings(prev => ({
         ...prev,
-        [key]: value,
+        [stateKey]: value,
       }));
     };
 
@@ -74,7 +76,11 @@ export function GeneralSettings() {
     (key: string, currentValue: boolean) => {
       const newValue = !currentValue;
       config(key, newValue);
-      setSettings(prev => ({ ...prev, [key]: newValue }));
+      
+      // Map the config key to the state property name
+      const stateKey = key.replace('ui.', '').replace('autoSave.', 'autoSave');
+      setSettings(prev => ({ ...prev, [stateKey]: newValue }));
+      
       window.dispatchEvent(
         new CustomEvent('settingsChanged', {
           detail: { key, value: newValue },

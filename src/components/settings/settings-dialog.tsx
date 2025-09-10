@@ -19,14 +19,19 @@ import {
   Search,
   User,
   ChevronDown,
+  Package,
+  Terminal,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { config } from '@/lib/settings';
 import appConfig from '@/app/config/app-config.json';
 import {
   GeneralSettingsSkeleton,
   AzureSettingsSkeleton,
+  ModelsSettingsSkeleton,
   AdvancedSettingsSkeleton,
   AboutSettingsSkeleton,
+  LoggerSettingsSkeleton,
 } from '@/components/settings/settings-skeletons';
 
 // Lazy load settings components
@@ -40,6 +45,11 @@ const AzureSettings = lazy(() =>
     default: m.AzureSettings,
   }))
 );
+const ModelsSettings = lazy(() =>
+  import('@/components/settings/models-settings').then(m => ({
+    default: m.ModelsSettings,
+  }))
+);
 const AdvancedSettings = lazy(() =>
   import('@/components/settings/advanced-settings').then(m => ({
     default: m.AdvancedSettings,
@@ -50,40 +60,71 @@ const AboutSettings = lazy(() =>
     default: m.AboutSettings,
   }))
 );
+const LoggerSettings = lazy(() =>
+  import('@/components/settings/logger-settings').then(m => ({
+    default: m.LoggerSettings,
+  }))
+);
 
 interface SettingsDialogProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-type SettingsTab = 'general' | 'azure' | 'advanced' | 'about';
+type SettingsTab = 'general' | 'azure' | 'models' | 'advanced' | 'logger' | 'about';
 
-const tabs = [
-  {
-    id: 'general' as const,
-    label: 'General',
-    icon: Settings,
-    description: 'Appearance, interface, and auto-save settings',
-  },
-  {
-    id: 'azure' as const,
-    label: 'Azure',
-    icon: Globe,
-    description: 'API keys, endpoints, and cloud configuration',
-  },
-  {
-    id: 'advanced' as const,
-    label: 'Advanced',
-    icon: Sliders,
-    description: 'Data management and system settings',
-  },
-  {
-    id: 'about' as const,
+const getTabs = (developerMode: boolean, isDevelopment: boolean) => {
+  const baseTabs: Array<{
+    id: SettingsTab;
+    label: string;
+    icon: React.ComponentType<{ className?: string }>;
+    description: string;
+  }> = [
+    {
+      id: 'general',
+      label: 'General',
+      icon: Settings,
+      description: 'Appearance, interface, and auto-save settings',
+    },
+    {
+      id: 'azure',
+      label: 'Azure',
+      icon: Globe,
+      description: 'API keys, endpoints, and cloud configuration',
+    },
+    {
+      id: 'models',
+      label: 'Models',
+      icon: Package,
+      description: 'AI image generation models configuration',
+    },
+    {
+      id: 'advanced',
+      label: 'Advanced',
+      icon: Sliders,
+      description: 'Data management and system settings',
+    },
+  ];
+
+  // Add logger tab only if developer mode is enabled and in development
+  if (developerMode && isDevelopment) {
+    baseTabs.push({
+      id: 'logger',
+      label: 'Logger',
+      icon: Terminal,
+      description: 'Development logging configuration',
+    });
+  }
+
+  baseTabs.push({
+    id: 'about',
     label: 'About',
     icon: Info,
     description: 'Application information and features',
-  },
-];
+  });
+
+  return baseTabs;
+};
 
 export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
   const [activeTab, setActiveTab] = useState<SettingsTab>('general');
@@ -92,6 +133,7 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const [developerMode, setDeveloperMode] = useState(false);
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const initializationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -114,6 +156,8 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
         if (searchInputRef.current) {
           searchInputRef.current.blur();
         }
+        // Load developer mode setting
+        setDeveloperMode(config('developer.mode', false));
         setIsDataLoaded(true);
       }, 50); // Very short delay to allow modal to show first
     } else if (!isOpen) {
@@ -129,6 +173,30 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
       }
     };
   }, [isOpen, isDataLoaded]);
+
+  // Listen for developer mode changes
+  useEffect(() => {
+    const handleDeveloperModeChange = (event: CustomEvent) => {
+      setDeveloperMode(event.detail.enabled);
+    };
+
+    window.addEventListener('developerModeChanged', handleDeveloperModeChange as EventListener);
+    return () => {
+      window.removeEventListener('developerModeChanged', handleDeveloperModeChange as EventListener);
+    };
+  }, []);
+
+  // Handle logger tab availability changes
+  useEffect(() => {
+    const isDevelopment = process.env.NODE_ENV === 'development';
+    const tabs = getTabs(developerMode, isDevelopment);
+    const isLoggerTabAvailable = tabs.some(tab => tab.id === 'logger');
+    
+    // If currently on logger tab but it's no longer available, switch to general
+    if (activeTab === 'logger' && !isLoggerTabAvailable) {
+      setActiveTab('general');
+    }
+  }, [developerMode, activeTab]);
 
   // Debounce search input (only when data is loaded)
   useEffect(() => {
@@ -151,6 +219,9 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
 
   // Memoize filtered tabs to prevent unnecessary recalculations
   const filteredTabs = useMemo(() => {
+    const isDevelopment = process.env.NODE_ENV === 'development';
+    const tabs = getTabs(developerMode, isDevelopment);
+    
     if (!debouncedSearchQuery.trim()) return tabs;
 
     const query = debouncedSearchQuery.toLowerCase();
@@ -159,7 +230,7 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
         tab.label.toLowerCase().includes(query) ||
         tab.description.toLowerCase().includes(query)
     );
-  }, [debouncedSearchQuery]);
+  }, [debouncedSearchQuery, developerMode]);
 
   // Memoize tab content to prevent unnecessary re-renders
   const renderTabContent = useCallback(() => {
@@ -181,10 +252,22 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
             <AzureSettings />
           </Suspense>
         );
+      case 'models':
+        return (
+          <Suspense fallback={<ModelsSettingsSkeleton />}>
+            <ModelsSettings />
+          </Suspense>
+        );
       case 'advanced':
         return (
           <Suspense fallback={<AdvancedSettingsSkeleton />}>
             <AdvancedSettings />
+          </Suspense>
+        );
+      case 'logger':
+        return (
+          <Suspense fallback={<LoggerSettingsSkeleton />}>
+            <LoggerSettings />
           </Suspense>
         );
       case 'about':
@@ -213,8 +296,17 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
 
   const handleTabChange = useCallback(
     (tabId: SettingsTab) => {
-      // Change tab instantly
-      setActiveTab(tabId);
+      // Check if logger tab is available
+      const isDevelopment = process.env.NODE_ENV === 'development';
+      const tabs = getTabs(developerMode, isDevelopment);
+      const isLoggerTabAvailable = tabs.some(tab => tab.id === 'logger');
+      
+      // If trying to access logger tab but it's not available, switch to general
+      if (tabId === 'logger' && !isLoggerTabAvailable) {
+        setActiveTab('general');
+      } else {
+        setActiveTab(tabId);
+      }
 
       // Only clear search if data is loaded
       if (isDataLoaded) {
@@ -226,7 +318,7 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
         }
       }
     },
-    [isDataLoaded]
+    [isDataLoaded, developerMode]
   );
 
   const toggleSearchExpanded = useCallback(() => {

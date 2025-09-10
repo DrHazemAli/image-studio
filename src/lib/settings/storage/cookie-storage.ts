@@ -1,7 +1,7 @@
 import { ConfigStorage, ConfigOptions } from '../types';
 
 export class CookieStorage implements ConfigStorage {
-  private prefix = 'azure_studio_';
+  private prefix = '';
 
   private getKey(key: string): string {
     return `${this.prefix}${key}`;

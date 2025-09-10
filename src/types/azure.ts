@@ -80,3 +80,105 @@ export interface GenerationState {
   requestLog: Record<string, unknown> | null;
   responseLog: Record<string, unknown> | null;
 }
+
+// Model types matching azure-models.json schema exactly
+export interface ModelSize {
+  size: string;
+  label: string;
+  aspect: string;
+  description: string;
+}
+
+export interface ModelFeatures {
+  textRendering?: boolean;
+  preciseInstructions?: boolean;
+  imageInput?: boolean;
+  streaming?: boolean;
+  compression?: boolean;
+  highQuality?: boolean;
+  styleControl?: boolean;
+  contentFiltering?: boolean;
+  highResolution?: boolean;
+  fastGeneration?: boolean;
+  photorealistic?: boolean;
+  contextAware?: boolean;
+  styleTransfer?: boolean;
+  editingCapabilities?: boolean;
+  visionLanguage?: boolean;
+  imageUnderstanding?: boolean;
+}
+
+// Azure model schema - matches azure-models.json exactly
+export interface AzureModel {
+  id: string;
+  name: string;
+  description: string;
+  provider: string;
+  apiVersion: string;
+  capabilities: string[];
+  supportedSizes: ModelSize[];
+  supportedFormats: string[];
+  qualityLevels?: string[];
+  styleOptions?: string[];
+  maxTokens?: number;
+  maxImages: number;
+  imageInput?: boolean;
+  requiresApproval: boolean;
+  premium?: boolean;
+  primary?: boolean;
+  features: ModelFeatures;
+  // Additional fields for runtime use (not in base schema)
+  status?: 'valid' | 'invalid' | 'pending' | 'idle';
+  validated_at?: string | null;
+  deploymentName?: string;
+  enabled?: boolean;
+}
+
+export interface ModelEndpoint {
+  id: string;
+  name: string;
+  baseUrl: string;
+  type: string;
+  deployments: ModelDeployment[];
+}
+
+export interface ModelDeployment {
+  modelId: string;
+  deploymentName: string;
+  enabled: boolean;
+  note?: string;
+}
+
+export interface ModelPreset {
+  name: string;
+  description: string;
+  recommendedModel: string;
+  settings: Record<string, unknown>;
+}
+
+export interface ModelTool {
+  icon: string;
+  name: string;
+  description: string;
+  supportedModels: string[];
+}
+
+// Azure models config schema - matches azure-models.json exactly
+export interface AzureModelsConfig {
+  imageModels: {
+    generation: {
+      [provider: string]: AzureModel[];
+    };
+  };
+  endpoints: ModelEndpoint[];
+  tools: {
+    [toolId: string]: ModelTool;
+  };
+  presets: {
+    [presetId: string]: ModelPreset;
+  };
+}
+
+// Legacy alias for backward compatibility
+export type UnifiedModel = AzureModel;
+export type ModelsConfig = AzureModelsConfig;

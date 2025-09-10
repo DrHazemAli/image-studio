@@ -1,4 +1,4 @@
-import { ConfigManager, StorageType, ConfigOptions } from './types';
+import { ConfigManager, StorageType, UnifiedSettings } from './types';
 import { LocalStorage } from './storage/local-storage';
 import { CookieStorage } from './storage/cookie-storage';
 import { SessionStorage } from './storage/session-storage';
@@ -15,8 +15,11 @@ export class AppSettings implements ConfigManager {
     LocalStorage | CookieStorage | SessionStorage
   >;
   private defaultStorage: StorageType = 'localStorage';
+  private isServerSide: boolean;
 
   constructor() {
+    this.isServerSide = typeof window === 'undefined';
+    
     this.storages = {
       localStorage: new LocalStorage(),
       cookies: new CookieStorage(),
@@ -33,10 +36,15 @@ export class AppSettings implements ConfigManager {
    */
   get(
     key: string,
-    defaultValue?: any,
+    defaultValue?: unknown,
     storage?: StorageType,
     encrypted?: boolean
-  ): any {
+  ): unknown {
+    // Return default value immediately on server-side
+    if (this.isServerSide) {
+      return defaultValue;
+    }
+
     const storageType = storage || this.defaultStorage;
     const storageInstance = this.storages[storageType];
 
@@ -70,10 +78,15 @@ export class AppSettings implements ConfigManager {
    */
   set(
     key: string,
-    value: any,
+    value: unknown,
     storage?: StorageType,
     encrypted?: boolean
   ): void {
+    // Skip storage operations on server-side
+    if (this.isServerSide) {
+      return;
+    }
+
     const storageType = storage || this.defaultStorage;
     const storageInstance = this.storages[storageType];
 
@@ -99,6 +112,11 @@ export class AppSettings implements ConfigManager {
    * @param storage - Storage type to check
    */
   has(key: string, storage?: StorageType): boolean {
+    // Always return false on server-side
+    if (this.isServerSide) {
+      return false;
+    }
+
     const storageType = storage || this.defaultStorage;
     const storageInstance = this.storages[storageType];
 
@@ -117,6 +135,11 @@ export class AppSettings implements ConfigManager {
    * @param storage - Storage type to remove from
    */
   remove(key: string, storage?: StorageType): void {
+    // Skip storage operations on server-side
+    if (this.isServerSide) {
+      return;
+    }
+
     const storageType = storage || this.defaultStorage;
     const storageInstance = this.storages[storageType];
 
@@ -132,6 +155,11 @@ export class AppSettings implements ConfigManager {
    * @param storage - Storage type to clear
    */
   clear(storage?: StorageType): void {
+    // Skip storage operations on server-side
+    if (this.isServerSide) {
+      return;
+    }
+
     const storageType = storage || this.defaultStorage;
     const storageInstance = this.storages[storageType];
 
@@ -146,13 +174,18 @@ export class AppSettings implements ConfigManager {
    * Get all configuration values
    * @param storage - Storage type to get from
    */
-  all(storage?: StorageType): Record<string, any> {
+  all(storage?: StorageType): Record<string, unknown> {
+    // Return empty object on server-side
+    if (this.isServerSide) {
+      return {};
+    }
+
     const storageType = storage || this.defaultStorage;
     const storageInstance = this.storages[storageType];
 
     try {
       const keys = storageInstance.keys();
-      const result: Record<string, any> = {};
+      const result: Record<string, unknown> = {};
 
       keys.forEach((key) => {
         try {
@@ -180,6 +213,11 @@ export class AppSettings implements ConfigManager {
    * @param storage - Storage type to get keys from
    */
   keys(storage?: StorageType): string[] {
+    // Return empty array on server-side
+    if (this.isServerSide) {
+      return [];
+    }
+
     const storageType = storage || this.defaultStorage;
     const storageInstance = this.storages[storageType];
 
@@ -207,6 +245,13 @@ export class AppSettings implements ConfigManager {
   }
 
   /**
+   * Check if running on server-side
+   */
+  isServerSideEnvironment(): boolean {
+    return this.isServerSide;
+  }
+
+  /**
    * Migrate a key from one storage to another
    * @param key - Configuration key
    * @param fromStorage - Source storage type
@@ -219,6 +264,11 @@ export class AppSettings implements ConfigManager {
     toStorage: StorageType,
     removeFromSource: boolean = true
   ): boolean {
+    // Skip migration on server-side
+    if (this.isServerSide) {
+      return false;
+    }
+
     try {
       if (!this.has(key, fromStorage)) {
         return false;
@@ -236,5 +286,70 @@ export class AppSettings implements ConfigManager {
       console.warn(`Failed to migrate config key "${key}":`, error);
       return false;
     }
+  }
+
+  /**
+   * Get unified settings object
+   * @param storage - Storage type to get from
+   */
+  getUnifiedSettings(storage?: StorageType): Partial<UnifiedSettings> {
+    // Return empty object on server-side
+    if (this.isServerSide) {
+      return {};
+    }
+
+    const storageType = storage || this.defaultStorage;
+    const settings = this.get('az_settings', {}, storageType);
+    return settings as Partial<UnifiedSettings>;
+  }
+
+  /**
+   * Set unified settings object
+   * @param settings - Settings object to set
+   * @param storage - Storage type to set in
+   */
+  setUnifiedSettings(settings: Partial<UnifiedSettings>, storage?: StorageType): void {
+    // Skip storage operations on server-side
+    if (this.isServerSide) {
+      return;
+    }
+
+    const storageType = storage || this.defaultStorage;
+    this.set('az_settings', settings, storageType);
+  }
+
+  /**
+   * Update a specific setting within the unified settings
+   * @param key - Dot notation key within unified settings (e.g., 'ui.animations')
+   * @param value - Value to set
+   * @param storage - Storage type to use
+   */
+  updateUnifiedSetting(key: string, value: unknown, storage?: StorageType): void {
+    // Skip storage operations on server-side
+    if (this.isServerSide) {
+      return;
+    }
+
+    const storageType = storage || this.defaultStorage;
+    const currentSettings = this.getUnifiedSettings(storageType);
+    const updatedSettings = setNestedValue(currentSettings, key, value);
+    this.setUnifiedSettings(updatedSettings, storageType);
+  }
+
+  /**
+   * Get a specific setting from unified settings
+   * @param key - Dot notation key within unified settings (e.g., 'ui.animations')
+   * @param defaultValue - Default value if key doesn't exist
+   * @param storage - Storage type to get from
+   */
+  getUnifiedSetting(key: string, defaultValue?: unknown, storage?: StorageType): unknown {
+    // Return default value on server-side
+    if (this.isServerSide) {
+      return defaultValue;
+    }
+
+    const storageType = storage || this.defaultStorage;
+    const settings = this.getUnifiedSettings(storageType);
+    return getNestedValue(settings, key) ?? defaultValue;
   }
 }

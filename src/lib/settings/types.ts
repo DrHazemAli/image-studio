@@ -4,6 +4,34 @@
 
 export type StorageType = 'localStorage' | 'cookies' | 'sessionStorage';
 
+/**
+ * Unified settings structure - all settings under az_settings key
+ * Excludes: azure settings, models, and theme (handled separately)
+ */
+export interface UnifiedSettings {
+  developer: {
+    mode: boolean;
+  };
+  autoSave: {
+    enabled: boolean;
+    duration: number;
+  };
+  ui: {
+    animations: boolean;
+    showConsole: boolean;
+    showLayers: boolean;
+    showHistory: boolean;
+  };
+  logger: {
+    config: Record<string, unknown>;
+  };
+  cache: {
+    assets: unknown[];
+    history: unknown[];
+    projects: unknown[];
+  };
+}
+
 export interface ConfigOptions {
   storage?: StorageType;
   encrypted?: boolean;
@@ -15,7 +43,7 @@ export interface ConfigOptions {
 }
 
 export interface ConfigValue {
-  value: any;
+  value: unknown;
   timestamp: number;
   encrypted?: boolean;
 }
@@ -31,19 +59,19 @@ export interface ConfigStorage {
 export interface ConfigManager {
   get(
     key: string,
-    defaultValue?: any,
+    defaultValue?: unknown,
     storage?: StorageType,
     encrypted?: boolean
-  ): any;
+  ): unknown;
   set(
     key: string,
-    value: any,
+    value: unknown,
     storage?: StorageType,
     encrypted?: boolean
   ): void;
   has(key: string, storage?: StorageType): boolean;
   remove(key: string, storage?: StorageType): void;
   clear(storage?: StorageType): void;
-  all(storage?: StorageType): Record<string, any>;
+  all(storage?: StorageType): Record<string, unknown>;
   keys(storage?: StorageType): string[];
 }

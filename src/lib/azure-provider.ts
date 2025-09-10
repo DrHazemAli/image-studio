@@ -15,6 +15,10 @@ export class AzureImageProvider {
     this.config = config;
   }
 
+  setEndpoints(endpoints: AzureEndpoint[]) {
+    this.config.endpoints = endpoints;
+  }
+
   validateConfiguration(): { isValid: boolean; errors: string[] } {
     const errors: string[] = [];
 

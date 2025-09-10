@@ -1,6 +1,11 @@
-// Azure Configuration Object Key
+
+
+
+// ConfigKey: Azure Configuration Object Key, Store: Cookies
 export const AZURE_CONFIG_OBJECT_KEY = 'az_config';
 
+// ConfigKey: Azure Models Object Key, Store: localStorage
+export const AZURE_MODELS_CONFIG_KEY = 'azure.models';
 
 // Canvas and Zoom Constants
 export const ZOOM_CONSTANTS = {

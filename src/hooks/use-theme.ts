@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { config } from '@/lib/settings';
 
 type Theme = 'light' | 'dark' | 'system';
 
@@ -10,17 +9,17 @@ export function useTheme() {
   const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
-    const saved = config('theme', 'system') as Theme;
-    setTheme(saved);
+    // Get saved theme from localStorage
+    const saved = localStorage.getItem('theme') as Theme;
+    if (saved) {
+      setTheme(saved);
+    }
   }, []);
 
   useEffect(() => {
     const updateResolvedTheme = () => {
       if (theme === 'system') {
-        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
-          .matches
-          ? 'dark'
-          : 'light';
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         setResolvedTheme(systemTheme);
       } else {
         setResolvedTheme(theme);
@@ -32,8 +31,7 @@ export function useTheme() {
     if (theme === 'system') {
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
       mediaQuery.addEventListener('change', updateResolvedTheme);
-      return () =>
-        mediaQuery.removeEventListener('change', updateResolvedTheme);
+      return () => mediaQuery.removeEventListener('change', updateResolvedTheme);
     }
   }, [theme]);
 
@@ -46,8 +44,7 @@ export function useTheme() {
 
   const setThemeValue = (newTheme: Theme) => {
     setTheme(newTheme);
-    // Save theme using Laravel-style config
-    config('theme', newTheme);
+    localStorage.setItem('theme', newTheme);
   };
 
   return {
