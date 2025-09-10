@@ -65,7 +65,7 @@ export function ContextMenu({
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
         transition={{ duration: 0.1 }}
-        className="fixed z-50 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-1 min-w-[160px]"
+        className="fixed z-50 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-lg shadow-lg py-1 min-w-[160px]"
         style={{
           left: position.x,
           top: position.y,
@@ -76,7 +76,7 @@ export function ContextMenu({
             return (
               <div
                 key={index}
-                className="h-px bg-gray-200 dark:bg-gray-600 my-1"
+                className="h-px bg-gray-200 dark:bg-zinc-800 my-1"
               />
             );
           }
@@ -91,11 +91,11 @@ export function ContextMenu({
                 }
               }}
               disabled={item.disabled}
-              className="w-full px-3 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-between"
+              className="w-full px-3 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-between"
             >
               <span>{item.label}</span>
               {item.shortcut && (
-                <span className="text-xs text-gray-400 dark:text-gray-500 ml-2">
+                <span className="text-xs text-gray-400 dark:text-zinc-500 ml-2">
                   {item.shortcut}
                 </span>
               )}

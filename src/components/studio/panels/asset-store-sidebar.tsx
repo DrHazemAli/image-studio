@@ -13,15 +13,13 @@ import {
   ExternalLinkIcon,
   DownloadIcon,
 } from '@radix-ui/react-icons';
-import { useTheme } from '@/hooks/use-theme';
-import { AssetManager } from '@/lib/asset-providers/asset-manager';
 import { getUnifiedSetting } from '@/lib/settings';
-import type { AssetStoreAsset, AssetStoreConfig } from '@/types/asset-store';
+import type { Asset, AssetStoreConfig } from '@/types/asset-store';
 
 interface AssetStoreSidebarProps {
   isOpen: boolean;
   onToggle: () => void;
-  onAssetSelect?: (asset: AssetStoreAsset) => void;
+  onAssetSelect?: (asset: Asset) => void;
   projectId?: string;
 }
 
@@ -36,13 +34,12 @@ export function AssetStoreSidebar({
   const [selectedProvider, setSelectedProvider] = useState<'unsplash' | 'pexels'>('unsplash');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [assets, setAssets] = useState<AssetStoreAsset[]>([]);
+  const [assets, setAssets] = useState<Asset[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [categories, setCategories] = useState<string[]>([]);
   const [enabledProviders, setEnabledProviders] = useState<Array<'unsplash' | 'pexels'>>(['unsplash', 'pexels']);
 
-  const assetManager = new AssetManager();
 
 
   // Load enabled providers from settings
@@ -117,15 +114,7 @@ export function AssetStoreSidebar({
   useEffect(() => {
     const loadCategories = async () => {
       try {
-        const response = await fetch('/api/asset-store/categories', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            provider: selectedProvider,
-          }),
-        });
+        const response = await fetch(`/api/asset-store/categories?assetType=photo&provider=${selectedProvider}`);
         if (response.ok) {
           const data = await response.json();
           setCategories(data.categories || []);
@@ -176,7 +165,7 @@ export function AssetStoreSidebar({
       });
       if (response.ok) {
         const data = await response.json();
-        setAssets(data.assets || []);
+        setAssets(data.data || []);
       } else {
         setError('Failed to load featured assets');
       }
@@ -209,7 +198,7 @@ export function AssetStoreSidebar({
 
       if (response.ok) {
         const data = await response.json();
-        setAssets(data.assets || []);
+        setAssets(data.data || []);
       } else {
         setError('Failed to search assets');
       }
@@ -221,12 +210,12 @@ export function AssetStoreSidebar({
     }
   };
 
-  const handleAssetSelect = (asset: AssetStoreAsset) => {
+  const handleAssetSelect = (asset: Asset) => {
     onAssetSelect?.(asset);
     onToggle(); // Close sidebar after selection
   };
 
-  const handleDownload = async (asset: AssetStoreAsset) => {
+  const handleDownload = async (asset: Asset) => {
     try {
       const response = await fetch(asset.url);
       const blob = await response.blob();
@@ -289,7 +278,7 @@ export function AssetStoreSidebar({
               <>
                 <img
                   src={asset.thumbnail || asset.url}
-                  alt={asset.description || 'Asset'}
+                  alt={asset.name || 'Asset'}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
@@ -322,15 +311,15 @@ export function AssetStoreSidebar({
               <>
                 <img
                   src={asset.thumbnail || asset.url}
-                  alt={asset.description || 'Asset'}
+                  alt={asset.name || 'Asset'}
                   className="w-12 h-12 rounded-lg object-cover"
                 />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                    {asset.description || 'Untitled'}
+                    {asset.name || 'Untitled'}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                    {asset.provider} • {asset.width}×{asset.height}
+                    {asset.provider} • {asset.metadata.width}×{asset.metadata.height}
                   </p>
                 </div>
                 <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">

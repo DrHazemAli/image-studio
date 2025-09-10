@@ -6,9 +6,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { assetManager } from '@/lib/asset-providers/asset-manager';
 import { AssetSearchParams, AssetType } from '@/types/asset-store';
+import { updateAssetManagerWithCookies } from '@/lib/asset-providers/cookie-utils';
 
 export async function POST(request: NextRequest) {
   try {
+    // Update asset manager with API keys from cookies
+    updateAssetManagerWithCookies(request);
+    
     const body = await request.json();
     const { 
       category, 
@@ -67,6 +71,9 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
+    // Update asset manager with API keys from cookies
+    updateAssetManagerWithCookies(request);
+    
     const { searchParams } = new URL(request.url);
     
     const category = searchParams.get('category') || undefined;

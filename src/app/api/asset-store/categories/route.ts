@@ -6,9 +6,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { assetManager } from '@/lib/asset-providers/asset-manager';
 import { AssetType } from '@/types/asset-store';
+import { updateAssetManagerWithCookies } from '@/lib/asset-providers/cookie-utils';
 
 export async function GET(request: NextRequest) {
   try {
+    // Update asset manager with API keys from cookies
+    updateAssetManagerWithCookies(request);
+    
     const { searchParams } = new URL(request.url);
     const assetType = (searchParams.get('assetType') || 'photo') as AssetType;
 

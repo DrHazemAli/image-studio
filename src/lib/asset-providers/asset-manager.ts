@@ -107,6 +107,7 @@ export class AssetManager {
     this.pexelsProvider = new PexelsProvider(this.config.providers.pexels);
   }
 
+
   /**
    * Get current configuration
    */
@@ -182,7 +183,7 @@ export class AssetManager {
 
     // Add local assets (shapes, frames, icons)
     if (assetType === 'shape' || assetType === 'frame' || assetType === 'icon') {
-      const localAssets = await this.getLocalAssets(assetType, params);
+      const localAssets = await this.getLocalAssets();
       results.push(...localAssets);
       totalResults += localAssets.length;
     }
@@ -256,7 +257,7 @@ export class AssetManager {
 
     // Add local assets
     if (assetType === 'shape' || assetType === 'frame' || assetType === 'icon') {
-      const localAssets = await this.getLocalAssets(assetType, params);
+      const localAssets = await this.getLocalAssets();
       results.push(...localAssets);
       totalResults += localAssets.length;
     }
@@ -337,7 +338,7 @@ export class AssetManager {
   /**
    * Get local assets (shapes, frames, icons)
    */
-  private async getLocalAssets(assetType: AssetType, params: AssetSearchParams): Promise<Asset[]> {
+  private async getLocalAssets(): Promise<Asset[]> {
     // This would be implemented to return local SVG assets
     // For now, return empty array
     return [];

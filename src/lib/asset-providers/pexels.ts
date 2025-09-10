@@ -4,7 +4,8 @@
  */
 
 import { BaseAssetProvider } from './base-provider';
-import { Asset, AssetSearchParams, AssetApiResponse, PhotoAsset, VideoAsset, AssetProviderConfig } from '@/types/asset-store';
+import { AssetSearchParams, AssetApiResponse, PhotoAsset, VideoAsset, AssetProviderConfig } from '@/types/asset-store';
+import { createClient } from 'pexels';
 
 interface PexelsPhoto {
   id: number;
@@ -80,8 +81,11 @@ interface PexelsFeaturedResponse {
 }
 
 export class PexelsProvider extends BaseAssetProvider {
+  private client: any;
+
   constructor(config: AssetProviderConfig) {
     super(config, 'https://api.pexels.com/v1');
+    this.client = this.config.apiKey ? createClient(this.config.apiKey) : null;
   }
 
   getProviderName(): string {
@@ -95,37 +99,49 @@ export class PexelsProvider extends BaseAssetProvider {
   async searchAssets(params: AssetSearchParams): Promise<AssetApiResponse> {
     await this.handleRateLimit();
 
-    const searchParams: Record<string, string | number> = {
-      query: params.query || 'nature',
-      page: params.page || 1,
-      per_page: Math.min(params.perPage || 20, 80), // Pexels max is 80
-    };
-
-    if (params.orientation) {
-      searchParams.orientation = params.orientation;
-    }
-    if (params.color) {
-      searchParams.color = params.color;
-    }
-    const sizeParam = this.getSizeParam(params.orientation);
-    if (sizeParam) {
-      searchParams.size = sizeParam;
+    if (!this.client) {
+      if (!this.config.apiKey) {
+        return {
+          success: false,
+          data: [],
+          total: 0,
+          page: params.page || 1,
+          perPage: params.perPage || 20,
+          hasMore: false,
+          error: 'Pexels API key not configured',
+        };
+      }
+      this.client = createClient(this.config.apiKey);
     }
 
     try {
-      const response = await this.makeRequest<PexelsSearchResponse>(
-        '/search',
-        searchParams
-      );
+      const searchOptions: any = {
+        query: params.query || 'nature',
+        page: params.page || 1,
+        per_page: Math.min(params.perPage || 20, 80), // Pexels max is 80
+      };
 
-      return this.transformResponse(response, params.page || 1, searchParams.per_page as number);
+      if (params.orientation) {
+        searchOptions.orientation = params.orientation;
+      }
+      if (params.color) {
+        searchOptions.color = params.color;
+      }
+      const sizeParam = this.getSizeParam(params.orientation);
+      if (sizeParam) {
+        searchOptions.size = sizeParam;
+      }
+
+      const response = await this.client.photos.search(searchOptions);
+
+      return this.transformResponse(response, params.page || 1, searchOptions.per_page);
     } catch (error) {
       return {
         success: false,
         data: [],
         total: 0,
         page: params.page || 1,
-        perPage: searchParams.per_page as number,
+        perPage: params.perPage || 20,
         hasMore: false,
         error: this.getErrorMessage(error),
       };
@@ -135,34 +151,46 @@ export class PexelsProvider extends BaseAssetProvider {
   async searchVideos(params: AssetSearchParams): Promise<AssetApiResponse> {
     await this.handleRateLimit();
 
-    const searchParams: Record<string, string | number> = {
-      query: params.query || 'nature',
-      page: params.page || 1,
-      per_page: Math.min(params.perPage || 20, 80),
-    };
-
-    if (params.orientation) {
-      searchParams.orientation = params.orientation;
-    }
-    const sizeParam = this.getSizeParam(params.orientation);
-    if (sizeParam) {
-      searchParams.size = sizeParam;
+    if (!this.client) {
+      if (!this.config.apiKey) {
+        return {
+          success: false,
+          data: [],
+          total: 0,
+          page: params.page || 1,
+          perPage: params.perPage || 20,
+          hasMore: false,
+          error: 'Pexels API key not configured',
+        };
+      }
+      this.client = createClient(this.config.apiKey);
     }
 
     try {
-      const response = await this.makeRequest<PexelsVideoSearchResponse>(
-        '/videos/search',
-        searchParams
-      );
+      const searchOptions: any = {
+        query: params.query || 'nature',
+        page: params.page || 1,
+        per_page: Math.min(params.perPage || 20, 80),
+      };
 
-      return this.transformVideoResponse(response, params.page || 1, searchParams.per_page as number);
+      if (params.orientation) {
+        searchOptions.orientation = params.orientation;
+      }
+      const sizeParam = this.getSizeParam(params.orientation);
+      if (sizeParam) {
+        searchOptions.size = sizeParam;
+      }
+
+      const response = await this.client.videos.search(searchOptions);
+
+      return this.transformVideoResponse(response, params.page || 1, searchOptions.per_page);
     } catch (error) {
       return {
         success: false,
         data: [],
         total: 0,
         page: params.page || 1,
-        perPage: searchParams.per_page as number,
+        perPage: params.perPage || 20,
         hasMore: false,
         error: this.getErrorMessage(error),
       };
@@ -172,25 +200,37 @@ export class PexelsProvider extends BaseAssetProvider {
   async getFeaturedAssets(params: Omit<AssetSearchParams, 'query'> = {}): Promise<AssetApiResponse> {
     await this.handleRateLimit();
 
-    const searchParams = {
-      page: params.page || 1,
-      per_page: Math.min(params.perPage || 20, 80),
-    };
+    if (!this.client) {
+      if (!this.config.apiKey || this.config.apiKey.trim() === '') {
+        return {
+          success: false,
+          data: [],
+          total: 0,
+          page: params.page || 1,
+          perPage: params.perPage || 20,
+          hasMore: false,
+          error: 'Pexels API key not configured',
+        };
+      }
+      this.client = createClient(this.config.apiKey);
+    }
 
     try {
-      const response = await this.makeRequest<PexelsFeaturedResponse>(
-        '/curated',
-        searchParams
-      );
+      const searchOptions = {
+        page: params.page || 1,
+        per_page: Math.min(params.perPage || 20, 80),
+      };
 
-      return this.transformResponse(response, params.page || 1, searchParams.per_page as number);
+      const response = await this.client.photos.curated(searchOptions);
+
+      return this.transformResponse(response, params.page || 1, searchOptions.per_page);
     } catch (error) {
       return {
         success: false,
         data: [],
         total: 0,
         page: params.page || 1,
-        perPage: searchParams.per_page as number,
+        perPage: params.perPage || 20,
         hasMore: false,
         error: this.getErrorMessage(error),
       };
@@ -219,10 +259,9 @@ export class PexelsProvider extends BaseAssetProvider {
 
   async validateApiKey(): Promise<boolean> {
     try {
-      await this.makeRequest('/curated', { page: 1, per_page: 1 });
+      await this.client.photos.curated({ page: 1, per_page: 1 });
       return true;
     } catch (error) {
-      console.error('Pexels API key validation failed:', error);
       return false;
     }
   }
