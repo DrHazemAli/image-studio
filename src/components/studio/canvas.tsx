@@ -16,6 +16,11 @@ interface CanvasProps {
   // Menu Bar Integration: External zoom control props
   zoom?: number;
   onZoomChange?: (zoom: number) => void;
+  // Asset Store props
+  showAssetStore?: boolean;
+  onAssetStoreToggle?: () => void;
+  onAssetSelect?: (asset: any) => void;
+  projectId?: string;
 }
 
 // Menu Bar Integration: Canvas wrapper component
@@ -31,6 +36,10 @@ export const Canvas = forwardRef<MainCanvasRef, CanvasProps>(
       generatedImage,
       zoom,
       onZoomChange,
+      showAssetStore,
+      onAssetStoreToggle,
+      onAssetSelect,
+      projectId,
     },
     ref
   ) => {
@@ -45,6 +54,10 @@ export const Canvas = forwardRef<MainCanvasRef, CanvasProps>(
         generatedImage={generatedImage}
         zoom={zoom}
         onZoomChange={onZoomChange}
+        showAssetStore={showAssetStore}
+        onAssetStoreToggle={onAssetStoreToggle}
+        onAssetSelect={onAssetSelect}
+        projectId={projectId}
       />
     );
   }

@@ -73,6 +73,7 @@ export default function ProjectStudioPage() {
   const [showGenerationPanel, setShowGenerationPanel] = useState(false);
   const [showPromptBox, setShowPromptBox] = useState(true);
   const [showAssetsPanel, setShowAssetsPanel] = useState(false);
+  const [showAssetStorePanel, setShowAssetStorePanel] = useState(false);
   const [showHistoryPanel, setShowHistoryPanel] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
   const [currentImage, setCurrentImage] = useState<string | null>(null);
@@ -96,6 +97,7 @@ export default function ProjectStudioPage() {
   const [showSettings, setShowSettings] = useState(false);
   const [zoom, setZoom] = useState(ZOOM_CONSTANTS.INITIAL_ZOOM);
   const [currentProject, setCurrentProject] = useState<Project | null>(null);
+  const [isAssetStoreEnabled, setIsAssetStoreEnabled] = useState(false);
 
   // Undo/Redo state
   const [history, setHistory] = useState<
@@ -182,6 +184,25 @@ export default function ProjectStudioPage() {
   useEffect(() => {
     appSettings.updateUnifiedSetting('autoSave.enabled', autoSave);
   }, [autoSave, appSettings]);
+
+  // Load asset store configuration
+  useEffect(() => {
+    try {
+      const assetStoreConfig = appSettings.getUnifiedSetting('assetStore', {
+        enabled: false,
+        providers: {
+          unsplash: { enabled: false, apiKey: '', rateLimit: 50 },
+          pexels: { enabled: false, apiKey: '', rateLimit: 200 },
+        },
+        ui: { defaultView: 'grid', itemsPerPage: 20, showAttribution: true },
+        cache: { enabled: true, maxItems: 1000, ttl: 60 },
+      }) as { enabled: boolean };
+      setIsAssetStoreEnabled(assetStoreConfig.enabled);
+    } catch (error) {
+      logger.error('Failed to load asset store config:', error);
+      setIsAssetStoreEnabled(false);
+    }
+  }, [appSettings]);
 
   useEffect(() => {
     appSettings.updateUnifiedSetting('autoSave.duration', autoSaveDuration);
@@ -353,6 +374,9 @@ export default function ProjectStudioPage() {
         break;
       case 'assets':
         setShowAssetsPanel(true);
+        break;
+      case 'assetStore':
+        setShowAssetStorePanel(true);
         break;
       case 'history':
         setShowHistoryPanel(true);
@@ -693,6 +717,12 @@ export default function ProjectStudioPage() {
     // TODO: Set specific shape mode to line
   }, []);
 
+  const handleInsertFromAssetStore = useCallback(() => {
+    setActiveTool('assetStore');
+    setShowAssetStorePanel(true);
+    logger.info('Insert from asset store requested');
+  }, []);
+
   // Handle project export
   const handleExportProject = useCallback(async () => {
     if (!currentProject) return;
@@ -942,6 +972,11 @@ export default function ProjectStudioPage() {
             setActiveTool('assets');
             setShowAssetsPanel(true);
             break;
+          case '4':
+            event.preventDefault();
+            setActiveTool('assetStore');
+            setShowAssetStorePanel(true);
+            break;
           case 'e':
             event.preventDefault();
             setActiveTool('edit');
@@ -1079,6 +1114,8 @@ export default function ProjectStudioPage() {
                 onInsertRectangle={handleInsertRectangle}
                 onInsertCircle={handleInsertCircle}
                 onInsertLine={handleInsertLine}
+                onInsertFromAssetStore={handleInsertFromAssetStore}
+                isAssetStoreEnabled={isAssetStoreEnabled}
                 showConsole={showConsole}
                 showAssetsPanel={showAssetsPanel}
                 showHistoryPanel={showHistoryPanel}
@@ -1214,6 +1251,13 @@ export default function ProjectStudioPage() {
             generatedImage={generatedImage}
             zoom={zoom}
             onZoomChange={setZoom}
+            showAssetStore={showAssetStorePanel}
+            onAssetStoreToggle={() => setShowAssetStorePanel(!showAssetStorePanel)}
+            onAssetSelect={(asset) => {
+              setCurrentImage(asset.url);
+              setShowAssetStorePanel(false);
+            }}
+            projectId={currentProject?.id}
           />
 
           {/* Console Sidebar */}
@@ -1235,6 +1279,7 @@ export default function ProjectStudioPage() {
           }}
           projectId={currentProject?.id}
         />
+
 
         {/* History Panel */}
         <HistoryPanel

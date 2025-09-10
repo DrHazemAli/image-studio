@@ -24,6 +24,8 @@ interface MenuBarProps {
   onInsertRectangle: () => void;
   onInsertCircle: () => void;
   onInsertLine: () => void;
+  onInsertFromAssetStore: () => void;
+  isAssetStoreEnabled: boolean;
 
   // View menu props
   showConsole: boolean;
@@ -69,6 +71,8 @@ export function MenuBar({
   onInsertRectangle,
   onInsertCircle,
   onInsertLine,
+  onInsertFromAssetStore,
+  isAssetStoreEnabled,
   showConsole,
   showAssetsPanel,
   showHistoryPanel,
@@ -112,6 +116,8 @@ export function MenuBar({
         onInsertRectangle={onInsertRectangle}
         onInsertCircle={onInsertCircle}
         onInsertLine={onInsertLine}
+        onInsertFromAssetStore={onInsertFromAssetStore}
+        isAssetStoreEnabled={isAssetStoreEnabled}
       />
 
       <ViewMenu

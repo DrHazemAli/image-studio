@@ -45,6 +45,7 @@ export type Tool =
   | 'eyedropper'
   | 'blend'
   | 'assets'
+  | 'assetStore'
   | 'history'
   | 'prompt';
 
@@ -188,6 +189,13 @@ const tools = [
     name: 'Assets',
     icon: StackIcon,
     shortcut: 'Cmd+3',
+    group: 'management',
+  },
+  {
+    id: 'assetStore' as Tool,
+    name: 'Asset Store',
+    icon: FrameIcon,
+    shortcut: 'Cmd+4',
     group: 'management',
   },
   {

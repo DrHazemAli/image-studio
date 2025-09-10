@@ -12,6 +12,8 @@ interface InsertMenuProps {
   onInsertRectangle: () => void;
   onInsertCircle: () => void;
   onInsertLine: () => void;
+  onInsertFromAssetStore: () => void;
+  isAssetStoreEnabled: boolean;
 }
 
 export function InsertMenu({
@@ -22,6 +24,8 @@ export function InsertMenu({
   onInsertRectangle,
   onInsertCircle,
   onInsertLine,
+  onInsertFromAssetStore,
+  isAssetStoreEnabled,
 }: InsertMenuProps) {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const { activeMenu, setActiveMenu } = useMenuContext();
@@ -53,6 +57,11 @@ export function InsertMenu({
       action: onInsertText,
       shortcut: 'Cmd+T',
     },
+    ...(isAssetStoreEnabled && onInsertFromAssetStore ? [{
+      label: 'From Asset Store',
+      action: onInsertFromAssetStore,
+      shortcut: 'Cmd+4',
+    }] : []),
     {
       separator: true,
       label: '',

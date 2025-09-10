@@ -11,6 +11,7 @@ import React, {
 // Removed unused imports
 import { Tool } from '../toolbar';
 import { LayerManager, Layer } from '../tools';
+import { AssetStoreSidebar } from '../panels';
 import { Canvas as FabricCanvas, FabricImage, FabricObject } from 'fabric';
 import logger from '@/lib/logger';
 // Import canvas components
@@ -47,6 +48,11 @@ interface MainCanvasProps {
   // Menu Bar Integration: External zoom control props
   zoom?: number;
   onZoomChange?: (zoom: number) => void;
+  // Asset Store props
+  showAssetStore?: boolean;
+  onAssetStoreToggle?: () => void;
+  onAssetSelect?: (asset: any) => void;
+  projectId?: string;
 }
 
 const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
@@ -60,6 +66,11 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
       // Menu Bar Integration: External zoom control parameters
       zoom: externalZoom,
       onZoomChange,
+      // Asset Store parameters
+      showAssetStore = false,
+      onAssetStoreToggle,
+      onAssetSelect,
+      projectId,
     },
     ref
   ) => {
@@ -1778,6 +1789,16 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
               onLayerDuplicate={handleLayerDuplicate}
               onLayerReorder={handleLayerReorder}
               onAddLayer={handleAddLayer}
+            />
+          )}
+
+          {/* Asset Store Sidebar */}
+          {showAssetStore && onAssetStoreToggle && (
+            <AssetStoreSidebar
+              isOpen={showAssetStore}
+              onToggle={onAssetStoreToggle}
+              onAssetSelect={onAssetSelect}
+              projectId={projectId}
             />
           )}
 

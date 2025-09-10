@@ -30,6 +30,31 @@ const defaultUnifiedSettings: UnifiedSettings = {
     history: [],
     projects: [],
   },
+  assetStore: {
+    enabled: true,
+    providers: {
+      unsplash: {
+        enabled: false,
+        apiKey: '',
+        rateLimit: 50,
+      },
+      pexels: {
+        enabled: false,
+        apiKey: '',
+        rateLimit: 200,
+      },
+    },
+    ui: {
+      defaultView: 'grid',
+      itemsPerPage: 20,
+      showAttribution: true,
+    },
+    cache: {
+      enabled: true,
+      maxItems: 1000,
+      ttl: 60,
+    },
+  },
 };
 
 /**

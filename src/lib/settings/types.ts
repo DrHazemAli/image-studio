@@ -30,6 +30,31 @@ export interface UnifiedSettings {
     history: unknown[];
     projects: unknown[];
   };
+  assetStore: {
+    enabled: boolean;
+    providers: {
+      unsplash: {
+        enabled: boolean;
+        apiKey: string;
+        rateLimit: number;
+      };
+      pexels: {
+        enabled: boolean;
+        apiKey: string;
+        rateLimit: number;
+      };
+    };
+    ui: {
+      defaultView: 'grid' | 'list';
+      itemsPerPage: number;
+      showAttribution: boolean;
+    };
+    cache: {
+      enabled: boolean;
+      maxItems: number;
+      ttl: number; // Time to live in minutes
+    };
+  };
 }
 
 export interface ConfigOptions {

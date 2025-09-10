@@ -21,6 +21,7 @@ import {
   ChevronDown,
   Package,
   Terminal,
+  ExternalLink,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { config } from '@/lib/settings';
@@ -65,13 +66,18 @@ const LoggerSettings = lazy(() =>
     default: m.LoggerSettings,
   }))
 );
+const AssetStoreSettings = lazy(() =>
+  import('@/components/settings/asset-store-settings').then(m => ({
+    default: m.AssetStoreSettings,
+  }))
+);
 
 interface SettingsDialogProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-type SettingsTab = 'general' | 'azure' | 'models' | 'advanced' | 'logger' | 'about';
+type SettingsTab = 'general' | 'azure' | 'models' | 'assetStore' | 'advanced' | 'logger' | 'about';
 
 const getTabs = (developerMode: boolean, isDevelopment: boolean) => {
   const baseTabs: Array<{
@@ -97,6 +103,12 @@ const getTabs = (developerMode: boolean, isDevelopment: boolean) => {
       label: 'Models',
       icon: Package,
       description: 'AI image generation models configuration',
+    },
+    {
+      id: 'assetStore',
+      label: 'Asset Store',
+      icon: ExternalLink,
+      description: 'External asset providers and stock photos',
     },
     {
       id: 'advanced',
@@ -256,6 +268,12 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
         return (
           <Suspense fallback={<ModelsSettingsSkeleton />}>
             <ModelsSettings />
+          </Suspense>
+        );
+      case 'assetStore':
+        return (
+          <Suspense fallback={<GeneralSettingsSkeleton />}>
+            <AssetStoreSettings />
           </Suspense>
         );
       case 'advanced':
