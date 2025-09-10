@@ -251,7 +251,7 @@ export class AppConfigService {
     return {
       app: {
         name: 'Azure Image Studio',
-        version: '1.0.1',
+        version: '1.0.2',
         description: 'AI-powered image generation and editing platform',
         environment: 'development',
       },

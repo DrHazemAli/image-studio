@@ -1,0 +1,783 @@
+# Custom Development Guide
+
+*Extending and customizing Azure Image Studio for your needs*
+
+---
+
+**Author:** Hazem Ali, Microsoft AI MVP  
+**Version:** 1.0.1  
+**Repository:** [Azure Image Studio](https://github.com/DrHazemAli/azure-image-studio)  
+**Documentation:** [Wiki](https://github.com/DrHazemAli/azure-image-studio/wiki)
+
+[![GitHub](https://img.shields.io/badge/GitHub-DrHazemAli-blue)](https://github.com/DrHazemAli)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-hazemali-blue)](https://linkedin.com/in/hazemali)
+[![MVP](https://img.shields.io/badge/Microsoft-AI%20MVP-blue)](https://mvp.microsoft.com/)
+
+---
+
+## 🎯 Overview
+
+This guide provides comprehensive information for developers who want to extend, customize, or contribute to Azure Image Studio. Learn about the codebase structure, development workflows, and how to create custom features and integrations.
+
+**Note**: This is not an official Microsoft or Azure product, but rather a community project maintained by Microsoft MVPs that utilizes Azure's AI services.
+
+## 🏗️ Development Environment Setup
+
+### Prerequisites
+
+#### Required Software
+- **Node.js**: Version 18 or higher
+- **npm**: Version 8 or higher
+- **Git**: For version control
+- **Code Editor**: VS Code (recommended) or similar
+- **Browser**: Chrome, Firefox, Safari, or Edge
+
+#### Optional Tools
+- **Docker**: For containerized development
+- **Postman**: For API testing
+- **Figma**: For UI/UX design
+- **Azure CLI**: For Azure integration
+
+### Environment Setup
+
+#### 1. Clone the Repository
+```bash
+# Clone the repository
+git clone https://github.com/DrHazemAli/azure-image-studio.git
+
+# Navigate to project directory
+cd azure-image-studio
+
+# Install dependencies
+npm install
+```
+
+#### 2. Environment Configuration
+```bash
+# Copy environment template
+cp .env.example .env.local
+
+# Configure environment variables
+# Edit .env.local with your settings
+```
+
+#### 3. Development Server
+```bash
+# Start development server
+npm run dev
+
+# Start with specific port
+npm run dev -- --port 3001
+
+# Start with debug mode
+DEBUG=* npm run dev
+```
+
+### Project Structure
+
+#### Core Directories
+```
+azure-image-studio/
+├── src/                    # Source code
+│   ├── app/               # Next.js app directory
+│   ├── components/        # React components
+│   ├── lib/              # Utility libraries
+│   └── types/            # TypeScript types
+├── cli/                   # CLI application
+├── docs/                  # Documentation
+├── public/               # Static assets
+└── wiki/                 # Wiki documentation
+```
+
+#### Key Files
+- **package.json**: Project dependencies and scripts
+- **next.config.ts**: Next.js configuration
+- **tailwind.config.ts**: Tailwind CSS configuration
+- **tsconfig.json**: TypeScript configuration
+- **eslint.config.mjs**: ESLint configuration
+
+## 🧩 Architecture Overview
+
+### Technology Stack
+
+#### Frontend
+- **Next.js 14**: React framework with App Router
+- **React 18**: UI library with hooks and context
+- **TypeScript**: Type-safe JavaScript
+- **Tailwind CSS**: Utility-first CSS framework
+- **Fabric.js**: Canvas manipulation library
+
+#### Backend
+- **Next.js API Routes**: Serverless API endpoints
+- **Azure AI Services**: Image generation and processing
+- **IndexedDB**: Client-side data storage
+- **Cookie-based Auth**: Simple authentication system
+
+#### Development Tools
+- **ESLint**: Code linting and formatting
+- **Prettier**: Code formatting
+- **Husky**: Git hooks
+- **Jest**: Testing framework
+- **Commander.js**: CLI framework
+
+### Component Architecture
+
+#### Component Hierarchy
+```
+App
+├── Layout
+│   ├── Header
+│   ├── Sidebar
+│   └── Main
+├── Studio
+│   ├── Canvas
+│   ├── Toolbar
+│   └── Panels
+└── Settings
+    ├── General
+    ├── Azure
+    └── Advanced
+```
+
+#### State Management
+- **React Context**: Global state management
+- **useState/useEffect**: Local component state
+- **Custom Hooks**: Reusable state logic
+- **IndexedDB**: Persistent data storage
+
+## 🛠️ Development Workflow
+
+### Getting Started
+
+#### 1. Fork and Clone
+```bash
+# Fork the repository on GitHub
+# Clone your fork
+git clone https://github.com/your-username/azure-image-studio.git
+
+# Add upstream remote
+git remote add upstream https://github.com/DrHazemAli/azure-image-studio.git
+```
+
+#### 2. Create Feature Branch
+```bash
+# Create and switch to feature branch
+git checkout -b feature/your-feature-name
+
+# Push branch to your fork
+git push -u origin feature/your-feature-name
+```
+
+#### 3. Development Process
+```bash
+# Make your changes
+# Test your changes
+npm run test
+
+# Lint your code
+npm run lint
+
+# Format your code
+npm run format
+
+# Commit your changes
+git add .
+git commit -m "feat: add your feature description"
+```
+
+### Code Standards
+
+#### TypeScript Guidelines
+1. **Type Safety:**
+   - Use strict TypeScript configuration
+   - Define interfaces for all data structures
+   - Avoid `any` type usage
+
+2. **Code Organization:**
+   - Use barrel exports (index.ts files)
+   - Group related functionality
+   - Follow consistent naming conventions
+
+3. **Error Handling:**
+   - Use proper error types
+   - Implement error boundaries
+   - Provide meaningful error messages
+
+#### React Best Practices
+1. **Component Design:**
+   - Use functional components with hooks
+   - Implement proper prop types
+   - Follow single responsibility principle
+
+2. **Performance:**
+   - Use React.memo for expensive components
+   - Implement proper dependency arrays
+   - Avoid unnecessary re-renders
+
+3. **Accessibility:**
+   - Use semantic HTML elements
+   - Implement proper ARIA attributes
+   - Ensure keyboard navigation
+
+#### CSS Guidelines
+1. **Tailwind CSS:**
+   - Use utility classes when possible
+   - Create custom components for repeated patterns
+   - Follow responsive design principles
+
+2. **Component Styling:**
+   - Use CSS modules for component-specific styles
+   - Implement consistent spacing and typography
+   - Follow design system guidelines
+
+## 🔌 Extension Points
+
+### Custom Tools
+
+#### Creating a New Tool
+1. **Tool Interface:**
+```typescript
+interface CustomTool {
+  id: string;
+  name: string;
+  icon: React.ComponentType;
+  category: ToolCategory;
+  execute: (canvas: fabric.Canvas, options: ToolOptions) => void;
+  options?: ToolOption[];
+}
+```
+
+2. **Tool Implementation:**
+```typescript
+export const customTool: CustomTool = {
+  id: 'custom-tool',
+  name: 'Custom Tool',
+  icon: CustomToolIcon,
+  category: 'utility',
+  execute: (canvas, options) => {
+    // Tool implementation
+  },
+  options: [
+    {
+      name: 'option1',
+      type: 'number',
+      defaultValue: 10,
+      min: 0,
+      max: 100
+    }
+  ]
+};
+```
+
+3. **Tool Registration:**
+```typescript
+// Register tool in tools registry
+import { registerTool } from '@/lib/tools/registry';
+
+registerTool(customTool);
+```
+
+### Custom Filters
+
+#### Creating a New Filter
+1. **Filter Interface:**
+```typescript
+interface CustomFilter {
+  id: string;
+  name: string;
+  category: FilterCategory;
+  apply: (imageData: ImageData, options: FilterOptions) => ImageData;
+  options?: FilterOption[];
+}
+```
+
+2. **Filter Implementation:**
+```typescript
+export const customFilter: CustomFilter = {
+  id: 'custom-filter',
+  name: 'Custom Filter',
+  category: 'effects',
+  apply: (imageData, options) => {
+    // Filter implementation
+    const { width, height, data } = imageData;
+    const newData = new Uint8ClampedArray(data);
+    
+    // Apply filter logic
+    for (let i = 0; i < data.length; i += 4) {
+      // Process RGBA values
+    }
+    
+    return new ImageData(newData, width, height);
+  },
+  options: [
+    {
+      name: 'intensity',
+      type: 'range',
+      min: 0,
+      max: 100,
+      defaultValue: 50
+    }
+  ]
+};
+```
+
+### Custom Asset Providers
+
+#### Creating a New Provider
+1. **Provider Interface:**
+```typescript
+interface AssetProvider {
+  id: string;
+  name: string;
+  search: (query: string, options: SearchOptions) => Promise<Asset[]>;
+  download: (assetId: string) => Promise<Blob>;
+  getCategories: () => Promise<Category[]>;
+}
+```
+
+2. **Provider Implementation:**
+```typescript
+export class CustomAssetProvider implements AssetProvider {
+  id = 'custom-provider';
+  name = 'Custom Provider';
+  
+  async search(query: string, options: SearchOptions): Promise<Asset[]> {
+    // Implement search logic
+    const response = await fetch(`/api/custom-provider/search?q=${query}`);
+    return response.json();
+  }
+  
+  async download(assetId: string): Promise<Blob> {
+    // Implement download logic
+    const response = await fetch(`/api/custom-provider/download/${assetId}`);
+    return response.blob();
+  }
+  
+  async getCategories(): Promise<Category[]> {
+    // Implement categories logic
+    const response = await fetch('/api/custom-provider/categories');
+    return response.json();
+  }
+}
+```
+
+## 🧪 Testing
+
+### Testing Strategy
+
+#### Unit Testing
+1. **Component Testing:**
+```typescript
+import { render, screen } from '@testing-library/react';
+import { CustomComponent } from './CustomComponent';
+
+describe('CustomComponent', () => {
+  it('renders correctly', () => {
+    render(<CustomComponent />);
+    expect(screen.getByText('Expected Text')).toBeInTheDocument();
+  });
+});
+```
+
+2. **Hook Testing:**
+```typescript
+import { renderHook } from '@testing-library/react';
+import { useCustomHook } from './useCustomHook';
+
+describe('useCustomHook', () => {
+  it('returns expected value', () => {
+    const { result } = renderHook(() => useCustomHook());
+    expect(result.current.value).toBe('expected');
+  });
+});
+```
+
+#### Integration Testing
+1. **API Testing:**
+```typescript
+import { testApi } from './test-utils';
+
+describe('API Endpoints', () => {
+  it('generates image successfully', async () => {
+    const response = await testApi.post('/api/generate', {
+      prompt: 'test prompt',
+      model: 'dalle-3'
+    });
+    
+    expect(response.status).toBe(200);
+    expect(response.data.success).toBe(true);
+  });
+});
+```
+
+2. **E2E Testing:**
+```typescript
+import { test, expect } from '@playwright/test';
+
+test('generates image end-to-end', async ({ page }) => {
+  await page.goto('/studio');
+  await page.fill('[data-testid="prompt-input"]', 'test prompt');
+  await page.click('[data-testid="generate-button"]');
+  await expect(page.locator('[data-testid="generated-image"]')).toBeVisible();
+});
+```
+
+### Testing Commands
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run E2E tests
+npm run test:e2e
+```
+
+## 📦 Building and Deployment
+
+### Build Process
+
+#### Development Build
+```bash
+# Build for development
+npm run build
+
+# Build with analysis
+npm run build:analyze
+
+# Build specific components
+npm run build:components
+```
+
+#### Production Build
+```bash
+# Build for production
+npm run build:production
+
+# Build with optimization
+npm run build:optimize
+
+# Build with compression
+npm run build:compress
+```
+
+### Deployment Options
+
+#### Static Deployment
+1. **Vercel:**
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy to Vercel
+vercel --prod
+```
+
+2. **Netlify:**
+```bash
+# Build the project
+npm run build
+
+# Deploy to Netlify
+netlify deploy --prod --dir=out
+```
+
+#### Container Deployment
+1. **Docker:**
+```dockerfile
+FROM node:18-alpine
+
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+
+COPY . .
+RUN npm run build
+
+EXPOSE 3000
+CMD ["npm", "start"]
+```
+
+2. **Docker Compose:**
+```yaml
+version: '3.8'
+services:
+  azure-image-studio:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./data:/app/data
+```
+
+## 🔧 Configuration and Customization
+
+### Environment Configuration
+
+#### Environment Variables
+```bash
+# .env.local
+NEXT_PUBLIC_APP_NAME="Azure Image Studio"
+NEXT_PUBLIC_APP_VERSION="1.0.1"
+AZURE_API_KEY="your-api-key"
+AZURE_ENDPOINT="your-endpoint"
+```
+
+#### Configuration Files
+1. **App Configuration:**
+```json
+{
+  "name": "Azure Image Studio",
+  "version": "1.0.1",
+  "features": {
+    "assetStore": true,
+    "projectManagement": true,
+    "collaboration": true
+  }
+}
+```
+
+2. **Azure Configuration:**
+```json
+{
+  "endpoints": [
+    {
+      "name": "DALL-E 3",
+      "deploymentId": "dalle-3",
+      "baseUrl": "https://your-resource.openai.azure.com/",
+      "apiVersion": "2024-02-15-preview"
+    }
+  ]
+}
+```
+
+### Customization Options
+
+#### Theme Customization
+1. **Color Scheme:**
+```css
+:root {
+  --primary-color: #3b82f6;
+  --secondary-color: #64748b;
+  --accent-color: #f59e0b;
+  --background-color: #ffffff;
+  --text-color: #1f2937;
+}
+```
+
+2. **Component Styling:**
+```typescript
+// Custom component styles
+const customStyles = {
+  button: 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded',
+  input: 'border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2',
+  card: 'bg-white shadow-md rounded-lg p-6'
+};
+```
+
+#### Feature Flags
+```typescript
+// Feature flag configuration
+const featureFlags = {
+  enableAssetStore: true,
+  enableProjectManagement: true,
+  enableCollaboration: false,
+  enableAdvancedFilters: true
+};
+```
+
+## 📚 API Development
+
+### Creating API Endpoints
+
+#### Basic API Route
+```typescript
+// src/app/api/custom/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function GET(request: NextRequest) {
+  try {
+    // Handle GET request
+    const data = await fetchData();
+    return NextResponse.json({ success: true, data });
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    // Handle POST request
+    const result = await processData(body);
+    return NextResponse.json({ success: true, result });
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Invalid request' },
+      { status: 400 }
+    );
+  }
+}
+```
+
+#### API Middleware
+```typescript
+// src/lib/api-middleware.ts
+import { NextRequest, NextResponse } from 'next/server';
+
+export function withAuth(handler: Function) {
+  return async (request: NextRequest) => {
+    // Authentication logic
+    const isAuthenticated = await checkAuth(request);
+    
+    if (!isAuthenticated) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+    
+    return handler(request);
+  };
+}
+```
+
+### Database Integration
+
+#### IndexedDB Operations
+```typescript
+// src/lib/database.ts
+export class Database {
+  private db: IDBDatabase | null = null;
+  
+  async open(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open('AzureImageStudio', 1);
+      
+      request.onerror = () => reject(request.error);
+      request.onsuccess = () => {
+        this.db = request.result;
+        resolve();
+      };
+    });
+  }
+  
+  async save(key: string, data: any): Promise<void> {
+    if (!this.db) throw new Error('Database not opened');
+    
+    const transaction = this.db.transaction(['data'], 'readwrite');
+    const store = transaction.objectStore('data');
+    await store.put(data, key);
+  }
+  
+  async get(key: string): Promise<any> {
+    if (!this.db) throw new Error('Database not opened');
+    
+    const transaction = this.db.transaction(['data'], 'readonly');
+    const store = transaction.objectStore('data');
+    return new Promise((resolve, reject) => {
+      const request = store.get(key);
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+  }
+}
+```
+
+## 🤝 Contributing
+
+### Contribution Guidelines
+
+#### Code Style
+1. **Formatting:**
+   - Use Prettier for code formatting
+   - Follow ESLint rules
+   - Use consistent indentation
+
+2. **Naming Conventions:**
+   - Use camelCase for variables and functions
+   - Use PascalCase for components and classes
+   - Use UPPER_CASE for constants
+
+3. **Documentation:**
+   - Add JSDoc comments for functions
+   - Include README files for new features
+   - Update documentation as needed
+
+#### Pull Request Process
+1. **Create Pull Request:**
+   - Use descriptive title and description
+   - Reference related issues
+   - Include screenshots for UI changes
+
+2. **Code Review:**
+   - Address review comments
+   - Ensure all tests pass
+   - Update documentation
+
+3. **Merge Process:**
+   - Squash commits if needed
+   - Use conventional commit messages
+   - Delete feature branch after merge
+
+### Issue Reporting
+
+#### Bug Reports
+1. **Required Information:**
+   - Clear description of the issue
+   - Steps to reproduce
+   - Expected vs actual behavior
+   - System information
+
+2. **Bug Report Template:**
+```markdown
+## Bug Description
+Brief description of the bug
+
+## Steps to Reproduce
+1. Go to '...'
+2. Click on '...'
+3. See error
+
+## Expected Behavior
+What should happen
+
+## Actual Behavior
+What actually happens
+
+## System Information
+- OS: [e.g., Windows 10]
+- Browser: [e.g., Chrome 90]
+- Version: [e.g., 1.0.1]
+```
+
+#### Feature Requests
+1. **Required Information:**
+   - Clear description of the feature
+   - Use case and motivation
+   - Proposed implementation
+   - Additional context
+
+## 📚 Related Documentation
+
+- **[Installation Guide](installation-guide.mdx)** - Setup instructions
+- **[Technical Architecture](technical-architecture.mdx)** - System architecture
+- **[API Documentation](api-documentation.mdx)** - API reference
+- **[CLI Guide](cli-guide.mdx)** - Command-line tools
+- **[Troubleshooting Guide](troubleshooting-guide.mdx)** - Common issues
+
+---
+
+**Author**: Hazem Ali - Microsoft AI MVP  
+**Last Updated**: September 2025
+
+*For additional support, visit our [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions) or [report issues](https://github.com/DrHazemAli/azure-image-studio/issues).*

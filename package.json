@@ -1,6 +1,6 @@
 {
-  "name": "azure-genai-image",
-  "version": "1.0.1",
+  "name": "azure-image-studio",
+  "version": "1.0.2",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",

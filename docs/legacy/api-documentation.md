@@ -1,7 +1,6 @@
 # API Documentation
 
 **Last Updated**: September 8, 2025  
-**Version**: 1.0.1
 
 This document provides comprehensive API documentation for Azure GenAI Image Studio.
 
@@ -107,7 +106,7 @@ Retrieves current application configuration.
       "baseUrl": "https://your-resource.openai.azure.com"
     },
     "app": {
-      "version": "1.0.1",
+      "version": "1.0.2",
       "features": ["image_generation", "image_editing"]
     }
   }

@@ -1,0 +1,682 @@
+# Adding Models Guide
+
+Learn how to add, configure, and manage AI models in Azure Image Studio. This comprehensive guide covers everything from adding models through the settings UI to advanced configuration and validation.
+
+**Last Updated**: September 2025  
+
+## 🎯 Overview
+
+Azure Image Studio supports multiple AI model providers and allows you to add custom models, configure their settings, and validate their functionality. This guide will walk you through the entire process of adding and managing models.
+
+## 🚀 Quick Start
+
+### Accessing Model Settings
+
+1. **Open Settings**: Click the Settings icon in the top-right corner
+2. **Navigate to Models**: Click on the "Models" tab in the settings dialog
+3. **Select Provider**: Choose your desired AI provider (OpenAI, Black Forest Labs, Microsoft, etc.)
+
+## 📋 Prerequisites
+
+Before adding models, ensure you have:
+
+- ✅ **Azure Configuration**: Valid Azure API key and endpoint configured
+- ✅ **Model Access**: Access to the AI models you want to add
+- ✅ **Deployment Names**: Correct deployment names for your Azure resources
+- ✅ **API Versions**: Compatible API versions for your models
+
+## 🔧 Adding Models Through Settings UI
+
+### Method 1: Browse Model Catalog
+
+The easiest way to add models is through the built-in model catalog:
+
+#### Step 1: Access Model Catalog
+
+1. Go to **Settings** → **Models**
+2. Select your desired provider tab (e.g., "OpenAI", "Black Forest Labs")
+3. Click **"Browse Catalog"** button
+
+#### Step 2: Select Model
+
+1. Browse available models in the catalog
+2. Review model capabilities and requirements
+3. Click **"Add"** on the model you want to add
+4. The model will be automatically configured and added
+
+#### Step 3: Configure Settings
+
+1. The model will appear in your models list
+2. Click the expand arrow to configure advanced settings
+3. Set deployment name, API version, and other parameters
+4. Click **"Validate"** to test the model connection
+
+### Method 2: Add Custom Model
+
+For models not in the catalog or custom configurations:
+
+#### Step 1: Create Custom Model
+
+1. Go to **Settings** → **Models**
+2. Select your provider tab
+3. Click **"Add Custom"** button
+4. A new model template will be created
+
+#### Step 2: Configure Basic Settings
+
+Fill in the basic model information:
+
+```json
+{
+  "id": "your-model-id",
+  "name": "Your Model Name",
+  "description": "Description of your model",
+  "provider": "openai",
+  "apiVersion": "2025-04-01-preview",
+  "deploymentName": "your-deployment-name"
+}
+```
+
+#### Step 3: Set Capabilities
+
+Configure what the model can do:
+
+```json
+{
+  "capabilities": [
+    "text-to-image",
+    "image-editing",
+    "inpainting",
+    "outpainting"
+  ]
+}
+```
+
+#### Step 4: Configure Supported Sizes
+
+Set the image sizes your model supports:
+
+```json
+{
+  "supportedSizes": [
+    {
+      "size": "1024x1024",
+      "label": "Square (1:1)",
+      "aspect": "1:1",
+      "description": "Standard resolution"
+    },
+    {
+      "size": "1024x768",
+      "label": "Standard (4:3)",
+      "aspect": "4:3",
+      "description": "Default size"
+    }
+  ]
+}
+```
+
+## ⚙️ Advanced Configuration
+
+### Model Properties
+
+#### Basic Properties
+
+| Property | Description | Required | Example |
+|----------|-------------|----------|---------|
+| `id` | Unique model identifier | Yes | `"dalle-3"` |
+| `name` | Display name | Yes | `"DALL-E 3"` |
+| `description` | Model description | Yes | `"High-quality image generation"` |
+| `provider` | AI provider | Yes | `"openai"` |
+| `apiVersion` | API version | Yes | `"2025-04-01-preview"` |
+| `deploymentName` | Azure deployment name | Yes | `"dalle-3"` |
+
+#### Capabilities
+
+Define what the model can do:
+
+```typescript
+type ModelCapability = 
+  | "text-to-image"      // Generate images from text
+  | "image-editing"      // Edit existing images
+  | "inpainting"         // Fill in selected areas
+  | "outpainting"        // Extend image boundaries
+  | "image-to-image"     // Transform images
+  | "style-transfer"     // Apply artistic styles
+  | "upscale"            // Increase resolution
+  | "background-removal" // Remove backgrounds
+  | "object-detection"   // Detect objects
+  | "image-understanding" // Understand image content
+```
+
+#### Supported Formats
+
+```json
+{
+  "supportedFormats": ["png", "jpeg", "webp", "bmp"]
+}
+```
+
+#### Quality Levels
+
+```json
+{
+  "qualityLevels": ["low", "medium", "high", "hd", "ultra"]
+}
+```
+
+#### Advanced Features
+
+```json
+{
+  "features": {
+    "highQuality": true,
+    "fastGeneration": true,
+    "photorealistic": true,
+    "styleControl": true,
+    "contentFiltering": true,
+    "streaming": true,
+    "compression": true,
+    "contextAware": true,
+    "imageInput": true,
+    "editingCapabilities": true
+  }
+}
+```
+
+### Provider-Specific Configuration
+
+#### OpenAI Models
+
+```json
+{
+  "provider": "openai",
+  "apiVersion": "2025-04-01-preview",
+  "styleOptions": ["natural", "vivid"],
+  "qualityLevels": ["standard", "hd"],
+  "maxImages": 1,
+  "requiresApproval": false
+}
+```
+
+#### Black Forest Labs Models
+
+```json
+{
+  "provider": "blackForestLabs",
+  "apiVersion": "2024-12-01",
+  "maxTokens": 5000,
+  "maxImages": 1,
+  "imageInput": true,
+  "primary": true
+}
+```
+
+#### Microsoft Models
+
+```json
+{
+  "provider": "microsoft",
+  "apiVersion": "2024-12-01",
+  "maxImages": 1,
+  "requiresApproval": false
+}
+```
+
+## 🔍 Model Validation
+
+### Automatic Validation
+
+Models are automatically validated when you:
+
+1. **Add from Catalog**: Models from the catalog are pre-validated
+2. **Click Validate**: Manual validation through the UI
+3. **Save Configuration**: Automatic validation on save
+
+### Validation Process
+
+The validation process checks:
+
+1. **Azure Connection**: Verifies Azure API credentials
+2. **Deployment Access**: Confirms deployment exists and is accessible
+3. **Model Availability**: Ensures the model is deployed and ready
+4. **API Compatibility**: Validates API version compatibility
+
+### Validation Status
+
+Models can have the following statuses:
+
+- 🟢 **Valid**: Model is properly configured and accessible
+- 🔴 **Invalid**: Model has configuration issues or is not accessible
+- 🟡 **Pending**: Validation is in progress
+- ⚪ **Idle**: Not yet validated
+
+### Manual Validation
+
+To manually validate a model:
+
+1. Expand the model card in the settings
+2. Click the **"Validate"** button
+3. Wait for validation to complete
+4. Review the validation results
+
+## 📝 Configuration Examples
+
+### Example 1: DALL-E 3 Configuration
+
+```json
+{
+  "id": "dalle-3",
+  "name": "DALL-E 3",
+  "description": "High-quality image generation with natural and vivid styles",
+  "provider": "openai",
+  "apiVersion": "2024-10-21",
+  "capabilities": ["text-to-image"],
+  "supportedSizes": [
+    {
+      "size": "1024x1024",
+      "label": "Square (1:1)",
+      "aspect": "1:1",
+      "description": "Standard size"
+    },
+    {
+      "size": "1024x768",
+      "label": "Standard (4:3)",
+      "aspect": "4:3",
+      "description": "Default size"
+    }
+  ],
+  "supportedFormats": ["png", "jpeg"],
+  "styleOptions": ["natural", "vivid"],
+  "qualityLevels": ["standard", "hd"],
+  "maxImages": 1,
+  "requiresApproval": false,
+  "features": {
+    "highQuality": true,
+    "styleControl": true,
+    "contentFiltering": true
+  }
+}
+```
+
+### Example 2: FLUX 1.1 Pro Configuration
+
+```json
+{
+  "id": "flux-1-1-pro",
+  "name": "FLUX 1.1 Pro",
+  "description": "Advanced text-to-image generation with superior quality",
+  "provider": "blackForestLabs",
+  "apiVersion": "2024-12-01",
+  "capabilities": ["text-to-image"],
+  "supportedSizes": [
+    {
+      "size": "1024x1024",
+      "label": "Square (1:1)",
+      "aspect": "1:1",
+      "description": "Standard resolution"
+    },
+    {
+      "size": "1024x768",
+      "label": "Standard (4:3)",
+      "aspect": "4:3",
+      "description": "Default size"
+    },
+    {
+      "size": "768x1024",
+      "label": "Portrait (3:4)",
+      "aspect": "3:4",
+      "description": "Vertical format"
+    }
+  ],
+  "supportedFormats": ["png", "jpeg"],
+  "maxTokens": 5000,
+  "maxImages": 1,
+  "requiresApproval": false,
+  "features": {
+    "highResolution": true,
+    "fastGeneration": true,
+    "photorealistic": true
+  }
+}
+```
+
+### Example 3: Custom Model Configuration
+
+```json
+{
+  "id": "custom-model-001",
+  "name": "My Custom Model",
+  "description": "Custom model for specific use cases",
+  "provider": "openai",
+  "apiVersion": "2025-04-01-preview",
+  "capabilities": [
+    "text-to-image",
+    "image-editing",
+    "inpainting"
+  ],
+  "supportedSizes": [
+    {
+      "size": "1024x1024",
+      "label": "Square (1:1)",
+      "aspect": "1:1",
+      "description": "Standard resolution"
+    }
+  ],
+  "supportedFormats": ["png", "jpeg"],
+  "qualityLevels": ["standard", "hd"],
+  "maxImages": 1,
+  "requiresApproval": true,
+  "premium": true,
+  "deploymentName": "my-custom-deployment",
+  "features": {
+    "highQuality": true,
+    "preciseInstructions": true,
+    "imageInput": true,
+    "streaming": true
+  }
+}
+```
+
+## 🛠️ Advanced Settings
+
+### Model Hierarchy
+
+Set primary models for different use cases:
+
+```json
+{
+  "primary": true,  // This model will be used as default
+  "enabled": true,  // Model is active and available
+  "requiresApproval": false  // No approval needed for use
+}
+```
+
+### Size Configuration
+
+Configure supported image sizes with detailed metadata:
+
+```json
+{
+  "supportedSizes": [
+    {
+      "size": "1024x1024",
+      "label": "Square (1:1)",
+      "aspect": "1:1",
+      "description": "Standard resolution",
+      "recommended": true
+    },
+    {
+      "size": "1536x1024",
+      "label": "Landscape (3:2)",
+      "aspect": "3:2",
+      "description": "Wide format",
+      "recommended": false
+    }
+  ]
+}
+```
+
+### Feature Flags
+
+Enable or disable specific model features:
+
+```json
+{
+  "features": {
+    "textRendering": true,        // Can render text in images
+    "preciseInstructions": true,  // Follows detailed instructions
+    "imageInput": true,          // Accepts image input
+    "streaming": true,           // Supports streaming responses
+    "compression": true,         // Supports image compression
+    "contextAware": true,        // Understands image context
+    "editingCapabilities": true  // Can edit existing images
+  }
+}
+```
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+#### 1. Model Not Validating
+
+**Problem**: Model shows as "Invalid" status
+
+**Solutions**:
+- Check Azure API key and endpoint configuration
+- Verify deployment name matches Azure deployment
+- Ensure API version is compatible
+- Check if model requires approval
+
+#### 2. Model Not Appearing in Generation
+
+**Problem**: Model is configured but not available in generation tools
+
+**Solutions**:
+- Ensure model is enabled (`"enabled": true`)
+- Check if model has required capabilities
+- Verify model is set as primary if needed
+- Restart the application
+
+#### 3. Validation Timeout
+
+**Problem**: Model validation takes too long or times out
+
+**Solutions**:
+- Check network connectivity
+- Verify Azure service status
+- Try validating during off-peak hours
+- Check if model deployment is active
+
+#### 4. Incorrect Image Sizes
+
+**Problem**: Model generates images in unexpected sizes
+
+**Solutions**:
+- Verify `supportedSizes` configuration
+- Check if size is in the supported list
+- Ensure aspect ratio is correct
+- Update model configuration
+
+### Debug Steps
+
+1. **Check Azure Configuration**:
+   ```bash
+   # Verify Azure credentials
+   curl -H "Authorization: Bearer YOUR_API_KEY" \
+        https://YOUR_ENDPOINT.openai.azure.com/openai/deployments
+   ```
+
+2. **Validate Model Deployment**:
+   ```bash
+   # Check if deployment exists
+   curl -H "Authorization: Bearer YOUR_API_KEY" \
+        https://YOUR_ENDPOINT.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT
+   ```
+
+3. **Test Model API**:
+   ```bash
+   # Test model generation
+   curl -X POST \
+        -H "Authorization: Bearer YOUR_API_KEY" \
+        -H "Content-Type: application/json" \
+        -d '{"prompt": "test", "size": "1024x1024"}' \
+        https://YOUR_ENDPOINT.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT/images/generations?api-version=2024-10-21
+   ```
+
+## 📚 Best Practices
+
+### Model Organization
+
+1. **Use Descriptive Names**: Choose clear, descriptive names for your models
+2. **Group by Provider**: Organize models by AI provider for easier management
+3. **Set Primary Models**: Designate primary models for each capability
+4. **Document Capabilities**: Clearly document what each model can do
+
+### Configuration Management
+
+1. **Version Control**: Keep model configurations in version control
+2. **Backup Configurations**: Regularly backup your model settings
+3. **Test Before Production**: Always test models in development first
+4. **Monitor Performance**: Track model performance and usage
+
+### Security Considerations
+
+1. **Secure API Keys**: Never expose API keys in configuration files
+2. **Use Environment Variables**: Store sensitive data in environment variables
+3. **Regular Rotation**: Rotate API keys regularly
+4. **Access Control**: Limit model access to authorized users
+
+## 🔄 Model Management
+
+### Updating Models
+
+To update an existing model:
+
+1. **Expand Model Card**: Click the expand arrow on the model
+2. **Edit Properties**: Modify the desired properties
+3. **Save Changes**: Changes are automatically saved
+4. **Validate**: Re-validate the model if needed
+
+### Removing Models
+
+To remove a model:
+
+1. **Expand Model Card**: Click the expand arrow on the model
+2. **Click Remove**: Click the trash icon
+3. **Confirm Removal**: Confirm the removal in the dialog
+4. **Model Removed**: Model is removed from configuration
+
+### Importing/Exporting Configurations
+
+#### Export Configuration
+
+```typescript
+// Export current model configuration
+const exportConfiguration = () => {
+  const config = localStorage.getItem('azure-models-config');
+  const blob = new Blob([config], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'azure-models-config.json';
+  a.click();
+};
+```
+
+#### Import Configuration
+
+```typescript
+// Import model configuration
+const importConfiguration = (file: File) => {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const config = JSON.parse(e.target.result);
+    localStorage.setItem('azure-models-config', JSON.stringify(config));
+    // Reload the application
+    window.location.reload();
+  };
+  reader.readAsText(file);
+};
+```
+
+## 🚀 Advanced Features
+
+### Custom Model Providers
+
+You can add support for custom model providers:
+
+```json
+{
+  "provider": "custom-provider",
+  "baseUrl": "https://your-custom-api.com",
+  "apiKey": "your-api-key",
+  "authentication": {
+    "type": "bearer",
+    "header": "Authorization"
+  }
+}
+```
+
+### Model Presets
+
+Create presets for common model configurations:
+
+```json
+{
+  "presets": {
+    "photorealistic": {
+      "name": "Photorealistic",
+      "description": "Realistic photography style",
+      "recommendedModel": "flux-1-1-pro",
+      "settings": {
+        "style": "natural",
+        "quality": "hd"
+      }
+    },
+    "artistic": {
+      "name": "Artistic",
+      "description": "Creative and stylized artwork",
+      "recommendedModel": "dalle-3",
+      "settings": {
+        "style": "vivid",
+        "quality": "hd"
+      }
+    }
+  }
+}
+```
+
+### Model Tools Integration
+
+Configure which tools can use which models:
+
+```json
+{
+  "tools": {
+    "generation": {
+      "supportedModels": ["dalle-3", "flux-1-1-pro", "gpt-image-1"]
+    },
+    "editing": {
+      "supportedModels": ["gpt-image-1", "flux-kontext-pro"]
+    },
+    "inpainting": {
+      "supportedModels": ["gpt-image-1", "florence-2"]
+    }
+  }
+}
+```
+
+## 📖 Additional Resources
+
+### Documentation Links
+
+- [Azure OpenAI Documentation](https://docs.microsoft.com/en-us/azure/cognitive-services/openai/)
+- [Black Forest Labs Documentation](https://blackforestlabs.ai/docs)
+- [Microsoft AI Services](https://docs.microsoft.com/en-us/azure/cognitive-services/)
+
+### Community Resources
+
+- [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
+- [Discord Community](https://discord.gg/your-discord)
+- [Model Sharing Forum](https://forum.azure-image-studio.com)
+
+### Tools and Utilities
+
+- [Model Configuration Validator](https://validator.azure-image-studio.com)
+- [Azure Model Catalog](https://catalog.azure.com)
+- [Configuration Templates](https://templates.azure-image-studio.com)
+
+---
+
+## 🧭 Navigation
+
+<div align="center">
+
+[← Back: Settings Guide](settings-guide.mdx) | [Next: Troubleshooting Guide →](troubleshooting-guide.mdx)
+
+</div>
+
+---
+
+This guide provides comprehensive coverage of adding and managing models in Azure Image Studio. For more information, see the [Settings Guide](settings-guide.mdx) or [Azure Setup Guide](azure-setup-guide.mdx).

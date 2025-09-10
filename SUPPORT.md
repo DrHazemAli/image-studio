@@ -1,7 +1,6 @@
 # Support Guide - Azure Image Studio
 
 **Last Updated**: September 8, 2025  
-**Version**: 1.0.1
 
 Need help with Azure Image Studio? This guide will help you find the right resources and get the support you need.
 

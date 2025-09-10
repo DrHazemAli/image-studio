@@ -1,7 +1,6 @@
 # Architecture Guide
 
 **Last Updated**: September 8, 2025  
-**Version**: 1.0.1
 
 This document provides a comprehensive overview of the Azure GenAI Image Studio architecture, including system design, component relationships, data flow, and technical implementation details.
 

@@ -11,7 +11,7 @@ Azure Image Studio is a cutting-edge image generation and editing platform that 
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)
 ![React](https://img.shields.io/badge/React-19.1.0-blue?style=for-the-badge&logo=react)
 
-[![Version](https://img.shields.io/badge/Version-1.0.1-green?style=for-the-badge)](https://github.com/DrHazemAli/azure-image-studio)
+[![Version](https://img.shields.io/badge/Version-1.0.2-green?style=for-the-badge)](https://github.com/DrHazemAli/azure-image-studio)
 [![Community Project](https://img.shields.io/badge/Type-Community%20Project-orange?style=for-the-badge)](https://github.com/DrHazemAli/azure-image-studio)
 [![Microsoft MVP](https://img.shields.io/badge/Author-Microsoft%20MVP-purple?style=for-the-badge)](https://github.com/DrHazemAli)
 [![Code Coverage](https://img.shields.io/badge/Code%20Coverage-85%25-brightgreen?style=for-the-badge)](CODE_COVERAGE.md)
@@ -54,7 +54,8 @@ Azure Image Studio is a community-developed, production-ready platform that inte
 
 **Note**: This is not an official Microsoft or Azure product, but rather a community project that utilizes Azure's AI services.
 
-**✅ Production Status**: Azure Image Studio is currently **production-ready** (v1.0.1) with comprehensive features implemented and documented. The platform is stable and ready for professional use. Please see our [Development Roadmap](docs/roadmap.md) for current status and planned features.
+**✅ Production Status**: Azure Image Studio is currently **production-ready** (v1.0.2) with comprehensive features implemented and documented. The platform is stable and ready for professional use. Please see our [Development Roadmap](docs/legacy/roadmap.md) for current status and planned features.
+
 
 ## ✨ Features
 
@@ -65,7 +66,10 @@ Azure Image Studio is a community-developed, production-ready platform that inte
 - **Asset Library**: Built-in asset management and organization with IndexedDB
 - **History Panel**: Complete generation and editing history tracking
 - **Real-time Console**: Detailed API request/response logging
-- **Tool System**: Comprehensive set of editing and generation tools
+- **Tool System**: Comprehensive set of AI-powered editing and generation tools
+- **Powerful AI Tools**: AI-powered image generation, editing, inpainting, outpainting, and more
+- **Asset Store**: Enjoy millions of high-quality stockimages, graphics, and design elements
+- **Azure AI**: Enjoy the full power of Azure AI services with multiple models and features
 
 ### 🖥️ **Command-Line Interface**
 
@@ -83,6 +87,7 @@ Azure Image Studio is a community-developed, production-ready platform that inte
 - **FLUX 1 Kontext Pro**: Context-aware image generation and editing
 - **GPT-Image-1**: Latest model with enhanced capabilities including image editing and inpainting (requires approval)
 - **Florence 2.0**: Microsoft's vision-language model for advanced image understanding
+- **Extended AI Models**: Add / Remove AI models with ease with integrated Azure AI services
 
 ### 🛠️ **Advanced Capabilities**
 
@@ -102,6 +107,7 @@ Azure Image Studio is a community-developed, production-ready platform that inte
 - **Mobile Responsive**: Optimized for all device sizes
 - **Real-time Progress**: Live generation progress tracking
 - **Keyboard Shortcuts**: Professional keyboard shortcuts for all tools
+- **Easy to use UI**: Intuitive UIs including settings interface for seamless configuration
 
 ## 🏗️ Architecture
 
@@ -133,6 +139,8 @@ Azure Image Studio is a community-developed, production-ready platform that inte
 - Azure AI Foundry access (for FLUX models)
 
 ### Installation
+
+> **Note**: For production deployments, please use the **stable branch** which contains the latest stable release, The main branch may contain experimental features and should be used for development and testing only.
 
 1. **Clone the repository**
 
@@ -224,7 +232,7 @@ AZURE_API_KEY=your_azure_api_key_here
 AZURE_API_BASE_URL=your_azure_api_base_url_here
 ```
 
-> ⚙️ **Configuration Details**: Each model requires its own endpoint configuration. See the [Configuration Guide](docs/configuration.md) for complete setup instructions.
+> ⚙️ **Configuration Details**: Each model requires its own endpoint configuration. See the [Settings Guide](wiki/settings-guide.mdx) for complete setup instructions.
 
 ## 🎨 Usage
 
@@ -243,7 +251,7 @@ AZURE_API_BASE_URL=your_azure_api_base_url_here
 4. Edit using the advanced canvas
 5. Save and export your work
 
-> 📖 **Detailed Usage**: Check out our comprehensive [User Guide](docs/user-guide.md) for detailed instructions on all features and workflows.
+> 📖 **Detailed Usage**: Check out our comprehensive [Features Guide](wiki/features-guide.mdx) for detailed instructions on all features and workflows.
 
 ## 📁 Project Structure
 
@@ -271,18 +279,22 @@ azure-image-studio/
 │   │   └── types/         # CLI type definitions
 │   ├── docs/              # CLI documentation
 │   └── package.json       # CLI dependencies
-└── docs/                  # Comprehensive documentation
-    ├── getting-started.md # Setup and configuration guide
-    ├── configuration.md   # Comprehensive configuration reference
-    ├── user-guide.md      # Detailed usage instructions
-    ├── api-documentation.md # Technical API reference
-    ├── architecture.md    # System design overview
-    ├── database-guide.md  # Data storage and management
-    ├── installation.md    # Installation instructions
-    ├── deployment.md      # Deployment guide
-    ├── cli-documentation.md # CLI guide
-    ├── contributing.md    # Contribution guide
-    └── roadmap.md         # Development roadmap
+├── wiki/                  # Comprehensive documentation (MDX format)
+│   ├── quick-start-guide.mdx # Setup and configuration guide
+│   ├── settings-guide.mdx    # Comprehensive configuration reference
+│   ├── features-guide.mdx    # Detailed usage instructions
+│   ├── api-documentation.mdx # Technical API reference
+│   ├── technical-architecture.mdx # System design overview
+│   ├── installation-guide.mdx # Installation instructions
+│   ├── azure-deployment-guide.mdx # Deployment guide
+│   ├── cli-guide.mdx      # CLI guide
+│   └── troubleshooting-guide.mdx # Common issues and solutions
+└── docs/                  # Legacy documentation and redirects
+    ├── README.md          # Documentation redirect
+    └── legacy/            # Historical documentation
+        ├── contributing.md    # Contribution guide
+        ├── roadmap.md         # Development roadmap
+        └── [other legacy docs] # Additional historical documentation
 ```
 
 ## 🗺️ What's Coming Next
@@ -299,40 +311,51 @@ We're actively developing exciting new features:
 - **Cloud Storage with Azure** - Seamless cloud-based asset management and cross-device access
 - **User Authentication** - User accounts and collaboration features
 
-For detailed information about our development timeline and planned features, see our [Development Roadmap](docs/roadmap.md).
+For detailed information about our development timeline and planned features, see our [Development Roadmap](docs/legacy/roadmap.md).
 
-> 📚 **Need detailed setup instructions?** Check out our comprehensive [Getting Started Guide](docs/getting-started.md)
+> 📚 **Need detailed setup instructions?** Check out our comprehensive [Quick Start Guide](wiki/quick-start-guide.mdx)
 
 ## 📚 Documentation
 
+> 📚 **Documentation Location**: All documentation has been moved to the **[wiki/](wiki/)** directory for better organization and maintenance.
+
 ### User Documentation
 
-- 🚀 **[Getting Started](docs/getting-started.md)** - Complete setup and configuration guide
-- ⚙️ **[Configuration Guide](docs/configuration.md)** - Comprehensive configuration reference
-- 📖 **[User Guide](docs/user-guide.md)** - Detailed usage instructions for all features
-- 🎨 **[Image Generation Guide](docs/image-generation.md)** - AI generation workflows and best practices
-- 🛠️ **[Tools Reference](docs/tools-reference.md)** - Complete tools reference and usage guide
+- 🚀 **[Quick Start Guide](wiki/quick-start-guide.mdx)** - Complete setup and configuration guide
+- ⚙️ **[Settings Guide](wiki/settings-guide.mdx)** - Comprehensive configuration reference
+- 📖 **[Features Guide](wiki/features-guide.mdx)** - Detailed usage instructions for all features
+- 🎨 **[AI Image Guide](wiki/ai-image-guide.mdx)** - AI generation workflows and best practices
+- 🛠️ **[Tools Reference](wiki/tools-reference.mdx)** - Complete tools reference and usage guide
+- 🏪 **[Asset Store Guide](wiki/asset-store-guide.mdx)** - Asset management and organization
 
 ### Developer Documentation
 
-- 🔧 **[Developer Guide](docs/developer-guide.md)** - Development setup and architecture
-- 📡 **[API Documentation](docs/api-documentation.md)** - Technical reference and examples
-- 🏗️ **[Architecture Guide](docs/architecture.md)** - System design and technical details
-- 🗄️ **[Database Guide](docs/database-guide.md)** - Data storage and management
-- 🚀 **[Installation Guide](docs/installation.md)** - Detailed installation instructions
-- ☁️ **[Deployment Guide](docs/deployment.md)** - Production deployment instructions
+- 🔧 **[Development Guide](wiki/development-guide.mdx)** - Development setup and architecture
+- 📡 **[API Documentation](wiki/api-documentation.mdx)** - Technical reference and examples
+- 🏗️ **[Technical Architecture](wiki/technical-architecture.mdx)** - System design and technical details
+- 🚀 **[Installation Guide](wiki/installation-guide.mdx)** - Detailed installation instructions
+- ☁️ **[Azure Deployment Guide](wiki/azure-deployment-guide.mdx)** - Production deployment instructions
+- 🔐 **[Security Guide](wiki/security-guide.mdx)** - Security best practices and guidelines
+- ⚡ **[Performance Guide](wiki/performance-guide.mdx)** - Performance optimization and monitoring
 
 ### Command-Line Interface
 
-- 🖥️ **[CLI Documentation](docs/cli-documentation.md)** - Comprehensive CLI guide
+- 🖥️ **[CLI Guide](wiki/cli-guide.mdx)** - Comprehensive CLI guide
 - 📖 **[CLI User Guide](cli/docs/CLI-User-Guide.md)** - CLI usage instructions
 - 🔧 **[CLI API Documentation](cli/docs/CLI-API-Documentation.md)** - CLI technical reference
 
+### Azure & Models
+
+- 🔧 **[Azure Setup Guide](wiki/azure-setup-guide.mdx)** - Azure service configuration
+- 🤖 **[Adding Models Guide](wiki/adding-models-guide.mdx)** - Model configuration and management
+- 📊 **[Project Management Guide](wiki/project-management-guide.mdx)** - Project organization and workflows
+
 ### Community & Development
 
-- 🤝 **[Contributing Guide](docs/contributing.md)** - How to contribute to the project
-- 🗺️ **[Development Roadmap](docs/roadmap.md)** - Current status and planned features
+- 🤝 **[Contributing Guide](docs/legacy/contributing.md)** - How to contribute to the project
+- 🗺️ **[Development Roadmap](docs/legacy/roadmap.md)** - Current status and planned features
 - 🧪 **[Code Coverage & Testing](CODE_COVERAGE.md)** - Testing strategy and quality metrics
+- 🔧 **[Troubleshooting Guide](wiki/troubleshooting-guide.mdx)** - Common issues and solutions
 
 ## 🤝 Contributing
 
@@ -368,6 +391,7 @@ This is a **community-driven project**! We welcome contributions from developers
 - 🐛 **Bug Reports**: [GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
 - 💡 **Feature Requests**: [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
 - 📧 **Contact**: [GitHub Profile](https://github.com/DrHazemAli)
+- 📖 **Documentation**: [Wiki](https://github.com/DrHazemAli/azure-image-studio/wiki)
 
 ## 📄 License
 

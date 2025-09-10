@@ -5,7 +5,7 @@ This comprehensive guide covers the data storage, management, and architecture o
 > ⚠️ **Important**: This is a **community project** and is not affiliated with or endorsed by Microsoft or Azure. It's an independent project that uses Azure AI services.
 
 **Last Updated**: September 8, 2025  
-**Version**: 1.0.1
+**Version**: 1.0.2
 
 ## 🗄️ Database Overview
 

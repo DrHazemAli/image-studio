@@ -5,6 +5,32 @@ All notable changes to Azure Image Studio will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2025-09-10
+
+### Added
+
+- Asset store added
+- History panel added
+- Settings UI added
+- Background removal tool added
+- Tool reference guide added
+- Azure Model Catalog added
+- Features guide added
+- Auto-sync feature added
+- Image Filters, Enhancement, Upscaling, Inpainting, Outpainting, Generation, Editing added
+- Stock Providers Store added
+- Project Templates added
+- Project Import/Export added
+
+### Changed
+
+- Configuration system
+
+### Fixed
+
+- Critical bug: `fabric: Error loading data:image/png;base64,undefined`
+- Themeing issue.
+
 ## [1.0.1] - 2025-09-08
 
 ### Added

@@ -1,0 +1,203 @@
+# Quick Start Tutorial
+
+*Get up and running with Azure Image Studio in just 5 minutes*
+
+---
+
+**Author:** Hazem Ali, Microsoft AI MVP  
+**Repository:** [Azure Image Studio](https://github.com/DrHazemAli/azure-image-studio)  
+**Documentation:** [Wiki](https://github.com/DrHazemAli/azure-image-studio/wiki)
+
+[![GitHub](https://img.shields.io/badge/GitHub-DrHazemAli-blue)](https://github.com/DrHazemAli)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-drhazemali-blue)](https://linkedin.com/in/drhazemali)
+[![MVP](https://img.shields.io/badge/Microsoft-AI%20MVP-blue)](https://mvp.microsoft.com/)
+
+---
+
+## 🚀 Prerequisites
+
+Before starting, ensure you have:
+- ✅ Azure Image Studio installed (see [Installation Guide](installation-guide.mdx))
+- ✅ Azure AI services configured (see [Azure Setup Guide](azure-setup-guide.mdx))
+- ✅ Basic understanding of image editing concepts
+
+## 📋 Step 1: First Launch
+
+### 1.1 Start the Application
+```bash
+# Navigate to your project directory
+cd azure-image-studio
+
+# Start the development server
+npm run dev
+```
+
+### 1.2 Access the Studio
+1. Open your browser and go to `http://localhost:3000`
+2. You'll see the main dashboard
+3. Click **"Open Studio"** to enter the image editing workspace
+
+## ⚙️ Step 2: Configure Azure Settings
+
+### 2.1 Access Settings
+1. Click the **Settings** button (⚙️) in the top-right corner
+2. Navigate to **Azure** tab
+3. Enter your credentials:
+   - **Username**: `admin` (default)
+   - **Password**: `0000` (default)
+
+### 2.2 Add Azure Configuration
+1. **Azure Endpoint**: Enter your Azure AI endpoint
+2. **API Key**: Add your Azure AI API key
+3. **Model Selection**: Choose your preferred models
+4. Click **"Save Configuration"**
+
+> ⚠️ **Security Warning**: Change default credentials in production!
+
+## 🎨 Step 3: Create Your First Image
+
+### 3.1 Generate an Image
+1. In the studio, locate the **Prompt Box** at the top
+2. Enter a descriptive prompt, for example:
+   ```
+   A beautiful sunset over a mountain landscape with a lake reflection
+   ```
+3. Select your preferred **AI Model** (DALL-E 3, FLUX 1.1 Pro, etc.)
+4. Choose **Image Size** (1024x1024, 1024x1792, etc.)
+5. Click **"Generate Image"**
+
+### 3.2 Wait for Generation
+- The system will show a loading indicator
+- Generation typically takes 10-30 seconds
+- Your image will appear on the canvas when ready
+
+## 🛠️ Step 4: Basic Editing
+
+### 4.1 Canvas Navigation
+- **Zoom**: Use mouse wheel or zoom controls
+- **Pan**: Click and drag on empty canvas areas
+- **Reset View**: Click the home button (🏠)
+
+### 4.2 Essential Tools
+1. **Select Tool** (V): Click to select objects
+2. **Move Tool** (M): Drag objects around
+3. **Text Tool** (T): Add text to your image
+4. **Shape Tools**: Add rectangles, circles, lines
+5. **Brush Tool** (B): Freehand drawing
+
+### 4.3 Layer Management
+- **Layers Panel**: Located on the right side
+- **Add Layer**: Click the "+" button
+- **Reorder**: Drag layers up/down
+- **Delete**: Select layer and press Delete key
+
+## 🎯 Step 5: Apply Effects and Filters
+
+### 5.1 Access Filters
+1. Select your image layer
+2. Go to **Filters Panel** (right sidebar)
+3. Choose from available effects:
+   - **Brightness/Contrast**
+   - **Saturation**
+   - **Blur**
+   - **Sharpen**
+   - **Color Adjustments**
+
+### 5.2 AI-Powered Tools
+1. **Background Removal**: Select image → Tools → Remove Background
+2. **AI Enhancement**: Select image → Tools → Enhance with AI
+3. **Style Transfer**: Select image → Tools → Apply Style
+
+## 💾 Step 6: Save Your Work
+
+### 6.1 Save Project
+1. Click **File** → **Save Project**
+2. Enter a project name
+3. Choose save location
+4. Click **"Save"**
+
+### 6.2 Export Image
+1. Click **File** → **Export**
+2. Choose format (PNG, JPG, SVG)
+3. Select quality settings
+4. Click **"Export"**
+
+## 🎉 Step 7: Explore Advanced Features
+
+### 7.1 Asset Store
+1. Click **Asset Store** tab (left sidebar)
+2. Browse **Pexels** or **Unsplash** images
+3. Search for specific content
+4. Click to add to your project
+
+### 7.2 Project Management
+1. Click **Projects** tab
+2. Create new projects
+3. Organize by folders
+4. Share with team members
+
+### 7.3 Developer Console
+1. Click **Console** tab (bottom panel)
+2. View API requests/responses
+3. Debug generation issues
+4. Monitor performance
+
+## 🔧 Quick Tips
+
+### Essential Shortcuts
+- **Ctrl+S**: Save project
+- **Ctrl+Z**: Undo
+- **Ctrl+Y**: Redo
+- **Ctrl+C**: Copy
+- **Ctrl+V**: Paste
+- **Delete**: Remove selected object
+- **Space + Drag**: Pan canvas
+- **Ctrl + Mouse Wheel**: Zoom
+
+### Best Practices
+1. **Save Frequently**: Use Ctrl+S regularly
+2. **Use Layers**: Keep different elements on separate layers
+3. **Descriptive Prompts**: Be specific for better AI results
+4. **Test Different Models**: Each AI model has unique strengths
+5. **Backup Projects**: Export important work regularly
+
+## 🆘 Getting Help
+
+### Common Issues
+- **Generation Fails**: Check Azure configuration
+- **Slow Performance**: Try smaller image sizes
+- **Can't Save**: Check file permissions
+- **Tools Not Working**: Ensure layer is selected
+
+### Support Resources
+- **Documentation**: [Complete Features Guide](features-guide.mdx)
+- **Tools Reference**: [Detailed Tools Guide](tools-reference.mdx)
+- **Troubleshooting**: [Common Issues Guide](troubleshooting-guide.mdx)
+- **Community**: [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
+
+## 🎯 Next Steps
+
+Now that you've created your first image, explore these advanced topics:
+
+1. **[Complete Features Guide](features-guide.mdx)** - Master all capabilities
+2. **[Tools Reference](tools-reference.mdx)** - Detailed tool documentation
+3. **[Settings Guide](settings-guide.mdx)** - Customize your experience
+4. **[Asset Store Guide](asset-store-guide.mdx)** - Work with external assets
+5. **[Project Management Guide](project-management-guide.mdx)** - Organize your work
+
+## 🏆 Congratulations!
+
+You've successfully:
+- ✅ Configured Azure Image Studio
+- ✅ Generated your first AI image
+- ✅ Applied basic editing tools
+- ✅ Saved and exported your work
+
+You're now ready to create professional-quality images with the power of Azure AI!
+
+---
+
+*Need more help? Check out our [Troubleshooting Guide](troubleshooting-guide.mdx) or join our [community discussions](https://github.com/DrHazemAli/azure-image-studio/discussions).*
+
+**Author**: Hazem Ali - Microsoft AI MVP  
+**Last Updated**: September 2025

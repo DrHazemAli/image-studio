@@ -144,7 +144,7 @@ export function getReleaseNotesUrl(version: string, versionInfo?: VersionInfo): 
   
   // Fallback to default format
   const cleanVersion = version.replace(/^v/, '');
-  return `https://github.com/hazem-ahmed/azure-genai-image/releases/tag/v${cleanVersion}`;
+  return `https://github.com/DrHazemAli/azure-image-studio/releases/tag/v${cleanVersion}`;
 }
 
 /**
@@ -158,7 +158,7 @@ export function getDownloadUrl(version: string, versionInfo?: VersionInfo): stri
   
   // Fallback to default format
   const cleanVersion = version.replace(/^v/, '');
-  return `https://github.com/hazem-ahmed/azure-genai-image/releases/download/v${cleanVersion}/azure-genai-image-v${cleanVersion}.zip`;
+  return `https://github.com/DrHazemAli/azure-image-studio/releases/download/v${cleanVersion}/azure-image-studio-v${cleanVersion}.zip`;
 }
 
 /**
@@ -192,7 +192,7 @@ export async function checkForUpdates(force: boolean = false): Promise<VersionIn
 export function getCurrentVersion(): string {
   // In a real app, you might want to read this from package.json
   // For now, we'll use a hardcoded version or read from environment
-  return process.env.NEXT_PUBLIC_APP_VERSION || '1.0.1';
+  return process.env.NEXT_PUBLIC_APP_VERSION || '1.0.2';
 }
 
 /**

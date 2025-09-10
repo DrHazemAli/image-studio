@@ -1,0 +1,772 @@
+# AI Image Generation & Editing Guide
+
+Master the art of AI-powered image creation and editing with Azure Image Studio's cutting-edge AI capabilities. This comprehensive guide covers everything from basic generation to advanced editing techniques using Azure's most powerful AI models.
+
+**Last Updated**: September 2025  
+**Version**: 1.0.2
+
+## 🎯 Overview
+
+Azure Image Studio leverages the full power of Azure AI services to provide professional-grade image generation and editing capabilities. This guide will teach you how to harness these AI models to create stunning visuals, edit professional content, and build automated image workflows.
+
+## 🤖 Available AI Models
+
+### DALL-E 3
+- **Provider**: Azure OpenAI
+- **Best For**: Photorealistic images, artistic creations, complex scenes
+- **Strengths**: High quality, detailed understanding, creative interpretation
+- **Use Cases**: Marketing materials, social media content, artistic projects
+
+### FLUX 1.1 Pro
+- **Provider**: Microsoft Azure
+- **Best For**: Fast generation, diverse styles, commercial use
+- **Strengths**: Speed, versatility, commercial licensing
+- **Use Cases**: Rapid prototyping, batch generation, commercial projects
+
+### Florence 2.0
+- **Provider**: Microsoft Azure
+- **Best For**: Image understanding, editing, inpainting
+- **Strengths**: Vision-language understanding, precise editing
+- **Use Cases**: Image editing, background removal, object manipulation
+
+### GPT-Image-1
+- **Provider**: Azure OpenAI
+- **Best For**: Advanced multimodal capabilities, complex editing
+- **Strengths**: Latest technology, enhanced capabilities
+- **Use Cases**: Research, experimental projects, cutting-edge applications
+
+## 🎨 Image Generation
+
+### Getting Started with Generation
+
+#### 1. Basic Image Generation
+
+```typescript
+// Basic image generation example
+const generateImage = async (prompt: string) => {
+  const response = await fetch('/api/generate', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      prompt: prompt,
+      model: 'dall-e-3',
+      size: '1024x1024',
+      quality: 'standard',
+      style: 'vivid'
+    })
+  });
+  
+  return await response.json();
+};
+
+// Usage
+const image = await generateImage('A futuristic cityscape at sunset with flying cars');
+```
+
+#### 2. Advanced Generation Parameters
+
+```typescript
+// Advanced generation with all parameters
+const advancedGeneration = async (prompt: string) => {
+  const response = await fetch('/api/generate', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      prompt: prompt,
+      model: 'flux-1.1-pro',
+      size: '1024x1024',
+      quality: 'hd',
+      style: 'natural',
+      aspectRatio: '16:9',
+      negativePrompt: 'blurry, low quality, distorted',
+      seed: 12345,
+      steps: 50,
+      guidanceScale: 7.5
+    })
+  });
+  
+  return await response.json();
+};
+```
+
+### Prompt Engineering Best Practices
+
+#### 1. Effective Prompt Structure
+
+```
+[Subject] + [Action/Description] + [Style] + [Quality] + [Technical Details]
+```
+
+**Example:**
+```
+"A professional businesswoman in a modern office, confidently presenting to a team, corporate photography style, high resolution, professional lighting, 4K quality"
+```
+
+#### 2. Style Descriptors
+
+| Style Category | Keywords | Use Cases |
+|----------------|----------|-----------|
+| **Photography** | `photography`, `portrait`, `landscape`, `macro` | Realistic images, professional photos |
+| **Artistic** | `oil painting`, `watercolor`, `digital art`, `sketch` | Creative projects, artistic content |
+| **Technical** | `technical drawing`, `blueprint`, `diagram`, `infographic` | Technical documentation, diagrams |
+| **Commercial** | `advertisement`, `marketing`, `product shot`, `lifestyle` | Marketing materials, commercial use |
+
+#### 3. Quality Modifiers
+
+```typescript
+const qualityModifiers = {
+  resolution: ['4K', '8K', 'high resolution', 'ultra HD'],
+  detail: ['detailed', 'intricate', 'fine details', 'sharp'],
+  lighting: ['professional lighting', 'studio lighting', 'natural light', 'dramatic lighting'],
+  composition: ['rule of thirds', 'golden ratio', 'symmetrical', 'dynamic composition']
+};
+```
+
+### Generation Techniques
+
+#### 1. Iterative Refinement
+
+```typescript
+// Iterative prompt refinement
+const iterativeGeneration = async (basePrompt: string) => {
+  const iterations = [
+    basePrompt,
+    `${basePrompt}, high quality, detailed`,
+    `${basePrompt}, professional photography, studio lighting`,
+    `${basePrompt}, 4K resolution, sharp focus, vibrant colors`
+  ];
+  
+  const results = [];
+  for (const prompt of iterations) {
+    const result = await generateImage(prompt);
+    results.push({ prompt, result });
+  }
+  
+  return results;
+};
+```
+
+#### 2. Style Transfer
+
+```typescript
+// Style transfer using different models
+const styleTransfer = async (subject: string, style: string) => {
+  const prompts = [
+    `${subject} in the style of ${style}`,
+    `${subject}, ${style} aesthetic`,
+    `${subject}, rendered as ${style}`,
+    `${subject}, ${style} art style`
+  ];
+  
+  return await Promise.all(prompts.map(p => generateImage(p)));
+};
+```
+
+#### 3. Batch Generation
+
+```typescript
+// Batch generation for multiple variations
+const batchGeneration = async (basePrompt: string, variations: string[]) => {
+  const prompts = variations.map(variation => `${basePrompt}, ${variation}`);
+  
+  const results = await Promise.all(
+    prompts.map(async (prompt, index) => {
+      const result = await generateImage(prompt);
+      return { variation: variations[index], prompt, result };
+    })
+  );
+  
+  return results;
+};
+
+// Usage
+const variations = [
+  'morning lighting',
+  'evening lighting',
+  'winter scene',
+  'summer scene'
+];
+
+const batchResults = await batchGeneration('A cozy cabin in the woods', variations);
+```
+
+## ✏️ AI-Powered Image Editing
+
+### Background Removal
+
+#### 1. Automatic Background Removal
+
+```typescript
+// Background removal using Florence 2.0
+const removeBackground = async (imageData: string) => {
+  const response = await fetch('/api/background-removal', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      image: imageData,
+      model: 'florence-2.0',
+      outputFormat: 'png',
+      transparency: true
+    })
+  });
+  
+  return await response.json();
+};
+```
+
+#### 2. Advanced Background Editing
+
+```typescript
+// Replace background with AI-generated content
+const replaceBackground = async (imageData: string, newBackgroundPrompt: string) => {
+  // First, remove the background
+  const removedBg = await removeBackground(imageData);
+  
+  // Generate new background
+  const newBackground = await generateImage(newBackgroundPrompt);
+  
+  // Composite the images
+  const composite = await compositeImages(removedBg.foreground, newBackground.image);
+  
+  return composite;
+};
+```
+
+### Inpainting and Outpainting
+
+#### 1. Object Removal (Inpainting)
+
+```typescript
+// Remove unwanted objects from images
+const removeObject = async (imageData: string, maskData: string) => {
+  const response = await fetch('/api/inpaint', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      image: imageData,
+      mask: maskData,
+      prompt: 'remove object, seamless background',
+      model: 'gpt-image-1',
+      strength: 0.8
+    })
+  });
+  
+  return await response.json();
+};
+```
+
+#### 2. Object Addition (Inpainting)
+
+```typescript
+// Add objects to images
+const addObject = async (imageData: string, maskData: string, objectPrompt: string) => {
+  const response = await fetch('/api/inpaint', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      image: imageData,
+      mask: maskData,
+      prompt: objectPrompt,
+      model: 'dall-e-3',
+      strength: 0.9
+    })
+  });
+  
+  return await response.json();
+};
+```
+
+#### 3. Image Extension (Outpainting)
+
+```typescript
+// Extend images beyond their original boundaries
+const extendImage = async (imageData: string, direction: string, prompt: string) => {
+  const response = await fetch('/api/outpaint', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      image: imageData,
+      direction: direction, // 'left', 'right', 'top', 'bottom'
+      prompt: prompt,
+      model: 'flux-1.1-pro',
+      extensionSize: 512
+    })
+  });
+  
+  return await response.json();
+};
+```
+
+### Style Transfer and Filters
+
+#### 1. AI Style Transfer
+
+```typescript
+// Apply artistic styles to images
+const applyStyle = async (imageData: string, stylePrompt: string) => {
+  const response = await fetch('/api/style-transfer', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      image: imageData,
+      style: stylePrompt,
+      model: 'florence-2.0',
+      strength: 0.7
+    })
+  });
+  
+  return await response.json();
+};
+```
+
+#### 2. Color Grading
+
+```typescript
+// AI-powered color grading
+const colorGrade = async (imageData: string, mood: string) => {
+  const colorPrompts = {
+    'warm': 'warm color palette, golden hour lighting',
+    'cool': 'cool color palette, blue tones, professional',
+    'vintage': 'vintage color grading, film look, muted tones',
+    'vibrant': 'vibrant colors, high saturation, energetic'
+  };
+  
+  const response = await fetch('/api/color-grade', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      image: imageData,
+      style: colorPrompts[mood],
+      model: 'gpt-image-1'
+    })
+  });
+  
+  return await response.json();
+};
+```
+
+## 🎭 Advanced Editing Techniques
+
+### Multi-Model Workflows
+
+#### 1. Hybrid Generation and Editing
+
+```typescript
+// Combine multiple AI models for complex workflows
+const hybridWorkflow = async (prompt: string) => {
+  // Step 1: Generate base image with DALL-E 3
+  const baseImage = await generateImage(prompt, 'dall-e-3');
+  
+  // Step 2: Enhance with FLUX 1.1 Pro
+  const enhanced = await enhanceImage(baseImage.image, 'flux-1.1-pro');
+  
+  // Step 3: Apply style with Florence 2.0
+  const styled = await applyStyle(enhanced.image, 'professional photography');
+  
+  // Step 4: Final touches with GPT-Image-1
+  const final = await finalizeImage(styled.image, 'gpt-image-1');
+  
+  return final;
+};
+```
+
+#### 2. Iterative Refinement Pipeline
+
+```typescript
+// Iterative refinement using multiple models
+const refinementPipeline = async (initialPrompt: string) => {
+  let currentImage = await generateImage(initialPrompt);
+  let currentPrompt = initialPrompt;
+  
+  const refinements = [
+    { model: 'dall-e-3', action: 'enhance_details' },
+    { model: 'flux-1.1-pro', action: 'improve_lighting' },
+    { model: 'florence-2.0', action: 'refine_composition' },
+    { model: 'gpt-image-1', action: 'final_polish' }
+  ];
+  
+  for (const refinement of refinements) {
+    currentImage = await refineImage(currentImage, refinement);
+  }
+  
+  return currentImage;
+};
+```
+
+### Batch Processing
+
+#### 1. Automated Batch Generation
+
+```typescript
+// Process multiple images in batch
+const batchProcess = async (imageList: string[], operation: string) => {
+  const results = await Promise.all(
+    imageList.map(async (image, index) => {
+      try {
+        const result = await processImage(image, operation);
+        return { index, success: true, result };
+      } catch (error) {
+        return { index, success: false, error: error.message };
+      }
+    })
+  );
+  
+  return results;
+};
+```
+
+#### 2. Progress Tracking
+
+```typescript
+// Track progress of batch operations
+const batchProcessWithProgress = async (imageList: string[], operation: string, onProgress: (progress: number) => void) => {
+  const results = [];
+  const total = imageList.length;
+  
+  for (let i = 0; i < imageList.length; i++) {
+    const result = await processImage(imageList[i], operation);
+    results.push(result);
+    
+    const progress = ((i + 1) / total) * 100;
+    onProgress(progress);
+  }
+  
+  return results;
+};
+```
+
+## 🔧 API Integration
+
+### REST API Usage
+
+#### 1. Authentication
+
+```typescript
+// API authentication
+const authenticate = async () => {
+  const response = await fetch('/api/auth/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      username: process.env.API_USERNAME,
+      password: process.env.API_PASSWORD
+    })
+  });
+  
+  const { token } = await response.json();
+  return token;
+};
+```
+
+#### 2. Error Handling
+
+```typescript
+// Robust error handling for API calls
+const apiCall = async (endpoint: string, data: any) => {
+  try {
+    const token = await authenticate();
+    
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(data)
+    });
+    
+    if (!response.ok) {
+      throw new Error(`API Error: ${response.status} ${response.statusText}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('API Call Failed:', error);
+    throw error;
+  }
+};
+```
+
+### WebSocket Integration
+
+#### 1. Real-time Generation
+
+```typescript
+// Real-time image generation with WebSocket
+const realTimeGeneration = (prompt: string, onProgress: (progress: any) => void) => {
+  const ws = new WebSocket('wss://your-domain.com/ws/generate');
+  
+  ws.onopen = () => {
+    ws.send(JSON.stringify({ prompt, model: 'dall-e-3' }));
+  };
+  
+  ws.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    onProgress(data);
+  };
+  
+  ws.onerror = (error) => {
+    console.error('WebSocket Error:', error);
+  };
+  
+  return ws;
+};
+```
+
+## 📊 Performance Optimization
+
+### Caching Strategies
+
+#### 1. Image Caching
+
+```typescript
+// Implement image caching
+const imageCache = new Map();
+
+const getCachedImage = async (prompt: string, model: string) => {
+  const cacheKey = `${model}:${prompt}`;
+  
+  if (imageCache.has(cacheKey)) {
+    return imageCache.get(cacheKey);
+  }
+  
+  const image = await generateImage(prompt, model);
+  imageCache.set(cacheKey, image);
+  
+  return image;
+};
+```
+
+#### 2. Batch Optimization
+
+```typescript
+// Optimize batch operations
+const optimizedBatch = async (prompts: string[], batchSize: number = 5) => {
+  const batches = [];
+  for (let i = 0; i < prompts.length; i += batchSize) {
+    batches.push(prompts.slice(i, i + batchSize));
+  }
+  
+  const results = [];
+  for (const batch of batches) {
+    const batchResults = await Promise.all(
+      batch.map(prompt => generateImage(prompt))
+    );
+    results.push(...batchResults);
+  }
+  
+  return results;
+};
+```
+
+## 🎨 Creative Workflows
+
+### 1. Brand Asset Creation
+
+```typescript
+// Create consistent brand assets
+const createBrandAssets = async (brandPrompt: string) => {
+  const assets = [
+    { type: 'logo', prompt: `${brandPrompt} logo, minimalist, professional` },
+    { type: 'hero', prompt: `${brandPrompt} hero image, marketing style` },
+    { type: 'social', prompt: `${brandPrompt} social media post, square format` },
+    { type: 'banner', prompt: `${brandPrompt} banner, wide format, web header` }
+  ];
+  
+  return await Promise.all(
+    assets.map(asset => generateImage(asset.prompt))
+  );
+};
+```
+
+### 2. Content Series Generation
+
+```typescript
+// Generate content series with consistent style
+const createContentSeries = async (theme: string, count: number) => {
+  const series = [];
+  
+  for (let i = 0; i < count; i++) {
+    const prompt = `${theme} part ${i + 1}, consistent style, series`;
+    const image = await generateImage(prompt);
+    series.push({ part: i + 1, image });
+  }
+  
+  return series;
+};
+```
+
+### 3. A/B Testing Content
+
+```typescript
+// Generate A/B test variations
+const createABTestVariations = async (basePrompt: string) => {
+  const variations = [
+    { name: 'A', prompt: `${basePrompt}, version A, bright colors` },
+    { name: 'B', prompt: `${basePrompt}, version B, muted colors` },
+    { name: 'C', prompt: `${basePrompt}, version C, high contrast` }
+  ];
+  
+  return await Promise.all(
+    variations.map(variation => ({
+      ...variation,
+      image: generateImage(variation.prompt)
+    }))
+  );
+};
+```
+
+## 🔍 Troubleshooting
+
+### Common Issues
+
+#### 1. Generation Failures
+
+```typescript
+// Handle generation failures with retry logic
+const generateWithRetry = async (prompt: string, maxRetries: number = 3) => {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return await generateImage(prompt);
+    } catch (error) {
+      if (i === maxRetries - 1) throw error;
+      await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+    }
+  }
+};
+```
+
+#### 2. Quality Issues
+
+```typescript
+// Quality improvement techniques
+const improveQuality = async (image: string) => {
+  const improvements = [
+    'high resolution, 4K quality',
+    'professional photography, sharp focus',
+    'enhanced details, crisp edges',
+    'vibrant colors, perfect lighting'
+  ];
+  
+  let currentImage = image;
+  for (const improvement of improvements) {
+    currentImage = await enhanceImage(currentImage, improvement);
+  }
+  
+  return currentImage;
+};
+```
+
+## 📚 Best Practices
+
+### 1. Prompt Engineering
+
+- **Be Specific**: Include details about style, composition, lighting
+- **Use Quality Modifiers**: Add terms like "high resolution", "professional"
+- **Iterate and Refine**: Test different prompt variations
+- **Use Negative Prompts**: Exclude unwanted elements
+
+### 2. Model Selection
+
+- **DALL-E 3**: Best for photorealistic and creative images
+- **FLUX 1.1 Pro**: Best for speed and commercial use
+- **Florence 2.0**: Best for editing and understanding
+- **GPT-Image-1**: Best for experimental and advanced features
+
+### 3. Performance Tips
+
+- **Cache Results**: Store generated images for reuse
+- **Batch Operations**: Process multiple images together
+- **Optimize Prompts**: Use concise, effective prompts
+- **Monitor Usage**: Track API usage and costs
+
+## 🚀 Advanced Features
+
+### 1. Custom Model Training
+
+```typescript
+// Train custom models for specific styles
+const trainCustomModel = async (trainingData: string[], styleName: string) => {
+  const response = await fetch('/api/train-model', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      trainingData,
+      styleName,
+      epochs: 100,
+      learningRate: 0.001
+    })
+  });
+  
+  return await response.json();
+};
+```
+
+### 2. Integration with External Services
+
+```typescript
+// Integrate with external design tools
+const exportToDesignTool = async (image: string, tool: string) => {
+  const integrations = {
+    'figma': () => exportToFigma(image),
+    'adobe': () => exportToAdobe(image),
+    'canva': () => exportToCanva(image)
+  };
+  
+  return await integrations[tool]();
+};
+```
+
+## 📖 Additional Resources
+
+### Documentation Links
+
+- [Azure AI Services Documentation](https://docs.microsoft.com/en-us/azure/cognitive-services/)
+- [OpenAI API Documentation](https://platform.openai.com/docs)
+- [Next.js Image Optimization](https://nextjs.org/docs/basic-features/image-optimization)
+
+### Community Resources
+
+- [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
+- [Discord Community](https://discord.gg/your-discord)
+- [YouTube Tutorials](https://youtube.com/your-channel)
+
+### Tools and Extensions
+
+- [VS Code Extension](https://marketplace.visualstudio.com/items?itemName=your-extension)
+- [Figma Plugin](https://figma.com/community/plugin/your-plugin)
+- [Chrome Extension](https://chrome.google.com/webstore/detail/your-extension)
+
+---
+
+## 🧭 Navigation
+
+<div align="center">
+
+[← Back: Features Guide](features-guide.mdx) | [Next: Tools Reference →](tools-reference.mdx)
+
+</div>
+
+---
+
+This guide provides comprehensive coverage of AI image generation and editing capabilities in Azure Image Studio. For more information, see the [Features Guide](features-guide.mdx) or [Tools Reference](tools-reference.mdx).

@@ -1,0 +1,3615 @@
+# Azure Image Studio - Technical Architecture Documentation
+
+**Author:** Hazem Ali, Microsoft AI MVP  
+**Website:** [https://www.skytells.ai](https://www.skytells.ai)  
+**GitHub:** [https://github.com/DrHazemAli/azure-image-studio](https://github.com/DrHazemAli/azure-image-studio)  
+**LinkedIn:** [https://www.linkedin.com/in/drhazemali/](https://www.linkedin.com/in/drhazemali/)  
+
+---
+
+## Table of Contents
+
+1. [Executive Summary](#executive-summary)
+2. [System Architecture Overview](#system-architecture-overview)
+3. [Frontend Architecture](#frontend-architecture)
+4. [Backend Integration Architecture](#backend-integration-architecture)
+5. [Data Architecture](#data-architecture)
+6. [Security Architecture](#security-architecture)
+7. [Configuration System](#configuration-system)
+8. [Asset Management System](#asset-management-system)
+9. [AI Integration Architecture](#ai-integration-architecture)
+10. [Performance Architecture](#performance-architecture)
+11. [Development Architecture](#development-architecture)
+12. [API Reference](#api-reference)
+13. [Component Hierarchy](#component-hierarchy)
+14. [State Management](#state-management)
+15. [Integration Patterns](#integration-patterns)
+16. [Data Flow Diagrams](#data-flow-diagrams)
+17. [Deployment Architecture](#deployment-architecture)
+18. [Monitoring and Observability](#monitoring-and-observability)
+19. [Scalability Considerations](#scalability-considerations)
+20. [Future Architecture Evolution](#future-architecture-evolution)
+
+---
+
+## Executive Summary
+
+Azure Image Studio is a cutting-edge, AI-powered image generation and editing platform built with modern web technologies. The application leverages Next.js 15 with App Router, React 19 with concurrent features, and TypeScript 5.0 to provide a robust, scalable, and maintainable architecture.
+
+### Key Architectural Highlights
+
+- **Modern Tech Stack**: Next.js 15, React 19, TypeScript 5.0
+- **AI Integration**: Azure OpenAI, Azure AI Foundry, Black Forest Labs models
+- **Advanced Canvas System**: Fabric.js with WebGL rendering
+- **Comprehensive Configuration**: Multi-layer JSON configuration system
+- **Performance Optimized**: WebGL, memory management, caching strategies
+- **Security First**: Encrypted storage, secure authentication, rate limiting
+- **Developer Experience**: CLI tools, comprehensive testing, hot reloading
+
+---
+
+## System Architecture Overview
+
+### High-Level Architecture Diagram
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     AZURE IMAGE STUDIO                          │
+├─────────────────────────────────────────────────────────────────┤
+│  FRONTEND TIER (React 19 + Next.js 15 App Router)              │
+├──────────────┬──────────────┬──────────────┬──────────────────┤
+│  UI Layer    │ Canvas Layer │ State Mgmt   │ Component System │
+│  - Radix UI  │ - Fabric.js  │ - Context    │ - React 19       │
+│  - Tailwind  │ - WebGL      │ - LocalState │ - TypeScript     │
+│  - Framer    │ - Canvas API │ - IndexedDB  │ - Hooks          │
+├──────────────┴──────────────┴──────────────┴──────────────────┤
+│  API LAYER (Next.js 15 API Routes)                             │
+├──────────────┬──────────────┬──────────────┬──────────────────┤
+│  Auth API    │ Config API   │ Generate API │ Asset Store API  │
+│  - Login     │ - App Config │ - AI Models  │ - Search         │
+│  - Session   │ - Azure Cfg  │ - Image Gen  │ - Featured       │
+│  - Validate  │ - Models     │ - Processing │ - Categories     │
+├──────────────┴──────────────┴──────────────┴──────────────────┤
+│  INTEGRATION TIER                                               │
+├──────────────┬──────────────┬──────────────┬──────────────────┤
+│ Azure OpenAI │ Azure AI     │ Asset Provs  │ Local Storage    │
+│ - DALL-E 3   │ Foundry      │ - Unsplash   │ - IndexedDB      │
+│ - GPT-Image  │ - FLUX 1.1   │ - Pexels     │ - Cookies        │
+│ - Florence   │ - FLUX Kntxt │ - Local      │ - localStorage   │
+├──────────────┴──────────────┴──────────────┴──────────────────┤
+│  DATA TIER                                                      │
+├──────────────┬──────────────┬──────────────┬──────────────────┤
+│ Configuration│ Project Data │ Asset Cache  │ User Preferences │
+│ - app-config │ - Projects   │ - Images     │ - Settings       │
+│ - azure-cfg  │ - Canvases   │ - Metadata   │ - Themes         │
+│ - models     │ - History    │ - Search     │ - Layouts        │
+└──────────────┴──────────────┴──────────────┴──────────────────┘
+```
+
+### Core Technologies Stack
+
+```typescript
+// Core Framework Architecture
+interface TechnologyStack {
+  frontend: {
+    framework: "Next.js 15.5.2"
+    runtime: "React 19.1.0"
+    language: "TypeScript 5.x"
+    styling: "Tailwind CSS 4.x"
+    uiComponents: "@radix-ui/themes 3.2.1"
+    animation: "framer-motion 12.23.12"
+  }
+  
+  canvas: {
+    library: "fabric 6.7.1"
+    rendering: "WebGL + Canvas API"
+    imageProcessing: "HTML5 Canvas"
+    graphics: "2D Context + WebGL"
+  }
+  
+  backend: {
+    apiRoutes: "Next.js App Router API"
+    runtime: "Node.js Edge Runtime"
+    middleware: "Custom Auth + CORS"
+    validation: "Zod + Custom Validators"
+  }
+  
+  storage: {
+    clientSide: "IndexedDB + localStorage"
+    session: "Encrypted Cookies"
+    configuration: "JSON Files"
+    cache: "Memory + Browser Cache"
+  }
+  
+  ai: {
+    providers: ["Azure OpenAI", "Azure AI Foundry", "Black Forest Labs"]
+    models: ["DALL-E 3", "GPT-Image-1", "FLUX 1.1 Pro", "FLUX Kontext Pro", "Florence 2"]
+    integration: "REST API + Streaming"
+  }
+}
+```
+
+---
+
+## Frontend Architecture
+
+### Component Architecture
+
+The frontend follows a hierarchical component architecture with clear separation of concerns:
+
+```
+src/
+├── app/                          # Next.js App Router
+│   ├── layout.tsx               # Root layout with providers
+│   ├── page.tsx                 # Home page
+│   ├── studio/                  # Studio application
+│   │   ├── page.tsx            # Studio layout page
+│   │   └── [projectId]/        # Dynamic project routes
+│   └── api/                    # API routes
+├── components/                  # React components
+│   ├── ui/                     # Base UI components
+│   ├── studio/                 # Studio-specific components
+│   │   ├── canvas/            # Canvas management
+│   │   ├── panels/            # Side panels
+│   │   ├── tools/             # Editing tools
+│   │   ├── modals/            # Dialog components
+│   │   └── image-editing/     # Image editing system
+│   ├── settings/              # Settings components
+│   └── modals/                # Global modals
+├── lib/                        # Utility libraries
+├── hooks/                      # Custom React hooks
+└── types/                      # TypeScript definitions
+```
+
+### State Management Architecture
+
+```typescript
+// Global State Architecture
+interface StateManagement {
+  // Context-based State
+  contexts: {
+    AuthContext: "User authentication state"
+    ConfigContext: "Application configuration"
+    StudioContext: "Studio workspace state"
+    CanvasContext: "Canvas and editing state"
+    AssetContext: "Asset management state"
+  }
+  
+  // Local Storage Integration
+  persistence: {
+    IndexedDB: "Projects, assets, cache"
+    localStorage: "User preferences, settings"
+    sessionStorage: "Temporary workspace data"
+    cookies: "Authentication tokens, API keys"
+  }
+  
+  // State Synchronization
+  sync: {
+    crossTab: "BroadcastChannel API"
+    serverSync: "Periodic sync for cloud data"
+    optimisticUpdates: "UI responsiveness"
+  }
+}
+
+// Studio State Management
+interface StudioState {
+  // Canvas State
+  canvas: {
+    fabricInstance: fabric.Canvas
+    objects: fabric.Object[]
+    history: CanvasState[]
+    selection: fabric.Object[]
+    viewport: ViewportState
+  }
+  
+  // Project State
+  project: {
+    id: string
+    name: string
+    canvas: CanvasData
+    assets: AssetReference[]
+    settings: ProjectSettings
+    lastModified: Date
+  }
+  
+  // Tool State
+  tools: {
+    activeTool: ToolType
+    toolSettings: ToolSettings
+    brushSettings: BrushSettings
+    selectionMode: SelectionMode
+  }
+  
+  // UI State
+  ui: {
+    panels: PanelVisibility
+    zoom: number
+    theme: ThemeMode
+    layout: LayoutMode
+  }
+}
+```
+
+### Canvas System Architecture
+
+```typescript
+// Fabric.js Integration Architecture
+class CanvasManager {
+  private fabric: fabric.Canvas
+  private history: CanvasHistory
+  private tools: ToolManager
+  
+  // WebGL-optimized rendering
+  private initializeCanvas(): void {
+    this.fabric = new fabric.Canvas('canvas', {
+      enableRetinaScaling: true,
+      imageSmoothingEnabled: true,
+      renderOnAddRemove: false, // Manual rendering for performance
+      skipTargetFind: false,
+      selection: true,
+      preserveObjectStacking: true
+    })
+    
+    // Enable WebGL context for better performance
+    const gl = this.fabric.getContext('webgl')
+    if (gl) {
+      this.setupWebGLOptimizations()
+    }
+  }
+  
+  // Image processing pipeline
+  private processImage(imageData: ImageData): Promise<fabric.Image> {
+    return new Promise((resolve) => {
+      const img = new Image()
+      img.onload = () => {
+        const fabricImage = new fabric.Image(img, {
+          scaleX: 1,
+          scaleY: 1,
+          selectable: true,
+          evented: true
+        })
+        resolve(fabricImage)
+      }
+      img.src = imageData.src
+    })
+  }
+}
+```
+
+### Animation System
+
+```typescript
+// Framer Motion Integration
+interface AnimationSystem {
+  // Page Transitions
+  pageTransitions: {
+    initial: { opacity: 0, y: 20 }
+    animate: { opacity: 1, y: 0 }
+    exit: { opacity: 0, y: -20 }
+    transition: { duration: 0.3, ease: "easeOut" }
+  }
+  
+  // Component Animations
+  componentAnimations: {
+    modal: "spring-based entrance/exit"
+    sidebar: "slide transitions"
+    toolbar: "fade and scale"
+    canvas: "smooth zoom and pan"
+  }
+  
+  // Performance Optimizations
+  optimizations: {
+    willChange: "transform, opacity"
+    transform3d: "hardware acceleration"
+    layoutAnimation: "layout-based animations"
+    gestureRecognition: "touch and mouse events"
+  }
+}
+```
+
+---
+
+## Backend Integration Architecture
+
+### API Routes Architecture
+
+The backend is built using Next.js 15 App Router API routes with a clean, RESTful design:
+
+```
+src/app/api/
+├── app-config/
+│   └── route.ts                # Application configuration
+├── asset-store/
+│   ├── categories/route.ts     # Asset categories
+│   ├── featured/route.ts       # Featured assets
+│   ├── search/route.ts         # Asset search
+│   └── validate/route.ts       # Asset validation
+├── auth/
+│   └── login/route.ts          # Authentication
+├── azure/
+│   ├── config/route.ts         # Azure configuration
+│   ├── env-key/route.ts        # Environment key management
+│   ├── model-catalog/route.ts  # Model catalog
+│   ├── models/route.ts         # Available models
+│   └── validate/route.ts       # Azure service validation
+├── background-removal/
+│   └── route.ts                # Background removal API
+├── config/
+│   └── route.ts                # General configuration
+├── generate/
+│   └── route.ts                # Image generation
+├── models/
+│   └── route.ts                # Model management
+└── version/
+    └── route.ts                # Version information
+```
+
+### API Endpoint Specifications
+
+```typescript
+// API Route Architecture
+interface APIArchitecture {
+  // Configuration APIs
+  '/api/app-config': {
+    GET: "Retrieve application configuration"
+    POST: "Update application settings"
+    response: AppConfigResponse
+  }
+  
+  '/api/azure/config': {
+    GET: "Get Azure service configuration"
+    POST: "Update Azure endpoints and keys"
+    PUT: "Replace Azure configuration"
+    response: AzureConfigResponse
+  }
+  
+  '/api/azure/models': {
+    GET: "List available AI models"
+    response: ModelCatalogResponse
+  }
+  
+  // Generation APIs
+  '/api/generate': {
+    POST: "Generate images from text prompts"
+    body: GenerationRequest
+    response: GenerationResponse
+    streaming: true
+  }
+  
+  '/api/background-removal': {
+    POST: "Remove background from images"
+    body: BackgroundRemovalRequest
+    response: ProcessedImageResponse
+  }
+  
+  // Asset Management
+  '/api/asset-store/search': {
+    GET: "Search for assets"
+    params: SearchParameters
+    response: AssetSearchResponse
+  }
+  
+  '/api/asset-store/featured': {
+    GET: "Get featured assets"
+    response: FeaturedAssetsResponse
+  }
+  
+  // Authentication
+  '/api/auth/login': {
+    POST: "User authentication"
+    body: LoginRequest
+    response: AuthResponse
+  }
+}
+
+// Request/Response Types
+interface GenerationRequest {
+  prompt: string
+  model: string
+  size: string
+  style?: string
+  quality?: string
+  n?: number
+}
+
+interface GenerationResponse {
+  images: GeneratedImage[]
+  metadata: GenerationMetadata
+  usage: UsageStatistics
+}
+```
+
+### Azure Provider Integration
+
+```typescript
+// Azure Service Provider Architecture
+class AzureProvider {
+  private openAIClient: OpenAIClient
+  private foundryClient: FoundryClient
+  
+  constructor(config: AzureConfig) {
+    this.initializeClients(config)
+  }
+  
+  // Multi-provider model support
+  async generateImage(request: GenerationRequest): Promise<GenerationResponse> {
+    const provider = this.determineProvider(request.model)
+    
+    switch (provider) {
+      case 'openai':
+        return this.generateWithOpenAI(request)
+      case 'foundry':
+        return this.generateWithFoundry(request)
+      case 'blackforest':
+        return this.generateWithBlackForest(request)
+      default:
+        throw new Error(`Unsupported provider: ${provider}`)
+    }
+  }
+  
+  // Streaming response handling
+  async generateImageStream(
+    request: GenerationRequest,
+    callback: (chunk: StreamChunk) => void
+  ): Promise<void> {
+    const stream = await this.createGenerationStream(request)
+    
+    for await (const chunk of stream) {
+      callback(chunk)
+    }
+  }
+}
+```
+
+---
+
+## Data Architecture
+
+### Data Storage Strategy
+
+```typescript
+// Multi-layered Data Architecture
+interface DataArchitecture {
+  // Configuration Layer
+  configuration: {
+    'app-config.json': "Application settings and features"
+    'azure-config.json': "Azure service endpoints and keys"
+    'azure-models.json': "AI model definitions and capabilities"
+  }
+  
+  // Client-Side Storage
+  clientStorage: {
+    IndexedDB: {
+      stores: ['projects', 'assets', 'cache', 'history']
+      versioning: "Schema migration support"
+      encryption: "Sensitive data encryption"
+    }
+    localStorage: {
+      preferences: "User interface preferences"
+      settings: "Application settings cache"
+      theme: "Theme and layout preferences"
+    }
+    sessionStorage: {
+      workspace: "Temporary workspace data"
+      clipboard: "Copy/paste operations"
+    }
+    cookies: {
+      auth: "Encrypted authentication tokens"
+      apiKeys: "Secure API key storage"
+      session: "Session management"
+    }
+  }
+  
+  // Memory Management
+  memoryManagement: {
+    imageCache: "LRU cache for processed images"
+    canvasCache: "Canvas state snapshots"
+    assetPreloader: "Predictive asset loading"
+    garbageCollection: "Automatic cleanup"
+  }
+}
+
+// IndexedDB Schema
+interface IndexedDBSchema {
+  version: 3
+  stores: {
+    projects: {
+      keyPath: 'id'
+      indexes: ['name', 'lastModified', 'userId']
+      data: ProjectData
+    }
+    assets: {
+      keyPath: 'id'
+      indexes: ['type', 'provider', 'tags', 'projectId']
+      data: AssetData
+    }
+    cache: {
+      keyPath: 'key'
+      indexes: ['expiry', 'size', 'type']
+      data: CacheEntry
+    }
+    history: {
+      keyPath: 'id'
+      indexes: ['projectId', 'timestamp', 'action']
+      data: HistoryEntry
+    }
+  }
+}
+```
+
+### Data Flow Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                      DATA FLOW ARCHITECTURE                     │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌─────────────┐    ┌──────────────┐    ┌─────────────────┐    │
+│  │     UI      │    │    STATE     │    │   PERSISTENCE   │    │
+│  │ Components  │◄──►│  Management  │◄──►│    Layer        │    │
+│  └─────────────┘    └──────────────┘    └─────────────────┘    │
+│          │                   │                      │           │
+│          ▼                   ▼                      ▼           │
+│  ┌─────────────┐    ┌──────────────┐    ┌─────────────────┐    │
+│  │   Actions   │    │   Context    │    │   IndexedDB     │    │
+│  │ & Events    │    │ Providers    │    │   Storage       │    │
+│  └─────────────┘    └──────────────┘    └─────────────────┘    │
+│          │                   │                      │           │
+│          ▼                   ▼                      ▼           │
+│  ┌─────────────┐    ┌──────────────┐    ┌─────────────────┐    │
+│  │  Canvas     │    │  Sync        │    │   Configuration │    │
+│  │  Manager    │    │  Controller  │    │   Files         │    │
+│  └─────────────┘    └──────────────┘    └─────────────────┘    │
+│          │                   │                      │           │
+│          ▼                   ▼                      ▼           │
+│  ┌─────────────┐    ┌──────────────┐    ┌─────────────────┐    │
+│  │  Fabric.js  │    │  Background  │    │    JSON         │    │
+│  │  Canvas     │    │  Sync        │    │    Configs      │    │
+│  └─────────────┘    └──────────────┘    └─────────────────┘    │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Data Synchronization
+
+```typescript
+// Data Synchronization Architecture
+class DataSyncManager {
+  private broadcastChannel: BroadcastChannel
+  private syncQueue: SyncOperation[]
+  
+  constructor() {
+    this.broadcastChannel = new BroadcastChannel('azure-studio-sync')
+    this.setupCrossTabSync()
+    this.setupPeriodicSync()
+  }
+  
+  // Cross-tab synchronization
+  private setupCrossTabSync(): void {
+    this.broadcastChannel.onmessage = (event) => {
+      const { type, data } = event.data
+      
+      switch (type) {
+        case 'PROJECT_UPDATE':
+          this.handleProjectUpdate(data)
+          break
+        case 'ASSET_CACHE_UPDATE':
+          this.handleAssetCacheUpdate(data)
+          break
+        case 'SETTINGS_UPDATE':
+          this.handleSettingsUpdate(data)
+          break
+      }
+    }
+  }
+  
+  // Conflict resolution
+  private resolveConflict(
+    local: DataObject,
+    remote: DataObject
+  ): DataObject {
+    // Last-write-wins with merge strategy
+    return {
+      ...local,
+      ...remote,
+      lastModified: Math.max(local.lastModified, remote.lastModified)
+    }
+  }
+}
+```
+
+---
+
+## Security Architecture
+
+### Authentication & Authorization
+
+```typescript
+// Security Architecture
+interface SecurityArchitecture {
+  // Authentication Layer
+  authentication: {
+    strategy: "Cookie-based sessions"
+    encryption: "AES-256-GCM"
+    tokenRotation: "Automatic refresh"
+    sessionTimeout: "30 minutes idle"
+  }
+  
+  // API Key Management
+  apiKeyManagement: {
+    storage: "Encrypted cookies"
+    rotation: "Manual + automatic"
+    validation: "Server-side verification"
+    scoping: "Model-specific permissions"
+  }
+  
+  // Data Protection
+  dataProtection: {
+    atRest: "IndexedDB encryption"
+    inTransit: "HTTPS + TLS 1.3"
+    memory: "Secure string handling"
+    cleanup: "Automatic data purging"
+  }
+  
+  // Access Control
+  accessControl: {
+    cors: "Strict origin policy"
+    csp: "Content Security Policy"
+    rateLimit: "100 requests/15min"
+    validation: "Input sanitization"
+  }
+}
+
+// Authentication Implementation
+class AuthManager {
+  private readonly ENCRYPTION_KEY = crypto.getRandomValues(new Uint8Array(32))
+  
+  // Secure cookie management
+  async storeSecureData(key: string, data: any): Promise<void> {
+    const encrypted = await this.encrypt(JSON.stringify(data))
+    document.cookie = `${key}=${encrypted}; Secure; HttpOnly; SameSite=Strict`
+  }
+  
+  // API key encryption
+  private async encrypt(plaintext: string): Promise<string> {
+    const iv = crypto.getRandomValues(new Uint8Array(12))
+    const key = await crypto.subtle.importKey(
+      'raw',
+      this.ENCRYPTION_KEY,
+      { name: 'AES-GCM' },
+      false,
+      ['encrypt']
+    )
+    
+    const encrypted = await crypto.subtle.encrypt(
+      { name: 'AES-GCM', iv },
+      key,
+      new TextEncoder().encode(plaintext)
+    )
+    
+    return btoa(String.fromCharCode(...iv, ...new Uint8Array(encrypted)))
+  }
+}
+```
+
+### Content Security Policy
+
+```typescript
+// CSP Configuration
+const securityHeaders = {
+  'Content-Security-Policy': [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data: blob: https:",
+    "font-src 'self' data:",
+    "connect-src 'self' https://api.openai.com https://*.azure.com",
+    "worker-src 'self' blob:",
+    "child-src 'self'",
+    "object-src 'none'",
+    "base-uri 'self'"
+  ].join('; '),
+  
+  'X-Frame-Options': 'DENY',
+  'X-Content-Type-Options': 'nosniff',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=()'
+}
+```
+
+---
+
+## Configuration System
+
+### Multi-Layer Configuration Architecture
+
+```typescript
+// Configuration System Architecture
+interface ConfigurationSystem {
+  // Layer 1: Application Configuration
+  appConfig: {
+    file: 'src/app/config/app-config.json'
+    purpose: "Core application settings and features"
+    schema: AppConfigSchema
+  }
+  
+  // Layer 2: Azure Service Configuration
+  azureConfig: {
+    file: 'src/app/config/azure-config.json'
+    purpose: "Azure service endpoints and authentication"
+    schema: AzureConfigSchema
+  }
+  
+  // Layer 3: Model Configuration
+  modelsConfig: {
+    file: 'src/app/config/azure-models.json'
+    purpose: "AI model definitions and capabilities"
+    schema: ModelsConfigSchema
+  }
+  
+  // Runtime Configuration
+  runtimeConfig: {
+    environment: "process.env variables"
+    userPreferences: "localStorage settings"
+    sessionConfig: "sessionStorage temporary config"
+  }
+}
+
+// Configuration Schema Definitions
+interface AppConfigSchema {
+  app: {
+    name: string
+    version: string
+    description: string
+    environment: 'development' | 'staging' | 'production'
+    github: string
+  }
+  
+  admin: {
+    user_id: string
+    name: string
+    username: string
+    role: 'admin' | 'user'
+    password: string
+    email: string
+  }
+  
+  features: {
+    floatingImageToolbar: FeatureConfig
+    backgroundRemoval: BackgroundRemovalConfig
+    imageGeneration: ImageGenerationConfig
+    imageEditing: ImageEditingConfig
+  }
+  
+  ui: {
+    theme: ThemeConfig
+    animations: AnimationConfig
+    toolbar: ToolbarConfig
+    canvas: CanvasConfig
+    panels: PanelConfig
+  }
+  
+  performance: {
+    imageProcessing: ImageProcessingConfig
+    canvas: CanvasPerformanceConfig
+    api: APIPerformanceConfig
+  }
+  
+  security: SecurityConfig
+  integrations: IntegrationsConfig
+  debugging: DebuggingConfig
+}
+```
+
+### Configuration Management
+
+```typescript
+// Configuration Manager
+class ConfigManager {
+  private static instance: ConfigManager
+  private configs: Map<string, any> = new Map()
+  private watchers: Map<string, Function[]> = new Map()
+  
+  // Configuration loading with validation
+  async loadConfiguration(name: string): Promise<any> {
+    try {
+      const response = await fetch(`/api/config/${name}`)
+      const config = await response.json()
+      
+      // Validate configuration schema
+      const validated = this.validateConfig(name, config)
+      
+      // Cache configuration
+      this.configs.set(name, validated)
+      
+      // Notify watchers
+      this.notifyWatchers(name, validated)
+      
+      return validated
+    } catch (error) {
+      console.error(`Failed to load configuration: ${name}`, error)
+      return this.getDefaultConfig(name)
+    }
+  }
+  
+  // Dynamic configuration updates
+  async updateConfiguration(name: string, updates: Partial<any>): Promise<void> {
+    const current = this.configs.get(name) || {}
+    const updated = { ...current, ...updates }
+    
+    // Validate updated configuration
+    const validated = this.validateConfig(name, updated)
+    
+    // Update cache
+    this.configs.set(name, validated)
+    
+    // Persist to storage
+    await this.persistConfig(name, validated)
+    
+    // Notify watchers
+    this.notifyWatchers(name, validated)
+  }
+  
+  // Configuration watching
+  watchConfiguration(name: string, callback: Function): void {
+    if (!this.watchers.has(name)) {
+      this.watchers.set(name, [])
+    }
+    this.watchers.get(name)!.push(callback)
+  }
+}
+```
+
+---
+
+## Asset Management System
+
+### Provider-Based Architecture
+
+```typescript
+// Asset Management Architecture
+interface AssetManagementSystem {
+  // Asset Providers
+  providers: {
+    unsplash: {
+      name: "Unsplash"
+      apiEndpoint: "https://api.unsplash.com"
+      authentication: "API Key"
+      capabilities: ["search", "featured", "collections"]
+      rateLimit: "50 requests/hour"
+    }
+    
+    pexels: {
+      name: "Pexels"
+      apiEndpoint: "https://api.pexels.com"
+      authentication: "API Key"
+      capabilities: ["search", "curated", "popular"]
+      rateLimit: "200 requests/hour"
+    }
+    
+    local: {
+      name: "Local Assets"
+      storage: "IndexedDB"
+      capabilities: ["upload", "organize", "search"]
+      unlimited: true
+    }
+  }
+  
+  // Asset Processing
+  processing: {
+    imageOptimization: "Canvas-based resizing"
+    formatConversion: "WebP, PNG, JPEG"
+    thumbnailGeneration: "Multiple sizes"
+    metadataExtraction: "EXIF data parsing"
+  }
+  
+  // Caching Strategy
+  caching: {
+    strategy: "LRU with size limits"
+    maxSize: "100MB per provider"
+    evictionPolicy: "Least recently used"
+    persistence: "IndexedDB storage"
+  }
+}
+
+// Asset Provider Implementation
+abstract class AssetProvider {
+  protected abstract apiEndpoint: string
+  protected abstract apiKey: string
+  
+  abstract search(query: string, options?: SearchOptions): Promise<Asset[]>
+  abstract getFeatured(count?: number): Promise<Asset[]>
+  abstract getCategories(): Promise<Category[]>
+  
+  // Common asset processing
+  protected async processAsset(rawAsset: any): Promise<Asset> {
+    return {
+      id: this.generateId(rawAsset),
+      url: rawAsset.url,
+      thumbnail: rawAsset.thumbnail,
+      title: rawAsset.title || 'Untitled',
+      description: rawAsset.description || '',
+      tags: this.extractTags(rawAsset),
+      metadata: this.extractMetadata(rawAsset),
+      provider: this.constructor.name,
+      cached: false,
+      createdAt: new Date()
+    }
+  }
+}
+
+// Unsplash Provider Implementation
+class UnsplashProvider extends AssetProvider {
+  protected apiEndpoint = 'https://api.unsplash.com'
+  
+  async search(query: string, options: SearchOptions = {}): Promise<Asset[]> {
+    const params = new URLSearchParams({
+      query,
+      per_page: String(options.limit || 20),
+      page: String(options.page || 1)
+    })
+    
+    const response = await fetch(
+      `${this.apiEndpoint}/search/photos?${params}`,
+      {
+        headers: {
+          'Authorization': `Client-ID ${this.apiKey}`
+        }
+      }
+    )
+    
+    const data = await response.json()
+    return data.results.map(photo => this.processAsset(photo))
+  }
+}
+```
+
+### Asset Caching Strategy
+
+```typescript
+// Asset Cache Manager
+class AssetCacheManager {
+  private cache: Map<string, CacheEntry> = new Map()
+  private readonly maxSize = 100 * 1024 * 1024 // 100MB
+  private currentSize = 0
+  
+  // LRU Cache implementation
+  async getAsset(url: string): Promise<Blob | null> {
+    const entry = this.cache.get(url)
+    
+    if (entry) {
+      // Update access time for LRU
+      entry.lastAccessed = Date.now()
+      return entry.data
+    }
+    
+    // Load and cache asset
+    return this.loadAndCache(url)
+  }
+  
+  private async loadAndCache(url: string): Promise<Blob> {
+    const response = await fetch(url)
+    const blob = await response.blob()
+    
+    // Check if we need to evict entries
+    if (this.currentSize + blob.size > this.maxSize) {
+      this.evictLeastRecentlyUsed(blob.size)
+    }
+    
+    // Cache the asset
+    const entry: CacheEntry = {
+      data: blob,
+      size: blob.size,
+      lastAccessed: Date.now(),
+      url
+    }
+    
+    this.cache.set(url, entry)
+    this.currentSize += blob.size
+    
+    // Persist to IndexedDB
+    await this.persistToIndexedDB(entry)
+    
+    return blob
+  }
+  
+  private evictLeastRecentlyUsed(requiredSpace: number): void {
+    const entries = Array.from(this.cache.entries())
+      .sort(([, a], [, b]) => a.lastAccessed - b.lastAccessed)
+    
+    let freedSpace = 0
+    
+    for (const [url, entry] of entries) {
+      if (freedSpace >= requiredSpace) break
+      
+      this.cache.delete(url)
+      this.currentSize -= entry.size
+      freedSpace += entry.size
+      
+      // Remove from IndexedDB
+      this.removeFromIndexedDB(url)
+    }
+  }
+}
+```
+
+---
+
+## AI Integration Architecture
+
+### Model Abstraction Layer
+
+```typescript
+// AI Integration Architecture
+interface AIIntegrationSystem {
+  // Model Abstraction
+  modelAbstraction: {
+    interface: "Common interface for all AI models"
+    providers: ["Azure OpenAI", "Azure AI Foundry", "Black Forest Labs"]
+    capabilities: ["text-to-image", "image-to-image", "editing", "inpainting"]
+    fallback: "Graceful degradation on model failure"
+  }
+  
+  // Request Pipeline
+  requestPipeline: {
+    preprocessing: "Prompt optimization and validation"
+    routing: "Model selection based on capabilities"
+    processing: "Request execution with progress tracking"
+    postprocessing: "Response formatting and optimization"
+  }
+  
+  // Performance Optimization
+  optimization: {
+    requestBatching: "Batch multiple requests when possible"
+    caching: "Response caching for identical requests"
+    streaming: "Real-time progress updates"
+    parallelization: "Concurrent request processing"
+  }
+}
+
+// AI Model Interface
+interface AIModel {
+  id: string
+  name: string
+  provider: string
+  capabilities: string[]
+  maxSize: string
+  supportedFormats: string[]
+  
+  generateImage(request: GenerationRequest): Promise<GenerationResponse>
+  editImage(request: EditingRequest): Promise<EditingResponse>
+  validateRequest(request: any): ValidationResult
+}
+
+// Azure OpenAI Model Implementation
+class AzureOpenAIModel implements AIModel {
+  constructor(
+    private config: AzureModelConfig,
+    private client: OpenAIClient
+  ) {}
+  
+  async generateImage(request: GenerationRequest): Promise<GenerationResponse> {
+    // Validate request
+    const validation = this.validateRequest(request)
+    if (!validation.valid) {
+      throw new Error(validation.error)
+    }
+    
+    // Prepare OpenAI request
+    const openAIRequest = {
+      prompt: request.prompt,
+      n: request.n || 1,
+      size: request.size || '1024x1024',
+      quality: request.quality || 'standard',
+      style: request.style || 'natural'
+    }
+    
+    try {
+      // Execute request with progress tracking
+      const response = await this.client.images.generate(openAIRequest)
+      
+      return {
+        images: response.data.map(img => ({
+          url: img.url!,
+          b64_json: img.b64_json,
+          revised_prompt: img.revised_prompt
+        })),
+        metadata: {
+          model: this.id,
+          prompt: request.prompt,
+          parameters: openAIRequest,
+          timestamp: new Date()
+        }
+      }
+    } catch (error) {
+      throw new Error(`Generation failed: ${error.message}`)
+    }
+  }
+  
+  validateRequest(request: GenerationRequest): ValidationResult {
+    const errors: string[] = []
+    
+    if (!request.prompt || request.prompt.trim().length === 0) {
+      errors.push('Prompt is required')
+    }
+    
+    if (request.prompt && request.prompt.length > 1000) {
+      errors.push('Prompt exceeds maximum length of 1000 characters')
+    }
+    
+    const validSizes = ['1024x1024', '1024x1792', '1792x1024']
+    if (request.size && !validSizes.includes(request.size)) {
+      errors.push(`Invalid size. Must be one of: ${validSizes.join(', ')}`)
+    }
+    
+    return {
+      valid: errors.length === 0,
+      error: errors.join('; ')
+    }
+  }
+}
+```
+
+### Request Processing Pipeline
+
+```typescript
+// AI Request Processing Pipeline
+class AIRequestProcessor {
+  private models: Map<string, AIModel> = new Map()
+  private requestQueue: Queue<AIRequest> = new Queue()
+  private cache: ResponseCache = new ResponseCache()
+  
+  // Process generation request
+  async processGenerationRequest(request: GenerationRequest): Promise<GenerationResponse> {
+    // Step 1: Validate and preprocess request
+    const preprocessed = await this.preprocessRequest(request)
+    
+    // Step 2: Check cache for identical request
+    const cacheKey = this.generateCacheKey(preprocessed)
+    const cached = await this.cache.get(cacheKey)
+    if (cached && !cached.expired) {
+      return cached.response
+    }
+    
+    // Step 3: Select appropriate model
+    const model = this.selectModel(request.model, request.capabilities)
+    
+    // Step 4: Execute request with progress tracking
+    const response = await this.executeWithProgress(model, preprocessed)
+    
+    // Step 5: Post-process and cache response
+    const processed = await this.postprocessResponse(response)
+    await this.cache.set(cacheKey, processed)
+    
+    return processed
+  }
+  
+  // Model selection algorithm
+  private selectModel(preferredModel?: string, requiredCapabilities?: string[]): AIModel {
+    // If specific model requested, validate and return
+    if (preferredModel && this.models.has(preferredModel)) {
+      const model = this.models.get(preferredModel)!
+      if (this.modelSupportsCapabilities(model, requiredCapabilities)) {
+        return model
+      }
+    }
+    
+    // Find best model for capabilities
+    const suitableModels = Array.from(this.models.values())
+      .filter(model => this.modelSupportsCapabilities(model, requiredCapabilities))
+      .sort((a, b) => this.scoreModel(b) - this.scoreModel(a))
+    
+    if (suitableModels.length === 0) {
+      throw new Error('No suitable model available for request')
+    }
+    
+    return suitableModels[0]
+  }
+  
+  // Progress tracking for long-running requests
+  private async executeWithProgress(
+    model: AIModel,
+    request: GenerationRequest
+  ): Promise<GenerationResponse> {
+    const startTime = Date.now()
+    
+    // Create progress tracker
+    const progress = new ProgressTracker(request.id)
+    progress.start()
+    
+    try {
+      // Execute model request
+      const response = await model.generateImage(request)
+      
+      // Update progress
+      progress.complete({
+        duration: Date.now() - startTime,
+        success: true
+      })
+      
+      return response
+    } catch (error) {
+      progress.error(error)
+      throw error
+    }
+  }
+}
+```
+
+---
+
+## Performance Architecture
+
+### Optimization Strategies
+
+```typescript
+// Performance Architecture
+interface PerformanceArchitecture {
+  // Rendering Optimization
+  rendering: {
+    webGL: "Hardware-accelerated canvas rendering"
+    imageSmoothing: "High-quality image scaling"
+    layerCaching: "Canvas layer caching"
+    viewportCulling: "Render only visible objects"
+    batchUpdates: "Batch DOM updates"
+  }
+  
+  // Memory Management
+  memory: {
+    imageCache: "LRU cache with size limits"
+    canvasPooling: "Reuse canvas contexts"
+    objectPooling: "Reuse Fabric.js objects"
+    garbageCollection: "Proactive cleanup"
+    memoryMonitoring: "Track memory usage"
+  }
+  
+  // Network Optimization
+  network: {
+    requestBatching: "Batch API requests"
+    responseCompression: "Gzip/Brotli compression"
+    imageOptimization: "WebP format with fallbacks"
+    prefetching: "Predictive resource loading"
+    cdnIntegration: "Static asset CDN"
+  }
+  
+  // Code Splitting
+  codeSplitting: {
+    routeBased: "Page-based code splitting"
+    componentBased: "Lazy component loading"
+    vendorSplitting: "Separate vendor bundles"
+    dynamicImports: "On-demand module loading"
+  }
+}
+
+// Performance Monitor
+class PerformanceMonitor {
+  private metrics: Map<string, PerformanceMetric[]> = new Map()
+  private observer: PerformanceObserver
+  
+  constructor() {
+    this.setupPerformanceObserver()
+    this.startMemoryMonitoring()
+  }
+  
+  // Canvas performance optimization
+  optimizeCanvas(canvas: fabric.Canvas): void {
+    // Enable hardware acceleration
+    const ctx = canvas.getContext() as CanvasRenderingContext2D
+    ctx.imageSmoothingEnabled = true
+    ctx.imageSmoothingQuality = 'high'
+    
+    // Optimize rendering settings
+    canvas.renderOnAddRemove = false // Manual rendering
+    canvas.skipTargetFind = false    // Target finding optimization
+    canvas.enableRetinaScaling = true // High DPI support
+    
+    // Use requestAnimationFrame for smooth updates
+    let frameId: number
+    const render = () => {
+      canvas.renderAll()
+      frameId = requestAnimationFrame(render)
+    }
+    
+    // Start render loop
+    render()
+    
+    // Cleanup function
+    return () => cancelAnimationFrame(frameId)
+  }
+  
+  // Image processing optimization
+  async optimizeImage(
+    imageData: ImageData,
+    targetWidth: number,
+    targetHeight: number
+  ): Promise<ImageData> {
+    // Use OffscreenCanvas for better performance
+    const offscreen = new OffscreenCanvas(targetWidth, targetHeight)
+    const ctx = offscreen.getContext('2d')!
+    
+    // High-quality scaling
+    ctx.imageSmoothingEnabled = true
+    ctx.imageSmoothingQuality = 'high'
+    
+    // Draw and extract optimized image data
+    const canvas = new ImageData(imageData.data, imageData.width, imageData.height)
+    ctx.putImageData(canvas, 0, 0)
+    
+    return ctx.getImageData(0, 0, targetWidth, targetHeight)
+  }
+  
+  // Memory usage monitoring
+  private startMemoryMonitoring(): void {
+    if ('memory' in performance) {
+      setInterval(() => {
+        const memory = (performance as any).memory
+        this.recordMetric('memory', {
+          used: memory.usedJSHeapSize,
+          total: memory.totalJSHeapSize,
+          limit: memory.jsHeapSizeLimit,
+          timestamp: Date.now()
+        })
+      }, 5000)
+    }
+  }
+}
+```
+
+### Bundle Optimization
+
+```typescript
+// Next.js Performance Configuration
+const nextConfig: NextConfig = {
+  // Enable experimental features
+  experimental: {
+    serverComponentsExternalPackages: ['fabric'],
+    optimizeCss: true,
+    optimizePackageImports: ['lucide-react', '@radix-ui/themes']
+  },
+  
+  // Image optimization
+  images: {
+    formats: ['image/webp', 'image/avif'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
+  },
+  
+  // Bundle optimization
+  webpack: (config, { buildId, dev, isServer }) => {
+    // Optimize Fabric.js bundle
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'fabric': 'fabric/dist/fabric.min.js'
+    }
+    
+    // Canvas polyfill for server-side rendering
+    if (isServer) {
+      config.externals.push('canvas')
+    }
+    
+    // Bundle analyzer in development
+    if (dev) {
+      config.plugins.push(
+        new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)({
+          openAnalyzer: false,
+          analyzerMode: 'server',
+          analyzerPort: 8888
+        })
+      )
+    }
+    
+    return config
+  },
+  
+  // Compression and caching
+  compress: true,
+  poweredByHeader: false,
+  generateEtags: true
+}
+```
+
+---
+
+## Development Architecture
+
+### CLI System Architecture
+
+```typescript
+// CLI System Architecture
+interface CLIArchitecture {
+  // Command Structure
+  commands: {
+    'azure-studio': "Main CLI entry point"
+    'dev': "Start development server"
+    'generate': "Generate images via CLI"
+    'config': "Manage configuration"
+    'models': "List and manage AI models"
+    'assets': "Manage asset providers"
+    'project': "Project management commands"
+  }
+  
+  // Configuration Management
+  configManagement: {
+    'init': "Initialize project configuration"
+    'validate': "Validate configuration files"
+    'migrate': "Migrate configuration schemas"
+    'backup': "Backup and restore configurations"
+  }
+  
+  // Development Tools
+  developmentTools: {
+    'hot-reload': "Live configuration updates"
+    'type-checking': "Real-time TypeScript validation"
+    'linting': "Code quality checks"
+    'testing': "Automated test execution"
+  }
+}
+
+// CLI Implementation
+class AzureStudioCLI {
+  private commands: Map<string, CLICommand> = new Map()
+  
+  constructor() {
+    this.registerCommands()
+  }
+  
+  // Command registration
+  private registerCommands(): void {
+    this.commands.set('dev', new DevCommand())
+    this.commands.set('generate', new GenerateCommand())
+    this.commands.set('config', new ConfigCommand())
+    this.commands.set('models', new ModelsCommand())
+    this.commands.set('assets', new AssetsCommand())
+    this.commands.set('project', new ProjectCommand())
+  }
+  
+  // Command execution
+  async execute(args: string[]): Promise<void> {
+    const [command, ...commandArgs] = args
+    
+    if (!this.commands.has(command)) {
+      throw new Error(`Unknown command: ${command}`)
+    }
+    
+    const commandInstance = this.commands.get(command)!
+    await commandInstance.execute(commandArgs)
+  }
+}
+
+// Development Server Command
+class DevCommand implements CLICommand {
+  async execute(args: string[]): Promise<void> {
+    const options = this.parseArgs(args)
+    
+    // Start Next.js development server
+    const server = new NextDevServer({
+      dev: true,
+      port: options.port || 3000,
+      hostname: options.hostname || 'localhost',
+      turbopack: options.turbo || true
+    })
+    
+    // Setup hot reloading for configuration
+    this.setupConfigWatcher()
+    
+    // Start server
+    await server.listen()
+    console.log(`🚀 Azure Studio running on http://localhost:${options.port}`)
+  }
+  
+  private setupConfigWatcher(): void {
+    const configFiles = [
+      'src/app/config/app-config.json',
+      'src/app/config/azure-config.json',
+      'src/app/config/azure-models.json'
+    ]
+    
+    configFiles.forEach(file => {
+      fs.watchFile(file, () => {
+        console.log(`📝 Configuration updated: ${file}`)
+        // Trigger hot reload
+        this.triggerHotReload()
+      })
+    })
+  }
+}
+```
+
+### Testing Strategy
+
+```typescript
+// Testing Architecture
+interface TestingArchitecture {
+  // Unit Testing
+  unitTesting: {
+    framework: "Jest + React Testing Library"
+    coverage: "90%+ code coverage target"
+    mocking: "MSW for API mocking"
+    utilities: "Custom testing utilities"
+  }
+  
+  // Integration Testing
+  integrationTesting: {
+    api: "API route testing with supertest"
+    components: "Component integration tests"
+    canvas: "Fabric.js canvas testing"
+    storage: "IndexedDB testing with fake-indexeddb"
+  }
+  
+  // E2E Testing
+  e2eTesting: {
+    framework: "Playwright"
+    scenarios: "Critical user journeys"
+    visualRegression: "Screenshot comparison"
+    performance: "Performance testing"
+  }
+  
+  // Testing Utilities
+  testingUtilities: {
+    factories: "Test data factories"
+    fixtures: "Test fixtures and mocks"
+    helpers: "Testing helper functions"
+    setup: "Test environment setup"
+  }
+}
+
+// Test Configuration
+export const testConfig = {
+  testEnvironment: 'jsdom',
+  setupFilesAfterEnv: ['<rootDir>/test/setup.ts'],
+  moduleNameMapping: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '^@/test/(.*)$': '<rootDir>/test/$1'
+  },
+  collectCoverageFrom: [
+    'src/**/*.{ts,tsx}',
+    '!src/**/*.d.ts',
+    '!src/**/index.ts'
+  ],
+  coverageThreshold: {
+    global: {
+      branches: 80,
+      functions: 80,
+      lines: 80,
+      statements: 80
+    }
+  }
+}
+```
+
+---
+
+## API Reference
+
+### Complete API Endpoint Documentation
+
+```typescript
+// API Endpoint Reference
+interface APIEndpoints {
+  // Configuration APIs
+  'GET /api/app-config': {
+    description: "Retrieve application configuration"
+    response: AppConfigResponse
+    headers: { 'Content-Type': 'application/json' }
+  }
+  
+  'POST /api/app-config': {
+    description: "Update application configuration"
+    body: Partial<AppConfig>
+    response: { success: boolean; config: AppConfig }
+  }
+  
+  'GET /api/azure/config': {
+    description: "Get Azure service configuration"
+    response: AzureConfigResponse
+    authentication: "API Key required"
+  }
+  
+  'POST /api/azure/config': {
+    description: "Update Azure configuration"
+    body: AzureConfigUpdate
+    response: { success: boolean; message: string }
+  }
+  
+  'GET /api/azure/models': {
+    description: "List available AI models"
+    query: {
+      provider?: string
+      capability?: string
+      enabled?: boolean
+    }
+    response: ModelListResponse
+  }
+  
+  'POST /api/azure/validate': {
+    description: "Validate Azure service connection"
+    body: { endpoint: string; apiKey: string }
+    response: ValidationResponse
+  }
+  
+  // Generation APIs
+  'POST /api/generate': {
+    description: "Generate images from text prompts"
+    body: GenerationRequest
+    response: GenerationResponse
+    streaming: true
+    rateLimit: "10 requests/minute"
+  }
+  
+  'POST /api/background-removal': {
+    description: "Remove background from images"
+    body: {
+      image: string // base64 encoded
+      model?: string
+      quality?: 'standard' | 'high'
+    }
+    response: {
+      result: string // base64 encoded
+      metadata: ProcessingMetadata
+    }
+  }
+  
+  // Asset Management APIs
+  'GET /api/asset-store/search': {
+    description: "Search for assets across providers"
+    query: {
+      q: string
+      provider?: 'unsplash' | 'pexels' | 'local'
+      limit?: number
+      page?: number
+      category?: string
+    }
+    response: AssetSearchResponse
+  }
+  
+  'GET /api/asset-store/featured': {
+    description: "Get featured assets"
+    query: { provider?: string; limit?: number }
+    response: FeaturedAssetsResponse
+  }
+  
+  'GET /api/asset-store/categories': {
+    description: "List asset categories"
+    query: { provider?: string }
+    response: CategoriesResponse
+  }
+  
+  // Authentication APIs
+  'POST /api/auth/login': {
+    description: "User authentication"
+    body: { username: string; password: string }
+    response: AuthResponse
+    cookies: "Sets authentication cookies"
+  }
+  
+  'POST /api/auth/logout': {
+    description: "User logout"
+    response: { success: boolean }
+    cookies: "Clears authentication cookies"
+  }
+  
+  // Utility APIs
+  'GET /api/version': {
+    description: "Get application version information"
+    response: {
+      version: string
+      build: string
+      environment: string
+      features: string[]
+    }
+  }
+}
+
+// Request/Response Type Definitions
+interface GenerationRequest {
+  prompt: string
+  model: string
+  size: string
+  style?: 'natural' | 'vivid'
+  quality?: 'standard' | 'hd'
+  n?: number
+  response_format?: 'url' | 'b64_json'
+}
+
+interface GenerationResponse {
+  images: GeneratedImage[]
+  metadata: {
+    model: string
+    prompt: string
+    parameters: any
+    timestamp: Date
+    usage?: UsageStatistics
+  }
+}
+
+interface AssetSearchResponse {
+  results: Asset[]
+  pagination: {
+    page: number
+    totalPages: number
+    totalResults: number
+    hasNext: boolean
+    hasPrev: boolean
+  }
+  filters: {
+    applied: Filter[]
+    available: Filter[]
+  }
+}
+```
+
+---
+
+## Component Hierarchy
+
+### React Component Architecture
+
+```
+App (Next.js App Router)
+├── RootLayout
+│   ├── ThemeProvider (next-themes)
+│   ├── RadixThemeProvider (@radix-ui/themes)
+│   ├── ConfigurationProvider (Context)
+│   ├── AuthenticationProvider (Context)
+│   └── ToastProvider (Notifications)
+│
+├── HomePage
+│   ├── HeroSection
+│   ├── FeatureShowcase
+│   ├── ModelSelector
+│   └── QuickStart
+│
+└── StudioPage
+    ├── StudioLayout
+    │   ├── MenuBar
+    │   │   ├── FileMenu
+    │   │   ├── EditMenu
+    │   │   ├── ViewMenu
+    │   │   ├── ToolsMenu
+    │   │   └── HelpMenu
+    │   │
+    │   ├── MainWorkspace
+    │   │   ├── LeftSidebar
+    │   │   │   ├── ToolPanel
+    │   │   │   │   ├── SelectTool
+    │   │   │   │   ├── BrushTool
+    │   │   │   │   ├── TextTool
+    │   │   │   │   ├── ShapeTool
+    │   │   │   │   └── GenerateTool
+    │   │   │   │
+    │   │   │   ├── LayersPanel
+    │   │   │   │   ├── LayerList
+    │   │   │   │   ├── LayerControls
+    │   │   │   │   └── BlendModes
+    │   │   │   │
+    │   │   │   └── AssetsPanel
+    │   │   │       ├── AssetSearch
+    │   │   │       ├── AssetGrid
+    │   │   │       ├── AssetCategories
+    │   │   │       └── LocalAssets
+    │   │   │
+    │   │   ├── CanvasArea
+    │   │   │   ├── CanvasToolbar
+    │   │   │   │   ├── ZoomControls
+    │   │   │   │   ├── ViewportControls
+    │   │   │   │   └── CanvasSettings
+    │   │   │   │
+    │   │   │   ├── CanvasContainer
+    │   │   │   │   ├── FabricCanvas (Fabric.js)
+    │   │   │   │   ├── SelectionOverlay
+    │   │   │   │   ├── GridOverlay
+    │   │   │   │   └── GuidesOverlay
+    │   │   │   │
+    │   │   │   └── FloatingToolbar
+    │   │   │       ├── ImageEditingTools
+    │   │   │       │   ├── CropTool
+    │   │   │       │   ├── ResizeTool
+    │   │   │       │   ├── RotateTool
+    │   │   │       │   ├── FilterTool
+    │   │   │       │   └── BackgroundRemoval
+    │   │   │       │
+    │   │   │       └── TransformControls
+    │   │   │           ├── PositionControls
+    │   │   │           ├── ScaleControls
+    │   │   │           └── OpacityControls
+    │   │   │
+    │   │   └── RightSidebar
+    │   │       ├── PropertiesPanel
+    │   │       │   ├── ObjectProperties
+    │   │       │   ├── StyleProperties
+    │   │       │   └── EffectProperties
+    │   │       │
+    │   │       ├── HistoryPanel
+    │   │       │   ├── UndoStack
+    │   │       │   ├── RedoStack
+    │   │       │   └── HistoryList
+    │   │       │
+    │   │       └── SettingsPanel
+    │   │           ├── CanvasSettings
+    │   │           ├── ExportSettings
+    │   │           └── PreferenceSettings
+    │   │
+    │   └── StatusBar
+    │       ├── CoordinateDisplay
+    │       ├── ZoomIndicator
+    │       ├── SelectionInfo
+    │       └── ProgressIndicator
+    │
+    └── Modals
+        ├── GenerationModal
+        │   ├── PromptInput
+        │   ├── ModelSelector
+        │   ├── ParameterControls
+        │   ├── PreviewArea
+        │   └── GenerationProgress
+        │
+        ├── SettingsModal
+        │   ├── GeneralSettings
+        │   ├── AzureSettings
+        │   ├── AssetSettings
+        │   ├── PerformanceSettings
+        │   └── SecuritySettings
+        │
+        ├── ExportModal
+        │   ├── FormatSelector
+        │   ├── QualityControls
+        │   ├── SizeControls
+        │   └── ExportPreview
+        │
+        └── AboutModal
+            ├── VersionInfo
+            ├── LicenseInfo
+            ├── CreditsInfo
+            └── ContactInfo
+```
+
+### Component Interaction Flow
+
+```typescript
+// Component Communication Architecture
+interface ComponentCommunication {
+  // Context-based State Sharing
+  contexts: {
+    StudioContext: "Global studio state"
+    CanvasContext: "Canvas-specific state"
+    ToolContext: "Active tool state"
+    SelectionContext: "Current selection state"
+  }
+  
+  // Event-based Communication
+  events: {
+    canvasEvents: "Fabric.js canvas events"
+    customEvents: "Application-specific events"
+    broadcastEvents: "Cross-tab communication"
+    keyboardEvents: "Keyboard shortcuts"
+  }
+  
+  // Prop Drilling Minimization
+  propOptimization: {
+    contextProviders: "Reduce prop drilling"
+    componentComposition: "Flexible component structure"
+    renderProps: "Dynamic component behavior"
+    customHooks: "Reusable logic extraction"
+  }
+}
+
+// Studio Context Implementation
+const StudioContext = createContext<StudioContextValue>({
+  // Canvas state
+  canvas: null,
+  canvasSize: { width: 800, height: 600 },
+  zoom: 100,
+  
+  // Tool state
+  activeTool: 'select',
+  toolSettings: {},
+  
+  // Selection state
+  selectedObjects: [],
+  selectionBounds: null,
+  
+  // Project state
+  currentProject: null,
+  isDirty: false,
+  
+  // Actions
+  setActiveTool: () => {},
+  updateToolSettings: () => {},
+  addObject: () => {},
+  removeObject: () => {},
+  updateObject: () => {},
+  saveProject: () => {},
+  exportCanvas: () => {}
+})
+
+// Canvas Event Handling
+class CanvasEventManager {
+  private canvas: fabric.Canvas
+  private eventHandlers: Map<string, Function[]> = new Map()
+  
+  constructor(canvas: fabric.Canvas) {
+    this.canvas = canvas
+    this.setupEventListeners()
+  }
+  
+  private setupEventListeners(): void {
+    // Selection events
+    this.canvas.on('selection:created', (e) => {
+      this.emit('selection:changed', e.selected)
+    })
+    
+    this.canvas.on('selection:updated', (e) => {
+      this.emit('selection:changed', e.selected)
+    })
+    
+    this.canvas.on('selection:cleared', () => {
+      this.emit('selection:changed', [])
+    })
+    
+    // Object manipulation events
+    this.canvas.on('object:modified', (e) => {
+      this.emit('object:modified', e.target)
+      this.emit('canvas:changed')
+    })
+    
+    // Mouse events
+    this.canvas.on('mouse:down', (e) => {
+      this.emit('mouse:down', e)
+    })
+    
+    // Keyboard events
+    document.addEventListener('keydown', (e) => {
+      this.handleKeyboardShortcuts(e)
+    })
+  }
+  
+  private handleKeyboardShortcuts(e: KeyboardEvent): void {
+    const shortcuts: Record<string, Function> = {
+      'Delete': () => this.deleteSelected(),
+      'Ctrl+Z': () => this.undo(),
+      'Ctrl+Y': () => this.redo(),
+      'Ctrl+A': () => this.selectAll(),
+      'Ctrl+C': () => this.copy(),
+      'Ctrl+V': () => this.paste(),
+      'Escape': () => this.deselectAll()
+    }
+    
+    const key = e.ctrlKey ? `Ctrl+${e.key}` : e.key
+    if (shortcuts[key]) {
+      e.preventDefault()
+      shortcuts[key]()
+    }
+  }
+}
+```
+
+---
+
+## State Management
+
+### Comprehensive State Architecture
+
+```typescript
+// Global State Management Strategy
+interface StateManagementArchitecture {
+  // State Layers
+  layers: {
+    application: "Global app state (theme, config, auth)"
+    workspace: "Studio workspace state"
+    canvas: "Canvas and drawing state"
+    tools: "Tool-specific state"
+    temporary: "Transient UI state"
+  }
+  
+  // Persistence Strategy
+  persistence: {
+    IndexedDB: "Long-term project and asset storage"
+    localStorage: "User preferences and settings"
+    sessionStorage: "Temporary workspace data"
+    memory: "Runtime state and cache"
+  }
+  
+  // Synchronization
+  synchronization: {
+    crossTab: "BroadcastChannel for tab sync"
+    optimisticUpdates: "Immediate UI updates"
+    conflictResolution: "Last-write-wins with merge"
+    backgroundSync: "Periodic state synchronization"
+  }
+}
+
+// State Management Implementation
+class StateManager {
+  private store = new Map<string, any>()
+  private subscribers = new Map<string, Function[]>()
+  private persistence = new PersistenceLayer()
+  
+  // State subscription system
+  subscribe<T>(key: string, callback: (state: T) => void): () => void {
+    if (!this.subscribers.has(key)) {
+      this.subscribers.set(key, [])
+    }
+    
+    this.subscribers.get(key)!.push(callback)
+    
+    // Return unsubscribe function
+    return () => {
+      const callbacks = this.subscribers.get(key) || []
+      const index = callbacks.indexOf(callback)
+      if (index > -1) {
+        callbacks.splice(index, 1)
+      }
+    }
+  }
+  
+  // State updates with persistence
+  async setState<T>(key: string, state: T, options: StateOptions = {}): Promise<void> {
+    // Update in-memory state
+    this.store.set(key, state)
+    
+    // Persist if required
+    if (options.persist) {
+      await this.persistence.save(key, state, options.persistenceType)
+    }
+    
+    // Notify subscribers
+    this.notifySubscribers(key, state)
+    
+    // Broadcast to other tabs
+    if (options.broadcast) {
+      this.broadcastUpdate(key, state)
+    }
+  }
+  
+  // State retrieval with fallback
+  async getState<T>(key: string, fallback?: T): Promise<T | undefined> {
+    // Check memory first
+    if (this.store.has(key)) {
+      return this.store.get(key)
+    }
+    
+    // Try to load from persistence
+    const persisted = await this.persistence.load<T>(key)
+    if (persisted) {
+      this.store.set(key, persisted)
+      return persisted
+    }
+    
+    return fallback
+  }
+}
+
+// Canvas State Management
+interface CanvasState {
+  // Canvas configuration
+  config: {
+    width: number
+    height: number
+    backgroundColor: string
+    backgroundImage?: string
+  }
+  
+  // Objects on canvas
+  objects: CanvasObject[]
+  
+  // Selection state
+  selection: {
+    objects: string[] // Object IDs
+    bounds: Rectangle
+    mode: 'single' | 'multiple'
+  }
+  
+  // Viewport state
+  viewport: {
+    zoom: number
+    panX: number
+    panY: number
+    bounds: Rectangle
+  }
+  
+  // Tool state
+  tool: {
+    active: ToolType
+    settings: ToolSettings
+    mode: ToolMode
+  }
+  
+  // History state
+  history: {
+    stack: HistoryEntry[]
+    index: number
+    maxSize: number
+  }
+}
+
+// Canvas State Hooks
+function useCanvasState() {
+  const [state, setState] = useState<CanvasState>(defaultCanvasState)
+  const stateRef = useRef(state)
+  
+  // Update ref when state changes
+  useEffect(() => {
+    stateRef.current = state
+  }, [state])
+  
+  // Canvas actions
+  const actions = useMemo(() => ({
+    // Object management
+    addObject: (object: CanvasObject) => {
+      setState(prev => ({
+        ...prev,
+        objects: [...prev.objects, object]
+      }))
+      recordHistory('add-object', { object })
+    },
+    
+    removeObject: (objectId: string) => {
+      setState(prev => ({
+        ...prev,
+        objects: prev.objects.filter(obj => obj.id !== objectId),
+        selection: {
+          ...prev.selection,
+          objects: prev.selection.objects.filter(id => id !== objectId)
+        }
+      }))
+      recordHistory('remove-object', { objectId })
+    },
+    
+    updateObject: (objectId: string, updates: Partial<CanvasObject>) => {
+      setState(prev => ({
+        ...prev,
+        objects: prev.objects.map(obj =>
+          obj.id === objectId ? { ...obj, ...updates } : obj
+        )
+      }))
+      recordHistory('update-object', { objectId, updates })
+    },
+    
+    // Selection management
+    selectObject: (objectId: string, multi = false) => {
+      setState(prev => ({
+        ...prev,
+        selection: {
+          ...prev.selection,
+          objects: multi
+            ? [...prev.selection.objects, objectId]
+            : [objectId],
+          mode: multi || prev.selection.objects.length > 0 ? 'multiple' : 'single'
+        }
+      }))
+    },
+    
+    clearSelection: () => {
+      setState(prev => ({
+        ...prev,
+        selection: {
+          objects: [],
+          bounds: { x: 0, y: 0, width: 0, height: 0 },
+          mode: 'single'
+        }
+      }))
+    },
+    
+    // Viewport management
+    setZoom: (zoom: number) => {
+      setState(prev => ({
+        ...prev,
+        viewport: { ...prev.viewport, zoom: Math.max(10, Math.min(500, zoom)) }
+      }))
+    },
+    
+    panViewport: (deltaX: number, deltaY: number) => {
+      setState(prev => ({
+        ...prev,
+        viewport: {
+          ...prev.viewport,
+          panX: prev.viewport.panX + deltaX,
+          panY: prev.viewport.panY + deltaY
+        }
+      }))
+    },
+    
+    // Tool management
+    setActiveTool: (tool: ToolType) => {
+      setState(prev => ({
+        ...prev,
+        tool: { ...prev.tool, active: tool }
+      }))
+    },
+    
+    updateToolSettings: (settings: Partial<ToolSettings>) => {
+      setState(prev => ({
+        ...prev,
+        tool: {
+          ...prev.tool,
+          settings: { ...prev.tool.settings, ...settings }
+        }
+      }))
+    },
+    
+    // History management
+    undo: () => {
+      setState(prev => {
+        if (prev.history.index > 0) {
+          const newIndex = prev.history.index - 1
+          const historyEntry = prev.history.stack[newIndex]
+          return applyHistoryEntry(prev, historyEntry, 'undo')
+        }
+        return prev
+      })
+    },
+    
+    redo: () => {
+      setState(prev => {
+        if (prev.history.index < prev.history.stack.length - 1) {
+          const newIndex = prev.history.index + 1
+          const historyEntry = prev.history.stack[newIndex]
+          return applyHistoryEntry(prev, historyEntry, 'redo')
+        }
+        return prev
+      })
+    }
+  }), [])
+  
+  // History recording
+  const recordHistory = useCallback((action: string, data: any) => {
+    setState(prev => {
+      const entry: HistoryEntry = {
+        id: generateId(),
+        action,
+        data,
+        timestamp: Date.now(),
+        beforeState: prev.objects,
+        afterState: null // Will be set after state update
+      }
+      
+      const newStack = prev.history.stack.slice(0, prev.history.index + 1)
+      newStack.push(entry)
+      
+      // Limit history size
+      if (newStack.length > prev.history.maxSize) {
+        newStack.shift()
+      }
+      
+      return {
+        ...prev,
+        history: {
+          ...prev.history,
+          stack: newStack,
+          index: newStack.length - 1
+        }
+      }
+    })
+  }, [])
+  
+  return {
+    state,
+    actions,
+    // Computed values
+    selectedObjects: state.objects.filter(obj =>
+      state.selection.objects.includes(obj.id)
+    ),
+    canUndo: state.history.index > 0,
+    canRedo: state.history.index < state.history.stack.length - 1,
+    isDirty: state.history.index > 0
+  }
+}
+```
+
+---
+
+## Integration Patterns
+
+### Service Integration Architecture
+
+```typescript
+// Integration Patterns Architecture
+interface IntegrationArchitecture {
+  // External Service Integration
+  externalServices: {
+    azureOpenAI: "Direct REST API integration"
+    azureFoundry: "Model catalog and deployment"
+    unsplash: "Photo search and licensing"
+    pexels: "Stock photo integration"
+  }
+  
+  // Integration Patterns
+  patterns: {
+    adapter: "Standardize different service APIs"
+    facade: "Simplified interface for complex systems"
+    observer: "Event-driven integration updates"
+    strategy: "Pluggable service providers"
+    factory: "Dynamic service creation"
+  }
+  
+  // Data Transformation
+  transformation: {
+    serialization: "JSON/Base64 data conversion"
+    validation: "Input/output data validation"
+    normalization: "Consistent data formats"
+    mapping: "Service-specific data mapping"
+  }
+}
+
+// Service Adapter Pattern
+abstract class ServiceAdapter<TRequest, TResponse> {
+  protected abstract baseUrl: string
+  protected abstract apiKey: string
+  protected abstract rateLimiter: RateLimiter
+  
+  // Standardized request method
+  async request(
+    endpoint: string,
+    options: RequestOptions<TRequest>
+  ): Promise<TResponse> {
+    // Rate limiting
+    await this.rateLimiter.waitForToken()
+    
+    // Request preprocessing
+    const processedRequest = await this.preprocessRequest(options.body)
+    
+    // Make request
+    const response = await fetch(`${this.baseUrl}${endpoint}`, {
+      method: options.method || 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.apiKey}`,
+        ...options.headers
+      },
+      body: JSON.stringify(processedRequest)
+    })
+    
+    // Response handling
+    if (!response.ok) {
+      throw new ServiceError(response.status, await response.text())
+    }
+    
+    const rawResponse = await response.json()
+    return this.postprocessResponse(rawResponse)
+  }
+  
+  // Service-specific preprocessing
+  protected abstract preprocessRequest(request: TRequest): Promise<any>
+  
+  // Service-specific postprocessing
+  protected abstract postprocessResponse(response: any): Promise<TResponse>
+}
+
+// Azure OpenAI Adapter
+class AzureOpenAIAdapter extends ServiceAdapter<GenerationRequest, GenerationResponse> {
+  protected baseUrl = 'https://api.openai.com/v1'
+  protected apiKey: string
+  protected rateLimiter = new RateLimiter(60, 60000) // 60 requests per minute
+  
+  constructor(config: AzureOpenAIConfig) {
+    super()
+    this.apiKey = config.apiKey
+    this.baseUrl = config.baseUrl
+  }
+  
+  // OpenAI-specific request preprocessing
+  protected async preprocessRequest(request: GenerationRequest): Promise<any> {
+    return {
+      prompt: this.optimizePrompt(request.prompt),
+      n: Math.min(request.n || 1, 10), // OpenAI limit
+      size: this.validateSize(request.size),
+      quality: request.quality || 'standard',
+      style: request.style || 'natural',
+      response_format: request.response_format || 'url'
+    }
+  }
+  
+  // OpenAI-specific response postprocessing
+  protected async postprocessResponse(response: any): Promise<GenerationResponse> {
+    return {
+      images: response.data.map((item: any) => ({
+        url: item.url,
+        b64_json: item.b64_json,
+        revised_prompt: item.revised_prompt
+      })),
+      metadata: {
+        model: 'dall-e-3',
+        timestamp: new Date(),
+        usage: response.usage
+      }
+    }
+  }
+  
+  private optimizePrompt(prompt: string): string {
+    // OpenAI prompt optimization
+    return prompt
+      .trim()
+      .slice(0, 1000) // OpenAI limit
+      .replace(/[^\w\s\-.,!?]/g, '') // Remove special characters
+  }
+  
+  private validateSize(size: string): string {
+    const validSizes = ['1024x1024', '1024x1792', '1792x1024']
+    return validSizes.includes(size) ? size : '1024x1024'
+  }
+}
+
+// Service Factory Pattern
+class ServiceFactory {
+  private static adapters: Map<string, ServiceAdapter<any, any>> = new Map()
+  
+  static createAdapter(
+    type: 'openai' | 'foundry' | 'unsplash' | 'pexels',
+    config: any
+  ): ServiceAdapter<any, any> {
+    const key = `${type}-${JSON.stringify(config)}`
+    
+    if (this.adapters.has(key)) {
+      return this.adapters.get(key)!
+    }
+    
+    let adapter: ServiceAdapter<any, any>
+    
+    switch (type) {
+      case 'openai':
+        adapter = new AzureOpenAIAdapter(config)
+        break
+      case 'foundry':
+        adapter = new AzureFoundryAdapter(config)
+        break
+      case 'unsplash':
+        adapter = new UnsplashAdapter(config)
+        break
+      case 'pexels':
+        adapter = new PexelsAdapter(config)
+        break
+      default:
+        throw new Error(`Unknown adapter type: ${type}`)
+    }
+    
+    this.adapters.set(key, adapter)
+    return adapter
+  }
+}
+```
+
+### Event-Driven Integration
+
+```typescript
+// Event-Driven Architecture
+class EventBus {
+  private listeners: Map<string, Function[]> = new Map()
+  
+  // Event subscription
+  on(event: string, callback: Function): () => void {
+    if (!this.listeners.has(event)) {
+      this.listeners.set(event, [])
+    }
+    
+    this.listeners.get(event)!.push(callback)
+    
+    // Return unsubscribe function
+    return () => {
+      const callbacks = this.listeners.get(event) || []
+      const index = callbacks.indexOf(callback)
+      if (index > -1) {
+        callbacks.splice(index, 1)
+      }
+    }
+  }
+  
+  // Event emission
+  emit(event: string, data?: any): void {
+    const callbacks = this.listeners.get(event) || []
+    callbacks.forEach(callback => {
+      try {
+        callback(data)
+      } catch (error) {
+        console.error(`Error in event listener for ${event}:`, error)
+      }
+    })
+  }
+  
+  // Async event emission
+  async emitAsync(event: string, data?: any): Promise<any[]> {
+    const callbacks = this.listeners.get(event) || []
+    return Promise.all(
+      callbacks.map(async (callback) => {
+        try {
+          return await callback(data)
+        } catch (error) {
+          console.error(`Error in async event listener for ${event}:`, error)
+          return null
+        }
+      })
+    )
+  }
+}
+
+// Integration Event Handlers
+class IntegrationEventHandlers {
+  constructor(private eventBus: EventBus) {
+    this.setupEventHandlers()
+  }
+  
+  private setupEventHandlers(): void {
+    // Configuration changes
+    this.eventBus.on('config:changed', this.handleConfigChange.bind(this))
+    
+    // Service status updates
+    this.eventBus.on('service:connected', this.handleServiceConnected.bind(this))
+    this.eventBus.on('service:disconnected', this.handleServiceDisconnected.bind(this))
+    this.eventBus.on('service:error', this.handleServiceError.bind(this))
+    
+    // Data synchronization
+    this.eventBus.on('data:sync:start', this.handleSyncStart.bind(this))
+    this.eventBus.on('data:sync:complete', this.handleSyncComplete.bind(this))
+    this.eventBus.on('data:sync:error', this.handleSyncError.bind(this))
+    
+    // Asset management
+    this.eventBus.on('asset:added', this.handleAssetAdded.bind(this))
+    this.eventBus.on('asset:updated', this.handleAssetUpdated.bind(this))
+    this.eventBus.on('asset:removed', this.handleAssetRemoved.bind(this))
+  }
+  
+  private async handleConfigChange(config: ConfigChangeEvent): Promise<void> {
+    // Reinitialize services with new configuration
+    await this.reinitializeServices(config)
+    
+    // Update UI to reflect changes
+    this.eventBus.emit('ui:config:updated', config)
+  }
+  
+  private handleServiceConnected(service: ServiceConnectionEvent): void {
+    console.log(`Service connected: ${service.name}`)
+    
+    // Update service status in UI
+    this.eventBus.emit('ui:service:status', {
+      service: service.name,
+      status: 'connected'
+    })
+  }
+  
+  private handleServiceError(error: ServiceErrorEvent): void {
+    console.error(`Service error: ${error.service}`, error.error)
+    
+    // Show error notification
+    this.eventBus.emit('ui:notification:error', {
+      title: `${error.service} Error`,
+      message: error.error.message
+    })
+    
+    // Attempt automatic retry
+    this.scheduleRetry(error.service)
+  }
+}
+```
+
+---
+
+## Data Flow Diagrams
+
+### Application Data Flow
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    APPLICATION DATA FLOW                        │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  User Input                                                     │
+│      │                                                          │
+│      ▼                                                          │
+│  ┌─────────────┐    ┌──────────────┐    ┌─────────────────┐    │
+│  │    React    │    │    State     │    │   Data Layer    │    │
+│  │ Components  │◄──►│  Management  │◄──►│   (IndexedDB)   │    │
+│  └─────────────┘    └──────────────┘    └─────────────────┘    │
+│      │                   │                      │               │
+│      ▼                   ▼                      ▼               │
+│  ┌─────────────┐    ┌──────────────┐    ┌─────────────────┐    │
+│  │   Canvas    │    │  Background  │    │  Configuration  │    │
+│  │ Rendering   │    │   Sync       │    │     System      │    │
+│  └─────────────┘    └──────────────┘    └─────────────────┘    │
+│      │                   │                      │               │
+│      ▼                   ▼                      ▼               │
+│  ┌─────────────┐    ┌──────────────┐    ┌─────────────────┐    │
+│  │  Fabric.js  │    │   API        │    │    JSON         │    │
+│  │   Canvas    │    │  Services    │    │   Configs       │    │
+│  └─────────────┘    └──────────────┘    └─────────────────┘    │
+│      │                   │                      │               │
+│      ▼                   ▼                      ▼               │
+│  ┌─────────────┐    ┌──────────────┐    ┌─────────────────┐    │
+│  │   WebGL     │    │    Azure     │    │    File         │    │
+│  │ Rendering   │    │   Services   │    │   System        │    │
+│  └─────────────┘    └──────────────┘    └─────────────────┘    │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Image Generation Flow
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                   IMAGE GENERATION DATA FLOW                    │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  User Prompt Input                                              │
+│         │                                                       │
+│         ▼                                                       │
+│  ┌─────────────────┐                                            │
+│  │ Prompt          │                                            │
+│  │ Validation      │                                            │
+│  │ & Enhancement   │                                            │
+│  └─────────────────┘                                            │
+│         │                                                       │
+│         ▼                                                       │
+│  ┌─────────────────┐     ┌──────────────┐                      │
+│  │ Model Selection │────►│ Configuration│                      │
+│  │ Algorithm       │     │ Validation   │                      │
+│  └─────────────────┘     └──────────────┘                      │
+│         │                       │                              │
+│         ▼                       ▼                              │
+│  ┌─────────────────┐     ┌──────────────┐                      │
+│  │ Request         │     │ Authentication│                     │
+│  │ Preprocessing   │◄────│ & API Keys    │                     │
+│  └─────────────────┘     └──────────────┘                      │
+│         │                                                       │
+│         ▼                                                       │
+│  ┌─────────────────┐                                            │
+│  │ API Route       │                                            │
+│  │ /api/generate   │                                            │
+│  └─────────────────┘                                            │
+│         │                                                       │
+│         ▼                                                       │
+│  ┌─────────────────┐     ┌──────────────┐     ┌──────────────┐ │
+│  │ Provider        │     │ Azure OpenAI │     │ Azure AI     │ │
+│  │ Selection       │────►│ Service      │ OR  │ Foundry      │ │
+│  └─────────────────┘     └──────────────┘     └──────────────┘ │
+│         │                       │                      │       │
+│         ▼                       ▼                      ▼       │
+│  ┌─────────────────┐     ┌──────────────┐     ┌──────────────┐ │
+│  │ Response        │◄────│ DALL-E 3     │ OR  │ FLUX Models  │ │
+│  │ Processing      │     │ Generation   │     │ Generation   │ │
+│  └─────────────────┘     └──────────────┘     └──────────────┘ │
+│         │                                                       │
+│         ▼                                                       │
+│  ┌─────────────────┐                                            │
+│  │ Image           │                                            │
+│  │ Optimization    │                                            │
+│  │ & Caching       │                                            │
+│  └─────────────────┘                                            │
+│         │                                                       │
+│         ▼                                                       │
+│  ┌─────────────────┐                                            │
+│  │ Canvas          │                                            │
+│  │ Integration     │                                            │
+│  │ (Fabric.js)     │                                            │
+│  └─────────────────┘                                            │
+│         │                                                       │
+│         ▼                                                       │
+│  User sees generated image on canvas                            │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Asset Management Flow
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                   ASSET MANAGEMENT DATA FLOW                    │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  Search Query                                                   │
+│      │                                                          │
+│      ▼                                                          │
+│  ┌─────────────────┐                                            │
+│  │ Search          │                                            │
+│  │ Preprocessing   │                                            │
+│  └─────────────────┘                                            │
+│      │                                                          │
+│      ▼                                                          │
+│  ┌─────────────────┐                                            │
+│  │ Provider        │                                            │
+│  │ Selection       │                                            │
+│  └─────────────────┘                                            │
+│      │                                                          │
+│      ├─────────────┬─────────────┬─────────────────┐            │
+│      ▼             ▼             ▼                 ▼            │
+│  ┌─────────┐  ┌─────────┐  ┌─────────────┐  ┌─────────────┐    │
+│  │Unsplash │  │ Pexels  │  │Local Assets │  │Future       │    │
+│  │Provider │  │Provider │  │Provider     │  │Providers    │    │
+│  └─────────┘  └─────────┘  └─────────────┘  └─────────────┘    │
+│      │             │             │                 │            │
+│      ▼             ▼             ▼                 ▼            │
+│  ┌─────────────────────────────────────────────────────────┐    │
+│  │              Result Aggregation                        │    │
+│  │                & Normalization                         │    │
+│  └─────────────────────────────────────────────────────────┘    │
+│      │                                                          │
+│      ▼                                                          │
+│  ┌─────────────────┐     ┌──────────────────┐                  │
+│  │ Cache           │────►│ IndexedDB        │                  │
+│  │ Management      │     │ Storage          │                  │
+│  └─────────────────┘     └──────────────────┘                  │
+│      │                                                          │
+│      ▼                                                          │
+│  ┌─────────────────┐                                            │
+│  │ UI Update       │                                            │
+│  │ (Asset Grid)    │                                            │
+│  └─────────────────┘                                            │
+│      │                                                          │
+│      ▼                                                          │
+│  User selects asset                                             │
+│      │                                                          │
+│      ▼                                                          │
+│  ┌─────────────────┐                                            │
+│  │ Asset           │                                            │
+│  │ Download        │                                            │
+│  │ & Processing    │                                            │
+│  └─────────────────┘                                            │
+│      │                                                          │
+│      ▼                                                          │
+│  ┌─────────────────┐                                            │
+│  │ Canvas          │                                            │
+│  │ Integration     │                                            │
+│  └─────────────────┘                                            │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Deployment Architecture
+
+### Production Deployment Strategy
+
+```typescript
+// Deployment Architecture
+interface DeploymentArchitecture {
+  // Deployment Platforms
+  platforms: {
+    vercel: {
+      primary: true
+      features: ["Edge Functions", "Static Generation", "Image Optimization"]
+      scaling: "Automatic"
+      regions: "Global"
+    }
+    azure: {
+      backup: true
+      features: ["Static Web Apps", "Function Apps", "CDN"]
+      scaling: "Manual/Auto"
+      regions: "Multi-region"
+    }
+    docker: {
+      selfHosted: true
+      features: ["Container deployment", "Kubernetes support"]
+      scaling: "Manual"
+      regions: "On-premise"
+    }
+  }
+  
+  // Build Pipeline
+  buildPipeline: {
+    stages: ["lint", "typecheck", "test", "build", "optimize", "deploy"]
+    parallel: ["unit-tests", "e2e-tests", "security-scan"]
+    artifacts: ["static-files", "api-routes", "images", "fonts"]
+  }
+  
+  // Environment Management
+  environments: {
+    development: "Local development with hot reload"
+    staging: "Pre-production testing environment"
+    production: "Live production environment"
+    preview: "Branch preview deployments"
+  }
+}
+
+// Vercel Configuration
+const vercelConfig = {
+  // Build configuration
+  buildCommand: 'npm run build',
+  outputDirectory: '.next',
+  installCommand: 'npm ci',
+  
+  // Environment variables
+  env: {
+    NEXT_PUBLIC_APP_VERSION: process.env.npm_package_version,
+    NODE_ENV: 'production'
+  },
+  
+  // Functions configuration
+  functions: {
+    'src/app/api/**/*.ts': {
+      runtime: 'nodejs20.x',
+      memory: 1024,
+      maxDuration: 30
+    }
+  },
+  
+  // Edge configuration
+  edge: {
+    regions: ['iad1', 'sfo1', 'fra1', 'hkg1']
+  },
+  
+  // Redirects and rewrites
+  redirects: [
+    {
+      source: '/studio',
+      destination: '/studio/new',
+      permanent: false
+    }
+  ],
+  
+  headers: [
+    {
+      source: '/(.*)',
+      headers: [
+        {
+          key: 'X-Frame-Options',
+          value: 'DENY'
+        },
+        {
+          key: 'X-Content-Type-Options',
+          value: 'nosniff'
+        },
+        {
+          key: 'Referrer-Policy',
+          value: 'strict-origin-when-cross-origin'
+        }
+      ]
+    }
+  ]
+}
+
+// Docker Configuration
+const dockerConfig = `
+FROM node:20-alpine AS base
+WORKDIR /app
+
+# Dependencies
+FROM base AS deps
+COPY package*.json ./
+RUN npm ci --only=production
+
+# Build
+FROM base AS builder
+COPY . .
+COPY --from=deps /app/node_modules ./node_modules
+RUN npm run build
+
+# Runtime
+FROM base AS runner
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+EXPOSE 3000
+CMD ["node", "server.js"]
+`
+```
+
+### CI/CD Pipeline
+
+```yaml
+# GitHub Actions Workflow
+name: Azure Image Studio CI/CD
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run linting
+        run: npm run lint
+      
+      - name: Run type checking
+        run: npm run typecheck
+      
+      - name: Run unit tests
+        run: npm run test
+      
+      - name: Run E2E tests
+        run: npm run test:e2e
+      
+      - name: Security audit
+        run: npm audit --audit-level moderate
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build application
+        run: npm run build
+        env:
+          NEXT_PUBLIC_APP_VERSION: ${{ github.sha }}
+      
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-files
+          path: .next/
+
+  deploy-staging:
+    if: github.ref == 'refs/heads/develop'
+    needs: build
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Deploy to Vercel (Staging)
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          scope: staging
+          alias-domains: azure-studio-staging.vercel.app
+
+  deploy-production:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Deploy to Vercel (Production)
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          alias-domains: azure-studio.com
+```
+
+---
+
+## Monitoring and Observability
+
+### Application Monitoring Strategy
+
+```typescript
+// Monitoring Architecture
+interface MonitoringArchitecture {
+  // Performance Monitoring
+  performance: {
+    metrics: ["Core Web Vitals", "Custom Performance Metrics"]
+    tools: ["Next.js Analytics", "Vercel Analytics", "Custom Monitoring"]
+    thresholds: {
+      LCP: "< 2.5s"
+      FID: "< 100ms"
+      CLS: "< 0.1"
+    }
+  }
+  
+  // Error Tracking
+  errorTracking: {
+    clientSide: "React Error Boundaries + Custom Error Handler"
+    serverSide: "API Error Logging"
+    integration: "Sentry/LogRocket integration ready"
+  }
+  
+  // Usage Analytics
+  analytics: {
+    userBehavior: "Canvas interactions, tool usage"
+    featureAdoption: "Feature usage statistics"
+    performance: "Generation times, error rates"
+  }
+  
+  // Health Monitoring
+  healthMonitoring: {
+    apiEndpoints: "Health check endpoints"
+    serviceStatus: "Azure service connectivity"
+    resourceUsage: "Memory, CPU monitoring"
+  }
+}
+
+// Performance Monitor Implementation
+class PerformanceMonitor {
+  private observer: PerformanceObserver
+  private metrics: Map<string, number[]> = new Map()
+  
+  constructor() {
+    this.setupPerformanceObserver()
+    this.setupWebVitals()
+  }
+  
+  // Core Web Vitals monitoring
+  private setupWebVitals(): void {
+    // Largest Contentful Paint
+    new PerformanceObserver((list) => {
+      const entries = list.getEntries()
+      const lcp = entries[entries.length - 1]
+      this.recordMetric('LCP', lcp.startTime)
+    }).observe({ entryTypes: ['largest-contentful-paint'] })
+    
+    // First Input Delay
+    new PerformanceObserver((list) => {
+      const entries = list.getEntries()
+      entries.forEach((entry) => {
+        if (entry.name === 'first-input') {
+          this.recordMetric('FID', entry.processingStart - entry.startTime)
+        }
+      })
+    }).observe({ entryTypes: ['first-input'] })
+    
+    // Cumulative Layout Shift
+    let clsValue = 0
+    new PerformanceObserver((list) => {
+      const entries = list.getEntries()
+      entries.forEach((entry) => {
+        if (!entry.hadRecentInput) {
+          clsValue += entry.value
+        }
+      })
+      this.recordMetric('CLS', clsValue)
+    }).observe({ entryTypes: ['layout-shift'] })
+  }
+  
+  // Custom performance metrics
+  recordCustomMetric(name: string, value: number): void {
+    this.recordMetric(name, value)
+    
+    // Send to analytics service
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'custom_metric', {
+        custom_parameter: name,
+        value: Math.round(value)
+      })
+    }
+  }
+  
+  // Canvas performance monitoring
+  monitorCanvasPerformance(canvas: fabric.Canvas): void {
+    const startRender = performance.now()
+    
+    canvas.on('after:render', () => {
+      const renderTime = performance.now() - startRender
+      this.recordCustomMetric('canvas_render_time', renderTime)
+    })
+    
+    // Monitor object count impact on performance
+    canvas.on('object:added', () => {
+      const objectCount = canvas.getObjects().length
+      this.recordCustomMetric('canvas_object_count', objectCount)
+    })
+  }
+  
+  // API performance monitoring
+  monitorApiPerformance(url: string, startTime: number, success: boolean): void {
+    const duration = performance.now() - startTime
+    this.recordCustomMetric(`api_${url.replace(/[^a-zA-Z0-9]/g, '_')}_duration`, duration)
+    
+    if (!success) {
+      this.recordCustomMetric(`api_${url.replace(/[^a-zA-Z0-9]/g, '_')}_error`, 1)
+    }
+  }
+}
+
+// Error Tracking System
+class ErrorTracker {
+  private errorQueue: Error[] = []
+  private maxQueueSize = 100
+  
+  // Global error handler
+  setupGlobalErrorHandling(): void {
+    // Unhandled promise rejections
+    window.addEventListener('unhandledrejection', (event) => {
+      this.trackError(new Error(event.reason), {
+        type: 'unhandled_promise_rejection',
+        url: window.location.href
+      })
+    })
+    
+    // JavaScript errors
+    window.addEventListener('error', (event) => {
+      this.trackError(event.error, {
+        type: 'javascript_error',
+        url: window.location.href,
+        line: event.lineno,
+        column: event.colno
+      })
+    })
+  }
+  
+  // Error tracking with context
+  trackError(error: Error, context: any = {}): void {
+    const errorInfo = {
+      message: error.message,
+      stack: error.stack,
+      timestamp: new Date().toISOString(),
+      userAgent: navigator.userAgent,
+      url: window.location.href,
+      context
+    }
+    
+    // Add to queue
+    this.errorQueue.push(errorInfo as any)
+    
+    // Maintain queue size
+    if (this.errorQueue.length > this.maxQueueSize) {
+      this.errorQueue.shift()
+    }
+    
+    // Send to error tracking service
+    this.sendErrorToService(errorInfo)
+    
+    console.error('Tracked error:', errorInfo)
+  }
+  
+  private async sendErrorToService(errorInfo: any): Promise<void> {
+    try {
+      await fetch('/api/errors', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(errorInfo)
+      })
+    } catch (sendError) {
+      console.error('Failed to send error to tracking service:', sendError)
+    }
+  }
+}
+
+// React Error Boundary
+class ErrorBoundary extends React.Component {
+  constructor(props: any) {
+    super(props)
+    this.state = { hasError: false, error: null }
+  }
+  
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error }
+  }
+  
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    // Track error with context
+    errorTracker.trackError(error, {
+      type: 'react_error',
+      componentStack: errorInfo.componentStack,
+      errorBoundary: true
+    })
+  }
+  
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="error-fallback">
+          <h2>Something went wrong</h2>
+          <details>
+            <summary>Error details</summary>
+            <pre>{this.state.error?.stack}</pre>
+          </details>
+          <button onClick={() => window.location.reload()}>
+            Reload Page
+          </button>
+        </div>
+      )
+    }
+    
+    return this.props.children
+  }
+}
+```
+
+---
+
+## Scalability Considerations
+
+### Horizontal and Vertical Scaling
+
+```typescript
+// Scalability Architecture
+interface ScalabilityArchitecture {
+  // Frontend Scaling
+  frontend: {
+    caching: {
+      browser: "Aggressive browser caching"
+      cdn: "Global CDN distribution"
+      serviceWorker: "Offline-first caching strategy"
+      preloading: "Predictive resource loading"
+    }
+    
+    optimization: {
+      codeSplitting: "Route and component-based splitting"
+      lazyLoading: "On-demand component loading"
+      bundleOptimization: "Tree shaking and minification"
+      imageOptimization: "Next.js image optimization"
+    }
+    
+    rendering: {
+      ssr: "Server-side rendering for SEO"
+      isr: "Incremental static regeneration"
+      streaming: "React 18 streaming SSR"
+      clientHydration: "Selective hydration"
+    }
+  }
+  
+  // Backend Scaling
+  backend: {
+    compute: {
+      serverless: "Vercel Edge Functions"
+      autoScaling: "Automatic scaling based on demand"
+      regionDistribution: "Multi-region deployment"
+      coldStart: "Optimized for minimal cold starts"
+    }
+    
+    storage: {
+      distributed: "Multi-region storage replication"
+      caching: "Redis/Memcached for hot data"
+      cdn: "Static asset CDN distribution"
+      database: "Read replicas and sharding"
+    }
+    
+    api: {
+      rateLimit: "Intelligent rate limiting"
+      batching: "Request batching optimization"
+      caching: "Response caching strategies"
+      loadBalancing: "Geographic load balancing"
+    }
+  }
+  
+  // Data Scaling
+  data: {
+    partitioning: "User-based data partitioning"
+    replication: "Cross-region data replication"
+    archiving: "Old data archival strategies"
+    compression: "Data compression algorithms"
+  }
+}
+
+// Scalable State Management
+class ScalableStateManager {
+  private workers: Worker[] = []
+  private partitions: Map<string, StatePartition> = new Map()
+  
+  // Web Workers for heavy computations
+  initializeWorkers(): void {
+    const workerCount = Math.min(navigator.hardwareConcurrency || 4, 4)
+    
+    for (let i = 0; i < workerCount; i++) {
+      const worker = new Worker('/workers/state-worker.js')
+      
+      worker.onmessage = (event) => {
+        this.handleWorkerMessage(event.data)
+      }
+      
+      this.workers.push(worker)
+    }
+  }
+  
+  // State partitioning for large datasets
+  partitionState(data: any[], partitionKey: string): void {
+    const partitionSize = 1000 // Adjust based on performance
+    
+    for (let i = 0; i < data.length; i += partitionSize) {
+      const partition = data.slice(i, i + partitionSize)
+      const partitionId = `${partitionKey}_${Math.floor(i / partitionSize)}`
+      
+      this.partitions.set(partitionId, {
+        id: partitionId,
+        data: partition,
+        lastAccessed: Date.now()
+      })
+    }
+    
+    // Implement LRU eviction for partitions
+    this.evictOldPartitions()
+  }
+  
+  // Optimized rendering for large datasets
+  virtualizeList(items: any[], itemHeight: number, containerHeight: number): any[] {
+    const startIndex = Math.floor(this.scrollTop / itemHeight)
+    const endIndex = Math.min(
+      startIndex + Math.ceil(containerHeight / itemHeight) + 1,
+      items.length
+    )
+    
+    return items.slice(startIndex, endIndex).map((item, index) => ({
+      ...item,
+      virtualIndex: startIndex + index
+    }))
+  }
+}
+
+// Performance Optimization Strategies
+class PerformanceOptimizer {
+  private readonly optimizations = {
+    // Image optimization
+    optimizeImages: async (images: HTMLImageElement[]): Promise<void> => {
+      // Use WebP format with fallbacks
+      const webpSupported = await this.checkWebPSupport()
+      
+      images.forEach(img => {
+        if (webpSupported) {
+          img.src = img.src.replace(/\.(jpg|jpeg|png)$/, '.webp')
+        }
+        
+        // Lazy loading
+        img.loading = 'lazy'
+        
+        // Appropriate sizing
+        img.sizes = '(max-width: 768px) 100vw, 50vw'
+      })
+    },
+    
+    // Bundle optimization
+    optimizeBundles: (): void => {
+      // Dynamic imports for heavy libraries
+      const loadFabric = () => import('fabric')
+      const loadFramerMotion = () => import('framer-motion')
+      
+      // Code splitting by route
+      const StudioPage = lazy(() => import('./pages/StudioPage'))
+      const SettingsPage = lazy(() => import('./pages/SettingsPage'))
+    },
+    
+    // Memory optimization
+    optimizeMemory: (): void => {
+      // Object pooling for frequently created objects
+      const objectPool = new ObjectPool(() => ({}), 100)
+      
+      // Cleanup event listeners
+      const cleanupListeners = new Map<Element, Function[]>()
+      
+      // Debounce expensive operations
+      const debouncedSave = debounce(this.saveProject, 1000)
+    }
+  }
+  
+  private async checkWebPSupport(): Promise<boolean> {
+    return new Promise(resolve => {
+      const webP = new Image()
+      webP.onload = webP.onerror = () => resolve(webP.height === 2)
+      webP.src = 'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA'
+    })
+  }
+}
+```
+
+---
+
+## Future Architecture Evolution
+
+### Roadmap and Evolution Strategy
+
+```typescript
+// Future Architecture Evolution
+interface ArchitecturalEvolution {
+  // Short Term (3-6 months)
+  shortTerm: {
+    microFrontends: {
+      description: "Split into micro-frontends for better team autonomy"
+      implementation: "Module Federation with Webpack 5"
+      benefits: ["Independent deployments", "Team autonomy", "Technology diversity"]
+    }
+    
+    edgeComputing: {
+      description: "Move more processing to edge"
+      implementation: "Vercel Edge Functions + Cloudflare Workers"
+      benefits: ["Lower latency", "Better performance", "Cost optimization"]
+    }
+    
+    realTimeCollaboration: {
+      description: "Real-time collaborative editing"
+      implementation: "WebSocket + Operational Transforms"
+      benefits: ["Team collaboration", "Live updates", "Conflict resolution"]
+    }
+  }
+  
+  // Medium Term (6-12 months)
+  mediumTerm: {
+    aiIntegration: {
+      description: "Enhanced AI capabilities"
+      implementation: "GPT-4 Vision, Custom AI models"
+      features: ["Smart auto-completion", "Style transfer", "Content-aware editing"]
+    }
+    
+    cloudInfrastructure: {
+      description: "Migrate to cloud-native architecture"
+      implementation: "Kubernetes + Istio service mesh"
+      benefits: ["Better scaling", "Service isolation", "Improved monitoring"]
+    }
+    
+    advancedAnalytics: {
+      description: "Comprehensive analytics platform"
+      implementation: "Custom analytics with ML insights"
+      features: ["Usage predictions", "Performance optimization", "User behavior analysis"]
+    }
+  }
+  
+  // Long Term (1-2 years)
+  longTerm: {
+    quantumReady: {
+      description: "Prepare for quantum computing capabilities"
+      implementation: "Quantum-resistant algorithms"
+      preparation: ["Crypto updates", "Algorithm optimization", "Future-proofing"]
+    }
+    
+    aiFirst: {
+      description: "AI-first architecture design"
+      implementation: "AI agents for all operations"
+      vision: ["Autonomous optimization", "Predictive scaling", "Self-healing systems"]
+    }
+    
+    webAssembly: {
+      description: "Performance-critical modules in WASM"
+      implementation: "Rust/C++ modules compiled to WASM"
+      benefits: ["Near-native performance", "Language flexibility", "Better security"]
+    }
+  }
+}
+
+// Evolution Implementation Strategy
+class ArchitecturalEvolutionManager {
+  private migrationStrategies = new Map<string, MigrationStrategy>()
+  
+  // Progressive migration strategy
+  planMigration(target: string, strategy: MigrationStrategy): void {
+    this.migrationStrategies.set(target, strategy)
+    
+    // Create migration timeline
+    const timeline = this.createMigrationTimeline(strategy)
+    
+    // Setup monitoring for migration progress
+    this.monitorMigrationProgress(target, timeline)
+  }
+  
+  // Feature flag system for gradual rollout
+  private setupFeatureFlags(): void {
+    const featureFlags = {
+      'micro-frontends': {
+        enabled: false,
+        rollout: 0, // Percentage rollout
+        environments: ['development']
+      },
+      'edge-computing': {
+        enabled: true,
+        rollout: 25,
+        environments: ['staging', 'production']
+      },
+      'real-time-collaboration': {
+        enabled: false,
+        rollout: 0,
+        environments: ['development']
+      }
+    }
+    
+    // Dynamic feature enabling
+    this.enableFeatureGradually('edge-computing', 5) // 5% per week
+  }
+  
+  // Backward compatibility management
+  private maintainBackwardCompatibility(): void {
+    // API versioning strategy
+    const apiVersions = {
+      'v1': { deprecated: false, sunset: null },
+      'v2': { deprecated: false, sunset: null },
+      'v3': { deprecated: false, sunset: null } // Future version
+    }
+    
+    // Legacy component wrapper
+    const LegacyWrapper = ({ children, fallback }) => {
+      return (
+        <React.Suspense fallback={fallback}>
+          <ErrorBoundary>
+            {children}
+          </ErrorBoundary>
+        </React.Suspense>
+      )
+    }
+  }
+  
+  // Performance regression prevention
+  private preventPerformanceRegression(): void {
+    // Performance budgets
+    const budgets = {
+      bundleSize: { maxSize: '500KB', current: '450KB' },
+      initialLoad: { maxTime: '2s', current: '1.8s' },
+      interaction: { maxDelay: '100ms', current: '80ms' }
+    }
+    
+    // Automated performance testing
+    this.setupPerformanceTests(budgets)
+  }
+}
+
+// Technology Adoption Framework
+class TechnologyAdoptionFramework {
+  // Evaluation criteria for new technologies
+  evaluateTechnology(tech: Technology): TechnologyScore {
+    const criteria = {
+      maturity: this.assessMaturity(tech),
+      community: this.assessCommunitySupport(tech),
+      performance: this.assessPerformanceImpact(tech),
+      maintenance: this.assessMaintenanceBurden(tech),
+      security: this.assessSecurityImplications(tech),
+      compatibility: this.assessCompatibility(tech)
+    }
+    
+    return this.calculateOverallScore(criteria)
+  }
+  
+  // Gradual adoption strategy
+  adoptTechnology(tech: Technology, score: TechnologyScore): void {
+    if (score.overall > 0.8) {
+      // High score: Full adoption
+      this.scheduleFullAdoption(tech)
+    } else if (score.overall > 0.6) {
+      // Medium score: Pilot project
+      this.schedulePilotProject(tech)
+    } else {
+      // Low score: Continue monitoring
+      this.addToWatchlist(tech)
+    }
+  }
+}
+```
+
+---
+
+## Conclusion
+
+This comprehensive technical architecture documentation provides a complete blueprint for Azure Image Studio, covering all aspects from high-level system design to implementation details. The architecture is designed to be:
+
+- **Scalable**: Supporting growth from individual users to enterprise teams
+- **Maintainable**: Clear separation of concerns and modular design
+- **Performant**: Optimized for speed and efficiency at every layer
+- **Secure**: Comprehensive security measures throughout the stack
+- **Future-Ready**: Prepared for evolution and new technologies
+
+### Key Architectural Strengths
+
+1. **Modern Technology Stack**: Leveraging the latest versions of React, Next.js, and TypeScript
+2. **AI-First Design**: Built specifically for AI image generation and editing workflows
+3. **Comprehensive Configuration**: Multi-layer configuration system for maximum flexibility
+4. **Performance Optimized**: WebGL rendering, intelligent caching, and memory management
+5. **Developer Experience**: Excellent tooling, testing, and development workflows
+
+### Next Steps
+
+1. **Implementation**: Follow this architecture guide for development
+2. **Monitoring**: Implement the monitoring and observability strategies
+3. **Testing**: Execute the comprehensive testing strategy
+4. **Evolution**: Plan for future architectural improvements
+5. **Documentation**: Keep this documentation updated as the system evolves
+
+This architecture document serves as the definitive technical reference for developers, system architects, and stakeholders working with Azure Image Studio.
+
+---
+
+**Document Version**: 1.0.2
+**Last Updated**: September 2024  
+**Maintained By**: Hazem Ali, Microsoft AI MVP
+
+For questions or contributions, please contact:
+- **Contact**: Available through GitHub issues
+- **GitHub**: [https://github.com/DrHazemAli](https://github.com/DrHazemAli)
+- **LinkedIn**: [https://www.linkedin.com/in/drhazemali/](https://www.linkedin.com/in/drhazemali/)

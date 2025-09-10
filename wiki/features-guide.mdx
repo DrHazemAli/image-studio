@@ -1,0 +1,2567 @@
+# Azure Image Studio - Complete Features Guide
+
+*The Ultimate Guide to Every Feature in Azure Image Studio*
+
+---
+
+**Author:** Hazem Ali, Microsoft AI MVP  
+**Repository:** [Azure Image Studio](https://github.com/DrHazemAli/azure-image-studio)  
+**Documentation:** [Wiki](https://github.com/DrHazemAli/azure-image-studio/wiki)
+
+[![GitHub](https://img.shields.io/badge/GitHub-DrHazemAli-blue)](https://github.com/DrHazemAli)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-hazemali-blue)](https://linkedin.com/in/drhazemali)
+[![MVP](https://img.shields.io/badge/Microsoft-AI%20MVP-blue)](https://mvp.microsoft.com/)
+
+---
+
+## Table of Contents
+
+1. [Studio Interface Overview](#studio-interface-overview)
+2. [Canvas System](#canvas-system)
+3. [Toolbar System](#toolbar-system)
+4. [Panel System](#panel-system)
+5. [AI Generation Features](#ai-generation-features)
+6. [Image Editing Capabilities](#image-editing-capabilities)
+7. [Auto-Sync Feature](#auto-sync-feature)
+8. [Asset Store Integration](#asset-store-integration)
+9. [Project Management](#project-management)
+10. [Settings Integration](#settings-integration)
+11. [Advanced Features](#advanced-features)
+12. [Keyboard Shortcuts](#keyboard-shortcuts)
+
+---
+
+## Studio Interface Overview
+
+### Mac-Style Window Controls
+
+Azure Image Studio features a modern macOS-inspired interface with:
+
+- **Traffic Light Controls:** Red, yellow, and green window controls for close, minimize, and maximize
+- **Unified Title Bar:** Shows application name and editable project name
+- **Blurred Glass Effect:** Modern backdrop-blur appearance throughout the interface
+
+#### Project Name Management
+- **Click-to-Edit:** Click on any project name to rename it instantly
+- **Auto-Save:** Project names are automatically saved when changed
+- **Real-time Update:** Page title updates immediately with project name
+
+### Menu Bar Navigation
+
+The comprehensive menu system provides access to all features:
+
+#### File Menu
+- **New Project** (`Cmd+N`) - Create a new project
+- **Open Project** (`Cmd+O`) - Import project from file
+- **Save Project** (`Cmd+S`) - Export current project
+- **Export Project** (`Cmd+E`) - Save project to file
+- **Import Project** - Load project from backup
+- **Close** - Exit application
+
+#### Insert Menu
+- **Image** - Add images from local files
+- **Layer** - Create new canvas layer
+- **Text** (`Cmd+Shift+T`) - Add text elements
+- **Shape** (`Cmd+U`) - Insert geometric shapes
+- **Rectangle** - Add rectangle shape
+- **Circle** - Add circular shape
+- **Line** - Draw lines
+- **From Asset Store** - Insert from external providers (when enabled)
+
+#### View Menu
+- **Console** - Toggle development console
+- **Assets Panel** - Show/hide local assets
+- **History Panel** - View generation history
+- **Prompt Box** - Toggle AI prompt interface
+- **Zoom In/Out** - Canvas zoom controls
+- **Reset Zoom** - Return to 100% zoom
+- **Fullscreen** - Toggle fullscreen mode
+
+#### Tools Menu
+- **Size Modal** - Configure canvas dimensions
+- **Clear Canvas** - Remove all content
+- **Undo** (`Cmd+Z`) - Undo last action
+- **Redo** (`Cmd+Shift+Z`) - Redo action
+
+#### Help Menu
+- **Keyboard Shortcuts** - View all shortcuts
+- **About** - Application information
+- **Documentation** - Open GitHub wiki
+- **Support** - GitHub issues page
+
+### Status Bar Features
+
+The bottom status bar displays:
+- **Active Tool:** Currently selected tool name
+- **Current Model:** Active AI model
+- **Generation Status:** Real-time progress with animated indicators
+- **Version Info:** Application version number
+- **Social Links:** GitHub and LinkedIn connections
+- **Settings Access:** Quick settings button
+
+### Panel System Layout
+
+The interface uses a flexible panel system:
+- **Floating Toolbar:** Draggable and resizable tool palette
+- **Modal Panels:** Overlay panels for assets, history, and generation
+- **Contextual Menus:** Right-click context menus throughout
+- **Responsive Layout:** Adapts to different screen sizes
+
+---
+
+## Canvas System
+
+### Main Canvas Features
+
+The canvas is the central workspace for all creative operations:
+
+#### Canvas Viewport
+- **Infinite Canvas:** Unlimited workspace area
+- **Grid System:** Optional grid overlay for precision
+- **Rulers:** Measurement guides for exact positioning
+- **Safe Areas:** Visual guides for different formats
+
+#### File Upload Area
+- **Drag and Drop:** Simply drag images onto canvas
+- **Multiple Formats:** Support for PNG, JPG, GIF, WebP
+- **Automatic Sizing:** Smart image placement and scaling
+- **Batch Upload:** Multiple file selection support
+
+```javascript
+// Supported image formats
+const supportedFormats = [
+  'image/png',
+  'image/jpeg', 
+  'image/jpg',
+  'image/gif',
+  'image/webp',
+  'image/svg+xml'
+];
+```
+
+### Zoom Controls
+
+Comprehensive zoom system with multiple interaction methods:
+
+#### Zoom Levels
+- **Range:** 10% to 400% zoom
+- **Increments:** 10% steps for precise control
+- **Presets:** Common zoom levels (25%, 50%, 100%, 200%)
+
+#### Zoom Methods
+1. **Toolbar Controls:** Zoom in/out buttons
+2. **Keyboard Shortcuts:** `Cmd +/-` for zoom
+3. **Mouse Wheel:** Scroll to zoom (with modifier keys)
+4. **Pinch Gestures:** Trackpad pinch-to-zoom
+5. **Zoom Tool:** Click to zoom to specific areas
+
+#### Zoom Features
+- **Fit to Screen:** Automatically fit content to viewport
+- **Actual Size:** View at 100% scale
+- **Zoom to Selection:** Focus on selected elements
+- **Smooth Transitions:** Animated zoom changes
+
+### Pan and Navigation
+
+#### Pan Methods
+- **Hand Tool** (`Cmd+H`) - Drag canvas around
+- **Space+Drag** - Temporary pan while using other tools
+- **Arrow Keys** - Precise pixel-level panning
+- **Mini-Map** - Overview panel for large canvases
+
+#### Navigation Features
+- **Smooth Scrolling:** Momentum-based pan and zoom
+- **Boundary Detection:** Visual indicators for canvas edges
+- **Auto-Center:** Return to canvas center
+- **View History:** Back/forward navigation
+
+### Context Menu Actions
+
+Right-click anywhere on canvas for contextual options:
+
+#### Canvas Context Menu
+- **Paste** - Add clipboard content
+- **Clear All** - Remove all elements
+- **Add Layer** - Create new layer
+- **Background Color** - Set canvas background
+- **Grid Options** - Toggle and configure grid
+- **Export View** - Save current view as image
+
+#### Element Context Menu
+- **Copy/Cut/Paste** - Standard clipboard operations
+- **Duplicate** - Create element copy
+- **Send to Back/Front** - Layer ordering
+- **Group/Ungroup** - Element organization
+- **Transform** - Access transform tools
+- **Delete** - Remove selected elements
+
+### Resize Handles and Dimensions
+
+#### Canvas Sizing
+- **Preset Sizes:** Common formats (Instagram, Twitter, etc.)
+- **Custom Dimensions:** Exact pixel control
+- **Aspect Ratio Lock:** Maintain proportions
+- **Orientation Toggle:** Quick landscape/portrait switch
+
+#### Common Presets
+```
+Square Formats:
+- 1024×1024 (Instagram Square)
+- 1080×1080 (Social Media Square)
+- 512×512 (Avatar/Profile)
+
+Landscape Formats:
+- 1920×1080 (Full HD)
+- 1792×1024 (AI Standard)
+- 1024×768 (4:3 Ratio)
+
+Portrait Formats:
+- 1024×1792 (AI Portrait)
+- 1080×1920 (Instagram Story)
+- 768×1024 (3:4 Ratio)
+```
+
+### Layer Management System
+
+#### Layer Operations
+- **Add Layer:** Create new transparent layer
+- **Delete Layer:** Remove selected layer
+- **Duplicate Layer:** Copy layer with all content
+- **Merge Layers:** Combine multiple layers
+- **Layer Ordering:** Drag to reorder layer stack
+
+#### Layer Properties
+- **Visibility:** Show/hide layers
+- **Opacity:** Transparency control (0-100%)
+- **Blend Modes:** Various compositing modes
+- **Lock:** Prevent accidental modifications
+- **Name:** Custom layer naming
+
+#### Layer Types
+1. **Image Layers:** Raster graphics and photos
+2. **Text Layers:** Typography and labels
+3. **Shape Layers:** Vector graphics
+4. **Adjustment Layers:** Non-destructive effects
+5. **Background Layer:** Canvas background
+
+### Selection Tools and Manipulation
+
+#### Selection Types
+- **Rectangle Select:** Standard rectangular selection
+- **Ellipse Select:** Circular and oval selections
+- **Lasso Select:** Freehand selection tool
+- **Magic Wand:** Color-based selection
+- **Select All** (`Cmd+A`) - Select everything
+
+#### Selection Operations
+- **Move** (`Cmd+M`) - Reposition selected elements
+- **Transform** (`Cmd+T`) - Scale, rotate, skew
+- **Copy/Paste** - Duplicate selections
+- **Feather:** Soft selection edges
+- **Inverse:** Invert current selection
+
+---
+
+## Toolbar System
+
+The comprehensive toolbar contains 20 specialized tools organized by category:
+
+### Selection & Navigation Tools
+
+#### 1. Select Tool (`Cmd+1`)
+- **Primary Function:** Element selection and manipulation
+- **Features:** Multi-select, drag selection, handle-based resizing
+- **Visual Feedback:** Selection outline and handles
+- **Context Actions:** Right-click for element options
+
+#### 2. Move Tool (`Cmd+M`)
+- **Primary Function:** Reposition elements without transforming
+- **Features:** Precise positioning, snap-to-grid, alignment guides
+- **Modifier Keys:** Shift for constrained movement
+- **Visual Feedback:** Movement preview and snap indicators
+
+#### 3. Hand Tool (`Cmd+H`)
+- **Primary Function:** Pan and navigate the canvas
+- **Features:** Smooth panning, momentum scrolling
+- **Temporary Access:** Space key for quick access
+- **Visual Feedback:** Hand cursor and pan indicators
+
+#### 4. Zoom Tool (`Cmd+2`)
+- **Primary Function:** Interactive zoom control
+- **Features:** Click to zoom in, Alt+click to zoom out
+- **Marquee Zoom:** Drag to zoom to specific area
+- **Zoom Levels:** Supports all zoom ranges (10%-400%)
+
+### AI-Powered Tools
+
+#### 5. AI Generate (`Cmd+G`) ⭐
+- **Primary Function:** Text-to-image generation
+- **Features:** 
+  - Prompt-based image creation
+  - Multiple model support (DALL-E 3, FLUX, GPT-Image)
+  - Quality settings (Standard, HD, High)
+  - Batch generation (1-4 images)
+- **Settings:**
+  - Image dimensions (square, landscape, portrait)
+  - Style presets (vivid, natural, artistic)
+  - Seed control for reproducibility
+  - Negative prompts for exclusions
+
+```javascript
+// Example generation parameters
+const generationParams = {
+  prompt: "A majestic dragon soaring through cloudy skies at sunset",
+  model: "FLUX.1-Kontext-pro",
+  size: "1024x1024",
+  quality: "hd",
+  style: "vivid",
+  count: 1,
+  seed: 123456,
+  negativePrompt: "blurry, low quality, distorted"
+};
+```
+
+#### 6. AI Edit (`Cmd+E`) ⭐
+- **Primary Function:** AI-powered image editing
+- **Features:**
+  - Intelligent object modification
+  - Style transfer capabilities
+  - Content-aware editing
+  - Quality enhancement
+
+#### 7. AI Inpaint (`Cmd+I`) ⭐
+- **Primary Function:** Fill or modify selected areas with AI
+- **Features:**
+  - Mask-based editing
+  - Context-aware generation
+  - Seamless blending
+  - Multiple completion options
+- **Workflow:**
+  1. Select area to inpaint
+  2. Provide description prompt
+  3. AI generates contextual fill
+  4. Review and apply changes
+
+#### 8. AI Outpaint (`Cmd+O`) ⭐
+- **Primary Function:** Extend image boundaries with AI
+- **Features:**
+  - Expand canvas in any direction
+  - Contextual background generation
+  - Seamless edge blending
+  - Multiple expansion ratios
+
+### Drawing Tools
+
+#### 9. Brush Tool (`Cmd+B`)
+- **Primary Function:** Freehand drawing and painting
+- **Settings:**
+  - Brush size (1-100px)
+  - Opacity control (0-100%)
+  - Flow rate adjustment
+  - Pressure sensitivity (tablet support)
+- **Brush Types:**
+  - Hard round brush
+  - Soft round brush
+  - Textured brushes
+  - Custom brush shapes
+
+#### 10. Eraser Tool (`Shift+E`)
+- **Primary Function:** Remove content selectively
+- **Modes:**
+  - Brush eraser (soft edges)
+  - Pencil eraser (hard edges)
+  - Block eraser (geometric shapes)
+- **Features:**
+  - Variable size and hardness
+  - Opacity control
+  - History brush integration
+
+### Content Tools
+
+#### 11. Text Tool (`Cmd+Shift+T`)
+- **Primary Function:** Add and edit text content
+- **Typography Controls:**
+  - Font family selection
+  - Size adjustment (8-200px)
+  - Weight options (light, normal, bold)
+  - Style variants (italic, underline)
+- **Advanced Features:**
+  - Character spacing
+  - Line height adjustment
+  - Text alignment (left, center, right, justify)
+  - Color and gradient fills
+  - Text effects (shadow, outline, glow)
+
+#### 12. Shape Tool (`Cmd+U`)
+- **Primary Function:** Create geometric shapes
+- **Available Shapes:**
+  - Rectangle and rounded rectangle
+  - Ellipse and circle
+  - Polygon (adjustable sides)
+  - Star shapes
+  - Arrow shapes
+  - Custom paths
+- **Shape Properties:**
+  - Fill color and gradients
+  - Stroke width and style
+  - Corner radius (for rectangles)
+  - Rotation and skew
+
+### Transform Tools
+
+#### 13. Crop Tool (`Cmd+4`)
+- **Primary Function:** Trim and resize image boundaries
+- **Features:**
+  - Aspect ratio constraints
+  - Rule of thirds overlay
+  - Custom crop ratios
+  - Non-destructive cropping
+- **Presets:**
+  - Square (1:1)
+  - Portrait (3:4, 9:16)
+  - Landscape (4:3, 16:9)
+  - Custom ratios
+
+#### 14. Transform Tool (`Cmd+T`)
+- **Primary Function:** Scale, rotate, and skew elements
+- **Transform Types:**
+  - Scale (proportional and free)
+  - Rotation (any angle)
+  - Skew (perspective distortion)
+  - Flip (horizontal/vertical)
+- **Controls:**
+  - Corner handles for scaling
+  - Outside handles for rotation
+  - Side handles for skewing
+  - Numerical input for precision
+
+### Utility Tools
+
+#### 15. Eyedropper Tool (`Alt`)
+- **Primary Function:** Sample colors from canvas
+- **Features:**
+  - Pixel-level color sampling
+  - Average color sampling (3×3, 5×5 areas)
+  - Color history tracking
+  - Real-time preview
+
+#### 16. Blend Tool (`Shift+Alt+B`)
+- **Primary Function:** Mix and blend colors/elements
+- **Blend Modes:**
+  - Normal, Multiply, Screen
+  - Overlay, Soft Light, Hard Light
+  - Color Dodge, Color Burn
+  - Darken, Lighten
+  - Difference, Exclusion
+- **Blend Options:**
+  - Opacity control
+  - Blend area selection
+  - Layer blend modes
+
+### Management Tools
+
+#### 17. Assets Tool (`Cmd+3`)
+- **Primary Function:** Access local asset library
+- **Features:**
+  - View all saved images
+  - Search and filter assets
+  - Import from external sources
+  - Organize by project
+  - Quick insertion to canvas
+
+#### 18. Asset Store Tool (`Cmd+4`)
+- **Primary Function:** Browse external asset providers
+- **Supported Providers:**
+  - Unsplash (free photos)
+  - Pexels (free photos and videos)
+  - Custom provider support
+- **Features:**
+  - Search millions of assets
+  - Category filtering
+  - Color and orientation filters
+  - Attribution management
+  - Direct import to canvas
+
+#### 19. History Tool (`Cmd+Y`)
+- **Primary Function:** View generation and edit history
+- **Features:**
+  - Complete action timeline
+  - Thumbnail previews
+  - Replay generations
+  - Export history data
+  - Search through history
+
+#### 20. Prompt Tool (`Cmd+P`)
+- **Primary Function:** Advanced AI prompt interface
+- **Features:**
+  - Enhanced prompt editor
+  - Prompt suggestions and templates
+  - Model-specific optimization
+  - Parameter control
+  - Batch operations
+
+### Tool Organization and Grouping
+
+Tools are visually organized into logical groups:
+
+```
+Selection & Navigation (Gray)
+├── Select
+├── Move
+├── Hand
+└── Zoom
+
+AI Tools (Gradient Blue-Purple)
+├── Generate
+├── Edit
+├── Inpaint
+└── Outpaint
+
+Drawing Tools (Green)
+├── Brush
+└── Eraser
+
+Content Tools (Orange)
+├── Text
+└── Shape
+
+Transform Tools (Purple)
+├── Crop
+└── Transform
+
+Utility Tools (Teal)
+├── Eyedropper
+└── Blend
+
+Management Tools (Blue)
+├── Assets
+├── Asset Store
+├── History
+└── Prompt
+```
+
+### Toolbar Customization
+
+#### Position and Size
+- **Draggable:** Click and drag to reposition anywhere on screen
+- **Resizable:** Drag bottom handle to adjust height
+- **Persistent:** Position and size saved between sessions
+- **Constraints:** Stays within screen boundaries
+
+#### Visual Feedback
+- **Active Indicator:** Highlighted tool with animation
+- **Hover Effects:** Subtle scale and glow on hover
+- **Keyboard Shortcuts:** Displayed on hover tooltips
+- **Group Separators:** Visual dividers between tool categories
+
+---
+
+## Panel System
+
+### Generation Panel
+
+The comprehensive AI generation interface provides complete control over image creation:
+
+#### Model Selection
+- **Available Models:**
+  - **GPT-Image-1:** Latest Azure OpenAI model with premium features
+  - **DALL-E 3:** Reliable text-to-image generation
+  - **FLUX 1.1 Pro:** High-quality artistic generation
+  - **FLUX Kontext Pro:** Context-aware generation with editing capabilities
+
+#### Generation Settings
+
+##### Basic Settings
+- **Size Options:**
+  - 1024×1024 (Square)
+  - 1792×1024 (Landscape)  
+  - 1024×1792 (Portrait)
+  - Custom dimensions (premium)
+
+- **Quality Levels:**
+  - **Standard:** Fast generation, good quality
+  - **HD:** Enhanced detail and clarity
+  - **High (GPT-Image):** Maximum quality with premium model
+
+##### Advanced Settings (Expandable)
+- **Seed Control:** Reproducible generation
+- **Count:** Generate 1-4 images simultaneously
+- **Negative Prompts:** Exclude unwanted elements
+- **Style Guidance:** Artistic direction control
+
+#### Prompt Interface
+
+##### Enhanced Prompt Editor
+- **Multi-line Input:** Expandable text area
+- **Character Counter:** Track prompt length (max 500)
+- **Syntax Highlighting:** Emphasize important terms
+- **Auto-suggestions:** Model-specific recommendations
+
+##### Preset Prompts
+Quick-start templates for common scenarios:
+- "A majestic dragon soaring through cloudy skies at sunset"
+- "A cyberpunk cityscape with neon lights reflecting on wet streets"
+- "An astronaut floating in space with Earth in the background"
+- "A cozy library with floating books and magical lighting"
+
+#### Generation Progress
+
+Real-time feedback during image creation:
+- **Progress Bar:** Visual progress from 0-100%
+- **Stage Indicators:** Current generation phase
+- **Time Estimates:** Remaining time calculation
+- **Model Status:** Active model information
+
+```javascript
+// Progress stages
+const generationStages = {
+  initializing: "Initializing AI model...",
+  processing: "Processing your prompt...",
+  generating: "Creating your image...",
+  finalizing: "Applying final touches...",
+  complete: "Generation complete!"
+};
+```
+
+### Assets Panel
+
+Comprehensive local asset management system:
+
+#### Asset Organization
+
+##### View Modes
+- **Grid View:** Thumbnail grid with hover preview
+- **List View:** Detailed list with metadata
+- **Timeline View:** Chronological organization
+
+##### Filtering and Search
+- **Type Filters:** Generation, Edit, Upload categories
+- **Search:** Text search through names and prompts
+- **Date Filters:** Filter by creation date
+- **Model Filters:** Filter by generation model
+
+#### Asset Management
+
+##### Asset Information
+Each asset includes:
+- **Thumbnail:** Visual preview
+- **Name:** User-editable name
+- **Type:** Generation source (AI, upload, edit)
+- **Timestamp:** Creation date and time
+- **Model:** Generation model used
+- **Prompt:** Original prompt (for AI-generated)
+- **Dimensions:** Image size information
+
+##### Asset Operations
+- **Select:** Click to use in current project
+- **Download:** Export to local files
+- **Delete:** Remove from library
+- **Rename:** Change asset name
+- **Duplicate:** Create copy
+- **Share:** Export for sharing
+
+#### Storage and Sync
+
+##### Local Storage
+- **IndexedDB:** Browser-based storage
+- **Automatic Backup:** Regular data backups
+- **Cross-tab Sync:** Sync between browser tabs
+- **Migration Tools:** Import from localStorage
+
+##### Cloud Sync (Premium)
+- **Auto-sync:** Automatic cloud synchronization
+- **Device Sync:** Access assets across devices
+- **Backup Recovery:** Restore from cloud backups
+- **Selective Sync:** Choose what to sync
+
+### Asset Store Panel
+
+Integration with external asset providers:
+
+#### Supported Providers
+
+##### Unsplash Integration
+- **Free Access:** Millions of high-quality photos
+- **Search:** Advanced search capabilities
+- **Categories:** Curated collections
+- **Attribution:** Automatic credit management
+- **Rate Limits:** 50 requests per hour (configurable)
+
+##### Pexels Integration
+- **Photos & Videos:** Both photo and video assets
+- **API Access:** Dedicated API integration  
+- **Categories:** Extensive category system
+- **Free License:** Free for commercial use
+- **Rate Limits:** 200 requests per hour
+
+#### Search and Discovery
+
+##### Search Interface
+- **Universal Search:** Search across all providers
+- **Category Filters:** Browse by topic
+- **Color Filters:** Find by dominant colors
+- **Orientation:** Landscape, portrait, square
+- **Size Filters:** Minimum resolution requirements
+
+##### Advanced Filters
+```javascript
+const searchFilters = {
+  category: ['nature', 'business', 'technology', 'food'],
+  color: ['red', 'blue', 'green', 'black', 'white'],
+  orientation: ['landscape', 'portrait', 'square'],
+  size: ['small', 'medium', 'large', 'original']
+};
+```
+
+#### Asset Preview and Selection
+
+##### Preview Features
+- **High-quality Thumbnails:** Fast loading previews
+- **Metadata Display:** Size, attribution, license
+- **Quick Actions:** Download, select, favorite
+- **Related Assets:** Similar image suggestions
+
+##### Integration Workflow
+1. **Browse:** Search or browse categories
+2. **Preview:** View asset details
+3. **Select:** Choose asset for project
+4. **Import:** Automatically add to canvas
+5. **Attribution:** Credit information preserved
+
+### History Panel
+
+Complete tracking of all generation and editing activities:
+
+#### Generation History
+
+##### History Entries
+Each entry contains:
+- **Thumbnail:** Generated image preview
+- **Timestamp:** Creation date and time
+- **Prompt:** Complete prompt used
+- **Model:** AI model information
+- **Settings:** All generation parameters
+- **Status:** Success, failed, or in-progress
+
+##### History Operations
+- **Replay:** Regenerate with same settings
+- **Modify:** Edit prompt and regenerate
+- **Export:** Save history data
+- **Delete:** Remove history entries
+- **Share:** Export prompts and settings
+
+#### Search and Filter
+
+##### Search Options
+- **Text Search:** Search through prompts
+- **Date Range:** Filter by time period
+- **Model Filter:** Filter by AI model
+- **Status Filter:** Success, failed, pending
+
+##### Sorting Options
+- **Chronological:** Most recent first
+- **Model:** Group by AI model
+- **Success Rate:** Successful generations first
+- **Prompt Length:** Sort by prompt complexity
+
+#### History Analytics
+
+##### Usage Statistics
+- **Total Generations:** Count of all attempts
+- **Success Rate:** Percentage successful
+- **Model Usage:** Which models used most
+- **Popular Prompts:** Most successful prompts
+- **Time Analytics:** Peak usage times
+
+##### Export Options
+- **JSON Export:** Complete history data
+- **CSV Export:** Tabular format
+- **Prompt Collection:** Just prompts and settings
+- **Statistics Report:** Usage analytics
+
+### Console Panel (Development)
+
+Advanced debugging and logging interface:
+
+#### Real-time Logging
+
+##### Log Categories
+- **API Requests:** All Azure API calls
+- **Generation Events:** AI model interactions  
+- **User Actions:** UI interactions and clicks
+- **System Events:** Application lifecycle
+- **Error Tracking:** Exceptions and failures
+
+##### Log Levels
+- **Debug:** Detailed debugging information
+- **Info:** General information messages
+- **Warn:** Warning messages
+- **Error:** Error conditions
+- **Fatal:** Critical failures
+
+#### Request/Response Monitoring
+
+##### API Request Details
+```json
+{
+  "timestamp": "2024-01-15T10:30:00Z",
+  "endpoint": "/api/generate",
+  "method": "POST",
+  "headers": {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer ***"
+  },
+  "body": {
+    "prompt": "A beautiful sunset landscape",
+    "model": "dalle-3",
+    "size": "1024x1024"
+  }
+}
+```
+
+##### Response Monitoring
+- **Response Time:** API call duration
+- **Status Codes:** HTTP response status
+- **Payload Size:** Response data size
+- **Error Details:** Failure information
+- **Rate Limit Status:** API quota usage
+
+#### Interactive Console
+
+##### Console Commands
+- **Clear:** Clear console output
+- **Export:** Export logs to file
+- **Filter:** Filter by log level
+- **Search:** Search through logs
+- **Settings:** Configure logging options
+
+---
+
+## AI Generation Features
+
+### Text-to-Image Generation
+
+#### Supported Models
+
+##### DALL-E 3 (Azure OpenAI)
+- **Strengths:** Reliable, fast generation
+- **Best For:** General purpose, photorealistic images
+- **Limitations:** Single image output
+- **Quality:** Standard and HD options
+
+##### FLUX 1.1 Pro (Black Forest Labs)  
+- **Strengths:** Artistic quality, style consistency
+- **Best For:** Creative and artistic content
+- **Features:** Advanced style control
+- **Quality:** High resolution output
+
+##### FLUX Kontext Pro (Black Forest Labs)
+- **Strengths:** Context awareness, editing capabilities
+- **Best For:** Complex scenes, object relationships
+- **Features:** Multi-object generation, spatial reasoning
+- **Quality:** Professional-grade output
+
+##### GPT-Image-1 (Premium Azure OpenAI)
+- **Strengths:** Latest AI technology, premium features
+- **Best For:** Commercial and professional use
+- **Features:** Advanced quality settings, priority processing
+- **Quality:** Highest available quality
+
+#### Generation Parameters
+
+##### Core Parameters
+```javascript
+const generationConfig = {
+  prompt: "Detailed description of desired image",
+  model: "dalle-3", // or flux-1-1-pro, flux-kontext-pro, gpt-image-1
+  size: "1024x1024", // or 1792x1024, 1024x1792
+  quality: "hd", // standard, hd, high (premium)
+  style: "vivid", // natural, vivid, artistic
+  count: 1, // 1-4 images
+  seed: 123456, // for reproducibility
+  negativePrompt: "blurry, low quality" // what to avoid
+};
+```
+
+##### Advanced Parameters
+- **Guidance Scale:** How closely to follow prompt (1-20)
+- **Steps:** Number of generation steps (10-50)
+- **Sampler:** Algorithm type (DPM++, Euler, etc.)
+- **CFG Scale:** Creative freedom vs. prompt adherence
+- **Clip Skip:** Skip layers for different styles
+
+#### Prompt Engineering
+
+##### Effective Prompt Structure
+1. **Subject:** Main focus of the image
+2. **Style:** Artistic style or medium
+3. **Composition:** Layout and framing
+4. **Lighting:** Lighting conditions
+5. **Colors:** Color palette preferences
+6. **Quality:** Quality modifiers
+
+##### Example Prompts
+```
+Basic Prompt:
+"A red rose in a vase"
+
+Enhanced Prompt:
+"A single red rose in an elegant crystal vase, soft natural lighting from a window, shallow depth of field, photorealistic style, high detail, professional photography"
+
+Artistic Prompt:
+"A red rose painted in the style of Van Gogh, swirling brushstrokes, vibrant colors, impasto technique, oil painting on canvas, dramatic lighting, museum quality"
+```
+
+##### Prompt Modifiers
+- **Quality:** "4K", "8K", "high resolution", "professional"
+- **Style:** "photorealistic", "oil painting", "digital art", "watercolor"
+- **Lighting:** "golden hour", "studio lighting", "dramatic shadows"
+- **Camera:** "wide angle", "macro lens", "telephoto", "fish-eye"
+- **Composition:** "rule of thirds", "symmetrical", "close-up", "panoramic"
+
+### Image-to-Image Editing
+
+#### AI Edit Capabilities
+
+##### Content Modification
+- **Object Replacement:** Replace objects while maintaining context
+- **Style Transfer:** Apply artistic styles to existing images
+- **Color Adjustment:** AI-powered color correction
+- **Detail Enhancement:** Increase sharpness and detail
+- **Background Changes:** Modify or replace backgrounds
+
+##### Smart Editing Features
+- **Content-Aware:** Understanding of image context
+- **Seamless Blending:** Natural integration of changes
+- **Preservation:** Keep important details intact
+- **Multiple Options:** Generate several edit variations
+
+#### Inpainting System
+
+##### Mask-Based Editing
+1. **Selection:** Select area to modify
+2. **Mask Creation:** Automatic or manual mask
+3. **Prompt Input:** Describe desired changes
+4. **Generation:** AI fills selected area
+5. **Integration:** Seamless blending with original
+
+##### Inpainting Applications
+- **Object Removal:** Remove unwanted elements
+- **Object Addition:** Add new elements naturally
+- **Restoration:** Fix damaged or missing areas
+- **Style Changes:** Modify specific regions
+- **Detail Enhancement:** Improve specific areas
+
+```javascript
+const inpaintConfig = {
+  image: "base64_image_data",
+  mask: "base64_mask_data",
+  prompt: "a beautiful flower garden",
+  strength: 0.8, // how much to change (0.1-1.0)
+  guidance: 12, // prompt adherence
+  steps: 50 // generation steps
+};
+```
+
+#### Outpainting System
+
+##### Canvas Extension
+- **Direction Control:** Extend in any direction
+- **Smart Continuation:** Contextual background generation
+- **Seamless Edges:** Natural boundary blending
+- **Multiple Ratios:** Various extension amounts
+
+##### Outpainting Workflow
+1. **Select Image:** Choose base image
+2. **Expand Canvas:** Set new dimensions
+3. **Content Description:** Describe extension area
+4. **Generation:** AI creates extended content
+5. **Refinement:** Adjust and perfect results
+
+### Background Removal
+
+#### AI-Powered Background Removal
+
+##### Multiple Models
+- **U²-Net:** Fast, general-purpose removal
+- **MODNet:** Real-time matting
+- **DeepLabV3:** Semantic segmentation
+- **Custom Model:** Fine-tuned for specific content
+
+##### Background Options
+- **Transparent:** PNG with transparency
+- **Solid Colors:** Single color backgrounds
+- **Gradients:** Smooth color transitions
+- **Custom Images:** Replace with custom background
+- **Smart Fill:** AI-generated contextual backgrounds
+
+#### Quality Enhancement
+
+##### AI Upscaling
+- **Real-ESRGAN:** Photorealistic upscaling
+- **EDSR:** Enhanced super-resolution
+- **SRCNN:** Deep learning upscaling
+- **Custom Models:** Specialized for different content types
+
+##### Enhancement Options
+- **Resolution:** 2x, 4x, 8x upscaling
+- **Noise Reduction:** Remove artifacts and noise
+- **Sharpening:** Enhance edge definition
+- **Color Enhancement:** Improve color vibrancy
+- **Detail Recovery:** Restore fine details
+
+---
+
+## Image Editing Capabilities
+
+### Basic Editing Tools
+
+#### Crop and Resize
+
+##### Crop Features
+- **Aspect Ratio Lock:** Maintain proportions
+- **Rule of Thirds:** Composition guides
+- **Custom Ratios:** Any aspect ratio
+- **Non-destructive:** Original preserved
+
+##### Resize Options
+- **Pixel Dimensions:** Exact pixel control
+- **Percentage:** Scale by percentage
+- **Print Sizes:** Standard print dimensions
+- **Web Sizes:** Optimized web formats
+- **Quality Preservation:** AI-enhanced scaling
+
+#### Transform Operations
+
+##### Basic Transforms
+- **Scale:** Uniform and non-uniform scaling
+- **Rotate:** Any angle rotation
+- **Flip:** Horizontal and vertical flipping
+- **Skew:** Perspective adjustments
+
+##### Advanced Transforms
+- **3D Rotation:** X, Y, Z axis rotation
+- **Perspective:** Keystone correction
+- **Warp:** Free-form deformation
+- **Lens Correction:** Distortion correction
+
+### Advanced Filters and Adjustments
+
+#### Color Adjustments
+
+##### Basic Adjustments
+- **Brightness:** -100 to +100
+- **Contrast:** -100 to +100  
+- **Saturation:** -100 to +100
+- **Vibrance:** Smart saturation
+- **Hue:** Color shift -180° to +180°
+
+##### Advanced Color
+- **Curves:** RGB and individual channel curves
+- **Levels:** Input and output levels
+- **Color Balance:** Shadow, midtone, highlight balance
+- **Selective Color:** CMYK color adjustment
+- **Channel Mixer:** Advanced color mixing
+
+```javascript
+const colorAdjustments = {
+  brightness: 10,
+  contrast: 15,
+  saturation: 5,
+  vibrance: 10,
+  hue: 0,
+  curves: {
+    red: [[0,0], [128,128], [255,255]],
+    green: [[0,0], [128,128], [255,255]],
+    blue: [[0,0], [128,128], [255,255]]
+  }
+};
+```
+
+#### Filter System
+
+##### Artistic Filters
+- **Oil Paint:** Traditional oil painting effect
+- **Watercolor:** Watercolor painting simulation
+- **Pencil Sketch:** Pencil drawing conversion
+- **Charcoal:** Charcoal drawing effect
+- **Pop Art:** Andy Warhol style effects
+
+##### Photo Filters
+- **Vintage:** Old photo effects
+- **Sepia:** Brown tone vintage
+- **Black & White:** Monochrome conversion
+- **Cross Process:** Film processing effects
+- **Vignette:** Edge darkening effect
+
+##### Technical Filters
+- **Sharpen:** Edge enhancement
+- **Blur:** Gaussian and motion blur
+- **Noise Reduction:** Remove grain
+- **Chromatic Aberration:** Color fringing removal
+- **Distortion Correction:** Lens distortion fix
+
+### Layer System
+
+#### Layer Types
+
+##### Raster Layers
+- **Image Layers:** Pixel-based content
+- **Paint Layers:** Digital painting
+- **Photo Layers:** Photography content
+- **Texture Layers:** Surface textures
+
+##### Vector Layers
+- **Shape Layers:** Geometric shapes
+- **Text Layers:** Typography content
+- **Path Layers:** Vector paths
+- **Logo Layers:** Vector graphics
+
+##### Special Layers
+- **Adjustment Layers:** Non-destructive effects
+- **Mask Layers:** Transparency control
+- **Smart Objects:** Linked content
+- **Background Layers:** Canvas background
+
+#### Layer Operations
+
+##### Layer Management
+- **Add/Delete:** Create and remove layers
+- **Duplicate:** Copy layers with content
+- **Group:** Organize related layers
+- **Lock:** Prevent modifications
+- **Name:** Custom layer naming
+
+##### Layer Effects
+- **Drop Shadow:** Cast shadows
+- **Glow:** Inner and outer glow
+- **Stroke:** Border effects
+- **Gradient Overlay:** Gradient fills
+- **Pattern Overlay:** Texture fills
+
+#### Blending Modes
+
+##### Standard Modes
+- **Normal:** No blending
+- **Dissolve:** Random pixel removal
+- **Multiply:** Darken blend
+- **Screen:** Lighten blend
+- **Overlay:** Contrast blend
+
+##### Advanced Modes
+- **Soft Light:** Subtle contrast
+- **Hard Light:** Strong contrast
+- **Color Dodge:** Bright highlights
+- **Color Burn:** Dark shadows
+- **Difference:** Invert differences
+- **Exclusion:** Lower contrast difference
+
+### Color Management
+
+#### Color Spaces
+
+##### RGB Color Space
+- **sRGB:** Standard web colors
+- **Adobe RGB:** Extended gamut
+- **ProPhoto RGB:** Maximum gamut
+- **Display P3:** Apple display standard
+
+##### Print Color Spaces
+- **CMYK:** Print color space
+- **LAB:** Perceptual color space
+- **Pantone:** Spot color matching
+- **Custom Profiles:** ICC color profiles
+
+#### Color Tools
+
+##### Color Picker
+- **Swatches:** Predefined color sets
+- **HSB:** Hue, saturation, brightness
+- **RGB:** Red, green, blue values
+- **Hex:** Hexadecimal color codes
+- **Pantone:** Professional color matching
+
+##### Color Harmony
+- **Complementary:** Opposite colors
+- **Analogous:** Adjacent colors
+- **Triadic:** Three-color schemes
+- **Tetradic:** Four-color schemes
+- **Monochromatic:** Single hue variations
+
+---
+
+## Auto-Sync Feature
+
+### How Auto-Sync Works
+
+The auto-sync system provides seamless project synchronization and backup:
+
+#### Core Functionality
+
+##### Automatic Synchronization
+- **Real-time Sync:** Changes saved automatically
+- **Conflict Resolution:** Smart merge of simultaneous changes
+- **Version Control:** Track all project versions
+- **Background Operation:** No interruption to workflow
+
+##### Trigger Events
+Auto-sync activates when:
+- Project name changes
+- Canvas modifications (new images, edits)
+- Generation completions
+- Asset additions or modifications
+- UI state changes (panel positions, tool selections)
+
+#### Sync Manager Interface
+
+##### Status Indicators
+The sync manager provides visual feedback:
+
+```javascript
+const syncStates = {
+  idle: "Ready to sync",
+  syncing: "Syncing changes...",
+  success: "Successfully synced",
+  error: "Sync failed",
+  disabled: "Auto-sync disabled"
+};
+```
+
+##### Sync Controls
+- **Toggle Switch:** Enable/disable auto-sync
+- **Manual Sync:** Force immediate sync
+- **Sync Status:** Current sync state
+- **Last Sync Time:** Timestamp of last successful sync
+
+### Configuration Options
+
+#### Auto-Save Settings
+
+##### Sync Duration Control
+Configurable intervals with minimum 30-second protection:
+- **30 seconds:** Frequent sync for active work
+- **60 seconds:** Balanced sync frequency (default)
+- **2 minutes:** Less frequent for stable work  
+- **5 minutes:** Minimal sync for finished work
+- **10 minutes:** Long interval for reference projects
+
+##### Smart Duration Adjustment
+```javascript
+const syncConfiguration = {
+  enabled: true,
+  duration: 60, // seconds
+  minDuration: 30, // minimum allowed
+  maxDuration: 600, // maximum allowed
+  adaptiveTiming: true, // adjust based on activity
+  backgroundSync: true // sync even when app not focused
+};
+```
+
+#### Sync Content Selection
+
+##### What Gets Synced
+- **Project Metadata:** Name, creation date, settings
+- **Canvas State:** Current images, zoom level, positions
+- **UI State:** Panel visibility, tool selection
+- **Generation History:** All AI generations and settings
+- **Assets:** Local asset library
+- **User Preferences:** Tool settings and preferences
+
+##### Selective Sync Options
+- **Essential Only:** Core project data
+- **Full Sync:** Everything including cache
+- **Assets Only:** Just the asset library
+- **History Only:** Generation history
+- **Custom Selection:** Choose specific data types
+
+### Cross-Device Synchronization
+
+#### Device Management
+
+##### Supported Platforms
+- **Desktop Browsers:** Chrome, Firefox, Safari, Edge
+- **Mobile Browsers:** iOS Safari, Android Chrome
+- **Tablet Support:** iPad, Android tablets
+- **PWA Installation:** Progressive Web App support
+
+##### Device Identification
+```javascript
+const deviceInfo = {
+  id: "device_unique_identifier",
+  name: "MacBook Pro - Chrome",
+  type: "desktop",
+  browser: "Chrome 120.0",
+  platform: "macOS",
+  lastSync: "2024-01-15T10:30:00Z",
+  status: "active"
+};
+```
+
+#### Cross-Device Features
+
+##### Seamless Handoff
+- **Instant Sync:** Changes appear on other devices immediately  
+- **State Preservation:** Continue work where you left off
+- **Tool State:** Active tool and settings maintained
+- **Panel Positions:** UI layout synchronized
+- **Zoom Levels:** Canvas view state preserved
+
+##### Conflict Resolution
+- **Last Writer Wins:** Most recent changes take precedence
+- **Merge Strategies:** Intelligent merging of compatible changes
+- **Version Branching:** Create separate versions for conflicts
+- **Manual Resolution:** User choice for complex conflicts
+
+### Backup and Restore
+
+#### Automatic Backup System
+
+##### Backup Strategy
+- **Continuous Backup:** Every sync creates a backup point
+- **Incremental Backup:** Only changed data backed up
+- **Retention Policy:** Keep backups for 30 days
+- **Compression:** Efficient storage using compression
+- **Encryption:** Secure backup data encryption
+
+##### Backup Schedule
+```javascript
+const backupSchedule = {
+  continuous: true, // backup on every sync
+  hourly: true, // hourly snapshots
+  daily: true, // daily full backups
+  weekly: true, // weekly archives
+  retention: {
+    continuous: 24, // hours
+    hourly: 7, // days  
+    daily: 30, // days
+    weekly: 12 // weeks
+  }
+};
+```
+
+#### Restore Capabilities
+
+##### Recovery Options
+- **Point-in-Time Restore:** Restore to specific timestamp
+- **Selective Restore:** Restore specific components
+- **Version History:** Browse all saved versions
+- **Export Backups:** Download backup files
+- **Import Backups:** Restore from local files
+
+##### Restore Process
+1. **Access Restore:** Settings → Advanced → Backup & Restore
+2. **Select Backup:** Choose from available backups
+3. **Preview Changes:** See what will be restored
+4. **Confirm Restore:** Apply selected backup
+5. **Verification:** Confirm restore success
+
+### Sync Status and Troubleshooting
+
+#### Status Monitoring
+
+##### Visual Indicators
+- **Cloud Icon:** Shows current sync status
+- **Animation States:**
+  - Spinning: Sync in progress
+  - Static Blue: Sync enabled, ready
+  - Static Gray: Sync disabled
+  - Green Check: Recent successful sync
+  - Red X: Sync error
+
+##### Detailed Status Information
+- **Files Count:** Number of synced files
+- **Total Size:** Amount of data synced
+- **Last Sync Time:** Timestamp of last sync
+- **Sync Duration:** Time taken for last sync
+- **Error Messages:** Detailed error information
+
+#### Common Issues and Solutions
+
+##### Sync Failures
+**Issue:** Sync fails with network error
+**Solution:** 
+1. Check internet connection
+2. Refresh browser
+3. Clear browser cache
+4. Disable/re-enable sync
+
+**Issue:** Conflicts between devices
+**Solution:**
+1. Ensure all devices are updated
+2. Manually sync from each device
+3. Use conflict resolution tools
+4. Create separate project branches
+
+##### Performance Issues
+**Issue:** Slow sync performance  
+**Solution:**
+1. Reduce sync frequency
+2. Enable selective sync
+3. Clean up old assets
+4. Use compression options
+
+##### Storage Limits
+**Issue:** Approaching storage limits
+**Solution:**
+1. Clean up old projects
+2. Reduce backup retention
+3. Export and archive projects
+4. Upgrade storage plan (future feature)
+
+#### Advanced Troubleshooting
+
+##### Diagnostic Tools
+- **Sync Log:** Detailed sync activity log
+- **Network Monitor:** Connection status and speed
+- **Storage Usage:** Breakdown of storage use
+- **Performance Metrics:** Sync speed and efficiency
+
+##### Recovery Commands
+```javascript
+// Emergency sync reset
+syncHelper.resetSync();
+
+// Force full sync
+syncHelper.performFullSync();
+
+// Clear sync cache
+syncHelper.clearCache();
+
+// Export sync data
+const syncData = syncHelper.exportSyncData();
+```
+
+---
+
+## Asset Store Integration
+
+### Unsplash Integration
+
+#### Features and Capabilities
+
+##### Access to Millions of Photos
+- **High Quality:** Professional photography
+- **Free License:** Free for commercial and personal use
+- **No Attribution Required:** Optional attribution
+- **Original Resolution:** Download full-size images
+- **Diverse Categories:** Every topic imaginable
+
+##### Advanced Search
+```javascript
+const unsplashSearch = {
+  query: "mountain landscape",
+  categories: ["nature", "travel", "landscape"],
+  colors: ["blue", "green", "neutral"],
+  orientation: "landscape",
+  featured: true, // only featured photos
+  orderBy: "relevant" // or popular, latest
+};
+```
+
+##### Search Categories
+- **Nature:** Landscapes, animals, plants, weather
+- **Business:** Office, meetings, technology, finance
+- **People:** Portraits, lifestyle, emotions, activities
+- **Travel:** Destinations, culture, architecture, adventure
+- **Food & Drink:** Cuisine, restaurants, ingredients, drinks
+- **Architecture:** Buildings, interiors, urban, structures
+
+#### Usage and Configuration
+
+##### API Integration
+- **Rate Limits:** 50 requests per hour (default)
+- **Request Tracking:** Monitor API usage
+- **Automatic Throttling:** Prevent rate limit exceeded
+- **Error Handling:** Graceful failure management
+
+##### Configuration Options
+```javascript
+const unsplashConfig = {
+  enabled: true,
+  apiKey: "your_unsplash_api_key",
+  rateLimit: 50, // requests per hour
+  defaultOrientation: "all",
+  preferredQuality: "regular", // thumb, small, regular, full
+  autoAttribution: true,
+  downloadOriginal: false // download full resolution
+};
+```
+
+### Pexels Integration
+
+#### Comprehensive Media Library
+
+##### Photos and Videos
+- **Photos:** High-resolution stock photography
+- **Videos:** Short clips and stock footage
+- **Free License:** All content free to use
+- **Commercial Use:** Permitted without restrictions
+- **Attribution:** Recommended but not required
+
+##### Content Categories
+- **Abstract:** Patterns, textures, artistic backgrounds
+- **Animals:** Wildlife, pets, nature photography
+- **Business:** Corporate, office, professional content
+- **Fashion:** Style, clothing, beauty, lifestyle
+- **Food:** Culinary photography, restaurants, ingredients
+- **Nature:** Landscapes, plants, outdoor scenes
+- **People:** Portraits, lifestyle, activities
+- **Technology:** Gadgets, computers, innovation
+
+#### Advanced Features
+
+##### Smart Search
+- **AI-Powered:** Intelligent content matching
+- **Related Suggestions:** Similar content recommendations
+- **Visual Search:** Find similar visual styles
+- **Trending Content:** Popular and trending media
+
+##### Quality Options
+```javascript
+const pexelsQualityOptions = {
+  photos: {
+    original: "Full resolution",
+    large2x: "2x retina",
+    large: "Large size",
+    medium: "Medium size", 
+    small: "Small preview"
+  },
+  videos: {
+    hd: "1920x1080",
+    sd: "1280x720",
+    mobile: "640x480"
+  }
+};
+```
+
+### Search and Filtering System
+
+#### Universal Search Interface
+
+##### Search Input
+- **Real-time Suggestions:** Auto-complete as you type
+- **Search History:** Previously searched terms
+- **Popular Searches:** Trending search terms
+- **Saved Searches:** Bookmark frequent searches
+
+##### Query Enhancement
+```javascript
+const enhancedQuery = {
+  original: "sunset",
+  enhanced: "beautiful sunset landscape golden hour photography",
+  modifiers: ["high quality", "4K", "professional"],
+  excludeTerms: ["people", "buildings"]
+};
+```
+
+#### Advanced Filtering
+
+##### Visual Filters
+- **Color Palette:** Find images with specific colors
+- **Orientation:** Portrait, landscape, or square
+- **Size:** Minimum resolution requirements
+- **Aspect Ratio:** Specific proportions
+
+##### Content Filters
+- **Category:** Topic-based filtering
+- **License:** Usage rights filtering
+- **Date:** Recently added content
+- **Popularity:** Most downloaded/viewed
+
+##### Custom Filter Combinations
+```javascript
+const filterCombination = {
+  query: "workspace",
+  category: "business", 
+  color: "neutral",
+  orientation: "landscape",
+  minWidth: 1920,
+  minHeight: 1080,
+  license: "free",
+  featured: true
+};
+```
+
+### Attribution Management
+
+#### Automatic Attribution
+
+##### Attribution Generation
+- **Auto-Creation:** Automatically create proper attribution
+- **Format Options:** Various citation formats
+- **Embedded Metadata:** Attribution in image metadata
+- **Export Include:** Attribution in project exports
+
+##### Attribution Formats
+```javascript
+const attributionFormats = {
+  standard: "Photo by John Doe on Unsplash",
+  html: '<a href="unsplash.com/@johndoe">Photo by John Doe</a> on <a href="unsplash.com">Unsplash</a>',
+  minimal: "John Doe / Unsplash",
+  citation: "Doe, J. (2024). Photo title. Unsplash. URL"
+};
+```
+
+#### Attribution Tracking
+
+##### Usage Tracking
+- **Download Records:** Track all downloaded assets
+- **Usage Context:** How assets are used in projects
+- **License Compliance:** Ensure proper usage rights
+- **Attribution Status:** Which assets need attribution
+
+##### Batch Attribution
+- **Project Attribution:** Generate attribution for entire project
+- **Export Attribution:** Include in project exports
+- **Attribution Report:** Detailed usage report
+- **License Summary:** Overview of all used licenses
+
+### Local Asset Organization
+
+#### Asset Import and Storage
+
+##### Import Methods
+- **Direct Download:** Save to local asset library
+- **Temporary Use:** Use without saving locally
+- **Batch Download:** Multiple assets simultaneously
+- **Background Download:** Continue working while downloading
+
+##### Storage Organization
+```javascript
+const assetOrganization = {
+  categories: ["unsplash", "pexels", "generated", "uploaded"],
+  collections: ["project1", "project2", "favorites"],
+  tags: ["landscape", "business", "abstract"],
+  dateAdded: "2024-01-15",
+  sourceProvider: "unsplash",
+  originalUrl: "https://unsplash.com/photo/123",
+  license: "Unsplash License",
+  attribution: "Photo by John Doe"
+};
+```
+
+#### Asset Management
+
+##### Organization Tools
+- **Smart Collections:** Auto-organize by criteria
+- **Manual Collections:** User-created groups
+- **Tagging System:** Keyword-based organization
+- **Search Integration:** Find local and external assets
+
+##### Asset Actions
+- **Preview:** Full-size preview with details
+- **Edit:** Open in image editor
+- **Share:** Export with attribution
+- **Delete:** Remove from local storage
+- **Duplicate:** Create copies for different uses
+
+#### Integration with Canvas
+
+##### Seamless Workflow
+1. **Search:** Find assets in Asset Store
+2. **Preview:** View asset details and license
+3. **Select:** Choose asset for project
+4. **Import:** Add directly to canvas
+5. **Edit:** Modify as needed
+6. **Attribution:** Automatic attribution tracking
+
+##### Smart Insertion
+- **Intelligent Sizing:** Auto-fit to canvas
+- **Layer Creation:** Create new layer for asset
+- **Non-destructive:** Original asset preserved
+- **Quick Positioning:** Smart placement suggestions
+
+---
+
+## Project Management
+
+### Project Creation and Templates
+
+#### Project Types
+
+##### Template Categories
+- **Blank Canvas:** Start from scratch
+- **Social Media:** Instagram, Twitter, Facebook formats
+- **Print Media:** Posters, flyers, business cards
+- **Web Design:** Banners, headers, backgrounds
+- **AI Generation:** Optimized for AI image creation
+- **Photo Editing:** Photo enhancement and manipulation
+
+##### Template Specifications
+```javascript
+const projectTemplates = {
+  instagramSquare: {
+    name: "Instagram Square Post",
+    dimensions: { width: 1080, height: 1080 },
+    dpi: 72,
+    colorSpace: "sRGB",
+    background: "white"
+  },
+  printPoster: {
+    name: "Print Poster (A3)",
+    dimensions: { width: 3508, height: 4961 },
+    dpi: 300,
+    colorSpace: "CMYK",
+    background: "white"
+  },
+  webBanner: {
+    name: "Web Banner",
+    dimensions: { width: 1920, height: 1080 },
+    dpi: 72,
+    colorSpace: "sRGB",
+    background: "transparent"
+  }
+};
+```
+
+#### Project Settings
+
+##### Basic Settings
+- **Project Name:** User-defined project name
+- **Dimensions:** Width and height in pixels
+- **Color Mode:** RGB, CMYK, or LAB
+- **Background:** Color, transparency, or image
+- **DPI/PPI:** Resolution for print/web
+
+##### Advanced Settings
+- **Color Profile:** ICC color profile management
+- **Bit Depth:** 8-bit, 16-bit, or 32-bit channels
+- **Transparency:** Alpha channel support
+- **Grid System:** Layout grid configuration
+- **Rulers:** Measurement units and guides
+
+### Auto-Save Functionality
+
+#### Comprehensive Auto-Save System
+
+##### Save Triggers
+Auto-save activates on:
+- **Content Changes:** Any modification to canvas
+- **Asset Changes:** Adding, removing, or modifying assets
+- **Generation Events:** New AI generations
+- **Time-based:** Regular interval saves
+- **UI State:** Panel positions and tool settings
+
+##### Save Data Structure
+```javascript
+const projectSaveData = {
+  metadata: {
+    id: "project_unique_id",
+    name: "My Project",
+    created: "2024-01-15T10:00:00Z",
+    modified: "2024-01-15T10:30:00Z",
+    version: "1.0.1"
+  },
+  settings: {
+    currentModel: "dalle-3",
+    currentSize: "1024x1024",
+    isInpaintMode: false,
+    canvas: { width: 1024, height: 1024, background: "#ffffff" }
+  },
+  canvas: {
+    currentImage: "base64_image_data",
+    generatedImage: "base64_image_data", 
+    attachedImage: "base64_image_data",
+    layers: [/* layer data */]
+  },
+  ui: {
+    activeTool: "select",
+    showGenerationPanel: false,
+    showPromptBox: true,
+    zoom: 1.0,
+    panX: 0,
+    panY: 0
+  },
+  history: {
+    states: [/* history states */],
+    historyIndex: 5
+  }
+};
+```
+
+#### Save Performance
+
+##### Optimized Saving
+- **Incremental Saves:** Only save changed data
+- **Compression:** Reduce save file size
+- **Background Saves:** Non-blocking save operations
+- **Debounced Saves:** Prevent excessive save operations
+
+##### Save Status Feedback
+- **Visual Indicators:** Show save status in UI
+- **Progress Tracking:** Display save progress for large projects
+- **Error Handling:** Graceful handling of save failures
+- **Retry Logic:** Automatic retry on failure
+
+### Project Sharing and Collaboration
+
+#### Export Options
+
+##### Project Export Formats
+- **Native Format:** Full project with all data (.azstudio)
+- **Image Export:** Rendered image files (PNG, JPG, WebP)
+- **Layered Export:** Photoshop-compatible PSD files
+- **Vector Export:** SVG for vector content
+- **Web Export:** HTML with embedded assets
+
+##### Export Configuration
+```javascript
+const exportOptions = {
+  format: "png", // png, jpg, webp, svg, psd, azstudio
+  quality: 95, // 0-100 for lossy formats
+  includeMetadata: true,
+  includeAttribution: true,
+  includeLayers: false, // for image exports
+  includeHistory: false, // for project exports
+  compression: "lossless" // lossless, lossy, auto
+};
+```
+
+#### Sharing Features
+
+##### Share Methods
+- **Direct Link:** Generate shareable project links
+- **File Export:** Download and share project files
+- **Image Share:** Share rendered images
+- **Embed Code:** Embed projects in websites
+- **Social Share:** Direct sharing to social platforms
+
+##### Collaboration Tools (Future)
+- **Real-time Collaboration:** Multiple users on same project
+- **Comment System:** Feedback and review system
+- **Version Control:** Track changes by different users
+- **Permission Management:** Control access levels
+- **Team Workspaces:** Shared project spaces
+
+### Workspace Management
+
+#### Multi-Project Support
+
+##### Project Organization
+- **Recent Projects:** Quick access to recent work
+- **Project Folders:** Organize projects in folders
+- **Favorites:** Mark important projects
+- **Search:** Find projects by name or content
+- **Sort Options:** Various sorting criteria
+
+##### Project Navigation
+```javascript
+const projectNavigation = {
+  recent: [/* recent project IDs */],
+  favorites: [/* favorite project IDs */],
+  folders: {
+    "client-work": [/* project IDs */],
+    "personal": [/* project IDs */]
+  },
+  search: {
+    query: "landscape photos",
+    results: [/* matching project IDs */]
+  }
+};
+```
+
+#### Workspace Settings
+
+##### Global Preferences
+- **Default Template:** Template for new projects
+- **Auto-save Interval:** Default save frequency
+- **UI Theme:** Light, dark, or system theme
+- **Tool Preferences:** Default tool settings
+- **Performance Settings:** Optimization preferences
+
+##### Session Management
+- **Session Persistence:** Restore work session
+- **Tab Management:** Multiple projects in tabs
+- **Window State:** Remember window size and position
+- **Panel Layout:** Restore panel configurations
+- **Keyboard Shortcuts:** Custom shortcut assignments
+
+#### Data Management
+
+##### Storage Options
+- **Local Storage:** Browser-based storage
+- **Cloud Storage:** Online backup and sync (future)
+- **External Storage:** File system integration
+- **Portable Storage:** USB/external drive support
+
+##### Data Optimization
+- **Cache Management:** Optimize cache usage
+- **Asset Cleanup:** Remove unused assets
+- **History Pruning:** Limit history size
+- **Backup Rotation:** Manage backup retention
+- **Storage Analytics:** Monitor storage usage
+
+---
+
+## Settings Integration
+
+### General Settings
+
+#### Appearance and Interface
+
+##### Theme Management
+- **Light Theme:** Clean, bright interface
+- **Dark Theme:** Reduced eye strain, modern look
+- **System Theme:** Follow system preferences
+- **Auto Theme:** Change based on time of day
+- **Custom Themes:** User-defined color schemes
+
+##### Interface Customization
+```javascript
+const interfaceSettings = {
+  theme: "dark", // light, dark, system, auto
+  accentColor: "#3b82f6", // blue
+  borderRadius: "medium", // small, medium, large
+  animations: true,
+  transitionSpeed: "normal", // slow, normal, fast
+  compactMode: false,
+  showTooltips: true,
+  tooltipDelay: 500 // milliseconds
+};
+```
+
+##### Layout Options
+- **Panel Positions:** Customizable panel locations
+- **Toolbar Position:** Left, right, or floating
+- **Menu Bar:** Show/hide menu bar
+- **Status Bar:** Toggle status bar visibility
+- **Grid System:** Canvas grid configuration
+
+#### Auto-Save Configuration
+
+##### Save Settings
+- **Auto-save Enabled:** Toggle automatic saving
+- **Save Interval:** 30 seconds to 10 minutes
+- **Save Location:** Local or cloud storage
+- **Backup Retention:** How long to keep backups
+- **Sync Settings:** Cross-device synchronization
+
+##### Performance Settings
+```javascript
+const performanceSettings = {
+  autoSave: {
+    enabled: true,
+    interval: 60, // seconds
+    maxBackups: 10,
+    compressionLevel: 6, // 1-9
+    includeHistory: true
+  },
+  rendering: {
+    hardwareAcceleration: true,
+    maxCanvasSize: 4096, // pixels
+    memoryLimit: 512, // MB
+    cacheSize: 256 // MB
+  }
+};
+```
+
+### Azure Settings
+
+#### API Configuration
+
+##### Azure OpenAI Setup
+- **Endpoint URL:** Azure OpenAI service endpoint
+- **API Key:** Authentication key for service
+- **API Version:** Service API version
+- **Region:** Geographic service region
+- **Resource Group:** Azure resource organization
+
+##### Connection Settings
+```javascript
+const azureConfig = {
+  openai: {
+    endpoint: "https://your-resource.openai.azure.com",
+    apiKey: "your-api-key-here",
+    apiVersion: "2024-02-01",
+    region: "eastus",
+    resourceGroup: "ai-image-studio"
+  },
+  cognitiveServices: {
+    endpoint: "https://your-region.cognitiveservices.azure.com",
+    apiKey: "your-cognitive-services-key",
+    region: "eastus"
+  }
+};
+```
+
+##### Security Features
+- **API Key Encryption:** Secure local storage of keys
+- **Connection Validation:** Test API connections
+- **Rate Limit Monitoring:** Track API usage
+- **Error Logging:** Log API errors securely
+- **Key Rotation:** Support for periodic key updates
+
+#### Model Configuration
+
+##### Available Models
+- **Model Selection:** Choose from available Azure models
+- **Model Parameters:** Configure model-specific settings
+- **Fallback Models:** Alternative models if primary fails
+- **Model Performance:** Speed vs. quality tradeoffs
+
+##### Cost Management
+- **Usage Tracking:** Monitor API call counts
+- **Cost Estimation:** Estimate costs for operations
+- **Budget Alerts:** Warnings for cost thresholds
+- **Usage Analytics:** Detailed usage reports
+
+### Models Settings
+
+#### AI Model Management
+
+##### Model Configuration
+```javascript
+const modelSettings = {
+  defaultModel: "dalle-3",
+  models: {
+    "dalle-3": {
+      enabled: true,
+      priority: 1,
+      maxSize: "1024x1024",
+      qualityOptions: ["standard", "hd"],
+      rateLimit: 50 // per hour
+    },
+    "flux-1-1-pro": {
+      enabled: true,
+      priority: 2,
+      maxSize: "2048x2048", 
+      qualityOptions: ["standard", "high"],
+      rateLimit: 100
+    }
+  }
+};
+```
+
+##### Model Preferences
+- **Quality vs. Speed:** Balance quality and generation time
+- **Default Parameters:** Set default values for each model
+- **Generation Presets:** Saved parameter combinations
+- **Model Switching:** Automatic fallback between models
+
+#### Advanced Model Settings
+
+##### Fine-tuning Options
+- **Custom Models:** Upload custom-trained models
+- **Parameter Adjustment:** Fine-tune model parameters
+- **Style Presets:** Saved style configurations
+- **Training Data:** Manage training datasets
+
+##### Performance Optimization
+- **Parallel Generation:** Multiple simultaneous generations
+- **Caching:** Cache frequent requests
+- **Batch Processing:** Process multiple requests together
+- **Load Balancing:** Distribute requests across endpoints
+
+### Asset Store Settings
+
+#### Provider Configuration
+
+##### Unsplash Settings
+```javascript
+const unsplashSettings = {
+  enabled: true,
+  apiKey: "your-unsplash-api-key",
+  rateLimit: 50, // requests per hour
+  defaultQuality: "regular", // thumb, small, regular, full
+  autoAttribution: true,
+  downloadOriginal: false,
+  preferredCategories: ["nature", "business", "technology"]
+};
+```
+
+##### Pexels Configuration
+```javascript
+const pexelsSettings = {
+  enabled: true,
+  apiKey: "your-pexels-api-key", 
+  rateLimit: 200,
+  includeVideos: true,
+  defaultQuality: "large",
+  autoAttribution: true,
+  downloadOriginal: false,
+  preferredCategories: ["abstract", "business", "people"]
+};
+```
+
+#### User Interface Settings
+
+##### Display Options
+- **Default View:** Grid or list view
+- **Items Per Page:** Number of results per page
+- **Preview Size:** Thumbnail size in grid
+- **Show Attribution:** Display attribution info
+- **Loading Behavior:** Eager or lazy loading
+
+##### Search Configuration
+- **Default Sort:** Relevance, popularity, or date
+- **Auto-suggestions:** Enable search suggestions
+- **Search History:** Keep search history
+- **Safe Search:** Enable content filtering
+- **Language Preference:** Search language setting
+
+#### Cache and Performance
+
+##### Cache Settings
+```javascript
+const cacheSettings = {
+  enabled: true,
+  maxItems: 1000,
+  ttl: 3600, // seconds (1 hour)
+  maxSize: 100, // MB
+  cleanupInterval: 300, // seconds (5 minutes)
+  preloadThumbnails: true,
+  compressionLevel: 6
+};
+```
+
+### Advanced Settings
+
+#### Data Management
+
+##### Storage Configuration
+- **Local Storage Limit:** Maximum local storage usage
+- **Cache Management:** Automatic cache cleanup
+- **Backup Settings:** Backup frequency and retention
+- **Data Export:** Export user data
+- **Data Cleanup:** Remove old or unused data
+
+##### Database Settings
+```javascript
+const databaseSettings = {
+  indexedDB: {
+    databaseName: "AzureImageStudio",
+    version: 3,
+    stores: ["projects", "assets", "history", "settings"],
+    quotaManagement: true,
+    autoCleanup: true
+  },
+  localStorage: {
+    enabled: true,
+    fallback: true,
+    migration: true
+  }
+};
+```
+
+#### Development Settings
+
+##### Developer Mode
+- **Enable Developer Tools:** Advanced debugging features
+- **Console Logging:** Detailed application logs
+- **Performance Metrics:** Performance monitoring
+- **API Debugging:** Detailed API call logging
+- **Feature Flags:** Enable experimental features
+
+##### Diagnostic Tools
+- **System Information:** Display system capabilities
+- **Performance Profiling:** Analyze application performance
+- **Memory Usage:** Monitor memory consumption
+- **Network Analysis:** Analyze network requests
+- **Error Reporting:** Detailed error information
+
+#### Security and Privacy
+
+##### Privacy Settings
+- **Data Collection:** Control what data is collected
+- **Analytics:** Enable/disable usage analytics
+- **Crash Reporting:** Automatic crash reports
+- **Telemetry:** Application usage statistics
+- **Data Retention:** How long to keep user data
+
+##### Security Options
+```javascript
+const securitySettings = {
+  encryption: {
+    enabled: true,
+    algorithm: "AES-256",
+    keyRotation: true,
+    rotationInterval: 30 // days
+  },
+  authentication: {
+    sessionTimeout: 3600, // seconds
+    rememberSession: true,
+    multiDevice: true
+  },
+  privacy: {
+    collectAnalytics: false,
+    shareUsageData: false,
+    enableTelemetry: false
+  }
+};
+```
+
+---
+
+## Advanced Features
+
+### Keyboard Shortcuts System
+
+#### Complete Shortcut Reference
+
+##### File Operations
+- `Cmd/Ctrl + N` - New Project
+- `Cmd/Ctrl + O` - Open/Import Project
+- `Cmd/Ctrl + S` - Save/Export Project
+- `Cmd/Ctrl + E` - Export Project
+- `Cmd/Ctrl + Shift + S` - Save As
+- `Cmd/Ctrl + W` - Close Project
+
+##### Edit Operations
+- `Cmd/Ctrl + Z` - Undo
+- `Cmd/Ctrl + Shift + Z` - Redo
+- `Cmd/Ctrl + X` - Cut
+- `Cmd/Ctrl + C` - Copy
+- `Cmd/Ctrl + V` - Paste
+- `Cmd/Ctrl + A` - Select All
+- `Delete/Backspace` - Delete Selection
+
+##### Tool Selection
+```javascript
+const toolShortcuts = {
+  // Selection & Navigation
+  'Cmd+1': 'select',
+  'Cmd+M': 'move', 
+  'Cmd+H': 'hand',
+  'Cmd+2': 'zoom',
+  
+  // AI Tools
+  'Cmd+G': 'generate',
+  'Cmd+E': 'edit',
+  'Cmd+I': 'inpaint', 
+  'Cmd+O': 'outpaint',
+  
+  // Drawing Tools
+  'Cmd+B': 'brush',
+  'Shift+E': 'eraser',
+  
+  // Content Tools
+  'Cmd+Shift+T': 'text',
+  'Cmd+U': 'shape',
+  
+  // Transform Tools  
+  'Cmd+4': 'crop',
+  'Cmd+T': 'transform',
+  
+  // Utility Tools
+  'Alt': 'eyedropper',
+  'Shift+Alt+B': 'blend',
+  
+  // Management Tools
+  'Cmd+3': 'assets',
+  'Cmd+4': 'assetStore', 
+  'Cmd+Y': 'history',
+  'Cmd+P': 'prompt'
+};
+```
+
+##### View Operations
+- `Cmd/Ctrl + +` - Zoom In
+- `Cmd/Ctrl + -` - Zoom Out
+- `Cmd/Ctrl + 0` - Fit to Screen
+- `Cmd/Ctrl + 1` - Actual Size (100%)
+- `F` - Toggle Fullscreen
+- `Tab` - Hide/Show Panels
+- `Shift + Tab` - Hide/Show All UI
+
+##### Canvas Navigation
+- `Space + Drag` - Temporary Hand Tool
+- `Arrow Keys` - Nudge Selection
+- `Shift + Arrow Keys` - Large Nudge
+- `Page Up/Down` - Scroll Canvas
+- `Home/End` - Go to Canvas Edges
+
+#### Custom Shortcut Configuration
+
+##### Shortcut Customization
+```javascript
+const customShortcuts = {
+  userDefined: {
+    'Ctrl+Shift+G': 'quickGenerate',
+    'Alt+D': 'duplicateLayer',
+    'Ctrl+Shift+E': 'exportSelection',
+    'F2': 'renameLayer'
+  },
+  conflicts: {
+    detection: true,
+    resolution: 'user_choice', // override, keep_original, disable
+    warnings: true
+  },
+  profiles: {
+    photoshop: 'adobe_compatible_shortcuts',
+    figma: 'figma_compatible_shortcuts', 
+    custom: 'user_defined_shortcuts'
+  }
+};
+```
+
+### Performance Optimization
+
+#### Rendering Optimization
+
+##### Hardware Acceleration
+- **GPU Acceleration:** Utilize GPU for canvas rendering
+- **WebGL Support:** Hardware-accelerated graphics
+- **Canvas Optimization:** Efficient canvas operations
+- **Memory Management:** Optimize memory usage
+- **Batch Operations:** Group similar operations
+
+##### Performance Monitoring
+```javascript
+const performanceMetrics = {
+  rendering: {
+    fps: 60, // target frame rate
+    frameTime: 16.67, // milliseconds per frame
+    canvasUpdates: 0, // canvas redraws per second
+    memoryUsage: 245, // MB currently used
+    gpuUsage: 15 // GPU utilization percentage
+  },
+  ai: {
+    generationTime: 12.5, // seconds for last generation
+    queueSize: 0, // pending generations
+    apiLatency: 1.2, // seconds average API response
+    cacheHitRate: 85 // percentage of cached results
+  }
+};
+```
+
+#### Memory Management
+
+##### Automatic Cleanup
+- **Garbage Collection:** Automatic memory cleanup
+- **Asset Cleanup:** Remove unused assets from memory
+- **History Pruning:** Limit undo history size
+- **Cache Management:** Intelligent cache eviction
+- **Texture Optimization:** Compress textures for GPU
+
+##### Memory Monitoring
+- **Real-time Monitoring:** Track memory usage
+- **Memory Alerts:** Warnings for high usage
+- **Memory Profiling:** Detailed memory analysis
+- **Leak Detection:** Identify memory leaks
+- **Usage Optimization:** Automatic optimization suggestions
+
+### Error Handling and Recovery
+
+#### Comprehensive Error Management
+
+##### Error Categories
+```javascript
+const errorTypes = {
+  network: {
+    offline: "No internet connection",
+    timeout: "Request timeout", 
+    serverError: "Server unavailable",
+    rateLimited: "Too many requests"
+  },
+  api: {
+    invalidKey: "Invalid API key",
+    quotaExceeded: "API quota exceeded",
+    modelUnavailable: "AI model unavailable",
+    requestTooLarge: "Request size too large"
+  },
+  application: {
+    memoryError: "Insufficient memory",
+    storageError: "Storage access denied",
+    renderError: "Canvas rendering failed",
+    dataCorruption: "Data corruption detected"
+  }
+};
+```
+
+##### Recovery Strategies
+- **Automatic Retry:** Retry failed operations
+- **Graceful Degradation:** Continue with reduced functionality
+- **Data Recovery:** Restore from backups
+- **Safe Mode:** Run with minimal features
+- **User Guidance:** Clear error messages and solutions
+
+#### Backup and Recovery System
+
+##### Automatic Backups
+- **Continuous Backup:** Save changes continuously
+- **Checkpoint System:** Create restoration points
+- **Version History:** Keep multiple versions
+- **Cross-session Recovery:** Restore after crashes
+- **Data Validation:** Verify backup integrity
+
+##### Recovery Options
+1. **Auto-recovery:** Automatic restoration on restart
+2. **Manual Recovery:** User-initiated recovery
+3. **Selective Recovery:** Choose what to restore
+4. **Rollback:** Return to previous state
+5. **Export Recovery:** Save recovery data locally
+
+### Accessibility Features
+
+#### Universal Design
+
+##### Keyboard Accessibility
+- **Full Keyboard Navigation:** All features accessible via keyboard
+- **Focus Indicators:** Clear focus visibility
+- **Skip Links:** Quick navigation options
+- **Keyboard Shortcuts:** Comprehensive shortcut system
+- **Sticky Keys Support:** Modifier key assistance
+
+##### Visual Accessibility
+```javascript
+const accessibilitySettings = {
+  visual: {
+    highContrast: false,
+    reducedMotion: false,
+    largeText: false,
+    colorBlindSupport: true,
+    focusIndicators: 'enhanced'
+  },
+  motor: {
+    stickyKeys: true,
+    mouseKeys: true,
+    dwellClicking: false,
+    voiceControl: false
+  },
+  cognitive: {
+    simplifiedUI: false,
+    extendedTimeouts: false,
+    confirmDialogs: true,
+    progressIndicators: true
+  }
+};
+```
+
+##### Screen Reader Support
+- **Semantic HTML:** Proper markup for screen readers
+- **ARIA Labels:** Descriptive labels for UI elements
+- **Live Regions:** Announce dynamic content changes
+- **Role Descriptions:** Clear element purposes
+- **Navigation Landmarks:** Logical page structure
+
+#### Inclusive Design Features
+
+##### Color Accessibility
+- **Color Blind Support:** Alternative color schemes
+- **High Contrast Mode:** Enhanced contrast ratios
+- **Custom Color Themes:** User-defined color schemes
+- **Pattern Indicators:** Non-color visual cues
+- **Color Picker Accessibility:** Screen reader compatible
+
+##### Motor Accessibility
+- **Large Click Targets:** Minimum 44px touch targets
+- **Drag Alternatives:** Alternative interaction methods
+- **Adjustable Timeouts:** Configurable time limits
+- **Sticky Drag:** Simplified drag operations
+- **Voice Commands:** Voice control integration (future)
+
+---
+
+## Troubleshooting and Support
+
+### Common Issues and Solutions
+
+#### Generation Problems
+
+##### Failed Generations
+**Issue:** AI generation fails with error message
+**Solutions:**
+1. Check internet connection
+2. Verify API keys in settings
+3. Try different model
+4. Reduce prompt complexity
+5. Check API quota limits
+
+**Issue:** Generated images are poor quality
+**Solutions:**
+1. Use more detailed prompts
+2. Select higher quality settings
+3. Try different AI model
+4. Adjust generation parameters
+5. Use negative prompts to exclude unwanted elements
+
+##### Performance Issues
+**Issue:** Slow generation times
+**Solutions:**
+1. Check internet speed
+2. Try different time of day
+3. Switch to faster model
+4. Reduce image resolution
+5. Clear browser cache
+
+#### Interface Problems
+
+##### Panel and Layout Issues
+**Issue:** Panels not displaying correctly
+**Solutions:**
+1. Refresh browser
+2. Clear browser cache
+3. Reset panel layout in settings
+4. Check browser zoom level
+5. Try different browser
+
+##### Keyboard Shortcuts Not Working
+**Issue:** Shortcuts don't respond
+**Solutions:**
+1. Check focus on canvas/app
+2. Verify shortcuts in settings
+3. Check for browser conflicts
+4. Try clicking on canvas first
+5. Reset shortcuts to defaults
+
+### Support Resources
+
+#### Documentation
+- **Complete Wiki:** Comprehensive guides and tutorials
+- **Video Tutorials:** Step-by-step video guides
+- **API Documentation:** Technical API references
+- **Release Notes:** Latest features and changes
+- **FAQ:** Frequently asked questions
+
+#### Community Support
+- **GitHub Issues:** Report bugs and request features
+- **GitHub Discussions:** Community questions and sharing
+- **Stack Overflow:** Tagged questions and answers
+- **Discord Community:** Real-time chat support (future)
+- **Reddit Community:** User discussions and tips
+
+#### Contact Information
+- **GitHub:** [@DrHazemAli](https://github.com/DrHazemAli)
+- **LinkedIn:** [Hazem Ali](https://linkedin.com/in/drhazemali)
+- **Email:** Available through GitHub profile
+- **Issues:** [GitHub Issues Page](https://github.com/DrHazemAli/azure-image-studio/issues)
+
+---
+
+## Conclusion
+
+Azure Image Studio represents a comprehensive solution for AI-powered image generation and editing. This features guide has covered every aspect of the application, from the intuitive interface to advanced AI capabilities.
+
+### Key Takeaways
+
+1. **Comprehensive Toolset:** 20 specialized tools covering all aspects of image creation and editing
+2. **Advanced AI Integration:** Multiple AI models for different use cases and quality levels
+3. **Professional Features:** Auto-sync, project management, and asset organization
+4. **User-Friendly Design:** Intuitive interface with professional-grade capabilities
+5. **Extensible Platform:** Settings and customization options for every workflow
+
+### Future Development
+
+The application continues to evolve with planned features including:
+- Real-time collaboration
+- Additional AI models
+- Mobile app support
+- Cloud storage integration
+- Advanced automation features
+
+### Getting Started
+
+To begin using Azure Image Studio:
+1. Set up your Azure OpenAI credentials
+2. Configure your preferred AI models
+3. Explore the toolbar and familiarize yourself with tools
+4. Try the AI generation features
+5. Experiment with advanced features like auto-sync
+
+For the latest updates and community discussions, visit the [GitHub repository](https://github.com/DrHazemAli/azure-image-studio).
+
+---
+
+*This guide represents version 1.0.1 of the Azure Image Studio Features Guide. For the most current information, please refer to the GitHub repository and official documentation.*
+
+**Created with ❤️ by [Hazem Ali](https://linkedin.com/in/drhazemali), Microsoft AI MVP**
