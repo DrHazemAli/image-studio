@@ -58,16 +58,6 @@ export default function ResizeCanvasModal({
     onClose();
   }, [onKeepCurrentCanvas, onClose]);
 
-  // Only log when modal is actually open to reduce noise
-  if (isOpen) {
-    console.log('ResizeCanvasModal render:', {
-      isOpen,
-      imageWidth,
-      imageHeight,
-      currentCanvasWidth,
-      currentCanvasHeight,
-    });
-  }
 
   // Don't render anything if modal is closed
   if (!isOpen) {

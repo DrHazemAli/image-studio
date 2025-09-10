@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { AzureConfig, AzureEndpoint } from '@/types/azure';
 import { requireAuth } from '@/lib/auth-middleware';
 import { AZURE_CONFIG_OBJECT_KEY } from '@/lib/constants';
+import logger from '@/lib/logger';
 export async function GET(request: NextRequest) {
   try {
     const { authorized, error } = requireAuth(request);
@@ -54,7 +55,6 @@ export async function GET(request: NextRequest) {
         }))
       };
       
-      console.log('Retrieved config from cookie:', JSON.stringify(configWithValidation, null, 2));
       
       return NextResponse.json({
         config: configWithValidation,
@@ -68,7 +68,7 @@ export async function GET(request: NextRequest) {
       );
     }
   } catch (error) {
-    console.error('Azure config GET error:', error);
+    logger.error('Azure config GET error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 },
@@ -83,12 +83,12 @@ export async function POST(request: NextRequest) {
     
     const { config } = await request.json();
 
-    console.log('Received config in POST:', JSON.stringify(config, null, 2));
+    logger.info('Received config in POST:', JSON.stringify(config, null, 2));
     
     // Check if endpoints have validation status
     if (config.endpoints && Array.isArray(config.endpoints)) {
       config.endpoints.forEach((endpoint: AzureEndpoint, index: number) => {
-        console.log(`Endpoint ${index} (${endpoint.id}):`, {
+        logger.info(`Endpoint ${index} (${endpoint.id}):`, {
           status: endpoint.status,
           validated_at: endpoint.validated_at
         });
@@ -154,7 +154,7 @@ export async function POST(request: NextRequest) {
 
     return response;
   } catch (error) {
-    console.error('Azure config POST error:', error);
+    logger.error('Azure config POST error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 },
@@ -187,7 +187,7 @@ export async function DELETE(request: NextRequest) {
 
     return response;
   } catch (error) {
-    console.error('Azure config DELETE error:', error);
+    logger.error('Azure config DELETE error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 },

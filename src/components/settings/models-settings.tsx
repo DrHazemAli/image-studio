@@ -22,7 +22,7 @@ import { AzureModelsConfig, AzureModel, AzureConfig } from '@/types/azure';
 import { cn } from '@/lib/utils';
 import { config } from '@/lib/settings';
 import { AZURE_MODELS_CONFIG_KEY } from '@/lib/constants';
-
+import logger from '@/lib/logger';
 export function ModelsSettings() {
   const [modelsConfig, setModelsConfig] = useState<AzureModelsConfig>({
     imageModels: { generation: {} },
@@ -53,14 +53,14 @@ export function ModelsSettings() {
 
         if (modelsResponse.ok) {
           const modelsData = await modelsResponse.json();
-          console.log('Default models data received from API:', modelsData);
+          logger.info('Default models data received from API:', modelsData);
           defaultModelsConfig = modelsData.models;
           azureConfigured = modelsData.azureConfigured;
           hasValidCredentials = modelsData.hasValidCredentials;
 
           // Set Azure configuration state
           setIsAzureConfigured(azureConfigured);
-          console.log('Azure configured status:', azureConfigured);
+          logger.info('Azure configured status:', azureConfigured);
 
           // Set Azure configuration object for validation logic
           if (hasValidCredentials) {
@@ -80,10 +80,10 @@ export function ModelsSettings() {
         let finalModelsConfig = defaultModelsConfig;
 
         if (savedModelsConfig) {
-          console.log('Found saved models in localStorage:', savedModelsConfig);
+          logger.info('Found saved models in localStorage:', savedModelsConfig);
           finalModelsConfig = savedModelsConfig as AzureModelsConfig;
         } else if (defaultModelsConfig) {
-          console.log('Using default models config from JSON file');
+          logger.info('Using default models config from JSON file');
           finalModelsConfig = defaultModelsConfig;
         }
 
@@ -91,11 +91,11 @@ export function ModelsSettings() {
           setModelsConfig(finalModelsConfig);
           // Set the first available provider as selected
           const providers = Object.keys(finalModelsConfig.imageModels.generation);
-          console.log('Available providers:', providers);
+          logger.info('Available providers:', providers);
           if (providers.length > 0) {
             setSelectedProvider(providers[0]);
-            console.log('Selected provider:', providers[0]);
-            console.log('Models for provider:', finalModelsConfig.imageModels.generation[providers[0]]);
+            logger.info('Selected provider:', providers[0]);
+            logger.info('Models for provider:', finalModelsConfig.imageModels.generation[providers[0]]);
           }
         }
       } catch (error) {
@@ -110,7 +110,7 @@ export function ModelsSettings() {
 
   // Save models configuration to localStorage
   const saveConfiguration = useCallback(async (modelsConfig: AzureModelsConfig) => {
-    console.log('Saving models configuration to localStorage:', modelsConfig);
+    logger.info('Saving models configuration to localStorage:', modelsConfig);
     setIsSaving(true);
     setSaveStatus('saving');
 
@@ -126,11 +126,11 @@ export function ModelsSettings() {
 
       if (response.ok) {
         const responseData = await response.json();
-        console.log('Models configuration structure validated:', responseData);
+        logger.info('Models configuration structure validated:', responseData);
         
         // Save to localStorage using config system
         config(AZURE_MODELS_CONFIG_KEY, responseData.models, 'localStorage');
-        console.log('Models configuration saved to localStorage successfully');
+        logger.info('Models configuration saved to localStorage successfully');
         
         setSaveStatus('saved');
         // Reset save status after 2 seconds

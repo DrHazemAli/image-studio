@@ -84,6 +84,7 @@ interface Project {
     tags?: string[];
     author?: string;
   };
+  adjustments?: any; // Image adjustments and filters - using any for now to avoid circular imports
 }
 
 // Default fallback values for Project interface using defined constants
@@ -500,7 +501,6 @@ class IndexedDBManager {
           });
         }
         localStorage.removeItem("azure-studio-assets");
-        console.log("Migrated assets from localStorage to IndexedDB");
       }
 
       // Migrate history
@@ -514,7 +514,6 @@ class IndexedDBManager {
           });
         }
         localStorage.removeItem("azure-studio-history");
-        console.log("Migrated history from localStorage to IndexedDB");
       }
     } catch (error) {
       console.error("Migration failed:", error);

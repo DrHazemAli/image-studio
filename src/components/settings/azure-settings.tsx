@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { AzureConfig, AzureEndpoint } from '@/types/azure';
 import { AzurePasswordPrompt } from './azure-password-prompt';
-
+import logger from '@/lib/logger';
 export function AzureSettings() {
   const [azureConfig, setAzureConfig] = useState<AzureConfig>({
     primary: {
@@ -86,7 +86,7 @@ export function AzureSettings() {
           if (response.ok) {
             const data = await response.json();
             if (data.config) {
-              console.log('Loaded configuration from cookies:', data.config);
+              logger.info('Loaded configuration from cookies:', data.config);
               
               // Ensure the loaded config has the proper structure with validation fields
               const configWithValidation = {
@@ -107,7 +107,7 @@ export function AzureSettings() {
             }
           }
         } catch (error) {
-          console.warn('Failed to load config from cookies:', error);
+          logger.warn('Failed to load config from cookies:', error);
         }
 
         // Fallback: Load environment variables if no saved config
@@ -146,7 +146,7 @@ export function AzureSettings() {
             });
           }
         } catch (error) {
-          console.warn('Failed to load environment variables:', error);
+          logger.warn('Failed to load environment variables:', error);
         }
       };
 
@@ -234,7 +234,7 @@ export function AzureSettings() {
             headers.Authorization = `Bearer ${authToken}`;
           }
           
-          console.log('Saving primary validation with config:', JSON.stringify(updatedConfig, null, 2));
+          logger.info('Saving primary validation with config:', JSON.stringify(updatedConfig, null, 2));
           
           await fetch('/api/azure/config', {
             method: 'POST',
@@ -242,7 +242,7 @@ export function AzureSettings() {
             body: JSON.stringify({ config: updatedConfig }),
           });
         } catch (saveError) {
-          console.warn('Failed to save configuration:', saveError);
+          logger.warn('Failed to save configuration:', saveError);
         }
       } else {
         setValidationStatus('error');
@@ -277,7 +277,7 @@ export function AzureSettings() {
             headers.Authorization = `Bearer ${authToken}`;
           }
           
-          console.log('Saving primary validation error with config:', JSON.stringify(updatedConfig, null, 2));
+          logger.info('Saving primary validation error with config:', JSON.stringify(updatedConfig, null, 2));
           
           await fetch('/api/azure/config', {
             method: 'POST',
@@ -285,7 +285,7 @@ export function AzureSettings() {
             body: JSON.stringify({ config: updatedConfig }),
           });
         } catch (saveError) {
-          console.warn('Failed to save configuration:', saveError);
+          logger.warn('Failed to save configuration:', saveError);
         }
       }
     } catch {
@@ -323,7 +323,7 @@ export function AzureSettings() {
           headers.Authorization = `Bearer ${authToken}`;
         }
         
-        console.log('Saving primary validation error with config:', JSON.stringify(updatedConfig, null, 2));
+        logger.info('Saving primary validation error with config:', JSON.stringify(updatedConfig, null, 2));
         
         await fetch('/api/azure/config', {
           method: 'POST',
@@ -331,7 +331,7 @@ export function AzureSettings() {
           body: JSON.stringify({ config: updatedConfig }),
         });
       } catch (saveError) {
-        console.warn('Failed to save configuration:', saveError);
+        logger.warn('Failed to save configuration:', saveError);
       }
     } finally {
       setIsValidating(false);
@@ -372,8 +372,8 @@ export function AzureSettings() {
   };
 
   const validateEndpoint = async (endpoint: AzureEndpoint) => {
-    console.log('validateEndpoint called with endpoint:', endpoint);
-    console.log('Current azureConfig state:', azureConfig);
+    logger.info('validateEndpoint called with endpoint:', endpoint);
+    logger.info('Current azureConfig state:', azureConfig);
     
     // Use primary values as fallbacks if endpoint values are empty
     const apiKey = endpoint.apiKey || azureConfig.primaryApiKey;
@@ -392,9 +392,9 @@ export function AzureSettings() {
     
     // Update the endpoint in the configuration and save to server
     setAzureConfig(prev => {
-      console.log('setAzureConfig prev state:', prev);
-      console.log('Looking for endpoint with id:', endpoint.id);
-      console.log('Current endpoints in state:', prev.endpoints);
+      logger.info('setAzureConfig prev state:', prev);
+      logger.info('Looking for endpoint with id:', endpoint.id);
+      logger.info('Current endpoints in state:', prev.endpoints);
       
       const updatedConfig = {
         ...prev,
@@ -403,7 +403,7 @@ export function AzureSettings() {
         ),
       };
       
-      console.log('Updated config after mapping:', updatedConfig);
+      logger.info('Updated config after mapping:', updatedConfig);
       
       // Save pending status to server (which will set cookies)
       const headers: Record<string, string> = {
@@ -415,19 +415,19 @@ export function AzureSettings() {
         headers.Authorization = `Bearer ${authToken}`;
       }
       
-      console.log('Saving pending status with config:', JSON.stringify(updatedConfig, null, 2));
+      logger.info('Saving pending status with config:', JSON.stringify(updatedConfig, null, 2));
       
       fetch('/api/azure/config', {
         method: 'POST',
         headers,
         body: JSON.stringify({ config: updatedConfig }),
       }).then(response => {
-        console.log('Pending status save response:', response.status);
+        logger.info('Pending status save response:', response.status);
         return response.json();
       }).then(data => {
-        console.log('Pending status save data:', data);
+        logger.info('Pending status save data:', data);
       }).catch(saveError => {
-        console.warn('Failed to save pending status to server:', saveError);
+        logger.warn('Failed to save pending status to server:', saveError);
       });
       
       return updatedConfig;
@@ -481,19 +481,19 @@ export function AzureSettings() {
           headers.Authorization = `Bearer ${authToken}`;
         }
         
-        console.log('Saving final validation with config:', JSON.stringify(updatedConfig, null, 2));
+        logger.info('Saving final validation with config:', JSON.stringify(updatedConfig, null, 2));
         
         fetch('/api/azure/config', {
           method: 'POST',
           headers,
           body: JSON.stringify({ config: updatedConfig }),
         }).then(response => {
-          console.log('Final validation save response:', response.status);
+          logger.info('Final validation save response:', response.status);
           return response.json();
         }).then(data => {
-          console.log('Final validation save data:', data);
+          logger.info('Final validation save data:', data);
         }).catch(saveError => {
-          console.warn('Failed to save validation status to server:', saveError);
+          logger.warn('Failed to save validation status to server:', saveError);
         });
         
         return updatedConfig;
@@ -530,19 +530,19 @@ export function AzureSettings() {
           headers.Authorization = `Bearer ${authToken}`;
         }
         
-        console.log('Saving error status with config:', JSON.stringify(updatedConfig, null, 2));
+        logger.info('Saving error status with config:', JSON.stringify(updatedConfig, null, 2));
         
         fetch('/api/azure/config', {
           method: 'POST',
           headers,
           body: JSON.stringify({ config: updatedConfig }),
         }).then(response => {
-          console.log('Error status save response:', response.status);
+          logger.info('Error status save response:', response.status);
           return response.json();
         }).then(data => {
-          console.log('Error status save data:', data);
+          logger.info('Error status save data:', data);
         }).catch(saveError => {
-          console.warn('Failed to save error status to server:', saveError);
+          logger.warn('Failed to save error status to server:', saveError);
         });
         
         return updatedConfig;

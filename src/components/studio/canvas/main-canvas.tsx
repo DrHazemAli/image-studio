@@ -12,7 +12,7 @@ import React, {
 import { Tool } from '../toolbar';
 import { LayerManager, Layer } from '../tools';
 import { Canvas as FabricCanvas, FabricImage, FabricObject } from 'fabric';
-
+import logger from '@/lib/logger';
 // Import canvas components
 import CanvasViewport from '@/components/studio/canvas/canvas-viewport';
 import { ToolOptionsPanel } from '../panels';
@@ -297,7 +297,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
           if (scale < 1) {
             const newZoom = Math.max(scale * 100, ZOOM_CONSTANTS.AUTO_ZOOM_MIN);
             setZoom(newZoom);
-            console.log(
+            logger.log(
               'Auto-zoomed out to:',
               newZoom + '% to fit canvas in viewport'
             );
@@ -309,7 +309,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
           canvas.remove(obj);
         });
 
-        console.log('loadImageDirectly called with:', {
+        logger.log('loadImageDirectly called with:', {
           imgWidth,
           imgHeight,
           targetCanvasWidth,
@@ -335,7 +335,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
           scaleX = scaleY;
         }
 
-        console.log('Image scaling calculation:', {
+        logger.log('Image scaling calculation:', {
           imageAspect,
           canvasAspect,
           imgWidth,
@@ -401,23 +401,23 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
           imageData === 'undefined' ||
           imageData.includes('undefined')
         ) {
-          console.error('Invalid image data provided to canvas:', imageData);
+          logger.error('Invalid image data provided to canvas:', imageData);
           setIsLoadingImage(false);
           return;
         }
 
         // Prevent loading the same image multiple times (unless forced)
         if (!forceUpdate && lastLoadedImageRef.current === imageData) {
-          console.log('Image already loaded, skipping...');
+          logger.log('Image already loaded, skipping...');
           return;
         }
 
         // When forcing update, log the reason
         if (forceUpdate && lastLoadedImageRef.current === imageData) {
-          console.log('Force updating image with filters/adjustments...');
+          logger.log('Force updating image with filters/adjustments...');
         }
 
-        console.log(
+        logger.log(
           'Loading image to canvas:',
           imageData.substring(0, 50) + '...'
         );
@@ -432,7 +432,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
             const imgWidth = img.width || 0;
             const imgHeight = img.height || 0;
 
-            console.log(
+            logger.log(
               'Current canvas dimensions:',
               canvasWidth,
               canvasHeight
@@ -443,7 +443,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
 
             if (!hasObjects) {
               // First time loading an image - check if we should ask for resize confirmation
-              console.log(
+              logger.log(
                 'First image load - checking if resize confirmation needed'
               );
 
@@ -483,7 +483,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
 
               if (isImageSmallerThanCanvas) {
                 // Image is smaller than canvas - ask user for confirmation
-                console.log(
+                logger.log(
                   'Image is smaller than canvas - showing resize confirmation modal'
                 );
                 setPendingImageDimensions({
@@ -499,13 +499,13 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
                 return;
               } else {
                 // Image is larger than or equal to canvas - auto-resize as before
-                console.log(
+                logger.log(
                   'Image is larger than canvas - auto-resizing canvas to match image aspect ratio'
                 );
                 setIsProcessingResize(true);
 
                 // Resize canvas to calculated dimensions
-                console.log('Setting canvas dimensions:', {
+                logger.log('Setting canvas dimensions:', {
                   imgWidth,
                   imgHeight,
                   imageAspect,
@@ -518,7 +518,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
                 // Load the image after a short delay to allow canvas to resize
                 setTimeout(() => {
                   if (fabricCanvasRef.current) {
-                    console.log('Loading image after canvas resize:', {
+                    logger.log('Loading image after canvas resize:', {
                       imgWidth,
                       imgHeight,
                       targetWidth,
@@ -554,7 +554,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
             loadImageDirectly(img, imgWidth, imgHeight);
           })
           .catch((error) => {
-            console.error('Error loading image:', error);
+            logger.error('Error loading image:', error);
             setIsLoadingImage(false);
           });
       },
@@ -572,7 +572,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
       (imageData: string) => {
         if (!fabricCanvasRef.current) return;
 
-        console.log(
+        logger.log(
           'Adding image to canvas:',
           imageData.substring(0, 50) + '...'
         );
@@ -629,10 +629,10 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
             setLayers((prev) => [...prev, imageLayer]);
             setActiveLayerId(imageLayer.id);
 
-            console.log('Image added to canvas successfully');
+            logger.log('Image added to canvas successfully');
           })
           .catch((error) => {
-            console.error('Error adding image to canvas:', error);
+            logger.error('Error adding image to canvas:', error);
           });
       },
       [layers.length]
@@ -802,7 +802,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
       const activeObjects = canvas.getActiveObjects();
 
       // Debug logs (commented out)
-      // console.log('Selection changed:', {
+      // logger.log('Selection changed:', {
       //   totalObjects: activeObjects.length,
       //   objectTypes: activeObjects.map(obj => obj.type)
       // });
@@ -810,12 +810,12 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
       // Filter for image objects only
       const imageObjects = activeObjects.filter((obj) => obj.type === 'image');
 
-      // console.log('Image objects found:', imageObjects.length);
+      // logger.log('Image objects found:', imageObjects.length);
 
       setSelectedImageObjects(imageObjects);
       setIsImageToolbarVisible(imageObjects.length > 0);
 
-      // console.log('Setting toolbar visible:', imageObjects.length > 0);
+      // logger.log('Setting toolbar visible:', imageObjects.length > 0);
 
       // Close background removal modal if no images are selected
       if (imageObjects.length === 0 && isBackgroundRemovalOpen) {
@@ -986,7 +986,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
             });
           });
         } catch (error) {
-          console.error('Background removal failed:', error);
+          logger.error('Background removal failed:', error);
 
           // Hide effect overlay
           setEffectOverlay(null);
@@ -1178,7 +1178,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
 
           return processedImageData;
         } catch (error) {
-          console.error('Background removal failed:', error);
+          logger.error('Background removal failed:', error);
 
           if (error instanceof Error) {
             if (error.message.includes('Failed to fetch')) {
@@ -1253,7 +1253,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
         canvas.discardActiveObject();
         canvas.requestRenderAll();
 
-        console.log(`Deleted ${activeObjects.length} selected object(s)`);
+        logger.log(`Deleted ${activeObjects.length} selected object(s)`);
       }
     }, []);
 
@@ -1273,7 +1273,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
 
     // Resize canvas modal handlers
     const handleResizeCanvas = useCallback(() => {
-      console.log('handleResizeCanvas called', {
+      logger.log('handleResizeCanvas called', {
         pendingCanvasDimensions,
         currentImage,
       });
@@ -1287,7 +1287,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
         setPendingCanvasDimensions(null);
 
         // Resize canvas to the new dimensions
-        console.log(
+        logger.log(
           'Resizing canvas to:',
           pendingCanvasDimensions.width,
           pendingCanvasDimensions.height
@@ -1308,7 +1308,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
 
                 // Force reload of current image to fit new canvas dimensions
                 if (currentImage) {
-                  console.log('Reloading image for new canvas dimensions');
+                  logger.log('Reloading image for new canvas dimensions');
                   // Clear the lastLoadedImageRef to force reload
                   lastLoadedImageRef.current = null;
                   // Trigger image reload after canvas is ready
@@ -1320,14 +1320,14 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
                 }
 
                 fabricCanvasRef.current.renderAll();
-                console.log(
+                logger.log(
                   'Canvas resized to:',
                   pendingCanvasDimensions.width,
                   'x',
                   pendingCanvasDimensions.height
                 );
               } catch (error) {
-                console.error('Error resizing canvas:', error);
+                logger.error('Error resizing canvas:', error);
               }
             }
             setIsProcessingResize(false);
@@ -1393,14 +1393,14 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
                       pendingCanvasDimensions.height
                     );
                     fabricCanvasRef.current.renderAll();
-                    console.log(
+                    logger.log(
                       'Canvas and image resized to:',
                       pendingCanvasDimensions.width,
                       'x',
                       pendingCanvasDimensions.height
                     );
                   } catch (error) {
-                    console.error('Error resizing canvas and image:', error);
+                    logger.error('Error resizing canvas and image:', error);
                   }
                 }
                 setIsProcessingResize(false);
@@ -1410,7 +1410,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
             }
           })
           .catch((error) => {
-            console.error('Error loading image after resize:', error);
+            logger.error('Error loading image after resize:', error);
             setIsProcessingResize(false);
           });
 
@@ -1438,7 +1438,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
     const handleKeepCurrentCanvas = useCallback(() => {
       if (pendingImageDimensions && currentImage) {
         // Load the image directly without resizing the canvas
-        console.log('Loading image with current canvas size');
+        logger.log('Loading image with current canvas size');
         setIsProcessingResize(true);
 
         // Close the modal first
@@ -1465,7 +1465,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
             setIsProcessingResize(false);
           })
           .catch((error) => {
-            console.error('Error loading image with current canvas:', error);
+            logger.error('Error loading image with current canvas:', error);
             setIsProcessingResize(false);
           });
 
@@ -1500,7 +1500,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
         // Check if there's an image loaded and dimensions don't match
         if (imageLoaded && currentImage) {
           // Show modal to ask what to do with existing image
-          console.log(
+          logger.log(
             'Manual canvas resize with existing image - showing modal'
           );
           setPendingCanvasDimensions({ width: width, height: height });
@@ -1523,9 +1523,9 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
                   height: height,
                 });
                 fabricCanvasRef.current.renderAll();
-                console.log('Canvas resized from dialog:', width, 'x', height);
+                logger.log('Canvas resized from dialog:', width, 'x', height);
               } catch (error) {
-                console.error('Error resizing canvas from dialog:', error);
+                logger.error('Error resizing canvas from dialog:', error);
               }
             }
           }, 50);
@@ -1633,7 +1633,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
         });
 
         canvas.renderAll();
-        console.log('Image fitted to canvas with scale:', scaleX);
+        logger.log('Image fitted to canvas with scale:', scaleX);
       }
     }, [canvasWidth, canvasHeight, imageLoaded]);
 
@@ -1671,7 +1671,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
         isResizing ||
         isProcessingResize
       ) {
-        console.log('Image loading blocked:', {
+        logger.log('Image loading blocked:', {
           hasImage: !!imageToLoad,
           hasCanvas: !!fabricCanvasRef.current,
           isResizing,
@@ -1680,7 +1680,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
         return;
       }
 
-      console.log(
+      logger.log(
         'Image changed, loading to canvas...',
         imageToLoad.substring(0, 50) + '...'
       );
@@ -1713,7 +1713,7 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
     // Listen for canvas selection changes to show/hide image toolbar
     useEffect(() => {
       if (!fabricCanvasRef.current || !isCanvasReady) {
-        // console.log('Selection listeners: Canvas not ready', {
+        // logger.log('Selection listeners: Canvas not ready', {
         //   hasCanvas: !!fabricCanvasRef.current,
         //   isCanvasReady
         // });
@@ -1721,16 +1721,16 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
       }
 
       const canvas = fabricCanvasRef.current;
-      // console.log('Setting up selection event listeners for canvas');
+      // logger.log('Setting up selection event listeners for canvas');
 
       // Add selection event listeners
       const handleSelection = () => {
-        // console.log('Selection event fired!');
+        // logger.log('Selection event fired!');
         handleSelectionChange();
       };
 
       const handleSelectionCleared = () => {
-        // console.log('Selection cleared event fired!');
+        // logger.log('Selection cleared event fired!');
         setSelectedImageObjects([]);
         setIsImageToolbarVisible(false);
       };
@@ -1739,11 +1739,11 @@ const MainCanvas = forwardRef<MainCanvasRef, MainCanvasProps>(
       canvas.on('selection:updated', handleSelection);
       canvas.on('selection:cleared', handleSelectionCleared);
 
-      // console.log('Selection event listeners attached successfully');
+      // logger.log('Selection event listeners attached successfully');
 
       // Cleanup
       return () => {
-        // console.log('Cleaning up selection event listeners');
+        // logger.log('Cleaning up selection event listeners');
         canvas.off('selection:created', handleSelection);
         canvas.off('selection:updated', handleSelection);
         canvas.off('selection:cleared', handleSelectionCleared);

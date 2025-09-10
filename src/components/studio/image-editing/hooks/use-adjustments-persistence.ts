@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { Canvas as FabricCanvas, FabricObject, FabricImage } from 'fabric';
 import { ImageAdjustments, DEFAULT_ADJUSTMENTS } from './use-real-time-preview';
+import logger from '@/lib/logger';
 import {
   StoredImageAdjustments,
   ProjectImageAdjustments,
@@ -122,7 +123,7 @@ export const useAdjustmentsPersistence = (
         saveTimeoutRef.current = setTimeout(async () => {
           try {
             await onSave(projectId, projectAdjustmentsRef.current);
-            console.log('Image adjustments saved for project:', projectId);
+            logger.info('Image adjustments saved for project:', projectId);
           } catch (error) {
             console.error('Failed to save image adjustments:', error);
             onError?.(error as Error);
@@ -150,7 +151,7 @@ export const useAdjustmentsPersistence = (
         const storedAdjustments = projectAdjustmentsRef.current.images[imageId];
 
         if (storedAdjustments) {
-          console.log(
+          logger.info(
             'Loaded adjustments for image:',
             imageId,
             storedAdjustments.adjustments
@@ -190,7 +191,7 @@ export const useAdjustmentsPersistence = (
 
         // Save updated data
         await onSave(projectId, projectAdjustmentsRef.current);
-        console.log('Removed adjustments for image:', imageId);
+        logger.info('Removed adjustments for image:', imageId);
       } catch (error) {
         console.error('Error removing image adjustments:', error);
         onError?.(error as Error);
@@ -211,7 +212,7 @@ export const useAdjustmentsPersistence = (
       const projectData = await onLoad(projectId);
       if (projectData) {
         projectAdjustmentsRef.current = projectData;
-        console.log(
+        logger.info(
           'Loaded project adjustments:',
           projectId,
           Object.keys(projectData.images).length,
@@ -283,7 +284,7 @@ export const useAdjustmentsPersistence = (
       });
 
       if (appliedCount > 0) {
-        console.log(`Applied stored adjustments to ${appliedCount} images`);
+        logger.info(`Applied stored adjustments to ${appliedCount} images`);
       }
     },
     [fabricCanvas, loadImageAdjustments]

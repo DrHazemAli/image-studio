@@ -35,9 +35,7 @@ export async function migrateFromLocalStorage(): Promise<MigrationResult> {
           result.assetsMigrated++;
         }
         localStorage.removeItem('azure-studio-assets');
-        console.log(
-          `Migrated ${result.assetsMigrated} assets from localStorage to IndexedDB`
-        );
+       
       } catch (error) {
         const errorMsg = `Failed to migrate assets: ${error}`;
         result.errors.push(errorMsg);
@@ -58,9 +56,7 @@ export async function migrateFromLocalStorage(): Promise<MigrationResult> {
           result.historyMigrated++;
         }
         localStorage.removeItem('azure-studio-history');
-        console.log(
-          `Migrated ${result.historyMigrated} history entries from localStorage to IndexedDB`
-        );
+       
       } catch (error) {
         const errorMsg = `Failed to migrate history: ${error}`;
         result.errors.push(errorMsg);
@@ -137,7 +133,6 @@ export async function clearAllData(): Promise<void> {
     await dbManager.clearHistory();
     localStorage.removeItem('azure-studio-assets');
     localStorage.removeItem('azure-studio-history');
-    console.log('All data cleared');
   } catch (error) {
     console.error('Failed to clear data:', error);
     throw error;

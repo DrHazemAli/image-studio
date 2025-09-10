@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     
     // Extract the actual config value from the cookie structure
     //const userConfig = userConfig.value;
-    console.log(userConfig);
+   
     const apiKey = userConfig.primaryApiKey || process.env.AZURE_API_KEY;
 
     if (!apiKey) {

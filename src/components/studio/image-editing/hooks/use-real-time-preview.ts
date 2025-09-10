@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Canvas as FabricCanvas, FabricObject, FabricImage } from 'fabric';
-
+import logger from '@/lib/logger';
 // Declare fabric for filter access
 declare const fabric: any;
 
@@ -223,7 +223,7 @@ export const useRealTimePreview = (
           const filterString = adjustmentsToCSSFilter(adjustments);
 
           // Debug logging
-          console.log('Applying filters:', filterString, adjustments);
+          logger.info('Applying filters:', filterString, adjustments);
 
           // Manual canvas filter implementation since Fabric.js native filters aren't working
           let filtersApplied = false;
@@ -241,7 +241,7 @@ export const useRealTimePreview = (
                 // Method 1: Apply filter to canvas context (modern approach)
                 try {
                   ctx.filter = canvasFilterString;
-                  console.log(
+                  logger.info(
                     'Applied canvas context filter:',
                     canvasFilterString
                   );
@@ -254,7 +254,7 @@ export const useRealTimePreview = (
                 if (!filtersApplied) {
                   try {
                     canvasElement.style.filter = canvasFilterString;
-                    console.log(
+                    logger.info(
                       'Applied canvas element filter:',
                       canvasFilterString
                     );
@@ -296,7 +296,7 @@ export const useRealTimePreview = (
                           filteredImageData
                         );
                         fabricCanvas.renderAll();
-                        console.log('Applied manual image filter processing');
+                        logger.info('Applied manual image filter processing');
 
                         filtersApplied = true;
                       }
@@ -319,7 +319,7 @@ export const useRealTimePreview = (
             const imageElement = (selectedImage as FabricImage).getElement();
             if (imageElement && imageElement.style) {
               imageElement.style.filter = filterString;
-              console.log(
+              logger.info(
                 'Applied CSS filters as fallback:',
                 imageElement.style.filter
               );
@@ -362,7 +362,7 @@ export const useRealTimePreview = (
               requestAnimationFrame(() => {
                 // Final render to ensure everything is visible
                 fabricCanvas.renderAll();
-                console.log('Canvas fully re-rendered with filters applied');
+                logger.info('Canvas fully re-rendered with filters applied');
 
                 // Trigger a final invalidation to ensure the change is visible
                 fabricCanvas.requestRenderAll();
@@ -431,11 +431,11 @@ export const useRealTimePreview = (
 
     // Prevent reset if we're currently applying filters
     if (isApplyingFilters) {
-      console.log('Reset blocked - currently applying filters');
+      logger.info('Reset blocked - currently applying filters');
       return;
     }
 
-    console.log('resetAdjustments called - investigating source');
+    logger.info('resetAdjustments called - investigating source');
     console.trace(); // This will show the call stack
 
     try {
@@ -465,14 +465,14 @@ export const useRealTimePreview = (
         const ctx = fabricCanvas.getContext();
         if (ctx) {
           ctx.filter = 'none';
-          console.log('Reset canvas context filter');
+          logger.info('Reset canvas context filter');
         }
 
         // Method 2: Reset canvas element filter
         const canvasElement = fabricCanvas.getElement();
         if (canvasElement) {
           canvasElement.style.filter = '';
-          console.log('Reset canvas element filter');
+          logger.info('Reset canvas element filter');
         }
 
         // Method 3: If we have stored the original image source, restore it
@@ -484,7 +484,7 @@ export const useRealTimePreview = (
             const currentSrc = (selectedImage as FabricImage).getSrc();
             // If the current source looks like a data URL (filtered), we might need to restore original
             if (currentSrc && currentSrc.startsWith('data:image/')) {
-              console.log(
+              logger.info(
                 'Image may have been modified by filters, but no original stored'
               );
               // For now, just ensure filters are cleared from the object
@@ -498,7 +498,7 @@ export const useRealTimePreview = (
         // Clear any Fabric.js filters as fallback
         if ((selectedImage as FabricImage).filters) {
           (selectedImage as FabricImage).filters = [];
-          console.log('Cleared Fabric image filters array');
+          logger.info('Cleared Fabric image filters array');
         }
       } catch (resetError) {
         console.warn('Could not reset canvas filters:', resetError);
@@ -532,7 +532,7 @@ export const useRealTimePreview = (
 
         requestAnimationFrame(() => {
           fabricCanvas.renderAll();
-          console.log('Canvas re-rendered after filter reset');
+          logger.info('Canvas re-rendered after filter reset');
 
           // Final invalidation
           fabricCanvas.requestRenderAll();

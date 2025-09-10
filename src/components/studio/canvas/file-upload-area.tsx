@@ -3,7 +3,7 @@
 import React, { useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ZoomInIcon } from '@radix-ui/react-icons';
-
+import logger from '@/lib/logger';
 interface FileUploadAreaProps {
   onImageLoad?: (imageData: string) => void;
   isLoadingImage: boolean;
@@ -20,13 +20,13 @@ export default function FileUploadArea({
       const file = e.target.files?.[0];
       if (!file || !onImageLoad) return;
 
-      console.log('File selected:', file.name, file.type, file.size);
+      logger.info('File selected:', file.name, file.type, file.size);
 
       const reader = new FileReader();
       reader.onload = (event) => {
         const result = event.target?.result as string;
         if (result) {
-          console.log('File read successfully, calling onImageLoad...');
+          logger.info('File read successfully, calling onImageLoad...');
           onImageLoad(result);
         }
       };

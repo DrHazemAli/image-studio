@@ -4,7 +4,7 @@ import React, { useEffect, useCallback } from 'react';
 import { Canvas as FabricCanvas, FabricObject } from 'fabric';
 import { Tool } from '../toolbar';
 import { ZOOM_CONSTANTS } from '@/lib/constants';
-
+import logger from '@/lib/logger';
 interface CanvasViewportProps {
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
   fabricCanvasRef: React.RefObject<FabricCanvas | null>;
@@ -236,14 +236,14 @@ export default function CanvasViewport({
               height: canvasHeight,
             });
             fabricCanvasRef.current.renderAll();
-            console.log(
+            logger.log(
               'Canvas dimensions updated after resize:',
               canvasWidth,
               'x',
               canvasHeight
             );
           } catch (error) {
-            console.error(
+            logger.error(
               'Error updating canvas dimensions after resize:',
               error
             );
@@ -275,7 +275,7 @@ export default function CanvasViewport({
       newSize.height !== containerSize.height
     ) {
       onContainerSizeChange(newSize);
-      console.log('Container resized to:', newSize.width, 'x', newSize.height);
+      logger.log('Container resized to:', newSize.width, 'x', newSize.height);
     }
   }, [
     containerSize.width,
@@ -297,7 +297,7 @@ export default function CanvasViewport({
     if (!canvasRef.current || canvasInitializedRef.current || isResizing)
       return;
 
-    console.log('Initializing Fabric.js canvas...');
+    logger.log('Initializing Fabric.js canvas...');
 
     const fabricCanvas = new FabricCanvas(canvasRef.current, {
       width: canvasWidth,
@@ -313,7 +313,7 @@ export default function CanvasViewport({
     // Ensure canvas is fully initialized before setting ready
     setTimeout(() => {
       onIsCanvasReadyChange(true);
-      console.log('Fabric.js canvas initialized and ready');
+      logger.log('Fabric.js canvas initialized and ready');
     }, 50);
 
     return () => {
@@ -362,7 +362,7 @@ export default function CanvasViewport({
 
         fabricCanvasRef.current.renderAll();
       } catch (error) {
-        console.error('Error updating canvas dimensions:', error);
+        logger.error('Error updating canvas dimensions:', error);
       }
     }, 100); // 100ms delay
 
@@ -448,7 +448,7 @@ export default function CanvasViewport({
       obj.evented = true;
     });
 
-    console.log('Canvas configured for editing');
+    logger.log('Canvas configured for editing');
   }, [isCanvasReady, fabricCanvasRef]);
 
   // Add wheel event listener manually to avoid passive event issues

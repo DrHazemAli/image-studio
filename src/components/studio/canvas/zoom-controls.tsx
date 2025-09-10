@@ -10,7 +10,7 @@ import {
 } from '@radix-ui/react-icons';
 import { Button } from '@radix-ui/themes';
 import { ZOOM_CONSTANTS } from '@/lib/constants';
-
+import logger from '@/lib/logger';
 interface ZoomControlsProps {
   zoom: number;
   onZoomIn: () => void;
@@ -63,7 +63,7 @@ export default function ZoomControls({
         size="1"
         onClick={() => {
           // Fit to viewport logic would go here
-          console.log('Fit to viewport');
+          logger.info('Fit to viewport');
         }}
         title="Fit to Viewport"
       >

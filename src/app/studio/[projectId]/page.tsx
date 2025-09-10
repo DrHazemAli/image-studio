@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Toolbar, Tool } from '@/components/studio/toolbar';
 import { Canvas } from '@/components/studio/canvas';
+import logger from '@/lib/logger';
 import { type MainCanvasRef } from '@/components/studio/canvas/main-canvas';
 import EnhancedPromptBox from '@/components/studio/enhanced-prompt-box';
 import {
@@ -24,6 +25,7 @@ import { SettingsDialog } from '@/components/settings';
 import { SyncManager } from '@/components/studio/sync-manager';
 import { StudioLoading } from '@/components/studio/studio-loading';
 import { MenuBar, MenuProvider } from '@/components/studio/menu-bar';
+import { AppSettings } from '@/lib/settings/app-settings';
 import type { ModelInfo } from '@/app/api/models/route';
 import {
   dbManager,
@@ -62,6 +64,9 @@ export default function ProjectStudioPage() {
   const params = useParams();
   const router = useRouter();
   const projectId = params.projectId as string;
+
+  // App settings instance - memoized to prevent re-creation on every render
+  const appSettings = useMemo(() => new AppSettings(), []);
 
   const [isLoading, setIsLoading] = useState(true);
   const [activeTool, setActiveTool] = useState<Tool>('select');
@@ -104,21 +109,14 @@ export default function ProjectStudioPage() {
   >([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
 
-  // Auto-save functionality
+  // Auto-save functionality (Sync) - integrated with app settings
   const [autoSave, setAutoSave] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('auto-save-enabled');
-      return stored !== null ? JSON.parse(stored) : true; // Default to enabled
-    }
-    return true;
+    return appSettings.getUnifiedSetting('autoSave.enabled', true) as boolean;
   });
-  // Auto-save duration settings
+  // Auto-save duration settings - default 60s, minimum 30s
   const [autoSaveDuration, setAutoSaveDuration] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('auto-save-duration');
-      return stored ? parseInt(stored) : 3; // Default to 3 seconds
-    }
-    return 3;
+    const duration = appSettings.getUnifiedSetting('autoSave.duration', 60) as number;
+    return Math.max(duration, 30); // Ensure minimum 30 seconds
   });
 
   // Canvas ref for insert functionality
@@ -127,25 +125,31 @@ export default function ProjectStudioPage() {
   const toggleAutoSave = useCallback(() => {
     const newAutoSave = !autoSave;
     setAutoSave(newAutoSave);
-    localStorage.setItem('auto-save-enabled', JSON.stringify(newAutoSave));
+    
+    // Update app settings
+    appSettings.updateUnifiedSetting('autoSave.enabled', newAutoSave);
 
     // Update sync helper
     syncHelper.setEnabled(newAutoSave);
 
     if (newAutoSave) {
-      console.log('Auto-save enabled');
+      logger.info('Auto-save (Sync) enabled');
     } else {
-      console.log('Auto-save disabled');
+      logger.info('Auto-save (Sync) disabled');
       syncHelper.cancelSync(); // Cancel any pending auto-save
     }
-  }, [autoSave]);
+  }, [autoSave, appSettings]);
 
-  // Duration control for auto-save
+  // Duration control for auto-save - minimum 30 seconds
   const updateAutoSaveDuration = useCallback((duration: number) => {
-    setAutoSaveDuration(duration);
-    localStorage.setItem('auto-save-duration', duration.toString());
-    syncHelper.setDuration(duration);
-  }, []);
+    const validatedDuration = Math.max(duration, 30); // Ensure minimum 30 seconds
+    setAutoSaveDuration(validatedDuration);
+    
+    // Update app settings
+    appSettings.updateUnifiedSetting('autoSave.duration', validatedDuration);
+    
+    syncHelper.setDuration(validatedDuration);
+  }, [appSettings]);
 
   // Unified function to update page title
   const updatePageTitle = useCallback(
@@ -154,10 +158,10 @@ export default function ProjectStudioPage() {
       if (name && name !== 'Untitled Project') {
         const newTitle = `${name} - ${appConfig.app.name}`;
         document.title = newTitle;
-        console.log('Page title updated to:', newTitle);
+        logger.log('Page title updated to:', newTitle);
       } else {
         document.title = appConfig.app.name;
-        console.log('Page title updated to:', appConfig.app.name);
+        logger.log('Page title updated to:', appConfig.app.name);
       }
     },
     [projectName]
@@ -167,6 +171,21 @@ export default function ProjectStudioPage() {
   useEffect(() => {
     updatePageTitle();
   }, [projectName, updatePageTitle]);
+
+  // Initialize sync helper with app settings values
+  useEffect(() => {
+    syncHelper.setEnabled(autoSave);
+    syncHelper.setDuration(autoSaveDuration);
+  }, [autoSave, autoSaveDuration]); // Include dependencies
+
+  // Sync settings changes with app settings
+  useEffect(() => {
+    appSettings.updateUnifiedSetting('autoSave.enabled', autoSave);
+  }, [autoSave, appSettings]);
+
+  useEffect(() => {
+    appSettings.updateUnifiedSetting('autoSave.duration', autoSaveDuration);
+  }, [autoSaveDuration, appSettings]);
 
   // Load project on mount
   useEffect(() => {
@@ -248,7 +267,7 @@ export default function ProjectStudioPage() {
           return;
         }
       } catch (error) {
-        console.error('Failed to load project:', error);
+        logger.error('Failed to load project:', error);
         setError('Failed to load project');
       } finally {
         setIsLoading(false);
@@ -256,7 +275,7 @@ export default function ProjectStudioPage() {
     };
 
     loadProject();
-  }, [projectId, router]);
+  }, [projectId, router, updatePageTitle]);
 
   // Save project when state changes
   const saveProject = useCallback(async () => {
@@ -282,7 +301,7 @@ export default function ProjectStudioPage() {
       await ProjectManager.saveProject(updatedProject);
       setCurrentProject(updatedProject);
     } catch (error) {
-      console.error('Failed to save project:', error);
+      logger.error('Failed to save project:', error);
       setError('Failed to save project');
     }
   }, [
@@ -399,7 +418,7 @@ export default function ProjectStudioPage() {
         }
         setModelsFetched(true);
       } catch (error) {
-        console.error('Failed to fetch models:', error);
+        logger.error('Failed to fetch models:', error);
         // Fallback to default values if API fails
         if (!currentProject && !currentModel) {
           setCurrentModel('FLUX.1-Kontext-pro');
@@ -482,13 +501,13 @@ export default function ProjectStudioPage() {
           await ProjectManager.saveProject(updatedProject);
           setCurrentProject(updatedProject);
         } catch (error) {
-          console.error('Failed to save project name:', error);
+          logger.error('Failed to save project name:', error);
           setError('Failed to save project name');
         }
       }
     }
     setIsEditingProjectName(false);
-  }, [tempProjectName, currentProject]);
+  }, [tempProjectName, currentProject, updatePageTitle]);
 
   const handleProjectNameCancel = useCallback(() => {
     setTempProjectName(projectName);
@@ -529,14 +548,14 @@ export default function ProjectStudioPage() {
       // Redirect to new project
       router.push(`/studio/${newProject.id}`);
     } catch (error) {
-      console.error('Failed to create new project:', error);
+      logger.error('Failed to create new project:', error);
       setError('Failed to create new project');
     }
   }, [router]);
 
   const handleClose = useCallback(() => {
     // In a real app, this would close the window/tab
-    console.log('Close application');
+    logger.log('Close application');
   }, []);
 
   const handleZoomIn = useCallback(() => {
@@ -642,7 +661,7 @@ export default function ProjectStudioPage() {
 
   const handleInsertLayer = useCallback(() => {
     // Create a new layer - for now just show a notification
-    console.log('Insert new layer');
+    logger.log('Insert new layer');
     // TODO: Implement layer creation logic
   }, []);
 
@@ -683,7 +702,7 @@ export default function ProjectStudioPage() {
         await ProjectManager.exportProjectFromDB(currentProject);
       ProjectManager.downloadProject(projectData);
     } catch (error) {
-      console.error('Export failed:', error);
+      logger.error('Export failed:', error);
       setError('Failed to export project');
     }
   }, [currentProject]);
@@ -716,7 +735,7 @@ export default function ProjectStudioPage() {
           setError(result.message);
         }
       } catch (error) {
-        console.error('Import failed:', error);
+        logger.error('Import failed:', error);
         setError('Failed to import project');
       }
     };
@@ -779,7 +798,7 @@ export default function ProjectStudioPage() {
 
           // Validate that b64_json exists and is not undefined
           if (!imageItem.b64_json) {
-            console.error(
+            logger.error(
               'Generated image data is missing b64_json field:',
               imageItem
             );
@@ -809,7 +828,7 @@ export default function ProjectStudioPage() {
           try {
             await dbManager.saveAsset(asset);
           } catch (error) {
-            console.warn('Failed to save to assets:', error);
+            logger.warn('Failed to save to assets:', error);
           }
 
           // Save to history using IndexedDB
@@ -829,11 +848,11 @@ export default function ProjectStudioPage() {
           try {
             await dbManager.saveHistoryEntry(historyEntry);
           } catch (error) {
-            console.warn('Failed to save to history:', error);
+            logger.warn('Failed to save to history:', error);
           }
         }
       } catch (error) {
-        console.error('Generation error:', error);
+        logger.error('Generation error:', error);
         const errorMessage =
           error instanceof Error ? error.message : 'Unknown error occurred';
         setError(errorMessage);
@@ -852,7 +871,7 @@ export default function ProjectStudioPage() {
       try {
         await dbManager.migrateFromLocalStorage();
       } catch (error) {
-        console.error('Migration failed:', error);
+        logger.error('Migration failed:', error);
       }
     };
     migrateData();

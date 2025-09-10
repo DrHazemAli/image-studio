@@ -15,7 +15,7 @@ export function GeneralSettings() {
     showLayers: config('ui.showLayers', false) as boolean,
     showHistory: config('ui.showHistory', true) as boolean,
     autoSaveEnabled: config('autoSave.enabled', true) as boolean,
-    autoSaveDuration: config('autoSave.duration', 3) as number,
+    autoSaveDuration: config('autoSave.duration', 60) as number,
   });
 
   // Update settings when config changes
@@ -300,16 +300,18 @@ export function GeneralSettings() {
               <div className="flex items-center gap-3">
                 <input
                   type="range"
-                  min="1"
-                  max="30"
+                  min="30"
+                  max="600"
                   value={settings.autoSaveDuration}
                   onChange={e =>
                     handleAutoSaveDurationChange(parseInt(e.target.value))
                   }
                   className="flex-1 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
                 />
-                <div className="w-12 text-xs font-medium text-gray-900 dark:text-white">
-                  {settings.autoSaveDuration}s
+                <div className="w-16 text-xs font-medium text-gray-900 dark:text-white">
+                  {settings.autoSaveDuration < 60 
+                    ? `${settings.autoSaveDuration}s` 
+                    : `${Math.floor(settings.autoSaveDuration / 60)}m`}
                 </div>
               </div>
             </div>

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AzureModelsConfig, AzureModel } from '@/types/azure';
 import { AZURE_CONFIG_OBJECT_KEY } from '@/lib/constants';
-import { getEnvVar } from '@/lib/env';
+import logger from '@/lib/logger';
 import { replaceEnvTags } from '@/lib/env';
 import fs from 'fs/promises';
 import path from 'path';
@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
       const configContent = await fs.readFile(configPath, 'utf-8');
       const defaultModelsConfig: AzureModelsConfig = JSON.parse(configContent);
       
-      console.log('Loading default models config from file');
+      logger.info('Loading default models config from file');
       
       return NextResponse.json({
         models: defaultModelsConfig,
@@ -46,14 +46,14 @@ export async function GET(request: NextRequest) {
         hasValidCredentials,
       });
     } catch (fileError) {
-      console.error('Failed to load default models config:', fileError);
+      logger.error('Failed to load default models config:', fileError);
       return NextResponse.json(
         { error: 'Failed to load models configuration' },
         { status: 500 }
       );
     }
   } catch (error) {
-    console.error('Models config GET error:', error);
+    logger.error('Models config GET error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 },
@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
   try {
     const { models } = await request.json();
 
-    console.log('Validating models config structure:', {
+    logger.info('Validating models config structure:', {
       providersCount: models ? Object.keys(models.imageModels?.generation || {}).length : 0,
       hasEndpoints: !!models?.endpoints,
       hasTools: !!models?.tools,
@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
       models: modelsWithValidation,
     });
   } catch (error) {
-    console.error('Models config POST error:', error);
+    logger.error('Models config POST error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 },
@@ -150,7 +150,7 @@ export async function PUT(request: NextRequest) {
         azureEndpoint = azureConfig?.primaryEndpoint;
       }
     } catch (error) {
-      console.warn('Failed to parse Azure config cookie for validation:', error);
+      logger.warn('Failed to parse Azure config cookie for validation:', error);
     }
 
     if (!azureApiKey || !azureEndpoint) {
@@ -179,7 +179,7 @@ export async function PUT(request: NextRequest) {
       testUrl = `${processedBaseUrl}/v1/models`;
     }
     
-    console.log('Validating model:', { modelId, deploymentName, provider, testUrl });
+    logger.info('Validating model:', { modelId, deploymentName, provider, testUrl });
 
     // Test the model/deployment
     const response = await fetch(testUrl, {
@@ -237,7 +237,7 @@ export async function PUT(request: NextRequest) {
       }
     } else {
       const errorText = await response.text();
-      console.warn('Model validation failed:', { status: response.status, error: errorText });
+      logger.warn('Model validation failed:', { status: response.status, error: errorText });
       
       return NextResponse.json({
         valid: false,
@@ -252,7 +252,7 @@ export async function PUT(request: NextRequest) {
     }
 
   } catch (error) {
-    console.error('Model validation error:', error);
+    logger.error('Model validation error:', error);
     return NextResponse.json({
       valid: false,
       message: 'Failed to validate model due to server error',
@@ -273,7 +273,7 @@ export async function DELETE() {
       message: 'Models configuration reset request acknowledged',
     });
   } catch (error) {
-    console.error('Models config DELETE error:', error);
+    logger.error('Models config DELETE error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 },

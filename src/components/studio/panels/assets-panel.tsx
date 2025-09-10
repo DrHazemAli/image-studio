@@ -62,7 +62,7 @@ export function AssetsPanel({
     .filter((asset) => {
       const matchesFilter = filter === 'all' || asset.type === filter;
       const matchesSearch =
-        asset.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (asset.name && asset.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
         (asset.prompt &&
           asset.prompt.toLowerCase().includes(searchQuery.toLowerCase()));
       return matchesFilter && matchesSearch;
@@ -81,7 +81,7 @@ export function AssetsPanel({
   const handleDownloadAsset = (asset: Asset) => {
     const link = document.createElement('a');
     link.href = asset.url;
-    link.download = `${asset.name}.png`;
+    link.download = `${asset.name || 'asset'}.png`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -214,7 +214,7 @@ export function AssetsPanel({
                   >
                     <img
                       src={asset.url}
-                      alt={asset.name}
+                      alt={asset.name || 'Asset'}
                       className="w-full h-full object-cover"
                     />
 
@@ -271,13 +271,13 @@ export function AssetsPanel({
                   >
                     <img
                       src={asset.url}
-                      alt={asset.name}
+                      alt={asset.name || 'Asset'}
                       className="w-12 h-12 rounded-lg object-cover"
                     />
 
                     <div className="flex-1">
                       <div className="font-medium text-gray-900 dark:text-white">
-                        {asset.name}
+                        {asset.name || 'Unnamed Asset'}
                       </div>
                       <div className="text-sm text-gray-500 dark:text-gray-400">
                         {asset.prompt && (

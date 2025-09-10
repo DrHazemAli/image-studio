@@ -4,8 +4,8 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Canvas as FabricCanvas, FabricObject } from 'fabric';
 import * as Tooltip from '@radix-ui/react-tooltip';
+import logger from '@/lib/logger';
 import {
-  ScissorsIcon,
   BlendingModeIcon,
   TransformIcon,
   MagicWandIcon,
@@ -29,6 +29,7 @@ import {
   ImageAdjustments,
   useAdjustmentsPersistence,
 } from '../image-editing';
+import { dbManager } from '@/lib/indexeddb';
 
 /**
  * Interface for individual image tools
@@ -125,30 +126,34 @@ export const FloatingImageToolbar: React.FC<FloatingImageToolbarProps> = ({
   const [isAdjustmentsOpen, setIsAdjustmentsOpen] = useState(false);
 
   // Persistence hook for saving/loading image adjustments
-  const { saveImageAdjustments, loadImageAdjustments, hasStoredAdjustments } =
+  const { saveImageAdjustments } =
     useAdjustmentsPersistence(fabricCanvas, {
       projectId,
       autoSave: true,
       saveDebounceMs: 1000,
       onSave: async (projId, adjustments) => {
-        // Save to IndexedDB or project storage
+        // Save to IndexedDB project storage
         try {
-          console.log('Saving project adjustments:', projId, adjustments);
-          // TODO: Integrate with your project storage system
-          localStorage.setItem(
-            `project_adjustments_${projId}`,
-            JSON.stringify(adjustments)
-          );
+          logger.log('Saving project adjustments:', projId, adjustments);
+          const project = await dbManager.getProject(projId);
+          if (project) {
+            const updatedProject = {
+              ...project,
+              adjustments: adjustments,
+              updated_at: new Date(),
+            };
+            await dbManager.saveProject(updatedProject);
+          }
         } catch (error) {
-          console.error('Failed to save project adjustments:', error);
+          logger.error('Failed to save project adjustments:', error);
         }
       },
       onLoad: async (projId) => {
-        // Load from IndexedDB or project storage
+        // Load from IndexedDB project storage
         try {
-          const stored = localStorage.getItem(`project_adjustments_${projId}`);
-          if (stored) {
-            return JSON.parse(stored);
+          const project = await dbManager.getProject(projId);
+          if (project && project.adjustments) {
+            return project.adjustments;
           }
         } catch (error) {
           console.error('Failed to load project adjustments:', error);

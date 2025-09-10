@@ -4,7 +4,7 @@
  */
 
 import { dbManager, type Project } from './indexeddb';
-
+import logger from './logger';
 export interface SyncStats {
   filesCount: number;
   totalSize: number;
@@ -59,7 +59,7 @@ export class SyncHelper {
   private onSyncStartCallback: (() => void) | null = null;
   private onSyncEndCallback: (() => void) | null = null;
   private options: SyncOptions = {
-    duration: 3,
+    duration: 60, // Default 1 minute
     enabled: true,
     syncOnSave: true,
   };
@@ -218,10 +218,62 @@ export class SyncHelper {
   }
 
   /**
-   * Set sync duration
+   * Set sync duration (minimum 30 seconds)
    */
   public setDuration(duration: number): void {
-    this.updateOptions({ duration });
+    const minDuration = 30;
+    const actualDuration = Math.max(duration, minDuration);
+    this.updateOptions({ duration: actualDuration });
+  }
+
+  /**
+   * Update assets with current canvas modifications
+   */
+  public async updateAssetsWithCanvasModifications(): Promise<void> {
+    if (!this.currentProject || !this.currentState) return;
+
+    try {
+      // Update current image if it exists and has been modified
+      if (this.currentState.currentImage) {
+        await dbManager.saveAsset({
+          id: `current-image-${this.currentProject.id}`,
+          project_id: this.currentProject.id,
+          url: this.currentState.currentImage,
+          name: 'Current Image',
+          type: 'upload',
+          timestamp: new Date(),
+        });
+      }
+
+      // Update generated image if it exists and has been modified
+      if (this.currentState.generatedImage) {
+        await dbManager.saveAsset({
+          id: `generated-image-${this.currentProject.id}`,
+          project_id: this.currentProject.id,
+          url: this.currentState.generatedImage,
+          name: 'Generated Image',
+          type: 'upload',
+          timestamp: new Date(),
+        });
+      }
+
+      // Update attached image if it exists and has been modified
+      if (this.currentState.attachedImage) {
+        await dbManager.saveAsset({
+          id: `attached-image-${this.currentProject.id}`,
+          project_id: this.currentProject.id,
+          url: this.currentState.attachedImage,
+          name: 'Attached Image',
+          type: 'upload',
+          timestamp: new Date(),
+        });
+      }
+
+      logger.info('Assets updated with canvas modifications');
+    } catch (error) {
+      logger.error('Failed to update assets with canvas modifications:', error);
+      throw error;
+    }
   }
 
   /**
@@ -280,6 +332,9 @@ export class SyncHelper {
         updated_at: new Date(),
       };
 
+      // Update assets with canvas modifications first
+      await this.updateAssetsWithCanvasModifications();
+
       // Save to database
       await dbManager.saveProject(updatedProject);
 
@@ -301,7 +356,7 @@ export class SyncHelper {
         this.onSyncCallback(stats);
       }
 
-      console.log('Auto-save completed via sync helper:', stats);
+      logger.info('Auto-save completed via sync helper:', stats);
       return stats;
     } catch (error) {
       console.error('Auto-save failed:', error);
