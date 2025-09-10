@@ -15,7 +15,7 @@ Azure Image Studio is a cutting-edge image generation and editing platform that 
 [![Community Project](https://img.shields.io/badge/Type-Community%20Project-orange?style=for-the-badge)](https://github.com/DrHazemAli/azure-image-studio)
 [![Microsoft MVP](https://img.shields.io/badge/Author-Microsoft%20MVP-purple?style=for-the-badge)](https://github.com/DrHazemAli)
 [![Code Coverage](https://img.shields.io/badge/Code%20Coverage-85%25-brightgreen?style=for-the-badge)](CODE_COVERAGE.md)
-[![Last Updated](https://img.shields.io/badge/Last%20Updated-September%2008%2C%202025-blue?style=for-the-badge)](https://github.com/DrHazemAli/azure-image-studio)
+[![Last Updated](https://img.shields.io/badge/Last%20Updated-September%2010%2C%202025-blue?style=for-the-badge)](https://github.com/DrHazemAli/azure-image-studio)
 
 </div>
 
