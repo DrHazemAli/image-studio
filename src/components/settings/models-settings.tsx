@@ -81,7 +81,7 @@ export function ModelsSettings() {
 
         if (savedModelsConfig) {
           console.log('Found saved models in localStorage:', savedModelsConfig);
-          finalModelsConfig = savedModelsConfig;
+          finalModelsConfig = savedModelsConfig as AzureModelsConfig;
         } else if (defaultModelsConfig) {
           console.log('Using default models config from JSON file');
           finalModelsConfig = defaultModelsConfig;

@@ -157,7 +157,7 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
           searchInputRef.current.blur();
         }
         // Load developer mode setting
-        setDeveloperMode(config('developer.mode', false));
+        setDeveloperMode(config('developer.mode', false) as boolean);
         setIsDataLoaded(true);
       }, 50); // Very short delay to allow modal to show first
     } else if (!isOpen) {

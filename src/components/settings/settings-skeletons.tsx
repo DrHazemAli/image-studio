@@ -194,8 +194,8 @@ export function ModelsSettingsSkeleton() {
           </div>
           
           {[1, 2, 3].map(i => (
-            <SkeletonCard key={i}>
-              <div className="flex items-center justify-between p-4">
+            <div key={i} className="p-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50">
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Skeleton className="w-12 h-12 rounded-lg" />
                   <div className="space-y-2">
@@ -210,7 +210,7 @@ export function ModelsSettingsSkeleton() {
                   <Skeleton className="h-8 w-8 rounded-md" />
                 </div>
               </div>
-            </SkeletonCard>
+            </div>
           ))}
         </div>
       </div>

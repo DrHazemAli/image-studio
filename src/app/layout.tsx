@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import '@radix-ui/themes/styles.css';
+import { ThemeProvider } from 'next-themes';
+import { Theme } from '@radix-ui/themes';
 import { ToastProvider } from '@/components/ui/toast';
 import appConfig from '@/app/config/app-config.json';
 const geistSans = Geist({
@@ -25,11 +27,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ToastProvider>{children}</ToastProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Theme>
+            <ToastProvider>{children}</ToastProvider>
+          </Theme>
+        </ThemeProvider>
       </body>
     </html>
   );

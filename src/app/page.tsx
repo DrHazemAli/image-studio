@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Theme, Flex, Container, Box } from '@radix-ui/themes';
+import { Flex, Container, Box } from '@radix-ui/themes';
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
 import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
 import { motion } from 'framer-motion';
@@ -87,31 +87,26 @@ export default function Home() {
 
   if (loading) {
     return (
-      <Theme>
-        <Container size="2" className="py-8">
-          <Flex justify="center" align="center" style={{ minHeight: '50vh' }}>
-            <Box>Loading configuration...</Box>
-          </Flex>
-        </Container>
-      </Theme>
+      <Container size="2" className="py-8">
+        <Flex justify="center" align="center" style={{ minHeight: '50vh' }}>
+          <Box>Loading configuration...</Box>
+        </Flex>
+      </Container>
     );
   }
 
   if (!config) {
     return (
-      <Theme>
-        <Container size="2" className="py-8">
-          <Flex justify="center" align="center" style={{ minHeight: '50vh' }}>
-            <Box>Failed to load configuration</Box>
-          </Flex>
-        </Container>
-      </Theme>
+      <Container size="2" className="py-8">
+        <Flex justify="center" align="center" style={{ minHeight: '50vh' }}>
+          <Box>Failed to load configuration</Box>
+        </Flex>
+      </Container>
     );
   }
 
   return (
-    <Theme>
-      <div className="min-h-screen">
+    <div className="min-h-screen">
         <AlertDialog.Root
           open={showConfigAlert}
           onOpenChange={setShowConfigAlert}
@@ -164,6 +159,5 @@ export default function Home() {
           </AlertDialog.Portal>
         </AlertDialog.Root>
       </div>
-    </Theme>
   );
 }

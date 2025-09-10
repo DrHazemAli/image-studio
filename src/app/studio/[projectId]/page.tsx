@@ -3,7 +3,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Theme } from '@radix-ui/themes';
 import { Toolbar, Tool } from '@/components/studio/toolbar';
 import { Canvas } from '@/components/studio/canvas';
 import { type MainCanvasRef } from '@/components/studio/canvas/main-canvas';
@@ -1001,9 +1000,7 @@ export default function ProjectStudioPage() {
   }
 
   return (
-    <Theme>
-      {/* Main Studio Interface */}
-      <motion.div
+    <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -1378,6 +1375,5 @@ export default function ProjectStudioPage() {
           onClose={handleSettingsModalClose}
         />
       </motion.div>
-    </Theme>
   );
 }

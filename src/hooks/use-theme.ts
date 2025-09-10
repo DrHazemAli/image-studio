@@ -1,55 +1,30 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useTheme as useNextTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 
 type Theme = 'light' | 'dark' | 'system';
 
 export function useTheme() {
-  const [theme, setTheme] = useState<Theme>('system');
-  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
+  const { theme, setTheme, resolvedTheme } = useNextTheme();
+  const [mounted, setMounted] = useState(false);
 
+  // useEffect only runs on the client, so now we can safely show the UI
   useEffect(() => {
-    // Get saved theme from localStorage
-    const saved = localStorage.getItem('theme') as Theme;
-    if (saved) {
-      setTheme(saved);
-    }
+    setMounted(true);
   }, []);
 
-  useEffect(() => {
-    const updateResolvedTheme = () => {
-      if (theme === 'system') {
-        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        setResolvedTheme(systemTheme);
-      } else {
-        setResolvedTheme(theme);
-      }
+  if (!mounted) {
+    return {
+      theme: 'system' as Theme,
+      resolvedTheme: 'light' as 'light' | 'dark',
+      setTheme: () => {},
     };
-
-    updateResolvedTheme();
-
-    if (theme === 'system') {
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      mediaQuery.addEventListener('change', updateResolvedTheme);
-      return () => mediaQuery.removeEventListener('change', updateResolvedTheme);
-    }
-  }, [theme]);
-
-  useEffect(() => {
-    const root = document.documentElement;
-    root.classList.remove('light', 'dark');
-    root.classList.add(resolvedTheme);
-    root.setAttribute('data-theme', resolvedTheme);
-  }, [resolvedTheme]);
-
-  const setThemeValue = (newTheme: Theme) => {
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-  };
+  }
 
   return {
-    theme,
-    resolvedTheme,
-    setTheme: setThemeValue,
+    theme: theme as Theme,
+    resolvedTheme: resolvedTheme as 'light' | 'dark',
+    setTheme: (newTheme: Theme) => setTheme(newTheme),
   };
 }

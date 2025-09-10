@@ -9,7 +9,6 @@ import { UnifiedSettings } from './types';
  * Default unified settings structure
  */
 const defaultUnifiedSettings: UnifiedSettings = {
-  theme: 'system',
   developer: {
     mode: false,
   },
@@ -37,7 +36,6 @@ const defaultUnifiedSettings: UnifiedSettings = {
  * Mapping of old individual keys to new unified settings paths
  */
 const keyMappings: Record<string, string> = {
-  'theme': 'theme',
   'developer.mode': 'developer.mode',
   'autoSave.enabled': 'autoSave.enabled',
   'autoSave.duration': 'autoSave.duration',
@@ -112,11 +110,11 @@ export function cleanupOldSettings(storage: 'localStorage' | 'sessionStorage' = 
  * Helper function to get nested value from object using dot notation
  */
 function getNestedValue(obj: Record<string, unknown>, path: string): unknown {
-  return path.split('.').reduce((current, key) => {
-    return current && typeof current === 'object' && key in current 
+  return path.split('.').reduce((current: unknown, key: string) => {
+    return current && typeof current === 'object' && current !== null && key in (current as Record<string, unknown>)
       ? (current as Record<string, unknown>)[key] 
       : undefined;
-  }, obj);
+  }, obj as unknown);
 }
 
 /**
