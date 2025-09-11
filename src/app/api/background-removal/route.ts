@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
     }));
 
     if (!userConfig.endpoints || userConfig.endpoints.length === 0) {
-      if (appEndpoints.length > 0) {
+      if (appEndpoints.length === 0) {
         return NextResponse.json(
           { error: 'Azure is not configured, Please configure Azure first from settings' },
           { status: 500 }
