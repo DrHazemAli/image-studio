@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import React, { useMemo, useCallback, useState, useEffect } from 'react';
-import { Sun, Moon, Monitor, Palette, Eye, EyeOff } from 'lucide-react';
-import { config } from '@/lib/settings';
-import { useTheme } from '@/hooks/use-theme';
+import React, { useMemo, useCallback, useState, useEffect } from "react";
+import { Sun, Moon, Monitor, Palette, Eye, EyeOff } from "lucide-react";
+import { config } from "@/lib/settings";
+import { useTheme } from "@/hooks/use-theme";
 
 export function GeneralSettings() {
   const { theme, setTheme } = useTheme();
 
   // Cache config values to prevent redundant reads
   const [settings, setSettings] = useState({
-    animations: config('ui.animations', true) as boolean,
-    showConsole: config('ui.showConsole', false) as boolean,
-    showLayers: config('ui.showLayers', false) as boolean,
-    showHistory: config('ui.showHistory', true) as boolean,
-    autoSaveEnabled: config('autoSave.enabled', true) as boolean,
-    autoSaveDuration: config('autoSave.duration', 60) as number,
+    animations: config("ui.animations", true) as boolean,
+    showConsole: config("ui.showConsole", false) as boolean,
+    showLayers: config("ui.showLayers", false) as boolean,
+    showHistory: config("ui.showHistory", true) as boolean,
+    autoSaveEnabled: config("autoSave.enabled", true) as boolean,
+    autoSaveDuration: config("autoSave.duration", 60) as number,
   });
 
   // Update settings when config changes
@@ -23,80 +23,80 @@ export function GeneralSettings() {
     const handleSettingsChange = (event: CustomEvent) => {
       const { key, value } = event.detail;
       // Map the config key to the state property name
-      const stateKey = key.replace('ui.', '').replace('autoSave.', 'autoSave');
-      setSettings(prev => ({
+      const stateKey = key.replace("ui.", "").replace("autoSave.", "autoSave");
+      setSettings((prev) => ({
         ...prev,
         [stateKey]: value,
       }));
     };
 
     window.addEventListener(
-      'settingsChanged',
-      handleSettingsChange as EventListener
+      "settingsChanged",
+      handleSettingsChange as EventListener,
     );
     return () =>
       window.removeEventListener(
-        'settingsChanged',
-        handleSettingsChange as EventListener
+        "settingsChanged",
+        handleSettingsChange as EventListener,
       );
   }, []);
 
   const themeOptions = useMemo(
     () => [
       {
-        value: 'light' as const,
-        label: 'Light',
-        description: 'Clean and bright interface',
+        value: "light" as const,
+        label: "Light",
+        description: "Clean and bright interface",
         icon: Sun,
       },
       {
-        value: 'dark' as const,
-        label: 'Dark',
-        description: 'Easy on the eyes in low light',
+        value: "dark" as const,
+        label: "Dark",
+        description: "Easy on the eyes in low light",
         icon: Moon,
       },
       {
-        value: 'system' as const,
-        label: 'System',
-        description: 'Follow your system preference',
+        value: "system" as const,
+        label: "System",
+        description: "Follow your system preference",
         icon: Monitor,
       },
     ],
-    []
+    [],
   );
 
   const handleThemeChange = useCallback(
-    (newTheme: 'light' | 'dark' | 'system') => {
+    (newTheme: "light" | "dark" | "system") => {
       setTheme(newTheme);
     },
-    [setTheme]
+    [setTheme],
   );
 
   const handleToggleSetting = useCallback(
     (key: string, currentValue: boolean) => {
       const newValue = !currentValue;
       config(key, newValue);
-      
+
       // Map the config key to the state property name
-      const stateKey = key.replace('ui.', '').replace('autoSave.', 'autoSave');
-      setSettings(prev => ({ ...prev, [stateKey]: newValue }));
-      
+      const stateKey = key.replace("ui.", "").replace("autoSave.", "autoSave");
+      setSettings((prev) => ({ ...prev, [stateKey]: newValue }));
+
       window.dispatchEvent(
-        new CustomEvent('settingsChanged', {
+        new CustomEvent("settingsChanged", {
           detail: { key, value: newValue },
-        })
+        }),
       );
     },
-    []
+    [],
   );
 
   const handleAutoSaveDurationChange = useCallback((value: number) => {
-    config('autoSave.duration', value);
-    setSettings(prev => ({ ...prev, autoSaveDuration: value }));
+    config("autoSave.duration", value);
+    setSettings((prev) => ({ ...prev, autoSaveDuration: value }));
     window.dispatchEvent(
-      new CustomEvent('settingsChanged', {
-        detail: { key: 'autoSave.duration', value },
-      })
+      new CustomEvent("settingsChanged", {
+        detail: { key: "autoSave.duration", value },
+      }),
     );
   }, []);
 
@@ -120,7 +120,7 @@ export function GeneralSettings() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {themeOptions.map(option => {
+            {themeOptions.map((option) => {
               const Icon = option.icon;
               const isSelected = theme === option.value;
 
@@ -132,8 +132,8 @@ export function GeneralSettings() {
                     relative p-3 rounded-lg border transition-colors duration-200 text-left group
                     ${
                       isSelected
-                        ? 'border-blue-500/50 bg-blue-50/50 dark:bg-blue-900/20 shadow-sm'
-                        : 'border-gray-200/50 dark:border-gray-700/50 hover:border-gray-300/50 dark:hover:border-gray-600/50 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm'
+                        ? "border-blue-500/50 bg-blue-50/50 dark:bg-blue-900/20 shadow-sm"
+                        : "border-gray-200/50 dark:border-gray-700/50 hover:border-gray-300/50 dark:hover:border-gray-600/50 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm"
                     }
                   `}
                 >
@@ -143,8 +143,8 @@ export function GeneralSettings() {
                       w-8 h-8 rounded-lg flex items-center justify-center transition-colors
                       ${
                         isSelected
-                          ? 'bg-blue-500 text-white'
-                          : 'bg-gray-100/50 dark:bg-gray-700/50 text-gray-600 dark:text-gray-300 group-hover:bg-gray-200/50 dark:group-hover:bg-gray-600/50'
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-100/50 dark:bg-gray-700/50 text-gray-600 dark:text-gray-300 group-hover:bg-gray-200/50 dark:group-hover:bg-gray-600/50"
                       }
                     `}
                     >
@@ -194,7 +194,7 @@ export function GeneralSettings() {
             <ToggleSwitch
               checked={settings.animations}
               onChange={() =>
-                handleToggleSetting('ui.animations', settings.animations)
+                handleToggleSetting("ui.animations", settings.animations)
               }
             />
           </div>
@@ -212,7 +212,7 @@ export function GeneralSettings() {
             <ToggleSwitch
               checked={settings.showConsole}
               onChange={() =>
-                handleToggleSetting('ui.showConsole', settings.showConsole)
+                handleToggleSetting("ui.showConsole", settings.showConsole)
               }
             />
           </div>
@@ -230,7 +230,7 @@ export function GeneralSettings() {
             <ToggleSwitch
               checked={settings.showLayers}
               onChange={() =>
-                handleToggleSetting('ui.showLayers', settings.showLayers)
+                handleToggleSetting("ui.showLayers", settings.showLayers)
               }
             />
           </div>
@@ -248,7 +248,7 @@ export function GeneralSettings() {
             <ToggleSwitch
               checked={settings.showHistory}
               onChange={() =>
-                handleToggleSetting('ui.showHistory', settings.showHistory)
+                handleToggleSetting("ui.showHistory", settings.showHistory)
               }
             />
           </div>
@@ -279,8 +279,8 @@ export function GeneralSettings() {
               checked={settings.autoSaveEnabled}
               onChange={() =>
                 handleToggleSetting(
-                  'autoSave.enabled',
-                  settings.autoSaveEnabled
+                  "autoSave.enabled",
+                  settings.autoSaveEnabled,
                 )
               }
             />
@@ -303,14 +303,14 @@ export function GeneralSettings() {
                   min="30"
                   max="600"
                   value={settings.autoSaveDuration}
-                  onChange={e =>
+                  onChange={(e) =>
                     handleAutoSaveDurationChange(parseInt(e.target.value))
                   }
                   className="flex-1 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
                 />
                 <div className="w-16 text-xs font-medium text-gray-900 dark:text-white">
-                  {settings.autoSaveDuration < 60 
-                    ? `${settings.autoSaveDuration}s` 
+                  {settings.autoSaveDuration < 60
+                    ? `${settings.autoSaveDuration}s`
                     : `${Math.floor(settings.autoSaveDuration / 60)}m`}
                 </div>
               </div>
@@ -335,12 +335,12 @@ const ToggleSwitch = React.memo(function ToggleSwitch({
       onClick={onChange}
       className={`
         relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500/50
-        ${checked ? 'bg-blue-500' : 'bg-gray-300 dark:bg-gray-600'}
+        ${checked ? "bg-blue-500" : "bg-gray-300 dark:bg-gray-600"}
       `}
     >
       <span
         className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform duration-150 ease-in-out ${
-          checked ? 'translate-x-4' : 'translate-x-0.5'
+          checked ? "translate-x-4" : "translate-x-0.5"
         }`}
       />
     </button>

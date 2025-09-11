@@ -5,6 +5,7 @@
 ## 📖 Where to Find Documentation
 
 ### 🎯 Main Documentation
+
 All current documentation is now located in the **[wiki/](../wiki/)** directory:
 
 - **[Wiki Home](../wiki/README.mdx)** - Main documentation hub
@@ -23,6 +24,7 @@ All current documentation is now located in the **[wiki/](../wiki/)** directory:
 - And many more guides...
 
 ### 📁 Legacy Documentation
+
 Legacy documentation remains available in the **[legacy/](legacy/)** folder for reference purposes.
 
 ---

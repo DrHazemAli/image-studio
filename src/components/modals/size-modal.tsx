@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React, { useCallback, useMemo } from 'react';
-import { BaseModal } from './base-modal';
-import { AspectRatioIcon } from '@radix-ui/react-icons';
-import { motion } from 'framer-motion';
-import type { ModelInfo, SizeOption } from '@/app/api/models/route';
+import React, { useCallback, useMemo } from "react";
+import { BaseModal } from "./base-modal";
+import { AspectRatioIcon } from "@radix-ui/react-icons";
+import { motion } from "framer-motion";
+import type { ModelInfo, SizeOption } from "@/app/api/models/route";
 
 interface SizeModalProps {
   isOpen: boolean;
@@ -33,16 +33,16 @@ export const SizeModal = React.memo<SizeModalProps>(
         ? model.supportedSizes
         : [
             {
-              size: '1024x1024',
-              label: 'Square (1:1)',
-              aspect: '1:1',
-              description: 'Standard size',
+              size: "1024x1024",
+              label: "Square (1:1)",
+              aspect: "1:1",
+              description: "Standard size",
             },
             {
-              size: '1024x768',
-              label: 'Standard (4:3)',
-              aspect: '4:3',
-              description: 'Default size',
+              size: "1024x768",
+              label: "Standard (4:3)",
+              aspect: "4:3",
+              description: "Default size",
             },
           ];
     }, [models, currentModel]);
@@ -50,7 +50,7 @@ export const SizeModal = React.memo<SizeModalProps>(
     // Memoize model name to prevent unnecessary recalculations
     const modelName = useMemo(
       () => getModelName(currentModel),
-      [getModelName, currentModel]
+      [getModelName, currentModel],
     );
 
     // Memoize size selection handler to prevent unnecessary rerenders
@@ -59,7 +59,7 @@ export const SizeModal = React.memo<SizeModalProps>(
         onSizeChange(size);
         onClose();
       },
-      [onSizeChange, onClose]
+      [onSizeChange, onClose],
     );
 
     return (
@@ -119,7 +119,7 @@ export const SizeModal = React.memo<SizeModalProps>(
                   banners, and wide scenes
                 </div>
               </li>
-              {currentModel.includes('flux') && (
+              {currentModel.includes("flux") && (
                 <li className="flex items-start gap-2">
                   <span className="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0" />
                   <div>
@@ -133,10 +133,10 @@ export const SizeModal = React.memo<SizeModalProps>(
         </div>
       </BaseModal>
     );
-  }
+  },
 );
 
-SizeModal.displayName = 'SizeModal';
+SizeModal.displayName = "SizeModal";
 
 // Separate component for size option buttons to prevent unnecessary rerenders
 const SizeOptionButton = React.memo<{
@@ -155,8 +155,8 @@ const SizeOptionButton = React.memo<{
       whileTap={{ scale: 0.98 }}
       className={`p-4 rounded-xl border-2 text-left transition-all duration-200 ${
         isSelected
-          ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 shadow-md'
-          : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800/50'
+          ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 shadow-md"
+          : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800/50"
       }`}
     >
       <div className="flex items-center justify-between mb-2">
@@ -174,20 +174,20 @@ const SizeOptionButton = React.memo<{
           className="border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 rounded"
           style={{
             width:
-              sizeOption.aspect === '1:1'
-                ? '32px'
-                : sizeOption.aspect.startsWith('16:') ||
-                    sizeOption.aspect.startsWith('3:2')
-                  ? '40px'
-                  : '24px',
+              sizeOption.aspect === "1:1"
+                ? "32px"
+                : sizeOption.aspect.startsWith("16:") ||
+                    sizeOption.aspect.startsWith("3:2")
+                  ? "40px"
+                  : "24px",
             height:
-              sizeOption.aspect === '1:1'
-                ? '32px'
-                : sizeOption.aspect.includes(':9') ||
-                    sizeOption.aspect === '2:3' ||
-                    sizeOption.aspect === '3:4'
-                  ? '40px'
-                  : '24px',
+              sizeOption.aspect === "1:1"
+                ? "32px"
+                : sizeOption.aspect.includes(":9") ||
+                    sizeOption.aspect === "2:3" ||
+                    sizeOption.aspect === "3:4"
+                  ? "40px"
+                  : "24px",
           }}
         />
       </div>
@@ -195,4 +195,4 @@ const SizeOptionButton = React.memo<{
   );
 });
 
-SizeOptionButton.displayName = 'SizeOptionButton';
+SizeOptionButton.displayName = "SizeOptionButton";

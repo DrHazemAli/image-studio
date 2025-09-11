@@ -17,6 +17,7 @@
 ### ⚠️ DEFAULT CREDENTIALS WARNING
 
 **This application ships with DEFAULT ADMIN CREDENTIALS:**
+
 - **Username:** `hazem` (configured in app-config.json)
 - **Password:** `0000`
 
@@ -34,7 +35,7 @@ Before deploying to any environment accessible by others:
 
 - Replace the simple password-based authentication with enterprise-grade authentication
 - Implement proper JWT token management
-- Add rate limiting and brute-force protection  
+- Add rate limiting and brute-force protection
 - Enable HTTPS/TLS encryption
 - Set up proper session management
 - Implement audit logging for all authentication attempts
@@ -80,7 +81,7 @@ The authentication credentials are stored in `/src/app/config/app-config.json`:
     "user_id": "dcee1a95-7dd1-4ba0-9ce6-84f1786fbe76",
     "name": "Hazem Ali",
     "username": "hazem",
-    "role": "admin", 
+    "role": "admin",
     "password": "0000",
     "email": "your-email"
   }
@@ -90,7 +91,9 @@ The authentication credentials are stored in `/src/app/config/app-config.json`:
 ### 1.3 Security Best Practices
 
 #### Immediate Actions:
+
 1. **Change Default Password**
+
    ```json
    {
      "admin": {
@@ -115,6 +118,7 @@ The authentication credentials are stored in `/src/app/config/app-config.json`:
    - Update the verification logic in `/src/lib/auth.ts`
 
 2. **Enable HTTPS**
+
    ```javascript
    // next.config.ts
    const nextConfig = {
@@ -124,17 +128,17 @@ The authentication credentials are stored in `/src/app/config/app-config.json`:
      async headers() {
        return [
          {
-           source: '/(.*)',
+           source: "/(.*)",
            headers: [
              {
-               key: 'Strict-Transport-Security',
-               value: 'max-age=63072000; includeSubDomains; preload'
-             }
-           ]
-         }
-       ]
-     }
-   }
+               key: "Strict-Transport-Security",
+               value: "max-age=63072000; includeSubDomains; preload",
+             },
+           ],
+         },
+       ];
+     },
+   };
    ```
 
 3. **Implement Rate Limiting**
@@ -143,7 +147,7 @@ The authentication credentials are stored in `/src/app/config/app-config.json`:
    const rateLimit = {
      windowMs: 15 * 60 * 1000, // 15 minutes
      maxRequests: 100,
-     skipSuccessfulRequests: true
+     skipSuccessfulRequests: true,
    };
    ```
 
@@ -186,6 +190,7 @@ Before configuring Azure Image Studio, ensure you have:
 **Purpose:** Provides access to GPT-Image-1 and other OpenAI models
 
 **Setup Steps:**
+
 1. Navigate to [Azure Portal](https://portal.azure.com)
 2. Search for "Azure OpenAI" in the search bar
 3. Click "Create" → "Azure OpenAI"
@@ -205,6 +210,7 @@ Before configuring Azure Image Studio, ensure you have:
 **Purpose:** Provides access to FLUX and Microsoft Phi models
 
 **Setup Steps:**
+
 1. Navigate to [Azure AI Foundry](https://ai.azure.com)
 2. Sign in with your Azure account
 3. Create a new project:
@@ -228,6 +234,7 @@ az group create --name rg-azure-image-studio --location eastus
 ```
 
 **Recommended Resource Structure:**
+
 ```
 rg-azure-image-studio/
 ├── aoai-image-studio-prod (Azure OpenAI Service)
@@ -262,6 +269,7 @@ az ad sp create-for-rbac --name "azure-image-studio-sp" \
 ### 3.1 Accessing Settings in Azure Image Studio
 
 #### Step 1: Application Login
+
 1. Start Azure Image Studio application
 2. Navigate to the login screen
 3. Enter credentials:
@@ -270,6 +278,7 @@ az ad sp create-for-rbac --name "azure-image-studio-sp" \
 4. Click "Login"
 
 #### Step 2: Accessing Azure Settings
+
 1. Once logged in, look for the Settings icon (⚙️) in the navigation
 2. Click on "Settings" to open the Settings Dialog
 3. Navigate to the "Azure" tab in the settings panel
@@ -279,6 +288,7 @@ az ad sp create-for-rbac --name "azure-image-studio-sp" \
 The Azure settings are divided into several key sections:
 
 #### Step 3: Primary Azure Configuration
+
 1. In the Azure settings tab, locate the "Primary Configuration" section
 2. Fill in the following required fields:
 
@@ -290,17 +300,20 @@ Primary Endpoint: https://your-resource.openai.azure.com/
 **How to obtain these values:**
 
 **API Key:**
+
 1. Go to [Azure Portal](https://portal.azure.com)
 2. Navigate to your Azure OpenAI resource
 3. Click "Keys and Endpoint" in the left menu
 4. Copy "Key 1" value
 
 **Endpoint URL:**
+
 1. In the same "Keys and Endpoint" section
 2. Copy the "Endpoint" URL
 3. Ensure it follows the format: `https://your-resource.openai.azure.com/`
 
 #### Step 4: Default Settings Configuration
+
 Configure the default generation settings:
 
 ```
@@ -310,6 +323,7 @@ Number of Images (n): 1-10 (start with 1)
 ```
 
 #### Step 5: UI Preferences
+
 Set up the user interface preferences:
 
 ```
@@ -321,6 +335,7 @@ Animations Enabled: true (improves user experience)
 ### 3.3 Endpoint Management Interface
 
 #### Step 6: Adding Multiple Endpoints
+
 Azure Image Studio supports multiple Azure endpoints for load balancing and redundancy:
 
 1. Scroll down to the "Endpoint Management" section
@@ -336,6 +351,7 @@ Azure Image Studio supports multiple Azure endpoints for load balancing and redu
 4. Click "Add Endpoint"
 
 #### Step 7: Configuring Deployments for Each Endpoint
+
 For each endpoint, configure model deployments:
 
 1. Click on an endpoint to expand its configuration
@@ -355,6 +371,7 @@ For each endpoint, configure model deployments:
 Before configuring deployments in the application, ensure models are deployed in Azure:
 
 #### Azure OpenAI Model Deployment:
+
 1. Go to [Azure OpenAI Studio](https://oai.azure.com)
 2. Select your resource
 3. Go to "Deployments" tab
@@ -369,6 +386,7 @@ Before configuring deployments in the application, ensure models are deployed in
 6. Click "Create"
 
 #### Azure AI Foundry Model Deployment:
+
 1. Go to [Azure AI Foundry](https://ai.azure.com)
 2. Navigate to your project
 3. Go to "Models + endpoints"
@@ -404,10 +422,11 @@ Settings Dialog
 ### 4.2 Azure Tab Deep Dive
 
 #### Primary Configuration Panel
+
 ```typescript
 interface AzureConfig {
   primary: {
-    status: 'valid' | 'invalid' | 'pending' | 'idle';
+    status: "valid" | "invalid" | "pending" | "idle";
     validated_at: string | null;
   };
   primaryApiKey: string;
@@ -426,7 +445,9 @@ interface AzureConfig {
 ```
 
 #### Endpoint Management Panel
+
 Each endpoint configuration includes:
+
 - **Basic Information:** Name, Base URL, API Version
 - **Authentication:** API Key, Resource Name
 - **Deployments:** Model deployments associated with the endpoint
@@ -438,12 +459,14 @@ Each endpoint configuration includes:
 The UI provides real-time feedback on configuration status:
 
 #### Status Icons and Meanings:
+
 - 🟢 **Valid:** Configuration is working correctly
 - 🔴 **Invalid:** Configuration has errors
 - 🟡 **Pending:** Validation in progress
 - ⚪ **Idle:** Not yet validated
 
 #### Validation Process:
+
 1. **Automatic Validation:** Triggered when configuration changes
 2. **Manual Validation:** Click "Validate" button for immediate check
 3. **Test Generation:** Click "Test" to perform actual image generation
@@ -454,18 +477,21 @@ The UI provides real-time feedback on configuration status:
 #### Common Validation Errors:
 
 1. **Invalid API Key**
+
    ```
    Error: Authentication failed
    Solution: Verify API key is correct and has proper permissions
    ```
 
 2. **Wrong Endpoint URL**
+
    ```
    Error: Endpoint not reachable
    Solution: Check URL format and resource name
    ```
 
 3. **Missing Model Deployment**
+
    ```
    Error: Deployment 'gpt-image-1' not found
    Solution: Deploy model in Azure OpenAI Studio
@@ -482,6 +508,7 @@ The UI provides real-time feedback on configuration status:
 The application performs comprehensive validation:
 
 #### Validation Steps:
+
 1. **Endpoint Connectivity:** Test HTTP connection to Azure endpoint
 2. **Authentication Check:** Verify API key validity
 3. **Model Availability:** Check if configured models are deployed
@@ -489,23 +516,27 @@ The application performs comprehensive validation:
 5. **Rate Limit Check:** Verify rate limits and quotas
 
 #### Validation Code Flow:
+
 ```typescript
 // Validation process in /src/app/api/azure/validate/route.ts
 async function validateAzureConfig(config: AzureConfig) {
   // 1. Test endpoint connectivity
   const connectionTest = await testEndpointConnectivity(config.primaryEndpoint);
-  
+
   // 2. Validate API key
-  const authTest = await validateApiKey(config.primaryApiKey, config.primaryEndpoint);
-  
+  const authTest = await validateApiKey(
+    config.primaryApiKey,
+    config.primaryEndpoint,
+  );
+
   // 3. Check model deployments
   const modelsTest = await checkModelDeployments(config);
-  
+
   // 4. Return comprehensive validation result
   return {
     isValid: connectionTest && authTest && modelsTest,
     details: { connectionTest, authTest, modelsTest },
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   };
 }
 ```
@@ -519,12 +550,15 @@ async function validateAzureConfig(config: AzureConfig) {
 The Azure Image Studio supports multiple AI models for different use cases:
 
 #### Step 1: Navigate to Models Tab
+
 1. In the Settings dialog, click on the "Models" tab
 2. Review the list of available models
 3. Models are loaded from `/src/app/config/azure-models.json`
 
 #### Step 2: Enable/Configure Models
+
 For each model, you can:
+
 1. **Enable/Disable:** Toggle model availability
 2. **Configure Deployment:** Set Azure deployment name
 3. **Customize Settings:** Adjust model-specific parameters
@@ -547,7 +581,7 @@ The models configuration file defines all available models:
           "apiVersion": "2025-04-01-preview",
           "capabilities": [
             "text-to-image",
-            "image-editing", 
+            "image-editing",
             "inpainting",
             "outpainting",
             "image-to-image"
@@ -556,7 +590,7 @@ The models configuration file defines all available models:
             {
               "size": "1024x1024",
               "label": "Square (1:1)",
-              "aspect": "1:1", 
+              "aspect": "1:1",
               "description": "Fastest generation"
             },
             {
@@ -566,7 +600,7 @@ The models configuration file defines all available models:
               "description": "Vertical orientation"
             },
             {
-              "size": "1536x1024", 
+              "size": "1536x1024",
               "label": "Landscape (3:2)",
               "aspect": "3:2",
               "description": "Horizontal orientation"
@@ -609,12 +643,12 @@ The models configuration file defines all available models:
             {
               "size": "1152x896",
               "label": "Landscape (4:3)",
-              "aspect": "4:3", 
+              "aspect": "4:3",
               "description": "Wide format"
             },
             {
               "size": "896x1152",
-              "label": "Portrait (3:4)", 
+              "label": "Portrait (3:4)",
               "aspect": "3:4",
               "description": "Tall format"
             }
@@ -649,7 +683,7 @@ The models configuration file defines all available models:
       ]
     },
     {
-      "id": "azure-ai-foundry-primary", 
+      "id": "azure-ai-foundry-primary",
       "name": "Azure AI Foundry Primary",
       "baseUrl": "https://PLACEHOLDER-ENDPOINT.eastus.inference.ai.azure.com/",
       "type": "azure-ai-foundry",
@@ -671,13 +705,15 @@ The models configuration file defines all available models:
 Each model undergoes validation to ensure proper configuration:
 
 #### Validation Checks:
+
 1. **Deployment Availability:** Check if model is deployed in Azure
-2. **API Compatibility:** Verify API version compatibility  
+2. **API Compatibility:** Verify API version compatibility
 3. **Permission Check:** Ensure API key has access to the model
 4. **Feature Validation:** Confirm supported features are available
 5. **Performance Test:** Optional generation test
 
 #### Validation Results:
+
 - **Status:** valid, invalid, pending, idle
 - **Timestamp:** Last validation time
 - **Details:** Specific validation results
@@ -688,23 +724,26 @@ Each model undergoes validation to ensure proper configuration:
 Critical for proper model functionality:
 
 #### Azure OpenAI Models:
+
 - **Model ID:** `gpt-image-1` (in azure-models.json)
 - **Deployment Name:** Must match the deployment name in Azure OpenAI Studio
 - **Endpoint Configuration:** Links model to specific Azure endpoint
 
 #### Azure AI Foundry Models:
+
 - **Model ID:** `FLUX.1-Kontext-pro` (in azure-models.json)
 - **Deployment Name:** Must match the deployment name in AI Foundry
 - **Endpoint Configuration:** Links model to specific AI Foundry endpoint
 
 #### Configuration Example:
+
 ```typescript
 // In Settings UI
 const deploymentConfig = {
   modelId: "gpt-image-1",
   deploymentName: "gpt-image-1-prod", // Must match Azure deployment
   enabled: true,
-  endpointId: "azure-openai-primary"
+  endpointId: "azure-openai-primary",
 };
 ```
 
@@ -713,6 +752,7 @@ const deploymentConfig = {
 Different providers have unique configuration requirements:
 
 #### Azure OpenAI Settings:
+
 ```json
 {
   "apiVersion": "2024-05-01-preview",
@@ -724,10 +764,11 @@ Different providers have unique configuration requirements:
 ```
 
 #### Azure AI Foundry Settings:
+
 ```json
 {
   "apiVersion": "2024-05-01",
-  "deployment": "flux-kontext-pro", 
+  "deployment": "flux-kontext-pro",
   "guidanceScale": 7.5,
   "numInferenceSteps": 20,
   "seed": null
@@ -743,12 +784,14 @@ Different providers have unique configuration requirements:
 Azure Image Studio includes advanced data synchronization capabilities:
 
 #### Configuration Storage:
+
 - **Local Storage:** Browser localStorage for immediate access
 - **IndexedDB:** Structured data storage for complex configurations
 - **Session Storage:** Temporary data for current session
 - **Server Persistence:** Optional server-side configuration storage
 
 #### Auto-Sync Features:
+
 1. **Configuration Sync:** Azure settings sync across browser sessions
 2. **Model Preferences:** User model preferences and customizations
 3. **Generation History:** Optional history synchronization
@@ -759,23 +802,25 @@ Azure Image Studio includes advanced data synchronization capabilities:
 Enable synchronization across multiple devices:
 
 #### Setup Steps:
+
 1. Navigate to Settings → Advanced
 2. Enable "Cross-Device Sync"
 3. Configure sync preferences:
    ```
    Sync Azure Configuration: ✓ Enabled
-   Sync Model Preferences: ✓ Enabled  
+   Sync Model Preferences: ✓ Enabled
    Sync Generation History: ✗ Disabled (privacy)
    Sync UI Preferences: ✓ Enabled
    ```
 
 #### Sync Implementation:
+
 ```typescript
 // Auto-sync configuration
 interface SyncConfig {
   enabled: boolean;
   syncInterval: number; // minutes
-  conflictResolution: 'client' | 'server' | 'manual';
+  conflictResolution: "client" | "server" | "manual";
   encryptionEnabled: boolean;
   syncEndpoint?: string;
 }
@@ -783,14 +828,15 @@ interface SyncConfig {
 const defaultSyncConfig: SyncConfig = {
   enabled: false,
   syncInterval: 15,
-  conflictResolution: 'client',
-  encryptionEnabled: true
+  conflictResolution: "client",
+  encryptionEnabled: true,
 };
 ```
 
 ### 6.3 Backup and Restore Settings
 
 #### Backup Configuration:
+
 1. Go to Settings → Advanced → Data Management
 2. Click "Export Configuration"
 3. Save the generated JSON file securely
@@ -801,6 +847,7 @@ const defaultSyncConfig: SyncConfig = {
    - Validation history and status
 
 #### Configuration Export Format:
+
 ```json
 {
   "version": "1.0.1",
@@ -808,7 +855,7 @@ const defaultSyncConfig: SyncConfig = {
   "encrypted": true,
   "configuration": {
     "azure": "encrypted_azure_config_data",
-    "models": "encrypted_models_config_data", 
+    "models": "encrypted_models_config_data",
     "ui": "encrypted_ui_preferences_data",
     "advanced": "encrypted_advanced_settings_data"
   },
@@ -817,8 +864,9 @@ const defaultSyncConfig: SyncConfig = {
 ```
 
 #### Restore Process:
+
 1. Go to Settings → Advanced → Data Management
-2. Click "Import Configuration" 
+2. Click "Import Configuration"
 3. Select your backup JSON file
 4. Enter decryption password if required
 5. Review import preview
@@ -829,12 +877,14 @@ const defaultSyncConfig: SyncConfig = {
 Configure how data is stored and managed:
 
 #### Storage Levels:
+
 1. **Session Only:** Data cleared when browser closes
 2. **Local Persistent:** Data persists across browser sessions
 3. **Server Storage:** Data stored on application server
 4. **Cloud Sync:** Data synchronized with cloud storage
 
 #### Privacy and Security:
+
 - **Encryption:** All sensitive data encrypted at rest
 - **Key Management:** Secure key derivation and storage
 - **Access Control:** Role-based access to configuration data
@@ -849,6 +899,7 @@ Configure how data is stored and managed:
 Azure Image Studio supports sophisticated endpoint management for enterprise environments:
 
 #### Load Balancing Configuration:
+
 ```typescript
 interface EndpointConfig {
   id: string;
@@ -871,6 +922,7 @@ interface EndpointConfig {
 ```
 
 #### Endpoint Selection Strategy:
+
 1. **Round Robin:** Distribute requests evenly across endpoints
 2. **Weighted:** Distribute based on endpoint weights
 3. **Priority:** Use highest priority available endpoint
@@ -878,6 +930,7 @@ interface EndpointConfig {
 5. **Capability-Based:** Route based on model capabilities
 
 #### Configuration Example:
+
 ```json
 {
   "endpoints": [
@@ -891,7 +944,7 @@ interface EndpointConfig {
       "rateLimit": { "rpm": 300, "tpm": 10000 }
     },
     {
-      "id": "secondary-west-us", 
+      "id": "secondary-west-us",
       "name": "Secondary West US",
       "baseUrl": "https://secondary-westus.openai.azure.com/",
       "weight": 30,
@@ -908,6 +961,7 @@ interface EndpointConfig {
 Integrate with environment variables for secure configuration management:
 
 #### Environment Variable Schema:
+
 ```env
 # Primary Azure Configuration
 AZURE_OPENAI_API_KEY=your_primary_api_key_here
@@ -932,6 +986,7 @@ ENABLE_RATE_LIMITING=true
 ```
 
 #### Environment Integration Code:
+
 ```typescript
 // /src/lib/env.ts
 export const envConfig = {
@@ -939,19 +994,19 @@ export const envConfig = {
     openai: {
       apiKey: process.env.AZURE_OPENAI_API_KEY,
       endpoint: process.env.AZURE_OPENAI_ENDPOINT,
-      apiVersion: process.env.AZURE_OPENAI_API_VERSION || '2024-05-01-preview',
-      deploymentName: process.env.AZURE_OPENAI_DEPLOYMENT_NAME
+      apiVersion: process.env.AZURE_OPENAI_API_VERSION || "2024-05-01-preview",
+      deploymentName: process.env.AZURE_OPENAI_DEPLOYMENT_NAME,
     },
     aiFoundry: {
       apiKey: process.env.AZURE_AI_FOUNDRY_API_KEY,
       endpoint: process.env.AZURE_AI_FOUNDRY_ENDPOINT,
-      deploymentName: process.env.AZURE_AI_FOUNDRY_DEPLOYMENT_NAME
-    }
+      deploymentName: process.env.AZURE_AI_FOUNDRY_DEPLOYMENT_NAME,
+    },
   },
   app: {
-    environment: process.env.APP_ENVIRONMENT || 'development',
-    logLevel: process.env.LOG_LEVEL || 'info'
-  }
+    environment: process.env.APP_ENVIRONMENT || "development",
+    logLevel: process.env.LOG_LEVEL || "info",
+  },
 };
 ```
 
@@ -960,19 +1015,20 @@ export const envConfig = {
 Advanced users can define custom model configurations:
 
 #### Custom Model Schema:
+
 ```typescript
 interface CustomModelConfig {
   id: string;
   name: string;
   description: string;
-  provider: 'azure-openai' | 'azure-ai-foundry' | 'custom';
+  provider: "azure-openai" | "azure-ai-foundry" | "custom";
   endpointId: string;
   deploymentName: string;
   apiVersion: string;
   capabilities: string[];
   parameters: {
     [key: string]: {
-      type: 'string' | 'number' | 'boolean';
+      type: "string" | "number" | "boolean";
       default: any;
       min?: number;
       max?: number;
@@ -982,7 +1038,7 @@ interface CustomModelConfig {
   preprocessing?: {
     imageResize: boolean;
     imageFormat: string;
-    maxDimensions: { width: number; height: number; };
+    maxDimensions: { width: number; height: number };
   };
   postprocessing?: {
     enableUpscaling: boolean;
@@ -993,6 +1049,7 @@ interface CustomModelConfig {
 ```
 
 #### Custom Model Example:
+
 ```json
 {
   "id": "custom-flux-optimized",
@@ -1011,7 +1068,7 @@ interface CustomModelConfig {
       "max": 20.0
     },
     "num_inference_steps": {
-      "type": "number", 
+      "type": "number",
       "default": 50,
       "min": 10,
       "max": 100
@@ -1040,6 +1097,7 @@ interface CustomModelConfig {
 Configure advanced performance settings for optimal operation:
 
 #### Performance Configuration:
+
 ```typescript
 interface PerformanceConfig {
   generation: {
@@ -1053,7 +1111,7 @@ interface PerformanceConfig {
     enableRequestCache: boolean;
     cacheExpiration: number; // minutes
     maxCacheSize: number; // MB
-    cacheStrategy: 'lru' | 'fifo' | 'ttl';
+    cacheStrategy: "lru" | "fifo" | "ttl";
   };
   optimization: {
     enableImageCompression: boolean;
@@ -1072,6 +1130,7 @@ interface PerformanceConfig {
 #### Optimization Recommendations:
 
 **For High-Volume Usage:**
+
 ```json
 {
   "generation": {
@@ -1089,6 +1148,7 @@ interface PerformanceConfig {
 ```
 
 **For Low-Latency Usage:**
+
 ```json
 {
   "generation": {
@@ -1111,17 +1171,20 @@ interface PerformanceConfig {
 ### 8.1 Common Configuration Issues
 
 #### Issue: Authentication Failed
+
 ```
 Error: 401 Unauthorized - Authentication failed
 ```
 
 **Diagnosis Steps:**
+
 1. Verify API key is correctly entered
 2. Check if API key has expired
 3. Confirm resource has proper permissions
 4. Test API key with direct Azure API call
 
 **Solutions:**
+
 ```bash
 # Test API key directly
 curl -H "Authorization: Bearer YOUR_API_KEY" \
@@ -1130,16 +1193,19 @@ curl -H "Authorization: Bearer YOUR_API_KEY" \
 ```
 
 #### Issue: Model Not Found
+
 ```
 Error: The API deployment for this resource does not exist
 ```
 
 **Diagnosis Steps:**
+
 1. Check if model is deployed in Azure
 2. Verify deployment name matches configuration
 3. Confirm API version compatibility
 
 **Solutions:**
+
 1. Deploy model in Azure OpenAI Studio:
    - Go to Azure OpenAI Studio
    - Navigate to Deployments
@@ -1148,17 +1214,20 @@ Error: The API deployment for this resource does not exist
 3. Verify API version is supported
 
 #### Issue: Endpoint Not Reachable
+
 ```
 Error: Network error - Unable to reach endpoint
 ```
 
 **Diagnosis Steps:**
+
 1. Check endpoint URL format
 2. Verify resource name and region
 3. Test network connectivity
 4. Check firewall/proxy settings
 
 **Solutions:**
+
 ```bash
 # Test endpoint connectivity
 curl -I "https://your-resource.openai.azure.com/"
@@ -1168,16 +1237,19 @@ nslookup your-resource.openai.azure.com
 ```
 
 #### Issue: Rate Limit Exceeded
+
 ```
 Error: 429 Too Many Requests - Rate limit exceeded
 ```
 
 **Diagnosis Steps:**
+
 1. Check current rate limits in Azure
 2. Review request frequency
 3. Monitor usage patterns
 
 **Solutions:**
+
 1. Increase rate limits in Azure (if available)
 2. Implement request queuing
 3. Add multiple endpoints for load distribution
@@ -1186,6 +1258,7 @@ Error: 429 Too Many Requests - Rate limit exceeded
 ### 8.2 Validation Error Troubleshooting
 
 #### Validation Process Flow:
+
 ```mermaid
 graph TD
     A[Start Validation] --> B[Check Endpoint Connectivity]
@@ -1203,6 +1276,7 @@ graph TD
 #### Detailed Error Codes:
 
 **CONNECTION_FAILED (1001):**
+
 ```json
 {
   "error": "CONNECTION_FAILED",
@@ -1214,9 +1288,10 @@ graph TD
 ```
 
 **AUTH_INVALID (1002):**
+
 ```json
 {
-  "error": "AUTH_INVALID", 
+  "error": "AUTH_INVALID",
   "code": 1002,
   "message": "API key authentication failed",
   "details": "Invalid or expired API key",
@@ -1225,6 +1300,7 @@ graph TD
 ```
 
 **DEPLOYMENT_NOT_FOUND (1003):**
+
 ```json
 {
   "error": "DEPLOYMENT_NOT_FOUND",
@@ -1240,23 +1316,27 @@ graph TD
 #### Slow Generation Times
 
 **Symptoms:**
+
 - Image generation takes > 60 seconds
 - Frequent timeouts
 - Poor user experience
 
 **Diagnosis:**
+
 ```typescript
 // Enable performance monitoring
 const performanceConfig = {
   enableTiming: true,
   enableMetrics: true,
   logSlowRequests: true,
-  slowRequestThreshold: 30000 // 30 seconds
+  slowRequestThreshold: 30000, // 30 seconds
 };
 ```
 
 **Solutions:**
+
 1. **Optimize Model Settings:**
+
    ```json
    {
      "num_inference_steps": 20,
@@ -1266,6 +1346,7 @@ const performanceConfig = {
    ```
 
 2. **Use Multiple Endpoints:**
+
    ```json
    {
      "loadBalancing": {
@@ -1280,21 +1361,24 @@ const performanceConfig = {
    ```typescript
    const cacheConfig = {
      enableCache: true,
-     cacheKey: (prompt, settings) => 
+     cacheKey: (prompt, settings) =>
        `${hashPrompt(prompt)}-${JSON.stringify(settings)}`,
-     expiration: 3600 // 1 hour
+     expiration: 3600, // 1 hour
    };
    ```
 
 #### Memory Issues
 
 **Symptoms:**
+
 - Browser becomes unresponsive
 - Memory usage continuously increases
 - Slow UI interactions
 
 **Solutions:**
+
 1. **Enable Image Compression:**
+
    ```json
    {
      "imageProcessing": {
@@ -1306,11 +1390,12 @@ const performanceConfig = {
    ```
 
 2. **Implement Lazy Loading:**
+
    ```typescript
    const uiConfig = {
      lazyLoadImages: true,
      virtualizeImageList: true,
-     maxImagesInMemory: 20
+     maxImagesInMemory: 20,
    };
    ```
 
@@ -1329,6 +1414,7 @@ const performanceConfig = {
 #### Proxy and Firewall Configuration
 
 **Corporate Network Setup:**
+
 ```json
 {
   "network": {
@@ -1350,13 +1436,14 @@ const performanceConfig = {
 ```
 
 **Azure Endpoints Whitelist:**
+
 ```
 # Required domains for Azure OpenAI
 *.openai.azure.com
 *.cognitive.microsoft.com
 *.azure.com
 
-# Required domains for Azure AI Foundry  
+# Required domains for Azure AI Foundry
 *.inference.ai.azure.com
 *.ml.azure.com
 *.azureml.net
@@ -1373,7 +1460,9 @@ HTTP: 80 (for redirects)
 ### 9.1 Security Best Practices
 
 #### API Key Management:
+
 1. **Use Environment Variables:**
+
    ```bash
    # Production deployment
    export AZURE_OPENAI_API_KEY="your-secure-key"
@@ -1381,12 +1470,13 @@ HTTP: 80 (for redirects)
    ```
 
 2. **Implement Key Rotation:**
+
    ```typescript
    // Regular key rotation schedule
    const keyRotationSchedule = {
-     frequency: 'monthly', // or weekly for high-security environments
+     frequency: "monthly", // or weekly for high-security environments
      autoRotate: true,
-     notifyBeforeExpiration: 7 // days
+     notifyBeforeExpiration: 7, // days
    };
    ```
 
@@ -1394,17 +1484,18 @@ HTTP: 80 (for redirects)
    ```typescript
    // Azure Managed Identity configuration
    const managedIdentityConfig = {
-     type: 'system-assigned', // or user-assigned
-     clientId: 'your-managed-identity-client-id',
-     enableForAzureOpenAI: true
+     type: "system-assigned", // or user-assigned
+     clientId: "your-managed-identity-client-id",
+     enableForAzureOpenAI: true,
    };
    ```
 
 #### Access Control:
+
 ```typescript
 interface AccessControlConfig {
   authentication: {
-    method: 'password' | 'oauth' | 'saml' | 'managed-identity';
+    method: "password" | "oauth" | "saml" | "managed-identity";
     sessionTimeout: number; // minutes
     maxFailedAttempts: number;
     lockoutDuration: number; // minutes
@@ -1417,8 +1508,8 @@ interface AccessControlConfig {
   };
   audit: {
     enableLogging: boolean;
-    logLevel: 'info' | 'warning' | 'error';
-    logDestination: 'file' | 'database' | 'azure-monitor';
+    logLevel: "info" | "warning" | "error";
+    logDestination: "file" | "database" | "azure-monitor";
   };
 }
 ```
@@ -1428,6 +1519,7 @@ interface AccessControlConfig {
 #### Optimal Configuration for Different Use Cases:
 
 **High-Volume Production:**
+
 ```json
 {
   "endpoints": [
@@ -1437,7 +1529,7 @@ interface AccessControlConfig {
       "rateLimit": { "rpm": 500, "tpm": 50000 }
     },
     {
-      "name": "Secondary Production", 
+      "name": "Secondary Production",
       "weight": 40,
       "rateLimit": { "rpm": 300, "tpm": 30000 }
     }
@@ -1458,6 +1550,7 @@ interface AccessControlConfig {
 ```
 
 **Development Environment:**
+
 ```json
 {
   "generation": {
@@ -1473,6 +1566,7 @@ interface AccessControlConfig {
 ```
 
 **Testing Environment:**
+
 ```json
 {
   "generation": {
@@ -1495,7 +1589,7 @@ interface AccessControlConfig {
 interface MonitoringConfig {
   metrics: {
     enabled: boolean;
-    provider: 'azure-monitor' | 'prometheus' | 'custom';
+    provider: "azure-monitor" | "prometheus" | "custom";
     endpoint?: string;
     metrics: {
       requestCount: boolean;
@@ -1506,16 +1600,16 @@ interface MonitoringConfig {
     };
   };
   logging: {
-    level: 'debug' | 'info' | 'warn' | 'error';
-    format: 'json' | 'text';
+    level: "debug" | "info" | "warn" | "error";
+    format: "json" | "text";
     outputs: string[]; // ['console', 'file', 'azure-logs']
   };
   alerting: {
     enabled: boolean;
     rules: {
-      errorRate: { threshold: 0.05, window: '5m' };
-      responseTime: { threshold: 30000, window: '1m' };
-      endpointDown: { threshold: 3, window: '30s' };
+      errorRate: { threshold: 0.05; window: "5m" };
+      responseTime: { threshold: 30000; window: "1m" };
+      endpointDown: { threshold: 3; window: "30s" };
     };
   };
 }
@@ -1543,10 +1637,11 @@ interface MonitoringConfig {
 ### 9.4 Backup and Disaster Recovery
 
 #### Configuration Backup Strategy:
+
 ```typescript
 interface BackupStrategy {
   schedule: {
-    frequency: 'daily' | 'weekly' | 'monthly';
+    frequency: "daily" | "weekly" | "monthly";
     time: string; // HH:MM format
     timezone: string;
   };
@@ -1556,18 +1651,19 @@ interface BackupStrategy {
     monthly: number; // months
   };
   storage: {
-    type: 'local' | 'azure-blob' | 's3' | 'custom';
+    type: "local" | "azure-blob" | "s3" | "custom";
     encryption: boolean;
     compression: boolean;
   };
   validation: {
     testRestore: boolean;
-    frequency: 'weekly' | 'monthly';
+    frequency: "weekly" | "monthly";
   };
 }
 ```
 
 #### Disaster Recovery Plan:
+
 1. **Regular Configuration Exports:**
    - Automated daily exports
    - Manual exports before major changes
@@ -1575,7 +1671,7 @@ interface BackupStrategy {
 
 2. **Multiple Environment Setup:**
    - Development environment
-   - Staging environment  
+   - Staging environment
    - Production environment
    - Disaster recovery environment
 
@@ -1586,13 +1682,14 @@ interface BackupStrategy {
      healthCheckInterval: 30, // seconds
      failureThreshold: 3, // consecutive failures
      failoverDelay: 10, // seconds
-     notificationChannels: ['email', 'slack', 'teams']
+     notificationChannels: ["email", "slack", "teams"],
    };
    ```
 
 ### 9.5 Scaling Recommendations
 
 #### Horizontal Scaling:
+
 ```typescript
 interface ScalingConfig {
   endpoints: {
@@ -1603,7 +1700,7 @@ interface ScalingConfig {
     cooldownPeriod: number; // minutes
   };
   loadBalancing: {
-    algorithm: 'round-robin' | 'weighted' | 'least-connections';
+    algorithm: "round-robin" | "weighted" | "least-connections";
     healthCheck: {
       enabled: boolean;
       interval: number; // seconds
@@ -1619,6 +1716,7 @@ interface ScalingConfig {
 ```
 
 #### Vertical Scaling:
+
 - **Azure OpenAI:** Increase TPM (Tokens Per Minute) limits
 - **Azure AI Foundry:** Scale up VM instances for deployments
 - **Application:** Increase memory and CPU allocation
@@ -1655,7 +1753,7 @@ For additional support, please refer to the [Troubleshooting Guide](troubleshoot
 
 ---
 
-*This guide is part of the Azure Image Studio documentation suite. For more guides and tutorials, visit the [wiki directory](.).*
+_This guide is part of the Azure Image Studio documentation suite. For more guides and tutorials, visit the [wiki directory](.)._
 
 **Document Version:** 1.0.1  
 **Last Updated:** September 10, 2025  

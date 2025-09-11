@@ -19,23 +19,23 @@
  */
 
 // Main toolbar components
-export { FloatingImageToolbar } from './floating-image-toolbar';
+export { FloatingImageToolbar } from "./floating-image-toolbar";
 export type {
   FloatingImageToolbarProps,
   ImageTool,
-} from './floating-image-toolbar';
+} from "./floating-image-toolbar";
 
 // Individual tool components
-export { BackgroundRemovalTool } from './background-removal-tool';
+export { BackgroundRemovalTool } from "./background-removal-tool";
 export type {
   BackgroundRemovalToolProps,
   BackgroundRemovalOptions,
-} from './background-removal-tool';
+} from "./background-removal-tool";
 
 // Base components for building custom tools
-export { ImageToolButton } from './image-tool-button';
-export type { ImageToolButtonProps } from './image-tool-button';
+export { ImageToolButton } from "./image-tool-button";
+export type { ImageToolButtonProps } from "./image-tool-button";
 
 // Visual effect components
-export { ToolEffectOverlay } from './tool-effect-overlay';
-export type { ToolEffectOverlayProps } from './tool-effect-overlay';
+export { ToolEffectOverlay } from "./tool-effect-overlay";
+export type { ToolEffectOverlayProps } from "./tool-effect-overlay";

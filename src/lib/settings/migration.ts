@@ -2,8 +2,8 @@
  * Migration utility to transition from individual settings keys to unified az_settings structure
  */
 
-import { appSettings } from './index';
-import { UnifiedSettings } from './types';
+import { appSettings } from "./index";
+import { UnifiedSettings } from "./types";
 
 /**
  * Default unified settings structure
@@ -35,17 +35,17 @@ const defaultUnifiedSettings: UnifiedSettings = {
     providers: {
       unsplash: {
         enabled: false,
-        apiKey: '',
+        apiKey: "",
         rateLimit: 50,
       },
       pexels: {
         enabled: false,
-        apiKey: '',
+        apiKey: "",
         rateLimit: 200,
       },
     },
     ui: {
-      defaultView: 'grid',
+      defaultView: "grid",
       itemsPerPage: 20,
       showAttribution: true,
     },
@@ -61,17 +61,17 @@ const defaultUnifiedSettings: UnifiedSettings = {
  * Mapping of old individual keys to new unified settings paths
  */
 const keyMappings: Record<string, string> = {
-  'developer.mode': 'developer.mode',
-  'autoSave.enabled': 'autoSave.enabled',
-  'autoSave.duration': 'autoSave.duration',
-  'ui.animations': 'ui.animations',
-  'ui.showConsole': 'ui.showConsole',
-  'ui.showLayers': 'ui.showLayers',
-  'ui.showHistory': 'ui.showHistory',
-  'logger.config': 'logger.config',
-  'cache.assets': 'cache.assets',
-  'cache.history': 'cache.history',
-  'cache.projects': 'cache.projects',
+  "developer.mode": "developer.mode",
+  "autoSave.enabled": "autoSave.enabled",
+  "autoSave.duration": "autoSave.duration",
+  "ui.animations": "ui.animations",
+  "ui.showConsole": "ui.showConsole",
+  "ui.showLayers": "ui.showLayers",
+  "ui.showHistory": "ui.showHistory",
+  "logger.config": "logger.config",
+  "cache.assets": "cache.assets",
+  "cache.history": "cache.history",
+  "cache.projects": "cache.projects",
 };
 
 /**
@@ -79,11 +79,15 @@ const keyMappings: Record<string, string> = {
  * @param storage - Storage type to migrate from
  * @returns Whether migration was successful
  */
-export function migrateToUnifiedSettings(storage: 'localStorage' | 'sessionStorage' = 'localStorage'): boolean {
+export function migrateToUnifiedSettings(
+  storage: "localStorage" | "sessionStorage" = "localStorage",
+): boolean {
   try {
     // Get current unified settings or start with defaults
-    let unifiedSettings = appSettings.getUnifiedSettings(storage) as Partial<UnifiedSettings>;
-    
+    let unifiedSettings = appSettings.getUnifiedSettings(
+      storage,
+    ) as Partial<UnifiedSettings>;
+
     // If no unified settings exist, start with defaults
     if (!unifiedSettings || Object.keys(unifiedSettings).length === 0) {
       unifiedSettings = { ...defaultUnifiedSettings };
@@ -110,7 +114,7 @@ export function migrateToUnifiedSettings(storage: 'localStorage' | 'sessionStora
 
     return true;
   } catch (error) {
-    console.warn('Failed to migrate settings to unified structure:', error);
+    console.warn("Failed to migrate settings to unified structure:", error);
     return false;
   }
 }
@@ -119,7 +123,9 @@ export function migrateToUnifiedSettings(storage: 'localStorage' | 'sessionStora
  * Clean up old individual settings keys after migration
  * @param storage - Storage type to clean up
  */
-export function cleanupOldSettings(storage: 'localStorage' | 'sessionStorage' = 'localStorage'): void {
+export function cleanupOldSettings(
+  storage: "localStorage" | "sessionStorage" = "localStorage",
+): void {
   try {
     for (const oldKey of Object.keys(keyMappings)) {
       if (appSettings.has(oldKey, storage)) {
@@ -127,7 +133,7 @@ export function cleanupOldSettings(storage: 'localStorage' | 'sessionStorage' = 
       }
     }
   } catch (error) {
-    console.warn('Failed to cleanup old settings:', error);
+    console.warn("Failed to cleanup old settings:", error);
   }
 }
 
@@ -135,9 +141,12 @@ export function cleanupOldSettings(storage: 'localStorage' | 'sessionStorage' = 
  * Helper function to get nested value from object using dot notation
  */
 function getNestedValue(obj: Record<string, unknown>, path: string): unknown {
-  return path.split('.').reduce((current: unknown, key: string) => {
-    return current && typeof current === 'object' && current !== null && key in (current as Record<string, unknown>)
-      ? (current as Record<string, unknown>)[key] 
+  return path.split(".").reduce((current: unknown, key: string) => {
+    return current &&
+      typeof current === "object" &&
+      current !== null &&
+      key in (current as Record<string, unknown>)
+      ? (current as Record<string, unknown>)[key]
       : undefined;
   }, obj as unknown);
 }
@@ -145,11 +154,19 @@ function getNestedValue(obj: Record<string, unknown>, path: string): unknown {
 /**
  * Helper function to set nested value in object using dot notation
  */
-function setNestedValue(obj: Record<string, unknown>, path: string, value: unknown): void {
-  const keys = path.split('.');
+function setNestedValue(
+  obj: Record<string, unknown>,
+  path: string,
+  value: unknown,
+): void {
+  const keys = path.split(".");
   const lastKey = keys.pop()!;
   const target = keys.reduce((current, key) => {
-    if (!(key in current) || typeof current[key] !== 'object' || current[key] === null) {
+    if (
+      !(key in current) ||
+      typeof current[key] !== "object" ||
+      current[key] === null
+    ) {
       current[key] = {};
     }
     return current[key] as Record<string, unknown>;
@@ -162,7 +179,9 @@ function setNestedValue(obj: Record<string, unknown>, path: string, value: unkno
  * @param storage - Storage type to check
  * @returns Whether migration is needed
  */
-export function isMigrationNeeded(storage: 'localStorage' | 'sessionStorage' = 'localStorage'): boolean {
+export function isMigrationNeeded(
+  storage: "localStorage" | "sessionStorage" = "localStorage",
+): boolean {
   try {
     // Check if unified settings exist
     const unifiedSettings = appSettings.getUnifiedSettings(storage);
@@ -179,7 +198,7 @@ export function isMigrationNeeded(storage: 'localStorage' | 'sessionStorage' = '
 
     return false;
   } catch (error) {
-    console.warn('Failed to check migration status:', error);
+    console.warn("Failed to check migration status:", error);
     return false;
   }
 }
@@ -189,7 +208,9 @@ export function isMigrationNeeded(storage: 'localStorage' | 'sessionStorage' = '
  * @param storage - Storage type to migrate
  * @returns Whether migration was successful
  */
-export function performFullMigration(storage: 'localStorage' | 'sessionStorage' = 'localStorage'): boolean {
+export function performFullMigration(
+  storage: "localStorage" | "sessionStorage" = "localStorage",
+): boolean {
   try {
     const migrated = migrateToUnifiedSettings(storage);
     if (migrated) {
@@ -198,7 +219,7 @@ export function performFullMigration(storage: 'localStorage' | 'sessionStorage' 
     }
     return false;
   } catch (error) {
-    console.warn('Failed to perform full migration:', error);
+    console.warn("Failed to perform full migration:", error);
     return false;
   }
 }

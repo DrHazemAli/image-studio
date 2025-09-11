@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import { useEffect, useCallback, useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Cloud, 
-  Folder, 
-  FileText, 
-  Database, 
-  Save, 
+import { useEffect, useCallback, useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Cloud,
+  Folder,
+  FileText,
+  Database,
+  Save,
   Loader2,
   CloudCheck,
   CloudOff,
-  RefreshCw
-} from 'lucide-react';
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { syncHelper } from '@/lib/sync-helper';
-import type { Project } from '@/lib/indexeddb';
+  RefreshCw,
+} from "lucide-react";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { syncHelper } from "@/lib/sync-helper";
+import type { Project } from "@/lib/indexeddb";
 
 interface SyncManagerProps {
   currentProject: Project | null;
@@ -95,7 +95,9 @@ export function SyncManager({
     filesCount: 0,
     totalSize: 0,
   });
-  const [syncStatus, setSyncStatus] = useState<'idle' | 'syncing' | 'success' | 'error'>('idle');
+  const [syncStatus, setSyncStatus] = useState<
+    "idle" | "syncing" | "success" | "error"
+  >("idle");
   const [progress, setProgress] = useState(0);
   const animationRef = useRef<number | null>(null);
 
@@ -104,7 +106,7 @@ export function SyncManager({
     if (!currentProject || isManualSaving) return;
 
     setIsManualSaving(true);
-    setSyncStatus('syncing');
+    setSyncStatus("syncing");
     setProgress(0);
 
     // Start progress animation
@@ -157,25 +159,24 @@ export function SyncManager({
       // Update assets with canvas modifications and perform immediate save
       await syncHelper.updateAssetsWithCanvasModifications();
       await syncHelper.performAutoSave();
-      
+
       // Complete progress animation
       setProgress(100);
-      setSyncStatus('success');
-      
+      setSyncStatus("success");
+
       // Reset status after 2 seconds
       setTimeout(() => {
-        setSyncStatus('idle');
+        setSyncStatus("idle");
         setProgress(0);
       }, 2000);
-
     } catch (error) {
-      console.error('Manual save failed:', error);
-      setSyncStatus('error');
+      console.error("Manual save failed:", error);
+      setSyncStatus("error");
       setProgress(0);
-      
+
       // Reset status after 3 seconds
       setTimeout(() => {
-        setSyncStatus('idle');
+        setSyncStatus("idle");
       }, 3000);
     } finally {
       setIsManualSaving(false);
@@ -312,11 +313,11 @@ export function SyncManager({
         {
           onSyncStart: () => {
             setIsSaving(true);
-            setSyncStatus('syncing');
+            setSyncStatus("syncing");
           },
           onSyncEnd: () => {
             setIsSaving(false);
-            setSyncStatus('idle');
+            setSyncStatus("idle");
           },
           onSyncComplete: (stats) => {
             setLastSaved(stats.lastSync);
@@ -324,10 +325,10 @@ export function SyncManager({
               filesCount: stats.filesCount,
               totalSize: stats.totalSize,
             });
-            setSyncStatus('success');
-            setTimeout(() => setSyncStatus('idle'), 2000);
+            setSyncStatus("success");
+            setTimeout(() => setSyncStatus("idle"), 2000);
           },
-        }
+        },
       );
     }
   }, [
@@ -383,7 +384,8 @@ export function SyncManager({
 
   // Update sync helper duration when autoSaveDuration changes
   useEffect(() => {
-    if (autoSaveDuration >= 30) { // Minimum 30 seconds
+    if (autoSaveDuration >= 30) {
+      // Minimum 30 seconds
       syncHelper.setDuration(autoSaveDuration);
     }
   }, [autoSaveDuration]);
@@ -391,29 +393,33 @@ export function SyncManager({
   // Get sync status icon and color
   const getSyncIcon = () => {
     switch (syncStatus) {
-      case 'syncing':
+      case "syncing":
         return <RefreshCw className="w-4 h-4" />;
-      case 'success':
+      case "success":
         return <CloudCheck className="w-4 h-4" />;
-      case 'error':
+      case "error":
         return <CloudOff className="w-4 h-4" />;
       default:
-        return autoSave ? <Cloud className="w-4 h-4" /> : <CloudOff className="w-4 h-4" />;
+        return autoSave ? (
+          <Cloud className="w-4 h-4" />
+        ) : (
+          <CloudOff className="w-4 h-4" />
+        );
     }
   };
 
   const getSyncColor = () => {
     switch (syncStatus) {
-      case 'syncing':
-        return 'text-blue-500 dark:text-blue-400';
-      case 'success':
-        return 'text-green-500 dark:text-green-400';
-      case 'error':
-        return 'text-red-500 dark:text-red-400';
+      case "syncing":
+        return "text-blue-500 dark:text-blue-400";
+      case "success":
+        return "text-green-500 dark:text-green-400";
+      case "error":
+        return "text-red-500 dark:text-red-400";
       default:
-        return autoSave 
-          ? 'text-green-500 dark:text-green-400' 
-          : 'text-gray-400 dark:text-gray-500';
+        return autoSave
+          ? "text-green-500 dark:text-green-400"
+          : "text-gray-400 dark:text-gray-500";
     }
   };
 
@@ -425,26 +431,26 @@ export function SyncManager({
           whileTap={{ scale: 0.95 }}
           className={`p-2 rounded-lg transition-all duration-200 relative group ${
             autoSave
-              ? 'bg-green-100/80 dark:bg-green-900/20 text-green-600 dark:text-green-400 hover:bg-green-200/80 dark:hover:bg-green-900/30'
-              : 'hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400'
+              ? "bg-green-100/80 dark:bg-green-900/20 text-green-600 dark:text-green-400 hover:bg-green-200/80 dark:hover:bg-green-900/30"
+              : "hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
           }`}
-          title={`Auto-sync ${autoSave ? 'enabled' : 'disabled'}`}
+          title={`Auto-sync ${autoSave ? "enabled" : "disabled"}`}
         >
           <motion.div
-            animate={{ 
-              rotate: syncStatus === 'syncing' ? 360 : 0,
-              scale: syncStatus === 'success' ? [1, 1.2, 1] : 1
+            animate={{
+              rotate: syncStatus === "syncing" ? 360 : 0,
+              scale: syncStatus === "success" ? [1, 1.2, 1] : 1,
             }}
-            transition={{ 
-              duration: syncStatus === 'syncing' ? 1 : 0.3,
-              repeat: syncStatus === 'syncing' ? Infinity : 0,
-              ease: syncStatus === 'syncing' ? 'linear' : 'easeOut'
+            transition={{
+              duration: syncStatus === "syncing" ? 1 : 0.3,
+              repeat: syncStatus === "syncing" ? Infinity : 0,
+              ease: syncStatus === "syncing" ? "linear" : "easeOut",
             }}
             className={getSyncColor()}
           >
             {getSyncIcon()}
           </motion.div>
-          
+
           {/* Status indicator */}
           <AnimatePresence>
             {isSaving && (
@@ -471,14 +477,14 @@ export function SyncManager({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <motion.div
-                    animate={{ 
-                      rotate: syncStatus === 'syncing' ? 360 : 0,
-                      scale: syncStatus === 'success' ? [1, 1.1, 1] : 1
+                    animate={{
+                      rotate: syncStatus === "syncing" ? 360 : 0,
+                      scale: syncStatus === "success" ? [1, 1.1, 1] : 1,
                     }}
-                    transition={{ 
-                      duration: syncStatus === 'syncing' ? 1 : 0.3,
-                      repeat: syncStatus === 'syncing' ? Infinity : 0,
-                      ease: syncStatus === 'syncing' ? 'linear' : 'easeOut'
+                    transition={{
+                      duration: syncStatus === "syncing" ? 1 : 0.3,
+                      repeat: syncStatus === "syncing" ? Infinity : 0,
+                      ease: syncStatus === "syncing" ? "linear" : "easeOut",
                     }}
                     className={getSyncColor()}
                   >
@@ -489,21 +495,21 @@ export function SyncManager({
                       Auto-sync
                     </h3>
                     <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                      {autoSave ? 'Enabled' : 'Disabled'}
+                      {autoSave ? "Enabled" : "Disabled"}
                     </p>
                   </div>
                 </div>
-                
+
                 {/* Toggle Switch */}
                 <button
                   onClick={onToggleAutoSave}
                   className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500/50 ${
-                    autoSave ? 'bg-green-500' : 'bg-zinc-300 dark:bg-zinc-600'
+                    autoSave ? "bg-green-500" : "bg-zinc-300 dark:bg-zinc-600"
                   }`}
                 >
                   <motion.span
                     animate={{ x: autoSave ? 16 : 2 }}
-                    transition={{ duration: 0.2, ease: 'easeInOut' }}
+                    transition={{ duration: 0.2, ease: "easeInOut" }}
                     className="inline-block h-4 w-4 transform rounded-full bg-white shadow-sm"
                   />
                 </button>
@@ -515,17 +521,29 @@ export function SyncManager({
               {/* Sync Status */}
               <div className="flex items-center justify-between p-3 rounded-lg bg-zinc-50/50 dark:bg-zinc-800/50">
                 <div className="flex items-center gap-2">
-                  <div className={`w-2 h-2 rounded-full ${
-                    syncStatus === 'syncing' ? 'bg-blue-500 animate-pulse' :
-                    syncStatus === 'success' ? 'bg-green-500' :
-                    syncStatus === 'error' ? 'bg-red-500' :
-                    autoSave ? 'bg-green-500' : 'bg-zinc-400'
-                  }`} />
+                  <div
+                    className={`w-2 h-2 rounded-full ${
+                      syncStatus === "syncing"
+                        ? "bg-blue-500 animate-pulse"
+                        : syncStatus === "success"
+                          ? "bg-green-500"
+                          : syncStatus === "error"
+                            ? "bg-red-500"
+                            : autoSave
+                              ? "bg-green-500"
+                              : "bg-zinc-400"
+                    }`}
+                  />
                   <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                    {syncStatus === 'syncing' ? 'Syncing...' :
-                     syncStatus === 'success' ? 'Synced' :
-                     syncStatus === 'error' ? 'Sync Failed' :
-                     autoSave ? 'Ready to sync' : 'Sync Disabled'}
+                    {syncStatus === "syncing"
+                      ? "Syncing..."
+                      : syncStatus === "success"
+                        ? "Synced"
+                        : syncStatus === "error"
+                          ? "Sync Failed"
+                          : autoSave
+                            ? "Ready to sync"
+                            : "Sync Disabled"}
                   </span>
                 </div>
                 {lastSaved && (
@@ -537,10 +555,10 @@ export function SyncManager({
 
               {/* Progress Bar (only when syncing) */}
               <AnimatePresence>
-                {syncStatus === 'syncing' && (
+                {syncStatus === "syncing" && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
+                    animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
                     className="space-y-2"
                   >
@@ -553,7 +571,7 @@ export function SyncManager({
                         className="h-full bg-gradient-to-r from-blue-500 to-green-500 rounded-full"
                         initial={{ width: 0 }}
                         animate={{ width: `${progress}%` }}
-                        transition={{ duration: 0.3, ease: 'easeOut' }}
+                        transition={{ duration: 0.3, ease: "easeOut" }}
                       />
                     </div>
                   </motion.div>
@@ -614,7 +632,7 @@ export function SyncManager({
                     {autoSaveDuration}s
                   </span>
                 </div>
-                
+
                 <div className="flex gap-1">
                   {[30, 60, 120, 300, 600].map((duration) => (
                     <button
@@ -623,13 +641,15 @@ export function SyncManager({
                       disabled={!autoSave}
                       className={`px-3 py-1.5 text-xs rounded-lg transition-all duration-200 ${
                         autoSaveDuration === duration
-                          ? 'bg-blue-500 text-white shadow-sm'
+                          ? "bg-blue-500 text-white shadow-sm"
                           : autoSave
-                          ? 'bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 text-zinc-700 dark:text-zinc-300'
-                          : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 cursor-not-allowed'
+                            ? "bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 text-zinc-700 dark:text-zinc-300"
+                            : "bg-zinc-100 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 cursor-not-allowed"
                       }`}
                     >
-                      {duration < 60 ? `${duration}s` : `${Math.floor(duration / 60)}m`}
+                      {duration < 60
+                        ? `${duration}s`
+                        : `${Math.floor(duration / 60)}m`}
                     </button>
                   ))}
                 </div>
@@ -642,8 +662,8 @@ export function SyncManager({
                   disabled={isManualSaving || !currentProject}
                   className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                     isManualSaving || !currentProject
-                      ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 cursor-not-allowed'
-                      : 'bg-blue-500 hover:bg-blue-600 text-white shadow-sm hover:shadow-md'
+                      ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 cursor-not-allowed"
+                      : "bg-blue-500 hover:bg-blue-600 text-white shadow-sm hover:shadow-md"
                   }`}
                 >
                   {isManualSaving ? (

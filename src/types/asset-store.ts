@@ -3,9 +3,15 @@
  * Defines the structure for assets from various providers
  */
 
-export type AssetType = 'photo' | 'video' | 'shape' | 'frame' | 'icon' | 'upload';
-export type AssetProvider = 'unsplash' | 'pexels' | 'local' | 'user';
-export type ViewMode = 'grid' | 'list';
+export type AssetType =
+  | "photo"
+  | "video"
+  | "shape"
+  | "frame"
+  | "icon"
+  | "upload";
+export type AssetProvider = "unsplash" | "pexels" | "local" | "user";
+export type ViewMode = "grid" | "list";
 
 /**
  * Base asset interface that all asset types extend
@@ -33,14 +39,14 @@ export interface BaseAsset {
  * Photo asset from external APIs (Unsplash, Pexels)
  */
 export interface PhotoAsset extends BaseAsset {
-  type: 'photo';
-  provider: 'unsplash' | 'pexels';
-  metadata: BaseAsset['metadata'] & {
+  type: "photo";
+  provider: "unsplash" | "pexels";
+  metadata: BaseAsset["metadata"] & {
     photographer?: string;
     photographerUrl?: string;
     downloadUrl?: string;
     color?: string;
-    orientation?: 'landscape' | 'portrait' | 'square';
+    orientation?: "landscape" | "portrait" | "square";
   };
 }
 
@@ -48,9 +54,9 @@ export interface PhotoAsset extends BaseAsset {
  * Video asset from external APIs
  */
 export interface VideoAsset extends BaseAsset {
-  type: 'video';
-  provider: 'pexels';
-  metadata: BaseAsset['metadata'] & {
+  type: "video";
+  provider: "pexels";
+  metadata: BaseAsset["metadata"] & {
     duration?: number;
     videoUrl?: string;
     photographer?: string;
@@ -62,9 +68,9 @@ export interface VideoAsset extends BaseAsset {
  * Shape asset (SVG shapes)
  */
 export interface ShapeAsset extends BaseAsset {
-  type: 'shape';
-  provider: 'local';
-  metadata: BaseAsset['metadata'] & {
+  type: "shape";
+  provider: "local";
+  metadata: BaseAsset["metadata"] & {
     svgContent?: string;
     customizable?: boolean;
   };
@@ -74,9 +80,9 @@ export interface ShapeAsset extends BaseAsset {
  * Frame asset (decorative frames)
  */
 export interface FrameAsset extends BaseAsset {
-  type: 'frame';
-  provider: 'local';
-  metadata: BaseAsset['metadata'] & {
+  type: "frame";
+  provider: "local";
+  metadata: BaseAsset["metadata"] & {
     style?: string;
     customizable?: boolean;
   };
@@ -86,9 +92,9 @@ export interface FrameAsset extends BaseAsset {
  * Icon asset
  */
 export interface IconAsset extends BaseAsset {
-  type: 'icon';
-  provider: 'local';
-  metadata: BaseAsset['metadata'] & {
+  type: "icon";
+  provider: "local";
+  metadata: BaseAsset["metadata"] & {
     svgContent?: string;
     customizable?: boolean;
   };
@@ -98,9 +104,9 @@ export interface IconAsset extends BaseAsset {
  * User uploaded asset
  */
 export interface UploadAsset extends BaseAsset {
-  type: 'upload';
-  provider: 'user';
-  metadata: BaseAsset['metadata'] & {
+  type: "upload";
+  provider: "user";
+  metadata: BaseAsset["metadata"] & {
     originalName?: string;
     uploadDate?: Date;
   };
@@ -109,7 +115,13 @@ export interface UploadAsset extends BaseAsset {
 /**
  * Union type for all asset types
  */
-export type Asset = PhotoAsset | VideoAsset | ShapeAsset | FrameAsset | IconAsset | UploadAsset;
+export type Asset =
+  | PhotoAsset
+  | VideoAsset
+  | ShapeAsset
+  | FrameAsset
+  | IconAsset
+  | UploadAsset;
 
 /**
  * Search and filter parameters
@@ -118,10 +130,10 @@ export interface AssetSearchParams {
   query?: string;
   category?: string;
   color?: string;
-  orientation?: 'landscape' | 'portrait' | 'square';
+  orientation?: "landscape" | "portrait" | "square";
   page?: number;
   perPage?: number;
-  sortBy?: 'relevant' | 'latest' | 'popular';
+  sortBy?: "relevant" | "latest" | "popular";
 }
 
 /**

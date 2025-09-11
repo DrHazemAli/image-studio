@@ -6,7 +6,7 @@ import {
   ImageEditRequest,
   ImageGenerationResponse,
   GenerationResult,
-} from '../types';
+} from "../types";
 
 export class AzureImageProvider {
   private config: AzureConfig;
@@ -20,12 +20,12 @@ export class AzureImageProvider {
   validateConfiguration(): { isValid: boolean; errors: string[] } {
     const errors: string[] = [];
 
-    if (!this.apiKey || this.apiKey.trim() === '') {
-      errors.push('Azure API key is missing');
+    if (!this.apiKey || this.apiKey.trim() === "") {
+      errors.push("Azure API key is missing");
     }
 
     if (!this.config.endpoints || this.config.endpoints.length === 0) {
-      errors.push('No Azure endpoints configured');
+      errors.push("No Azure endpoints configured");
     }
 
     this.config.endpoints.forEach((endpoint, index) => {
@@ -55,11 +55,11 @@ export class AzureImageProvider {
   }
 
   getDeploymentById(
-    deploymentId: string
+    deploymentId: string,
   ): { endpoint: AzureEndpoint; deployment: AzureDeployment } | null {
     for (const endpoint of this.config.endpoints) {
       const deployment = endpoint.deployments.find(
-        (d) => d.id === deploymentId
+        (d) => d.id === deploymentId,
       );
       if (deployment) {
         return { endpoint, deployment };
@@ -71,7 +71,7 @@ export class AzureImageProvider {
   async generateImage(
     deploymentId: string,
     request: ImageGenerationRequest,
-    onProgress?: (progress: number) => void
+    onProgress?: (progress: number) => void,
   ): Promise<GenerationResult> {
     const deploymentInfo = this.getDeploymentById(deploymentId);
     if (!deploymentInfo) {
@@ -98,9 +98,9 @@ export class AzureImageProvider {
 
     const requestLog = {
       url,
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer [REDACTED]`,
       },
       body: requestPayload,
@@ -111,9 +111,9 @@ export class AzureImageProvider {
 
     try {
       const response = await fetch(url, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${this.apiKey}`,
         },
         body: JSON.stringify(requestPayload),
@@ -142,7 +142,7 @@ export class AzureImageProvider {
           ...data,
           data: data.data.map((item) => ({
             ...item,
-            b64_json: '[BASE64_DATA_TRUNCATED]',
+            b64_json: "[BASE64_DATA_TRUNCATED]",
           })),
         },
         timestamp: new Date().toISOString(),
@@ -159,7 +159,7 @@ export class AzureImageProvider {
       return {
         success: false,
         error:
-          error instanceof Error ? error.message : 'Unknown error occurred',
+          error instanceof Error ? error.message : "Unknown error occurred",
         requestLog,
       };
     }
@@ -168,7 +168,7 @@ export class AzureImageProvider {
   async editImage(
     deploymentId: string,
     request: ImageEditRequest,
-    onProgress?: (progress: number) => void
+    onProgress?: (progress: number) => void,
   ): Promise<GenerationResult> {
     const deploymentInfo = this.getDeploymentById(deploymentId);
     if (!deploymentInfo) {
@@ -188,30 +188,30 @@ export class AzureImageProvider {
 
     // Convert base64 image to blob
     const imageBlob = new Blob(
-      [Buffer.from(request.image.split(',')[1], 'base64')],
-      { type: 'image/png' }
+      [Buffer.from(request.image.split(",")[1], "base64")],
+      { type: "image/png" },
     );
-    formData.append('image', imageBlob, 'image.png');
+    formData.append("image", imageBlob, "image.png");
 
     // Add mask if provided
     if (request.mask) {
       const maskBlob = new Blob(
-        [Buffer.from(request.mask.split(',')[1], 'base64')],
-        { type: 'image/png' }
+        [Buffer.from(request.mask.split(",")[1], "base64")],
+        { type: "image/png" },
       );
-      formData.append('mask', maskBlob, 'mask.png');
+      formData.append("mask", maskBlob, "mask.png");
     }
 
     // Add other parameters
-    formData.append('prompt', request.prompt);
+    formData.append("prompt", request.prompt);
     if (request.output_format)
-      formData.append('response_format', request.output_format);
-    if (request.n) formData.append('n', request.n.toString());
-    if (request.size) formData.append('size', request.size);
+      formData.append("response_format", request.output_format);
+    if (request.n) formData.append("n", request.n.toString());
+    if (request.size) formData.append("size", request.size);
 
     const requestLog = {
       url,
-      method: 'POST',
+      method: "POST",
       headers: {
         Authorization: `Bearer [REDACTED]`,
       },
@@ -230,7 +230,7 @@ export class AzureImageProvider {
 
     try {
       const response = await fetch(url, {
-        method: 'POST',
+        method: "POST",
         headers: {
           Authorization: `Bearer ${this.apiKey}`,
         },
@@ -260,7 +260,7 @@ export class AzureImageProvider {
           ...data,
           data: data.data.map((item) => ({
             ...item,
-            b64_json: '[BASE64_DATA_TRUNCATED]',
+            b64_json: "[BASE64_DATA_TRUNCATED]",
           })),
         },
         timestamp: new Date().toISOString(),
@@ -277,7 +277,7 @@ export class AzureImageProvider {
       return {
         success: false,
         error:
-          error instanceof Error ? error.message : 'Unknown error occurred',
+          error instanceof Error ? error.message : "Unknown error occurred",
         requestLog,
       };
     }

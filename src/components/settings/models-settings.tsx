@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Package,
   Check,
@@ -17,12 +17,12 @@ import {
   Search,
   Download,
   Loader2,
-} from 'lucide-react';
-import { AzureModelsConfig, AzureModel, AzureConfig } from '@/types/azure';
-import { cn } from '@/lib/utils';
-import { config } from '@/lib/settings';
-import { AZURE_MODELS_CONFIG_KEY } from '@/lib/constants';
-import logger from '@/lib/logger';
+} from "lucide-react";
+import { AzureModelsConfig, AzureModel, AzureConfig } from "@/types/azure";
+import { cn } from "@/lib/utils";
+import { config } from "@/lib/settings";
+import { AZURE_MODELS_CONFIG_KEY } from "@/lib/constants";
+import logger from "@/lib/logger";
 export function ModelsSettings() {
   const [modelsConfig, setModelsConfig] = useState<AzureModelsConfig>({
     imageModels: { generation: {} },
@@ -33,73 +33,88 @@ export function ModelsSettings() {
   const [azureConfig, setAzureConfig] = useState<AzureConfig | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
-  const [selectedProvider, setSelectedProvider] = useState<string>('openai');
+  const [saveStatus, setSaveStatus] = useState<
+    "idle" | "saving" | "saved" | "error"
+  >("idle");
+  const [selectedProvider, setSelectedProvider] = useState<string>("openai");
   const [showModelCatalog, setShowModelCatalog] = useState(false);
   const [catalogModels, setCatalogModels] = useState<AzureModel[]>([]);
   const [isFetchingCatalog, setIsFetchingCatalog] = useState(false);
-  const [catalogError, setCatalogError] = useState<string>('');
+  const [catalogError, setCatalogError] = useState<string>("");
   const [isAzureConfigured, setIsAzureConfigured] = useState(false);
-  
+
   // Load models configuration from localStorage and get Azure status from API
   useEffect(() => {
     const loadConfiguration = async () => {
       try {
         // Load default models configuration from API (contains JSON file data)
-        const modelsResponse = await fetch('/api/azure/models');
+        const modelsResponse = await fetch("/api/azure/models");
         let defaultModelsConfig: AzureModelsConfig | null = null;
         let azureConfigured = false;
         let hasValidCredentials = false;
 
         if (modelsResponse.ok) {
           const modelsData = await modelsResponse.json();
-          logger.info('Default models data received from API:', modelsData);
+          logger.info("Default models data received from API:", modelsData);
           defaultModelsConfig = modelsData.models;
           azureConfigured = modelsData.azureConfigured;
           hasValidCredentials = modelsData.hasValidCredentials;
 
           // Set Azure configuration state
           setIsAzureConfigured(azureConfigured);
-          logger.info('Azure configured status:', azureConfigured);
+          logger.info("Azure configured status:", azureConfigured);
 
           // Set Azure configuration object for validation logic
           if (hasValidCredentials) {
             setAzureConfig({
-              primary: { status: azureConfigured ? 'valid' : 'invalid' },
+              primary: { status: azureConfigured ? "valid" : "invalid" },
               endpoints: [],
-              primaryApiKey: '***********', // Never expose actual key
-              primaryEndpoint: '***********', // Never expose actual endpoint
-              defaultSettings: { outputFormat: 'png', size: '1024x1024', n: 1 },
-              ui: { theme: 'light', showConsole: false, animationsEnabled: true },
+              primaryApiKey: "***********", // Never expose actual key
+              primaryEndpoint: "***********", // Never expose actual endpoint
+              defaultSettings: { outputFormat: "png", size: "1024x1024", n: 1 },
+              ui: {
+                theme: "light",
+                showConsole: false,
+                animationsEnabled: true,
+              },
             });
           }
         }
 
         // Try to load custom models from localStorage using config system
-        const savedModelsConfig = config(AZURE_MODELS_CONFIG_KEY, null, 'localStorage');
+        const savedModelsConfig = config(
+          AZURE_MODELS_CONFIG_KEY,
+          null,
+          "localStorage",
+        );
         let finalModelsConfig = defaultModelsConfig;
 
         if (savedModelsConfig) {
-          logger.info('Found saved models in localStorage:', savedModelsConfig);
+          logger.info("Found saved models in localStorage:", savedModelsConfig);
           finalModelsConfig = savedModelsConfig as AzureModelsConfig;
         } else if (defaultModelsConfig) {
-          logger.info('Using default models config from JSON file');
+          logger.info("Using default models config from JSON file");
           finalModelsConfig = defaultModelsConfig;
         }
 
         if (finalModelsConfig) {
           setModelsConfig(finalModelsConfig);
           // Set the first available provider as selected
-          const providers = Object.keys(finalModelsConfig.imageModels.generation);
-          logger.info('Available providers:', providers);
+          const providers = Object.keys(
+            finalModelsConfig.imageModels.generation,
+          );
+          logger.info("Available providers:", providers);
           if (providers.length > 0) {
             setSelectedProvider(providers[0]);
-            logger.info('Selected provider:', providers[0]);
-            logger.info('Models for provider:', finalModelsConfig.imageModels.generation[providers[0]]);
+            logger.info("Selected provider:", providers[0]);
+            logger.info(
+              "Models for provider:",
+              finalModelsConfig.imageModels.generation[providers[0]],
+            );
           }
         }
       } catch (error) {
-        console.error('Failed to load configurations:', error);
+        console.error("Failed to load configurations:", error);
       } finally {
         setIsLoading(false);
       }
@@ -109,210 +124,269 @@ export function ModelsSettings() {
   }, []);
 
   // Save models configuration to localStorage
-  const saveConfiguration = useCallback(async (modelsConfig: AzureModelsConfig) => {
-    logger.info('Saving models configuration to localStorage:', modelsConfig);
-    setIsSaving(true);
-    setSaveStatus('saving');
+  const saveConfiguration = useCallback(
+    async (modelsConfig: AzureModelsConfig) => {
+      logger.info("Saving models configuration to localStorage:", modelsConfig);
+      setIsSaving(true);
+      setSaveStatus("saving");
 
-    try {
-      // Validate structure with API first
-      const response = await fetch('/api/azure/models', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ models: modelsConfig }),
-      });
+      try {
+        // Validate structure with API first
+        const response = await fetch("/api/azure/models", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ models: modelsConfig }),
+        });
 
-      if (response.ok) {
-        const responseData = await response.json();
-        logger.info('Models configuration structure validated:', responseData);
-        
-        // Save to localStorage using config system
-        config(AZURE_MODELS_CONFIG_KEY, responseData.models, 'localStorage');
-        logger.info('Models configuration saved to localStorage successfully');
-        
-        setSaveStatus('saved');
-        // Reset save status after 2 seconds
-        setTimeout(() => setSaveStatus('idle'), 2000);
-      } else {
-        console.error('Failed to validate models configuration:', response.status);
-        setSaveStatus('error');
+        if (response.ok) {
+          const responseData = await response.json();
+          logger.info(
+            "Models configuration structure validated:",
+            responseData,
+          );
+
+          // Save to localStorage using config system
+          config(AZURE_MODELS_CONFIG_KEY, responseData.models, "localStorage");
+          logger.info(
+            "Models configuration saved to localStorage successfully",
+          );
+
+          setSaveStatus("saved");
+          // Reset save status after 2 seconds
+          setTimeout(() => setSaveStatus("idle"), 2000);
+        } else {
+          console.error(
+            "Failed to validate models configuration:",
+            response.status,
+          );
+          setSaveStatus("error");
+        }
+      } catch (error) {
+        console.error("Failed to save models configuration:", error);
+        setSaveStatus("error");
+      } finally {
+        setIsSaving(false);
       }
-    } catch (error) {
-      console.error('Failed to save models configuration:', error);
-      setSaveStatus('error');
-    } finally {
-      setIsSaving(false);
-    }
-  }, []);
+    },
+    [],
+  );
 
   // Fetch models from Azure Model Catalog
   const fetchModelCatalog = useCallback(async (provider: string) => {
     setIsFetchingCatalog(true);
-    setCatalogError('');
-    
+    setCatalogError("");
+
     try {
-      const response = await fetch(`/api/azure/model-catalog?provider=${provider}&type=image-generation`);
+      const response = await fetch(
+        `/api/azure/model-catalog?provider=${provider}&type=image-generation`,
+      );
       const data = await response.json();
-      
+
       if (data.success) {
         setCatalogModels(data.models || []);
         setShowModelCatalog(true);
       } else {
-        setCatalogError(data.error || 'Failed to fetch model catalog');
+        setCatalogError(data.error || "Failed to fetch model catalog");
       }
     } catch (error) {
-      console.error('Error fetching model catalog:', error);
-      setCatalogError('Failed to connect to Azure Model Catalog');
+      console.error("Error fetching model catalog:", error);
+      setCatalogError("Failed to connect to Azure Model Catalog");
     } finally {
       setIsFetchingCatalog(false);
     }
   }, []);
 
   // Add model from catalog or create custom model
-  const addModel = useCallback((provider: string, catalogModel?: AzureModel) => {
-    const newModel: AzureModel = catalogModel || {
-      id: `custom-model-${Date.now()}`,
-      name: 'New Custom Model',
-      description: 'Custom model description - please update with actual specifications',
-      provider: provider,
-      apiVersion: '2025-04-01-preview',
-      capabilities: ['text-to-image'],
-      supportedSizes: [
-        {
-          size: '1024x1024',
-          label: 'Square (1:1)',
-          aspect: '1:1',
-          description: 'Standard resolution',
-        },
-      ],
-      supportedFormats: ['png', 'jpeg'],
-      qualityLevels: ['standard'],
-      maxImages: 1,
-      requiresApproval: false,
-      features: {
-        highQuality: true,
-      },
-      status: 'idle',
-      validated_at: null,
-      deploymentName: '',
-      enabled: true,
-    };
-
-    setModelsConfig(prev => {
-      const updated = {
-        ...prev,
-        imageModels: {
-          ...prev.imageModels,
-          generation: {
-            ...prev.imageModels.generation,
-            [provider]: [...(prev.imageModels.generation[provider] || []), newModel],
+  const addModel = useCallback(
+    (provider: string, catalogModel?: AzureModel) => {
+      const newModel: AzureModel = catalogModel || {
+        id: `custom-model-${Date.now()}`,
+        name: "New Custom Model",
+        description:
+          "Custom model description - please update with actual specifications",
+        provider: provider,
+        apiVersion: "2025-04-01-preview",
+        capabilities: ["text-to-image"],
+        supportedSizes: [
+          {
+            size: "1024x1024",
+            label: "Square (1:1)",
+            aspect: "1:1",
+            description: "Standard resolution",
           },
+        ],
+        supportedFormats: ["png", "jpeg"],
+        qualityLevels: ["standard"],
+        maxImages: 1,
+        requiresApproval: false,
+        features: {
+          highQuality: true,
         },
+        status: "idle",
+        validated_at: null,
+        deploymentName: "",
+        enabled: true,
       };
-      saveConfiguration(updated);
-      return updated;
-    });
 
-    // Close catalog modal if open
-    if (catalogModel) {
-      setShowModelCatalog(false);
-    }
-  }, [saveConfiguration]);
-
-  // Update model and optionally save to localStorage
-  const updateModel = useCallback((provider: string, modelId: string, updates: Partial<AzureModel>, shouldSave: boolean = true) => {
-    setModelsConfig(prev => {
-      const updated = {
-        ...prev,
-        imageModels: {
-          ...prev.imageModels,
-          generation: {
-            ...prev.imageModels.generation,
-            [provider]: prev.imageModels.generation[provider]?.map(model =>
-              model.id === modelId ? { ...model, ...updates } : model
-            ) || [],
+      setModelsConfig((prev) => {
+        const updated = {
+          ...prev,
+          imageModels: {
+            ...prev.imageModels,
+            generation: {
+              ...prev.imageModels.generation,
+              [provider]: [
+                ...(prev.imageModels.generation[provider] || []),
+                newModel,
+              ],
+            },
           },
-        },
-      };
-      
-      // Only save if explicitly requested
-      if (shouldSave) {
+        };
         saveConfiguration(updated);
-      }
-      return updated;
-    });
-  }, [saveConfiguration]);
-
-  // Remove model and save to cookies
-  const removeModel = useCallback((provider: string, modelId: string) => {
-    setModelsConfig(prev => {
-      const updated = {
-        ...prev,
-        imageModels: {
-          ...prev.imageModels,
-          generation: {
-            ...prev.imageModels.generation,
-            [provider]: prev.imageModels.generation[provider]?.filter(model =>
-              model.id !== modelId
-            ) || [],
-          },
-        },
-      };
-      
-      // Always save the entire configuration to cookies after removal
-      saveConfiguration(updated);
-      return updated;
-    });
-  }, [saveConfiguration]);
-
-  // Validate model with Azure endpoint - ensures all models are saved to localStorage
-  const validateModel = useCallback(async (model: AzureModel, provider: string) => {
-    if (!isAzureConfigured) {
-      return { valid: false, message: 'Azure primary API key and endpoint must be configured first' };
-    }
-
-    // Set pending status immediately without saving yet
-    updateModel(provider, model.id, { 
-      status: 'pending', 
-      validated_at: new Date().toISOString() 
-    }, false);
-
-    try {
-      const response = await fetch('/api/azure/models', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          modelId: model.id,
-          deploymentName: model.deploymentName || model.id,
-          provider: model.provider,
-        }),
+        return updated;
       });
 
-      const data = await response.json();
-      
-      const status = data.valid ? 'valid' : 'invalid';
-      const message = data.message || (data.valid ? 'Model validated successfully' : 'Model validation failed');
-      
-      // Update validation status and save entire configuration to localStorage (final save)
-      updateModel(provider, model.id, { 
-        status,
-        validated_at: new Date().toISOString() 
-      }, true);
-      
-      return { valid: data.valid, message };
-    } catch (error) {
-      // Update with error status and save entire configuration to localStorage (final save)
-      updateModel(provider, model.id, { 
-        status: 'invalid',
-        validated_at: new Date().toISOString() 
-      }, true);
-      return { valid: false, message: 'Failed to validate model' };
-    }
-  }, [isAzureConfigured, updateModel]);
+      // Close catalog modal if open
+      if (catalogModel) {
+        setShowModelCatalog(false);
+      }
+    },
+    [saveConfiguration],
+  );
+
+  // Update model and optionally save to localStorage
+  const updateModel = useCallback(
+    (
+      provider: string,
+      modelId: string,
+      updates: Partial<AzureModel>,
+      shouldSave: boolean = true,
+    ) => {
+      setModelsConfig((prev) => {
+        const updated = {
+          ...prev,
+          imageModels: {
+            ...prev.imageModels,
+            generation: {
+              ...prev.imageModels.generation,
+              [provider]:
+                prev.imageModels.generation[provider]?.map((model) =>
+                  model.id === modelId ? { ...model, ...updates } : model,
+                ) || [],
+            },
+          },
+        };
+
+        // Only save if explicitly requested
+        if (shouldSave) {
+          saveConfiguration(updated);
+        }
+        return updated;
+      });
+    },
+    [saveConfiguration],
+  );
+
+  // Remove model and save to cookies
+  const removeModel = useCallback(
+    (provider: string, modelId: string) => {
+      setModelsConfig((prev) => {
+        const updated = {
+          ...prev,
+          imageModels: {
+            ...prev.imageModels,
+            generation: {
+              ...prev.imageModels.generation,
+              [provider]:
+                prev.imageModels.generation[provider]?.filter(
+                  (model) => model.id !== modelId,
+                ) || [],
+            },
+          },
+        };
+
+        // Always save the entire configuration to cookies after removal
+        saveConfiguration(updated);
+        return updated;
+      });
+    },
+    [saveConfiguration],
+  );
+
+  // Validate model with Azure endpoint - ensures all models are saved to localStorage
+  const validateModel = useCallback(
+    async (model: AzureModel, provider: string) => {
+      if (!isAzureConfigured) {
+        return {
+          valid: false,
+          message:
+            "Azure primary API key and endpoint must be configured first",
+        };
+      }
+
+      // Set pending status immediately without saving yet
+      updateModel(
+        provider,
+        model.id,
+        {
+          status: "pending",
+          validated_at: new Date().toISOString(),
+        },
+        false,
+      );
+
+      try {
+        const response = await fetch("/api/azure/models", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            modelId: model.id,
+            deploymentName: model.deploymentName || model.id,
+            provider: model.provider,
+          }),
+        });
+
+        const data = await response.json();
+
+        const status = data.valid ? "valid" : "invalid";
+        const message =
+          data.message ||
+          (data.valid
+            ? "Model validated successfully"
+            : "Model validation failed");
+
+        // Update validation status and save entire configuration to localStorage (final save)
+        updateModel(
+          provider,
+          model.id,
+          {
+            status,
+            validated_at: new Date().toISOString(),
+          },
+          true,
+        );
+
+        return { valid: data.valid, message };
+      } catch (error) {
+        // Update with error status and save entire configuration to localStorage (final save)
+        updateModel(
+          provider,
+          model.id,
+          {
+            status: "invalid",
+            validated_at: new Date().toISOString(),
+          },
+          true,
+        );
+        return { valid: false, message: "Failed to validate model" };
+      }
+    },
+    [isAzureConfigured, updateModel],
+  );
 
   // Show loading state
   if (isLoading) {
@@ -320,7 +394,9 @@ export function ModelsSettings() {
       <div className="flex items-center justify-center p-8">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Loading models configuration...</p>
+          <p className="text-gray-600 dark:text-gray-400">
+            Loading models configuration...
+          </p>
         </div>
       </div>
     );
@@ -341,19 +417,19 @@ export function ModelsSettings() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          {saveStatus === 'saving' && (
+          {saveStatus === "saving" && (
             <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 text-sm">
               <div className="w-3 h-3 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
               Saving...
             </div>
           )}
-          {saveStatus === 'saved' && (
+          {saveStatus === "saved" && (
             <div className="flex items-center gap-2 text-green-600 dark:text-green-400 text-sm">
               <Check className="w-3 h-3" />
               Saved
             </div>
           )}
-          {saveStatus === 'error' && (
+          {saveStatus === "error" && (
             <div className="flex items-center gap-2 text-red-600 dark:text-red-400 text-sm">
               <X className="w-3 h-3" />
               Save Failed
@@ -372,13 +448,16 @@ export function ModelsSettings() {
                 Azure Configuration Required
               </h4>
               <p className="text-sm text-amber-700 dark:text-amber-300 mb-3">
-                Before you can validate models, you need to configure your Azure API key and endpoint in the Azure settings tab.
+                Before you can validate models, you need to configure your Azure
+                API key and endpoint in the Azure settings tab.
               </p>
               <button
                 onClick={() => {
                   // This would typically trigger navigation to Azure tab
                   // For now, we'll show a message
-                  alert('Please go to the Azure settings tab to configure your API credentials first.');
+                  alert(
+                    "Please go to the Azure settings tab to configure your API credentials first.",
+                  );
                 }}
                 className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-amber-800 dark:text-amber-200 hover:text-amber-900 dark:hover:text-amber-100 border border-amber-300 dark:border-amber-600 hover:border-amber-400 dark:hover:border-amber-500 rounded-md transition-colors"
               >
@@ -394,15 +473,15 @@ export function ModelsSettings() {
       {/* Provider Tabs */}
       <div className="space-y-4">
         <div className="flex items-center gap-2 border-b border-gray-200 dark:border-gray-700">
-          {providers.map(provider => (
+          {providers.map((provider) => (
             <button
               key={provider}
               onClick={() => setSelectedProvider(provider)}
               className={cn(
-                'px-4 py-2 text-sm font-medium border-b-2 transition-colors',
+                "px-4 py-2 text-sm font-medium border-b-2 transition-colors",
                 selectedProvider === provider
-                  ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                  : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
+                  ? "border-blue-500 text-blue-600 dark:text-blue-400"
+                  : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600",
               )}
             >
               {provider.charAt(0).toUpperCase() + provider.slice(1)}
@@ -417,7 +496,9 @@ export function ModelsSettings() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h4 className="text-lg font-medium text-gray-900 dark:text-white">
-              {selectedProvider.charAt(0).toUpperCase() + selectedProvider.slice(1)} Models
+              {selectedProvider.charAt(0).toUpperCase() +
+                selectedProvider.slice(1)}{" "}
+              Models
             </h4>
             <div className="flex items-center gap-2">
               <button
@@ -443,7 +524,9 @@ export function ModelsSettings() {
           </div>
 
           <div className="space-y-4">
-            {(!modelsConfig.imageModels.generation[selectedProvider] || modelsConfig.imageModels.generation[selectedProvider].length === 0) ? (
+            {!modelsConfig.imageModels.generation[selectedProvider] ||
+            modelsConfig.imageModels.generation[selectedProvider].length ===
+              0 ? (
               <div className="p-8 text-center rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50">
                 <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
@@ -460,17 +543,21 @@ export function ModelsSettings() {
                 </button>
               </div>
             ) : (
-              modelsConfig.imageModels.generation[selectedProvider].map(model => (
-                <ModelCard
-                  key={model.id}
-                  model={model}
-                  provider={selectedProvider}
-                  isAzureConfigured={isAzureConfigured}
-                  onUpdate={(updates) => updateModel(selectedProvider, model.id, updates)}
-                  onRemove={() => removeModel(selectedProvider, model.id)}
-                  onValidate={() => validateModel(model, selectedProvider)}
-                />
-              ))
+              modelsConfig.imageModels.generation[selectedProvider].map(
+                (model) => (
+                  <ModelCard
+                    key={model.id}
+                    model={model}
+                    provider={selectedProvider}
+                    isAzureConfigured={isAzureConfigured}
+                    onUpdate={(updates) =>
+                      updateModel(selectedProvider, model.id, updates)
+                    }
+                    onRemove={() => removeModel(selectedProvider, model.id)}
+                    onValidate={() => validateModel(model, selectedProvider)}
+                  />
+                ),
+              )
             )}
           </div>
         </div>
@@ -509,22 +596,22 @@ function ModelCard({
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isValidating, setIsValidating] = useState(false);
-  const [validationMessage, setValidationMessage] = useState('');
+  const [validationMessage, setValidationMessage] = useState("");
 
   const handleValidate = async () => {
     if (!isAzureConfigured) {
-      setValidationMessage('Azure configuration is required for validation');
+      setValidationMessage("Azure configuration is required for validation");
       return;
     }
 
     setIsValidating(true);
-    setValidationMessage('');
+    setValidationMessage("");
 
     try {
       const result = await onValidate();
-      setValidationMessage(result.message || 'Validation completed');
+      setValidationMessage(result.message || "Validation completed");
     } catch (error) {
-      setValidationMessage('Failed to validate model');
+      setValidationMessage("Failed to validate model");
     } finally {
       setIsValidating(false);
     }
@@ -547,19 +634,19 @@ function ModelCard({
                   Primary
                 </span>
               )}
-              {model.status === 'valid' && (
+              {model.status === "valid" && (
                 <div className="flex items-center gap-1 text-green-600 dark:text-green-400">
                   <div className="w-2 h-2 bg-green-500 rounded-full" />
                   <span className="text-xs font-medium">Valid</span>
                 </div>
               )}
-              {model.status === 'invalid' && (
+              {model.status === "invalid" && (
                 <div className="flex items-center gap-1 text-red-600 dark:text-red-400">
                   <div className="w-2 h-2 bg-red-500 rounded-full" />
                   <span className="text-xs font-medium">Invalid</span>
                 </div>
               )}
-              {model.status === 'pending' && (
+              {model.status === "pending" && (
                 <div className="flex items-center gap-1 text-yellow-600 dark:text-yellow-400">
                   <div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse" />
                   <span className="text-xs font-medium">Validating</span>
@@ -571,11 +658,12 @@ function ModelCard({
             </p>
             <div className="flex items-center gap-2 mt-1">
               <span className="text-xs text-gray-400">
-                {model.capabilities.join(', ')}
+                {model.capabilities.join(", ")}
               </span>
               {model.validated_at && (
                 <span className="text-xs text-gray-400">
-                  • Last validated: {new Date(model.validated_at).toLocaleString()}
+                  • Last validated:{" "}
+                  {new Date(model.validated_at).toLocaleString()}
                 </span>
               )}
             </div>
@@ -604,7 +692,7 @@ function ModelCard({
             className="p-1.5 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-md transition-colors duration-150"
           >
             <ChevronDown
-              className={`w-3 h-3 text-gray-500 transition-transform duration-150 ${isExpanded ? 'rotate-180' : ''}`}
+              className={`w-3 h-3 text-gray-500 transition-transform duration-150 ${isExpanded ? "rotate-180" : ""}`}
             />
           </button>
           <button
@@ -626,7 +714,7 @@ function ModelCard({
               <input
                 type="text"
                 value={model.name}
-                onChange={e => onUpdate({ name: e.target.value })}
+                onChange={(e) => onUpdate({ name: e.target.value })}
                 className="w-full px-3 py-2 rounded-lg border border-gray-200/50 dark:border-gray-700/50 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-colors duration-150"
               />
             </div>
@@ -637,7 +725,7 @@ function ModelCard({
               <input
                 type="text"
                 value={model.id}
-                onChange={e => onUpdate({ id: e.target.value })}
+                onChange={(e) => onUpdate({ id: e.target.value })}
                 className="w-full px-3 py-2 rounded-lg border border-gray-200/50 dark:border-gray-700/50 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-colors duration-150"
               />
             </div>
@@ -648,7 +736,7 @@ function ModelCard({
               <input
                 type="text"
                 value={model.apiVersion}
-                onChange={e => onUpdate({ apiVersion: e.target.value })}
+                onChange={(e) => onUpdate({ apiVersion: e.target.value })}
                 className="w-full px-3 py-2 rounded-lg border border-gray-200/50 dark:border-gray-700/50 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-colors duration-150"
               />
             </div>
@@ -658,7 +746,7 @@ function ModelCard({
               </label>
               <textarea
                 value={model.description}
-                onChange={e => onUpdate({ description: e.target.value })}
+                onChange={(e) => onUpdate({ description: e.target.value })}
                 className="w-full px-3 py-2 rounded-lg border border-gray-200/50 dark:border-gray-700/50 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-colors duration-150"
                 rows={2}
               />
@@ -669,8 +757,8 @@ function ModelCard({
               </label>
               <input
                 type="text"
-                value={model.deploymentName || ''}
-                onChange={e => onUpdate({ deploymentName: e.target.value })}
+                value={model.deploymentName || ""}
+                onChange={(e) => onUpdate({ deploymentName: e.target.value })}
                 placeholder="Enter deployment name"
                 className="w-full px-3 py-2 rounded-lg border border-gray-200/50 dark:border-gray-700/50 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-colors duration-150"
               />
@@ -684,61 +772,79 @@ function ModelCard({
                 min="1"
                 max="10"
                 value={model.maxImages}
-                onChange={e => onUpdate({ maxImages: parseInt(e.target.value) })}
+                onChange={(e) =>
+                  onUpdate({ maxImages: parseInt(e.target.value) })
+                }
                 className="w-full px-3 py-2 rounded-lg border border-gray-200/50 dark:border-gray-700/50 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-colors duration-150"
               />
             </div>
           </div>
-          
+
           <div className="flex items-center gap-4">
             <label className="flex items-center gap-2">
               <input
                 type="checkbox"
                 checked={model.primary || false}
-                onChange={e => onUpdate({ primary: e.target.checked })}
+                onChange={(e) => onUpdate({ primary: e.target.checked })}
                 className="rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
               />
-              <span className="text-sm text-gray-700 dark:text-gray-300">Primary Model</span>
+              <span className="text-sm text-gray-700 dark:text-gray-300">
+                Primary Model
+              </span>
             </label>
             <label className="flex items-center gap-2">
               <input
                 type="checkbox"
                 checked={model.requiresApproval}
-                onChange={e => onUpdate({ requiresApproval: e.target.checked })}
+                onChange={(e) =>
+                  onUpdate({ requiresApproval: e.target.checked })
+                }
                 className="rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
               />
-              <span className="text-sm text-gray-700 dark:text-gray-300">Requires Approval</span>
+              <span className="text-sm text-gray-700 dark:text-gray-300">
+                Requires Approval
+              </span>
             </label>
             <label className="flex items-center gap-2">
               <input
                 type="checkbox"
                 checked={model.enabled || false}
-                onChange={e => onUpdate({ enabled: e.target.checked })}
+                onChange={(e) => onUpdate({ enabled: e.target.checked })}
                 className="rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
               />
-              <span className="text-sm text-gray-700 dark:text-gray-300">Enabled</span>
+              <span className="text-sm text-gray-700 dark:text-gray-300">
+                Enabled
+              </span>
             </label>
           </div>
-          
+
           {/* Validation Status */}
           {validationMessage && (
-            <div className={`p-3 rounded-lg text-sm ${
-              model.status === 'valid' 
-                ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300' 
-                : model.status === 'invalid'
-                  ? 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300'
-                  : 'bg-gray-50 dark:bg-gray-800/50 text-gray-700 dark:text-gray-300'
-            }`}>
+            <div
+              className={`p-3 rounded-lg text-sm ${
+                model.status === "valid"
+                  ? "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300"
+                  : model.status === "invalid"
+                    ? "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300"
+                    : "bg-gray-50 dark:bg-gray-800/50 text-gray-700 dark:text-gray-300"
+              }`}
+            >
               <div className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full ${
-                  model.status === 'valid'
-                    ? 'bg-green-500'
-                    : model.status === 'invalid'
-                      ? 'bg-red-500'
-                      : 'bg-gray-300 dark:bg-gray-600'
-                }`} />
+                <div
+                  className={`w-2 h-2 rounded-full ${
+                    model.status === "valid"
+                      ? "bg-green-500"
+                      : model.status === "invalid"
+                        ? "bg-red-500"
+                        : "bg-gray-300 dark:bg-gray-600"
+                  }`}
+                />
                 <span className="font-medium">
-                  {model.status === 'valid' ? 'Valid' : model.status === 'invalid' ? 'Invalid' : 'Validating...'}
+                  {model.status === "valid"
+                    ? "Valid"
+                    : model.status === "invalid"
+                      ? "Invalid"
+                      : "Validating..."}
                 </span>
               </div>
               <p className="mt-1">{validationMessage}</p>
@@ -797,7 +903,9 @@ function ModelCatalogModal({
                   <h4 className="text-sm font-medium text-red-800 dark:text-red-200 mb-1">
                     Failed to Load Model Catalog
                   </h4>
-                  <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
+                  <p className="text-sm text-red-700 dark:text-red-300">
+                    {error}
+                  </p>
                 </div>
               </div>
             </div>
@@ -807,7 +915,9 @@ function ModelCatalogModal({
             <div className="flex items-center justify-center py-12">
               <div className="text-center">
                 <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-                <p className="text-gray-600 dark:text-gray-400">Loading models from Azure Catalog...</p>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Loading models from Azure Catalog...
+                </p>
               </div>
             </div>
           ) : models.length === 0 ? (
@@ -847,22 +957,24 @@ function ModelCatalogModal({
                       Add
                     </button>
                   </div>
-                  
+
                   <p className="text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-2">
                     {model.description}
                   </p>
-                  
+
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
                       <span className="font-medium">Capabilities:</span>
-                      <span className="truncate">{model.capabilities.join(', ')}</span>
+                      <span className="truncate">
+                        {model.capabilities.join(", ")}
+                      </span>
                     </div>
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-gray-500 dark:text-gray-400">
                         Max Images: {model.maxImages}
                       </span>
                       <span className="text-gray-500 dark:text-gray-400">
-                        Formats: {model.supportedFormats.join(', ')}
+                        Formats: {model.supportedFormats.join(", ")}
                       </span>
                     </div>
                     {model.requiresApproval && (
@@ -881,7 +993,7 @@ function ModelCatalogModal({
         {/* Footer */}
         <div className="flex items-center justify-between p-6 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            {models.length} model{models.length !== 1 ? 's' : ''} available
+            {models.length} model{models.length !== 1 ? "s" : ""} available
           </p>
           <button
             onClick={onClose}

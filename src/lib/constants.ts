@@ -1,11 +1,8 @@
-
-
-
 // ConfigKey: Azure Configuration Object Key, Store: Cookies
-export const AZURE_CONFIG_OBJECT_KEY = 'az_config';
+export const AZURE_CONFIG_OBJECT_KEY = "az_config";
 
 // ConfigKey: Azure Models Object Key, Store: localStorage
-export const AZURE_MODELS_CONFIG_KEY = 'azure.models';
+export const AZURE_MODELS_CONFIG_KEY = "azure.models";
 
 // Canvas and Zoom Constants
 export const ZOOM_CONSTANTS = {
@@ -30,10 +27,10 @@ export const TOOL_CONSTANTS = {
   MAX_BRUSH_SIZE: 100 as number,
 
   // Default colors
-  DEFAULT_BRUSH_COLOR: '#000000' as string,
+  DEFAULT_BRUSH_COLOR: "#000000" as string,
 
   // Default active tool
-  DEFAULT_ACTIVE_TOOL: 'select' as string,
+  DEFAULT_ACTIVE_TOOL: "select" as string,
 };
 
 // Canvas settings
@@ -71,8 +68,8 @@ export const UI_CONSTANTS = {
 // Model and Generation Constants
 export const MODEL_CONSTANTS = {
   // Default model settings
-  DEFAULT_MODEL: 'FLUX.1-Kontext-pro',
-  DEFAULT_SIZE: '1024x1024',
+  DEFAULT_MODEL: "FLUX.1-Kontext-pro",
+  DEFAULT_SIZE: "1024x1024",
   DEFAULT_INPAINT_MODE: false,
 
   // Generation state
@@ -87,8 +84,8 @@ export const MODEL_CONSTANTS = {
 // Project Constants
 export const PROJECT_CONSTANTS = {
   // Default project settings
-  DEFAULT_USER_ID: 'default-user',
-  DEFAULT_PROJECT_NAME: 'Untitled Project',
+  DEFAULT_USER_ID: "default-user",
+  DEFAULT_PROJECT_NAME: "Untitled Project",
 
   // Canvas defaults
   CANVAS: {
@@ -106,6 +103,6 @@ export const PROJECT_CONSTANTS = {
   // Metadata defaults
   METADATA: {
     TAGS: [],
-    AUTHOR: 'Azure Image Studio',
+    AUTHOR: "Azure Image Studio",
   },
 };

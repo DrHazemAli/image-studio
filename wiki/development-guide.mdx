@@ -1,6 +1,6 @@
 # Custom Development Guide
 
-*Extending and customizing Azure Image Studio for your needs*
+_Extending and customizing Azure Image Studio for your needs_
 
 ---
 
@@ -26,6 +26,7 @@ This guide provides comprehensive information for developers who want to extend,
 ### Prerequisites
 
 #### Required Software
+
 - **Node.js**: Version 18 or higher
 - **npm**: Version 8 or higher
 - **Git**: For version control
@@ -33,6 +34,7 @@ This guide provides comprehensive information for developers who want to extend,
 - **Browser**: Chrome, Firefox, Safari, or Edge
 
 #### Optional Tools
+
 - **Docker**: For containerized development
 - **Postman**: For API testing
 - **Figma**: For UI/UX design
@@ -41,6 +43,7 @@ This guide provides comprehensive information for developers who want to extend,
 ### Environment Setup
 
 #### 1. Clone the Repository
+
 ```bash
 # Clone the repository
 git clone https://github.com/DrHazemAli/azure-image-studio.git
@@ -53,6 +56,7 @@ npm install
 ```
 
 #### 2. Environment Configuration
+
 ```bash
 # Copy environment template
 cp .env.example .env.local
@@ -62,6 +66,7 @@ cp .env.example .env.local
 ```
 
 #### 3. Development Server
+
 ```bash
 # Start development server
 npm run dev
@@ -76,6 +81,7 @@ DEBUG=* npm run dev
 ### Project Structure
 
 #### Core Directories
+
 ```
 azure-image-studio/
 ├── src/                    # Source code
@@ -90,6 +96,7 @@ azure-image-studio/
 ```
 
 #### Key Files
+
 - **package.json**: Project dependencies and scripts
 - **next.config.ts**: Next.js configuration
 - **tailwind.config.ts**: Tailwind CSS configuration
@@ -101,6 +108,7 @@ azure-image-studio/
 ### Technology Stack
 
 #### Frontend
+
 - **Next.js 14**: React framework with App Router
 - **React 18**: UI library with hooks and context
 - **TypeScript**: Type-safe JavaScript
@@ -108,12 +116,14 @@ azure-image-studio/
 - **Fabric.js**: Canvas manipulation library
 
 #### Backend
+
 - **Next.js API Routes**: Serverless API endpoints
 - **Azure AI Services**: Image generation and processing
 - **IndexedDB**: Client-side data storage
 - **Cookie-based Auth**: Simple authentication system
 
 #### Development Tools
+
 - **ESLint**: Code linting and formatting
 - **Prettier**: Code formatting
 - **Husky**: Git hooks
@@ -123,6 +133,7 @@ azure-image-studio/
 ### Component Architecture
 
 #### Component Hierarchy
+
 ```
 App
 ├── Layout
@@ -140,6 +151,7 @@ App
 ```
 
 #### State Management
+
 - **React Context**: Global state management
 - **useState/useEffect**: Local component state
 - **Custom Hooks**: Reusable state logic
@@ -150,6 +162,7 @@ App
 ### Getting Started
 
 #### 1. Fork and Clone
+
 ```bash
 # Fork the repository on GitHub
 # Clone your fork
@@ -160,6 +173,7 @@ git remote add upstream https://github.com/DrHazemAli/azure-image-studio.git
 ```
 
 #### 2. Create Feature Branch
+
 ```bash
 # Create and switch to feature branch
 git checkout -b feature/your-feature-name
@@ -169,6 +183,7 @@ git push -u origin feature/your-feature-name
 ```
 
 #### 3. Development Process
+
 ```bash
 # Make your changes
 # Test your changes
@@ -188,6 +203,7 @@ git commit -m "feat: add your feature description"
 ### Code Standards
 
 #### TypeScript Guidelines
+
 1. **Type Safety:**
    - Use strict TypeScript configuration
    - Define interfaces for all data structures
@@ -204,6 +220,7 @@ git commit -m "feat: add your feature description"
    - Provide meaningful error messages
 
 #### React Best Practices
+
 1. **Component Design:**
    - Use functional components with hooks
    - Implement proper prop types
@@ -220,6 +237,7 @@ git commit -m "feat: add your feature description"
    - Ensure keyboard navigation
 
 #### CSS Guidelines
+
 1. **Tailwind CSS:**
    - Use utility classes when possible
    - Create custom components for repeated patterns
@@ -235,7 +253,9 @@ git commit -m "feat: add your feature description"
 ### Custom Tools
 
 #### Creating a New Tool
+
 1. **Tool Interface:**
+
 ```typescript
 interface CustomTool {
   id: string;
@@ -248,31 +268,33 @@ interface CustomTool {
 ```
 
 2. **Tool Implementation:**
+
 ```typescript
 export const customTool: CustomTool = {
-  id: 'custom-tool',
-  name: 'Custom Tool',
+  id: "custom-tool",
+  name: "Custom Tool",
   icon: CustomToolIcon,
-  category: 'utility',
+  category: "utility",
   execute: (canvas, options) => {
     // Tool implementation
   },
   options: [
     {
-      name: 'option1',
-      type: 'number',
+      name: "option1",
+      type: "number",
       defaultValue: 10,
       min: 0,
-      max: 100
-    }
-  ]
+      max: 100,
+    },
+  ],
 };
 ```
 
 3. **Tool Registration:**
+
 ```typescript
 // Register tool in tools registry
-import { registerTool } from '@/lib/tools/registry';
+import { registerTool } from "@/lib/tools/registry";
 
 registerTool(customTool);
 ```
@@ -280,7 +302,9 @@ registerTool(customTool);
 ### Custom Filters
 
 #### Creating a New Filter
+
 1. **Filter Interface:**
+
 ```typescript
 interface CustomFilter {
   id: string;
@@ -292,39 +316,42 @@ interface CustomFilter {
 ```
 
 2. **Filter Implementation:**
+
 ```typescript
 export const customFilter: CustomFilter = {
-  id: 'custom-filter',
-  name: 'Custom Filter',
-  category: 'effects',
+  id: "custom-filter",
+  name: "Custom Filter",
+  category: "effects",
   apply: (imageData, options) => {
     // Filter implementation
     const { width, height, data } = imageData;
     const newData = new Uint8ClampedArray(data);
-    
+
     // Apply filter logic
     for (let i = 0; i < data.length; i += 4) {
       // Process RGBA values
     }
-    
+
     return new ImageData(newData, width, height);
   },
   options: [
     {
-      name: 'intensity',
-      type: 'range',
+      name: "intensity",
+      type: "range",
       min: 0,
       max: 100,
-      defaultValue: 50
-    }
-  ]
+      defaultValue: 50,
+    },
+  ],
 };
 ```
 
 ### Custom Asset Providers
 
 #### Creating a New Provider
+
 1. **Provider Interface:**
+
 ```typescript
 interface AssetProvider {
   id: string;
@@ -336,26 +363,27 @@ interface AssetProvider {
 ```
 
 2. **Provider Implementation:**
+
 ```typescript
 export class CustomAssetProvider implements AssetProvider {
-  id = 'custom-provider';
-  name = 'Custom Provider';
-  
+  id = "custom-provider";
+  name = "Custom Provider";
+
   async search(query: string, options: SearchOptions): Promise<Asset[]> {
     // Implement search logic
     const response = await fetch(`/api/custom-provider/search?q=${query}`);
     return response.json();
   }
-  
+
   async download(assetId: string): Promise<Blob> {
     // Implement download logic
     const response = await fetch(`/api/custom-provider/download/${assetId}`);
     return response.blob();
   }
-  
+
   async getCategories(): Promise<Category[]> {
     // Implement categories logic
-    const response = await fetch('/api/custom-provider/categories');
+    const response = await fetch("/api/custom-provider/categories");
     return response.json();
   }
 }
@@ -366,7 +394,9 @@ export class CustomAssetProvider implements AssetProvider {
 ### Testing Strategy
 
 #### Unit Testing
+
 1. **Component Testing:**
+
 ```typescript
 import { render, screen } from '@testing-library/react';
 import { CustomComponent } from './CustomComponent';
@@ -380,30 +410,33 @@ describe('CustomComponent', () => {
 ```
 
 2. **Hook Testing:**
-```typescript
-import { renderHook } from '@testing-library/react';
-import { useCustomHook } from './useCustomHook';
 
-describe('useCustomHook', () => {
-  it('returns expected value', () => {
+```typescript
+import { renderHook } from "@testing-library/react";
+import { useCustomHook } from "./useCustomHook";
+
+describe("useCustomHook", () => {
+  it("returns expected value", () => {
     const { result } = renderHook(() => useCustomHook());
-    expect(result.current.value).toBe('expected');
+    expect(result.current.value).toBe("expected");
   });
 });
 ```
 
 #### Integration Testing
-1. **API Testing:**
-```typescript
-import { testApi } from './test-utils';
 
-describe('API Endpoints', () => {
-  it('generates image successfully', async () => {
-    const response = await testApi.post('/api/generate', {
-      prompt: 'test prompt',
-      model: 'dalle-3'
+1. **API Testing:**
+
+```typescript
+import { testApi } from "./test-utils";
+
+describe("API Endpoints", () => {
+  it("generates image successfully", async () => {
+    const response = await testApi.post("/api/generate", {
+      prompt: "test prompt",
+      model: "dalle-3",
     });
-    
+
     expect(response.status).toBe(200);
     expect(response.data.success).toBe(true);
   });
@@ -411,18 +444,20 @@ describe('API Endpoints', () => {
 ```
 
 2. **E2E Testing:**
-```typescript
-import { test, expect } from '@playwright/test';
 
-test('generates image end-to-end', async ({ page }) => {
-  await page.goto('/studio');
-  await page.fill('[data-testid="prompt-input"]', 'test prompt');
+```typescript
+import { test, expect } from "@playwright/test";
+
+test("generates image end-to-end", async ({ page }) => {
+  await page.goto("/studio");
+  await page.fill('[data-testid="prompt-input"]', "test prompt");
   await page.click('[data-testid="generate-button"]');
   await expect(page.locator('[data-testid="generated-image"]')).toBeVisible();
 });
 ```
 
 ### Testing Commands
+
 ```bash
 # Run all tests
 npm test
@@ -442,6 +477,7 @@ npm run test:e2e
 ### Build Process
 
 #### Development Build
+
 ```bash
 # Build for development
 npm run build
@@ -454,6 +490,7 @@ npm run build:components
 ```
 
 #### Production Build
+
 ```bash
 # Build for production
 npm run build:production
@@ -468,7 +505,9 @@ npm run build:compress
 ### Deployment Options
 
 #### Static Deployment
+
 1. **Vercel:**
+
 ```bash
 # Install Vercel CLI
 npm i -g vercel
@@ -478,6 +517,7 @@ vercel --prod
 ```
 
 2. **Netlify:**
+
 ```bash
 # Build the project
 npm run build
@@ -487,7 +527,9 @@ netlify deploy --prod --dir=out
 ```
 
 #### Container Deployment
+
 1. **Docker:**
+
 ```dockerfile
 FROM node:18-alpine
 
@@ -503,8 +545,9 @@ CMD ["npm", "start"]
 ```
 
 2. **Docker Compose:**
+
 ```yaml
-version: '3.8'
+version: "3.8"
 services:
   azure-image-studio:
     build: .
@@ -521,6 +564,7 @@ services:
 ### Environment Configuration
 
 #### Environment Variables
+
 ```bash
 # .env.local
 NEXT_PUBLIC_APP_NAME="Azure Image Studio"
@@ -530,7 +574,9 @@ AZURE_ENDPOINT="your-endpoint"
 ```
 
 #### Configuration Files
+
 1. **App Configuration:**
+
 ```json
 {
   "name": "Azure Image Studio",
@@ -544,6 +590,7 @@ AZURE_ENDPOINT="your-endpoint"
 ```
 
 2. **Azure Configuration:**
+
 ```json
 {
   "endpoints": [
@@ -560,7 +607,9 @@ AZURE_ENDPOINT="your-endpoint"
 ### Customization Options
 
 #### Theme Customization
+
 1. **Color Scheme:**
+
 ```css
 :root {
   --primary-color: #3b82f6;
@@ -572,23 +621,26 @@ AZURE_ENDPOINT="your-endpoint"
 ```
 
 2. **Component Styling:**
+
 ```typescript
 // Custom component styles
 const customStyles = {
-  button: 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded',
-  input: 'border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2',
-  card: 'bg-white shadow-md rounded-lg p-6'
+  button: "bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded",
+  input:
+    "border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2",
+  card: "bg-white shadow-md rounded-lg p-6",
 };
 ```
 
 #### Feature Flags
+
 ```typescript
 // Feature flag configuration
 const featureFlags = {
   enableAssetStore: true,
   enableProjectManagement: true,
   enableCollaboration: false,
-  enableAdvancedFilters: true
+  enableAdvancedFilters: true,
 };
 ```
 
@@ -597,9 +649,10 @@ const featureFlags = {
 ### Creating API Endpoints
 
 #### Basic API Route
+
 ```typescript
 // src/app/api/custom/route.ts
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   try {
@@ -608,8 +661,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ success: true, data });
   } catch (error) {
     return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
+      { error: "Internal server error" },
+      { status: 500 },
     );
   }
 }
@@ -621,31 +674,26 @@ export async function POST(request: NextRequest) {
     const result = await processData(body);
     return NextResponse.json({ success: true, result });
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Invalid request' },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 }
 ```
 
 #### API Middleware
+
 ```typescript
 // src/lib/api-middleware.ts
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 
 export function withAuth(handler: Function) {
   return async (request: NextRequest) => {
     // Authentication logic
     const isAuthenticated = await checkAuth(request);
-    
+
     if (!isAuthenticated) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    
+
     return handler(request);
   };
 }
@@ -654,15 +702,16 @@ export function withAuth(handler: Function) {
 ### Database Integration
 
 #### IndexedDB Operations
+
 ```typescript
 // src/lib/database.ts
 export class Database {
   private db: IDBDatabase | null = null;
-  
+
   async open(): Promise<void> {
     return new Promise((resolve, reject) => {
-      const request = indexedDB.open('AzureImageStudio', 1);
-      
+      const request = indexedDB.open("AzureImageStudio", 1);
+
       request.onerror = () => reject(request.error);
       request.onsuccess = () => {
         this.db = request.result;
@@ -670,20 +719,20 @@ export class Database {
       };
     });
   }
-  
+
   async save(key: string, data: any): Promise<void> {
-    if (!this.db) throw new Error('Database not opened');
-    
-    const transaction = this.db.transaction(['data'], 'readwrite');
-    const store = transaction.objectStore('data');
+    if (!this.db) throw new Error("Database not opened");
+
+    const transaction = this.db.transaction(["data"], "readwrite");
+    const store = transaction.objectStore("data");
     await store.put(data, key);
   }
-  
+
   async get(key: string): Promise<any> {
-    if (!this.db) throw new Error('Database not opened');
-    
-    const transaction = this.db.transaction(['data'], 'readonly');
-    const store = transaction.objectStore('data');
+    if (!this.db) throw new Error("Database not opened");
+
+    const transaction = this.db.transaction(["data"], "readonly");
+    const store = transaction.objectStore("data");
     return new Promise((resolve, reject) => {
       const request = store.get(key);
       request.onsuccess = () => resolve(request.result);
@@ -698,6 +747,7 @@ export class Database {
 ### Contribution Guidelines
 
 #### Code Style
+
 1. **Formatting:**
    - Use Prettier for code formatting
    - Follow ESLint rules
@@ -714,6 +764,7 @@ export class Database {
    - Update documentation as needed
 
 #### Pull Request Process
+
 1. **Create Pull Request:**
    - Use descriptive title and description
    - Reference related issues
@@ -732,6 +783,7 @@ export class Database {
 ### Issue Reporting
 
 #### Bug Reports
+
 1. **Required Information:**
    - Clear description of the issue
    - Steps to reproduce
@@ -739,28 +791,35 @@ export class Database {
    - System information
 
 2. **Bug Report Template:**
+
 ```markdown
 ## Bug Description
+
 Brief description of the bug
 
 ## Steps to Reproduce
+
 1. Go to '...'
 2. Click on '...'
 3. See error
 
 ## Expected Behavior
+
 What should happen
 
 ## Actual Behavior
+
 What actually happens
 
 ## System Information
+
 - OS: [e.g., Windows 10]
 - Browser: [e.g., Chrome 90]
 - Version: [e.g., 1.0.1]
 ```
 
 #### Feature Requests
+
 1. **Required Information:**
    - Clear description of the feature
    - Use case and motivation
@@ -780,4 +839,4 @@ What actually happens
 **Author**: Hazem Ali - Microsoft AI MVP  
 **Last Updated**: September 2025
 
-*For additional support, visit our [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions) or [report issues](https://github.com/DrHazemAli/azure-image-studio/issues).*
+_For additional support, visit our [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions) or [report issues](https://github.com/DrHazemAli/azure-image-studio/issues)._

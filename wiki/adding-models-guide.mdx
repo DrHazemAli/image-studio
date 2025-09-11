@@ -2,7 +2,7 @@
 
 Learn how to add, configure, and manage AI models in Azure Image Studio. This comprehensive guide covers everything from adding models through the settings UI to advanced configuration and validation.
 
-**Last Updated**: September 2025  
+**Last Updated**: September 2025
 
 ## 🎯 Overview
 
@@ -121,31 +121,31 @@ Set the image sizes your model supports:
 
 #### Basic Properties
 
-| Property | Description | Required | Example |
-|----------|-------------|----------|---------|
-| `id` | Unique model identifier | Yes | `"dalle-3"` |
-| `name` | Display name | Yes | `"DALL-E 3"` |
-| `description` | Model description | Yes | `"High-quality image generation"` |
-| `provider` | AI provider | Yes | `"openai"` |
-| `apiVersion` | API version | Yes | `"2025-04-01-preview"` |
-| `deploymentName` | Azure deployment name | Yes | `"dalle-3"` |
+| Property         | Description             | Required | Example                           |
+| ---------------- | ----------------------- | -------- | --------------------------------- |
+| `id`             | Unique model identifier | Yes      | `"dalle-3"`                       |
+| `name`           | Display name            | Yes      | `"DALL-E 3"`                      |
+| `description`    | Model description       | Yes      | `"High-quality image generation"` |
+| `provider`       | AI provider             | Yes      | `"openai"`                        |
+| `apiVersion`     | API version             | Yes      | `"2025-04-01-preview"`            |
+| `deploymentName` | Azure deployment name   | Yes      | `"dalle-3"`                       |
 
 #### Capabilities
 
 Define what the model can do:
 
 ```typescript
-type ModelCapability = 
-  | "text-to-image"      // Generate images from text
-  | "image-editing"      // Edit existing images
-  | "inpainting"         // Fill in selected areas
-  | "outpainting"        // Extend image boundaries
-  | "image-to-image"     // Transform images
-  | "style-transfer"     // Apply artistic styles
-  | "upscale"            // Increase resolution
+type ModelCapability =
+  | "text-to-image" // Generate images from text
+  | "image-editing" // Edit existing images
+  | "inpainting" // Fill in selected areas
+  | "outpainting" // Extend image boundaries
+  | "image-to-image" // Transform images
+  | "style-transfer" // Apply artistic styles
+  | "upscale" // Increase resolution
   | "background-removal" // Remove backgrounds
-  | "object-detection"   // Detect objects
-  | "image-understanding" // Understand image content
+  | "object-detection" // Detect objects
+  | "image-understanding"; // Understand image content
 ```
 
 #### Supported Formats
@@ -349,11 +349,7 @@ To manually validate a model:
   "description": "Custom model for specific use cases",
   "provider": "openai",
   "apiVersion": "2025-04-01-preview",
-  "capabilities": [
-    "text-to-image",
-    "image-editing",
-    "inpainting"
-  ],
+  "capabilities": ["text-to-image", "image-editing", "inpainting"],
   "supportedSizes": [
     {
       "size": "1024x1024",
@@ -385,9 +381,9 @@ Set primary models for different use cases:
 
 ```json
 {
-  "primary": true,  // This model will be used as default
-  "enabled": true,  // Model is active and available
-  "requiresApproval": false  // No approval needed for use
+  "primary": true, // This model will be used as default
+  "enabled": true, // Model is active and available
+  "requiresApproval": false // No approval needed for use
 }
 ```
 
@@ -423,13 +419,13 @@ Enable or disable specific model features:
 ```json
 {
   "features": {
-    "textRendering": true,        // Can render text in images
-    "preciseInstructions": true,  // Follows detailed instructions
-    "imageInput": true,          // Accepts image input
-    "streaming": true,           // Supports streaming responses
-    "compression": true,         // Supports image compression
-    "contextAware": true,        // Understands image context
-    "editingCapabilities": true  // Can edit existing images
+    "textRendering": true, // Can render text in images
+    "preciseInstructions": true, // Follows detailed instructions
+    "imageInput": true, // Accepts image input
+    "streaming": true, // Supports streaming responses
+    "compression": true, // Supports image compression
+    "contextAware": true, // Understands image context
+    "editingCapabilities": true // Can edit existing images
   }
 }
 ```
@@ -443,6 +439,7 @@ Enable or disable specific model features:
 **Problem**: Model shows as "Invalid" status
 
 **Solutions**:
+
 - Check Azure API key and endpoint configuration
 - Verify deployment name matches Azure deployment
 - Ensure API version is compatible
@@ -453,6 +450,7 @@ Enable or disable specific model features:
 **Problem**: Model is configured but not available in generation tools
 
 **Solutions**:
+
 - Ensure model is enabled (`"enabled": true`)
 - Check if model has required capabilities
 - Verify model is set as primary if needed
@@ -463,6 +461,7 @@ Enable or disable specific model features:
 **Problem**: Model validation takes too long or times out
 
 **Solutions**:
+
 - Check network connectivity
 - Verify Azure service status
 - Try validating during off-peak hours
@@ -473,6 +472,7 @@ Enable or disable specific model features:
 **Problem**: Model generates images in unexpected sizes
 
 **Solutions**:
+
 - Verify `supportedSizes` configuration
 - Check if size is in the supported list
 - Ensure aspect ratio is correct
@@ -481,6 +481,7 @@ Enable or disable specific model features:
 ### Debug Steps
 
 1. **Check Azure Configuration**:
+
    ```bash
    # Verify Azure credentials
    curl -H "Authorization: Bearer YOUR_API_KEY" \
@@ -488,6 +489,7 @@ Enable or disable specific model features:
    ```
 
 2. **Validate Model Deployment**:
+
    ```bash
    # Check if deployment exists
    curl -H "Authorization: Bearer YOUR_API_KEY" \
@@ -554,12 +556,12 @@ To remove a model:
 ```typescript
 // Export current model configuration
 const exportConfiguration = () => {
-  const config = localStorage.getItem('azure-models-config');
-  const blob = new Blob([config], { type: 'application/json' });
+  const config = localStorage.getItem("azure-models-config");
+  const blob = new Blob([config], { type: "application/json" });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
+  const a = document.createElement("a");
   a.href = url;
-  a.download = 'azure-models-config.json';
+  a.download = "azure-models-config.json";
   a.click();
 };
 ```
@@ -572,7 +574,7 @@ const importConfiguration = (file: File) => {
   const reader = new FileReader();
   reader.onload = (e) => {
     const config = JSON.parse(e.target.result);
-    localStorage.setItem('azure-models-config', JSON.stringify(config));
+    localStorage.setItem("azure-models-config", JSON.stringify(config));
     // Reload the application
     window.location.reload();
   };

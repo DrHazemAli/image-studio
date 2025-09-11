@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ClockIcon,
   Cross2Icon,
@@ -10,9 +10,9 @@ import {
   ImageIcon,
   TrashIcon,
   PlayIcon,
-} from '@radix-ui/react-icons';
-import { Button, TextField } from '@radix-ui/themes';
-import { dbManager, type HistoryEntry } from '@/lib/indexeddb';
+} from "@radix-ui/react-icons";
+import { Button, TextField } from "@radix-ui/themes";
+import { dbManager, type HistoryEntry } from "@/lib/indexeddb";
 
 interface HistoryPanelProps {
   isOpen: boolean;
@@ -28,10 +28,10 @@ export function HistoryPanel({
   projectId,
 }: HistoryPanelProps) {
   const [history, setHistory] = useState<HistoryEntry[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState<
-    'all' | 'generation' | 'edit' | 'upload'
-  >('all');
+    "all" | "generation" | "edit" | "upload"
+  >("all");
 
   // Load history from IndexedDB on mount
   useEffect(() => {
@@ -40,7 +40,7 @@ export function HistoryPanel({
         const loadedHistory = await dbManager.getHistory(projectId);
         setHistory(loadedHistory);
       } catch (error) {
-        console.error('Failed to load history:', error);
+        console.error("Failed to load history:", error);
       }
     };
     loadHistory();
@@ -58,7 +58,7 @@ export function HistoryPanel({
 
   const filteredHistory = history
     .filter((entry) => {
-      const matchesFilter = filter === 'all' || entry.type === filter;
+      const matchesFilter = filter === "all" || entry.type === filter;
       const matchesSearch =
         (entry.prompt &&
           entry.prompt.toLowerCase().includes(searchQuery.toLowerCase())) ||
@@ -73,7 +73,7 @@ export function HistoryPanel({
       await dbManager.deleteHistoryEntry(entryId);
       setHistory((prev) => prev.filter((entry) => entry.id !== entryId));
     } catch (error) {
-      console.error('Failed to delete history entry:', error);
+      console.error("Failed to delete history entry:", error);
     }
   };
 
@@ -82,15 +82,15 @@ export function HistoryPanel({
       await dbManager.clearHistory();
       setHistory([]);
     } catch (error) {
-      console.error('Failed to clear history:', error);
+      console.error("Failed to clear history:", error);
     }
   };
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case 'generation':
+      case "generation":
         return <MagicWandIcon className="w-4 h-4" />;
-      case 'edit':
+      case "edit":
         return <Pencil2Icon className="w-4 h-4" />;
       default:
         return <ImageIcon className="w-4 h-4" />;
@@ -99,14 +99,14 @@ export function HistoryPanel({
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'completed':
-        return 'text-green-600 dark:text-green-400';
-      case 'failed':
-        return 'text-red-600 dark:text-red-400';
-      case 'in-progress':
-        return 'text-blue-600 dark:text-blue-400';
+      case "completed":
+        return "text-green-600 dark:text-green-400";
+      case "failed":
+        return "text-red-600 dark:text-red-400";
+      case "in-progress":
+        return "text-blue-600 dark:text-blue-400";
       default:
-        return 'text-gray-600 dark:text-gray-400';
+        return "text-gray-600 dark:text-gray-400";
     }
   };
 
@@ -174,15 +174,15 @@ export function HistoryPanel({
 
               {/* Filter */}
               <div className="flex gap-1 bg-gray-200 dark:bg-gray-800 rounded-lg p-1">
-                {['all', 'generation', 'edit', 'upload'].map((type) => (
+                {["all", "generation", "edit", "upload"].map((type) => (
                   <button
                     key={type}
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     onClick={() => setFilter(type as any)}
                     className={`px-3 py-1.5 text-sm rounded-md transition-colors capitalize ${
                       filter === type
-                        ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                        ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm"
+                        : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                     }`}
                   >
                     {type}
@@ -264,7 +264,7 @@ export function HistoryPanel({
 
                     {/* Actions */}
                     <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      {entry.status === 'completed' && onReplay && (
+                      {entry.status === "completed" && onReplay && (
                         <Button
                           size="1"
                           variant="soft"

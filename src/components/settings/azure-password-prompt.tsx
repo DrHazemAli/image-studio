@@ -1,35 +1,38 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import React, { useState } from "react";
+import { Lock, Eye, EyeOff, AlertCircle } from "lucide-react";
 
 interface AzurePasswordPromptProps {
   onAuthenticated: (token: string) => void;
   onCancel: () => void;
 }
 
-export function AzurePasswordPrompt({ onAuthenticated, onCancel }: AzurePasswordPromptProps) {
-  const [password, setPassword] = useState('');
+export function AzurePasswordPrompt({
+  onAuthenticated,
+  onCancel,
+}: AzurePasswordPromptProps) {
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!password.trim()) {
-      setError('Password is required');
+      setError("Password is required");
       return;
     }
 
     setIsLoading(true);
-    setError('');
+    setError("");
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ password }),
       });
@@ -39,10 +42,10 @@ export function AzurePasswordPrompt({ onAuthenticated, onCancel }: AzurePassword
       if (response.ok && data.success) {
         onAuthenticated(data.token);
       } else {
-        setError(data.error || 'Authentication failed');
+        setError(data.error || "Authentication failed");
       }
     } catch (err) {
-      setError('Network error. Please try again.');
+      setError("Network error. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -70,9 +73,9 @@ export function AzurePasswordPrompt({ onAuthenticated, onCancel }: AzurePassword
             </label>
             <div className="relative">
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 value={password}
-                onChange={e => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
                 className="w-full px-4 py-3 pr-12 rounded-lg border border-gray-200/50 dark:border-gray-700/50 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-colors duration-150"
                 disabled={isLoading}
@@ -120,7 +123,7 @@ export function AzurePasswordPrompt({ onAuthenticated, onCancel }: AzurePassword
                   Authenticating...
                 </>
               ) : (
-                'Unlock Settings'
+                "Unlock Settings"
               )}
             </button>
           </div>
@@ -128,7 +131,8 @@ export function AzurePasswordPrompt({ onAuthenticated, onCancel }: AzurePassword
 
         <div className="mt-6 text-center">
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            🔒 Azure settings are protected for security. Contact your administrator if you need access.
+            🔒 Azure settings are protected for security. Contact your
+            administrator if you need access.
           </p>
         </div>
       </div>

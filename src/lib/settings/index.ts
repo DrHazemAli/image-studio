@@ -1,5 +1,5 @@
-import { AppSettings } from './app-settings';
-import { StorageType, UnifiedSettings } from './types';
+import { AppSettings } from "./app-settings";
+import { StorageType, UnifiedSettings } from "./types";
 
 // Create singleton instance
 const appSettings = new AppSettings();
@@ -26,11 +26,15 @@ export function config(
   key: string,
   value?: unknown,
   storage?: StorageType,
-  encrypted?: boolean
+  encrypted?: boolean,
 ): unknown {
   // Check if this is an azure, models, or theme key (excluded from unified settings)
-  const isExcludedKey = key.startsWith('azure.') || key === 'models' || key.startsWith('models.') || key === 'theme';
-  
+  const isExcludedKey =
+    key.startsWith("azure.") ||
+    key === "models" ||
+    key.startsWith("models.") ||
+    key === "theme";
+
   if (isExcludedKey) {
     // Use original behavior for excluded keys
     if (value === undefined) {
@@ -113,7 +117,7 @@ export function configMigrate(
   key: string,
   fromStorage: StorageType,
   toStorage: StorageType,
-  removeFromSource: boolean = true
+  removeFromSource: boolean = true,
 ): boolean {
   return appSettings.migrate(key, fromStorage, toStorage, removeFromSource);
 }
@@ -122,7 +126,9 @@ export function configMigrate(
  * Get unified settings object
  * @param storage - Storage type to get from
  */
-export function getUnifiedSettings(storage?: StorageType): Partial<UnifiedSettings> {
+export function getUnifiedSettings(
+  storage?: StorageType,
+): Partial<UnifiedSettings> {
   return appSettings.getUnifiedSettings(storage);
 }
 
@@ -131,7 +137,10 @@ export function getUnifiedSettings(storage?: StorageType): Partial<UnifiedSettin
  * @param settings - Settings object to set
  * @param storage - Storage type to set in
  */
-export function setUnifiedSettings(settings: Partial<UnifiedSettings>, storage?: StorageType): void {
+export function setUnifiedSettings(
+  settings: Partial<UnifiedSettings>,
+  storage?: StorageType,
+): void {
   appSettings.setUnifiedSettings(settings, storage);
 }
 
@@ -141,7 +150,11 @@ export function setUnifiedSettings(settings: Partial<UnifiedSettings>, storage?:
  * @param value - Value to set
  * @param storage - Storage type to use
  */
-export function updateUnifiedSetting(key: string, value: unknown, storage?: StorageType): void {
+export function updateUnifiedSetting(
+  key: string,
+  value: unknown,
+  storage?: StorageType,
+): void {
   appSettings.updateUnifiedSetting(key, value, storage);
 }
 
@@ -151,7 +164,11 @@ export function updateUnifiedSetting(key: string, value: unknown, storage?: Stor
  * @param defaultValue - Default value if key doesn't exist
  * @param storage - Storage type to get from
  */
-export function getUnifiedSetting(key: string, defaultValue?: unknown, storage?: StorageType): unknown {
+export function getUnifiedSetting(
+  key: string,
+  defaultValue?: unknown,
+  storage?: StorageType,
+): unknown {
   return appSettings.getUnifiedSetting(key, defaultValue, storage);
 }
 
@@ -159,12 +176,12 @@ export function getUnifiedSetting(key: string, defaultValue?: unknown, storage?:
 export { appSettings };
 
 // Export types
-export type { StorageType, ConfigOptions, UnifiedSettings } from './types';
+export type { StorageType, ConfigOptions, UnifiedSettings } from "./types";
 
 // Export storage classes for advanced usage
-export { LocalStorage } from './storage/local-storage';
-export { CookieStorage } from './storage/cookie-storage';
-export { SessionStorage } from './storage/session-storage';
+export { LocalStorage } from "./storage/local-storage";
+export { CookieStorage } from "./storage/cookie-storage";
+export { SessionStorage } from "./storage/session-storage";
 
 // Export migration utilities
 export {
@@ -172,4 +189,4 @@ export {
   cleanupOldSettings,
   isMigrationNeeded,
   performFullMigration,
-} from './migration';
+} from "./migration";

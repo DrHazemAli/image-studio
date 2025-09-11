@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { ConfigValue } from '../types';
+import { ConfigValue } from "../types";
 
 /**
  * Simple encryption/decryption for sensitive data
@@ -11,7 +11,7 @@ export function encrypt(value: string): string {
   try {
     return btoa(encodeURIComponent(value));
   } catch (error) {
-    console.warn('Encryption failed:', error);
+    console.warn("Encryption failed:", error);
     return value;
   }
 }
@@ -20,7 +20,7 @@ export function decrypt(encryptedValue: string): string {
   try {
     return decodeURIComponent(atob(encryptedValue));
   } catch (error) {
-    console.warn('Decryption failed:', error);
+    console.warn("Decryption failed:", error);
     return encryptedValue;
   }
 }
@@ -44,7 +44,7 @@ export function serialize(value: any, encrypted: boolean = false): string {
 
     return serialized;
   } catch (error) {
-    console.warn('Serialization failed:', error);
+    console.warn("Serialization failed:", error);
     return JSON.stringify(value);
   }
 }
@@ -54,7 +54,7 @@ export function serialize(value: any, encrypted: boolean = false): string {
  */
 export function deserialize(
   serializedValue: string,
-  encrypted: boolean = false
+  encrypted: boolean = false,
 ): any {
   try {
     let value = serializedValue;
@@ -68,7 +68,7 @@ export function deserialize(
     // Return the actual value, not the wrapper object
     return configValue.value;
   } catch (error) {
-    console.warn('Deserialization failed:', error);
+    console.warn("Deserialization failed:", error);
 
     // Fallback: try to parse as plain JSON
     try {
@@ -86,14 +86,14 @@ export function deserialize(
 export function getNestedValue(obj: any, path: string): any {
   if (!obj || !path) return obj;
 
-  const keys = path.split('.');
+  const keys = path.split(".");
   let current = obj;
 
   for (const key of keys) {
     if (
       current === null ||
       current === undefined ||
-      typeof current !== 'object'
+      typeof current !== "object"
     ) {
       return undefined;
     }
@@ -110,7 +110,7 @@ export function getNestedValue(obj: any, path: string): any {
 export function setNestedValue(obj: any, path: string, value: any): any {
   if (!path) return value;
 
-  const keys = path.split('.');
+  const keys = path.split(".");
   const result = { ...obj };
   let current = result;
 
@@ -118,7 +118,7 @@ export function setNestedValue(obj: any, path: string, value: any): any {
     const key = keys[i];
     if (
       !(key in current) ||
-      typeof current[key] !== 'object' ||
+      typeof current[key] !== "object" ||
       current[key] === null
     ) {
       current[key] = {};

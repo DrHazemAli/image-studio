@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import React, { useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   FrameIcon,
   Cross2Icon,
   RotateCounterClockwiseIcon,
   ViewHorizontalIcon,
   ViewVerticalIcon,
-} from '@radix-ui/react-icons';
-import { Button, Slider } from '@radix-ui/themes';
-import { FabricImage } from 'fabric';
+} from "@radix-ui/react-icons";
+import { Button, Slider } from "@radix-ui/themes";
+import { FabricImage } from "fabric";
 
 interface ImageResizeToolProps {
   isOpen: boolean;
@@ -32,13 +32,13 @@ interface PresetSize {
 }
 
 const PRESET_SIZES: PresetSize[] = [
-  { name: 'Original', width: 0, height: 0 },
-  { name: '50%', width: 0.5, height: 0.5 },
-  { name: '75%', width: 0.75, height: 0.75 },
-  { name: '100%', width: 1, height: 1 },
-  { name: '125%', width: 1.25, height: 1.25 },
-  { name: '150%', width: 1.5, height: 1.5 },
-  { name: '200%', width: 2, height: 2 },
+  { name: "Original", width: 0, height: 0 },
+  { name: "50%", width: 0.5, height: 0.5 },
+  { name: "75%", width: 0.75, height: 0.75 },
+  { name: "100%", width: 1, height: 1 },
+  { name: "125%", width: 1.25, height: 1.25 },
+  { name: "150%", width: 1.5, height: 1.5 },
+  { name: "200%", width: 2, height: 2 },
 ];
 
 export default function ImageResizeTool({
@@ -56,7 +56,7 @@ export default function ImageResizeTool({
 
   const handlePresetSelect = useCallback(
     (preset: PresetSize) => {
-      if (preset.name === 'Original' && selectedImage) {
+      if (preset.name === "Original" && selectedImage) {
         const originalWidth =
           (selectedImage as any).originalWidth || selectedImage.width;
         const originalHeight =
@@ -71,7 +71,7 @@ export default function ImageResizeTool({
         setScaleY(preset.height);
       }
     },
-    [selectedImage]
+    [selectedImage],
   );
 
   const handleScaleXChange = useCallback(
@@ -81,7 +81,7 @@ export default function ImageResizeTool({
         setScaleY(value);
       }
     },
-    [maintainAspectRatio]
+    [maintainAspectRatio],
   );
 
   const handleScaleYChange = useCallback(
@@ -91,7 +91,7 @@ export default function ImageResizeTool({
         setScaleX(value);
       }
     },
-    [maintainAspectRatio]
+    [maintainAspectRatio],
   );
 
   const handleApply = useCallback(() => {
@@ -105,13 +105,13 @@ export default function ImageResizeTool({
     onClose();
   }, [scaleX, scaleY, angle, flipX, flipY, onImageTransform, onClose]);
 
-  const handleRotate = useCallback((direction: 'left' | 'right') => {
-    const rotationAmount = direction === 'left' ? -90 : 90;
+  const handleRotate = useCallback((direction: "left" | "right") => {
+    const rotationAmount = direction === "left" ? -90 : 90;
     setAngle((prev) => (prev + rotationAmount) % 360);
   }, []);
 
-  const handleFlip = useCallback((axis: 'horizontal' | 'vertical') => {
-    if (axis === 'horizontal') {
+  const handleFlip = useCallback((axis: "horizontal" | "vertical") => {
+    if (axis === "horizontal") {
       setFlipX((prev) => !prev);
     } else {
       setFlipY((prev) => !prev);
@@ -171,13 +171,13 @@ export default function ImageResizeTool({
                 </h3>
                 <div className="text-sm text-gray-600 dark:text-gray-400">
                   <div>
-                    Size:{' '}
-                    {Math.round(selectedImage.width! * selectedImage.scaleX!)} ×{' '}
-                    {Math.round(selectedImage.height! * selectedImage.scaleY!)}{' '}
+                    Size:{" "}
+                    {Math.round(selectedImage.width! * selectedImage.scaleX!)} ×{" "}
+                    {Math.round(selectedImage.height! * selectedImage.scaleY!)}{" "}
                     px
                   </div>
                   <div>
-                    Scale: {Math.round(selectedImage.scaleX! * 100)}% ×{' '}
+                    Scale: {Math.round(selectedImage.scaleX! * 100)}% ×{" "}
                     {Math.round(selectedImage.scaleY! * 100)}%
                   </div>
                   <div>Rotation: {Math.round(selectedImage.angle || 0)}°</div>
@@ -270,7 +270,7 @@ export default function ImageResizeTool({
 
                 <div className="flex items-center gap-3">
                   <button
-                    onClick={() => handleRotate('left')}
+                    onClick={() => handleRotate("left")}
                     className="p-2 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                     title="Rotate Left"
                   >
@@ -292,7 +292,7 @@ export default function ImageResizeTool({
                   </div>
 
                   <button
-                    onClick={() => handleRotate('right')}
+                    onClick={() => handleRotate("right")}
                     className="p-2 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                     title="Rotate Right"
                   >
@@ -309,11 +309,11 @@ export default function ImageResizeTool({
 
                 <div className="flex gap-3">
                   <button
-                    onClick={() => handleFlip('horizontal')}
+                    onClick={() => handleFlip("horizontal")}
                     className={`flex-1 p-3 border rounded-lg transition-colors ${
                       flipX
-                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
-                        : 'border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
+                        ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
+                        : "border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
                     }`}
                   >
                     <ViewHorizontalIcon className="w-4 h-4 mx-auto mb-1" />
@@ -321,11 +321,11 @@ export default function ImageResizeTool({
                   </button>
 
                   <button
-                    onClick={() => handleFlip('vertical')}
+                    onClick={() => handleFlip("vertical")}
                     className={`flex-1 p-3 border rounded-lg transition-colors ${
                       flipY
-                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
-                        : 'border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
+                        ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
+                        : "border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
                     }`}
                   >
                     <ViewVerticalIcon className="w-4 h-4 mx-auto mb-1" />

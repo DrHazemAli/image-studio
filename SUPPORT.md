@@ -1,6 +1,6 @@
 # Support Guide - Azure Image Studio
 
-**Last Updated**: September 8, 2025  
+**Last Updated**: September 8, 2025
 
 Need help with Azure Image Studio? This guide will help you find the right resources and get the support you need.
 

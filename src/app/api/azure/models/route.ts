@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { AzureModelsConfig, AzureModel } from '@/types/azure';
-import { AZURE_CONFIG_OBJECT_KEY } from '@/lib/constants';
-import logger from '@/lib/logger';
-import { replaceEnvTags } from '@/lib/env';
-import fs from 'fs/promises';
-import path from 'path';
+import { NextRequest, NextResponse } from "next/server";
+import { AzureModelsConfig, AzureModel } from "@/types/azure";
+import { AZURE_CONFIG_OBJECT_KEY } from "@/lib/constants";
+import logger from "@/lib/logger";
+import { replaceEnvTags } from "@/lib/env";
+import fs from "fs/promises";
+import path from "path";
 
 /**
  * GET /api/azure/models
@@ -15,47 +15,54 @@ export async function GET(request: NextRequest) {
     // Check Azure configuration status for validation purposes
     let azureConfigured = false;
     let hasValidCredentials = false;
-    
+
     try {
-      const azureCookieValue = request.cookies.get(AZURE_CONFIG_OBJECT_KEY)?.value;
+      const azureCookieValue = request.cookies.get(
+        AZURE_CONFIG_OBJECT_KEY,
+      )?.value;
       if (azureCookieValue) {
         const decodedAzureValue = decodeURIComponent(azureCookieValue);
         const parsedAzureCookie = JSON.parse(decodedAzureValue);
         const azureConfig = JSON.parse(parsedAzureCookie.value);
-        
-        azureConfigured = azureConfig?.primary?.status === 'valid';
-        hasValidCredentials = !!(azureConfig?.primaryApiKey && azureConfig?.primaryEndpoint);
+
+        azureConfigured = azureConfig?.primary?.status === "valid";
+        hasValidCredentials = !!(
+          azureConfig?.primaryApiKey && azureConfig?.primaryEndpoint
+        );
       }
     } catch (error) {
-      console.warn('Failed to parse Azure config cookie:', error);
+      console.warn("Failed to parse Azure config cookie:", error);
     }
 
     // Load default models config from JSON file
     try {
-      const configPath = path.join(process.cwd(), 'src/app/config/azure-models.json');
-      const configContent = await fs.readFile(configPath, 'utf-8');
+      const configPath = path.join(
+        process.cwd(),
+        "src/app/config/azure-models.json",
+      );
+      const configContent = await fs.readFile(configPath, "utf-8");
       const defaultModelsConfig: AzureModelsConfig = JSON.parse(configContent);
-      
-      logger.info('Loading default models config from file');
-      
+
+      logger.info("Loading default models config from file");
+
       return NextResponse.json({
         models: defaultModelsConfig,
-        source: 'default',
-        message: 'Default models configuration loaded from JSON file',
+        source: "default",
+        message: "Default models configuration loaded from JSON file",
         azureConfigured,
         hasValidCredentials,
       });
     } catch (fileError) {
-      logger.error('Failed to load default models config:', fileError);
+      logger.error("Failed to load default models config:", fileError);
       return NextResponse.json(
-        { error: 'Failed to load models configuration' },
-        { status: 500 }
+        { error: "Failed to load models configuration" },
+        { status: 500 },
       );
     }
   } catch (error) {
-    logger.error('Models config GET error:', error);
+    logger.error("Models config GET error:", error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: "Internal server error" },
       { status: 500 },
     );
   }
@@ -69,25 +76,32 @@ export async function POST(request: NextRequest) {
   try {
     const { models } = await request.json();
 
-    logger.info('Validating models config structure:', {
-      providersCount: models ? Object.keys(models.imageModels?.generation || {}).length : 0,
+    logger.info("Validating models config structure:", {
+      providersCount: models
+        ? Object.keys(models.imageModels?.generation || {}).length
+        : 0,
       hasEndpoints: !!models?.endpoints,
       hasTools: !!models?.tools,
-      hasPresets: !!models?.presets
+      hasPresets: !!models?.presets,
     });
 
     if (!models) {
       return NextResponse.json(
-        { error: 'Models configuration data is required' },
-        { status: 400 }
+        { error: "Models configuration data is required" },
+        { status: 400 },
       );
     }
 
     // Validate the models config structure
-    if (!models.imageModels || !models.endpoints || !models.tools || !models.presets) {
+    if (
+      !models.imageModels ||
+      !models.endpoints ||
+      !models.tools ||
+      !models.presets
+    ) {
       return NextResponse.json(
-        { error: 'Invalid models configuration: missing required properties' },
-        { status: 400 }
+        { error: "Invalid models configuration: missing required properties" },
+        { status: 400 },
       );
     }
 
@@ -95,26 +109,31 @@ export async function POST(request: NextRequest) {
     const modelsWithValidation: AzureModelsConfig = {
       ...models,
       imageModels: {
-        generation: Object.keys(models.imageModels.generation).reduce((acc, provider) => {
-          acc[provider] = models.imageModels.generation[provider].map((model: AzureModel) => ({
-            ...model,
-            status: model.status || 'idle',
-            validated_at: model.validated_at || null,
-          }));
-          return acc;
-        }, {} as { [provider: string]: AzureModel[] })
+        generation: Object.keys(models.imageModels.generation).reduce(
+          (acc, provider) => {
+            acc[provider] = models.imageModels.generation[provider].map(
+              (model: AzureModel) => ({
+                ...model,
+                status: model.status || "idle",
+                validated_at: model.validated_at || null,
+              }),
+            );
+            return acc;
+          },
+          {} as { [provider: string]: AzureModel[] },
+        ),
       },
     };
 
     return NextResponse.json({
       success: true,
-      message: 'Models configuration structure validated successfully',
+      message: "Models configuration structure validated successfully",
       models: modelsWithValidation,
     });
   } catch (error) {
-    logger.error('Models config POST error:', error);
+    logger.error("Models config POST error:", error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: "Internal server error" },
       { status: 500 },
     );
   }
@@ -130,8 +149,8 @@ export async function PUT(request: NextRequest) {
 
     if (!modelId) {
       return NextResponse.json(
-        { error: 'Model ID is required for validation' },
-        { status: 400 }
+        { error: "Model ID is required for validation" },
+        { status: 400 },
       );
     }
 
@@ -140,61 +159,68 @@ export async function PUT(request: NextRequest) {
     let azureEndpoint: string | null = null;
 
     try {
-      const azureCookieValue = request.cookies.get(AZURE_CONFIG_OBJECT_KEY)?.value;
+      const azureCookieValue = request.cookies.get(
+        AZURE_CONFIG_OBJECT_KEY,
+      )?.value;
       if (azureCookieValue) {
         const decodedAzureValue = decodeURIComponent(azureCookieValue);
         const parsedAzureCookie = JSON.parse(decodedAzureValue);
         const azureConfig = JSON.parse(parsedAzureCookie.value);
-        
+
         azureApiKey = azureConfig?.primaryApiKey;
         azureEndpoint = azureConfig?.primaryEndpoint;
       }
     } catch (error) {
-      logger.warn('Failed to parse Azure config cookie for validation:', error);
+      logger.warn("Failed to parse Azure config cookie for validation:", error);
     }
 
     if (!azureApiKey || !azureEndpoint) {
       return NextResponse.json({
         valid: false,
-        message: 'Azure API key and endpoint must be configured first'
+        message: "Azure API key and endpoint must be configured first",
       });
     }
 
     // Process environment tags in the base URL
     const processedBaseUrl = replaceEnvTags(azureEndpoint);
-    
+
     // Construct test URL for model validation
     let testUrl: string;
-    const version = '2024-02-15-preview';
+    const version = "2024-02-15-preview";
     const modelDeployment = deploymentName || modelId;
-    
-    if (processedBaseUrl.includes('openai.azure.com')) {
+
+    if (processedBaseUrl.includes("openai.azure.com")) {
       // Azure OpenAI endpoint - test specific deployment
       testUrl = `${processedBaseUrl}/openai/deployments/${modelDeployment}/completions?api-version=${version}`;
-    } else if (processedBaseUrl.includes('services.ai.azure.com')) {
+    } else if (processedBaseUrl.includes("services.ai.azure.com")) {
       // Azure AI Foundry endpoint - test model availability
       testUrl = `${processedBaseUrl}/openai/models?api-version=${version}`;
     } else {
       // Fallback to OpenAI format
       testUrl = `${processedBaseUrl}/v1/models`;
     }
-    
-    logger.info('Validating model:', { modelId, deploymentName, provider, testUrl });
+
+    logger.info("Validating model:", {
+      modelId,
+      deploymentName,
+      provider,
+      testUrl,
+    });
 
     // Test the model/deployment
     const response = await fetch(testUrl, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Authorization': `Bearer ${azureApiKey}`,
-        'Content-Type': 'application/json',
+        Authorization: `Bearer ${azureApiKey}`,
+        "Content-Type": "application/json",
       },
     });
 
     if (response.ok) {
       const data = await response.json();
-      
+
       // For specific deployment test, any 200 response means it's accessible
-      if (processedBaseUrl.includes('openai.azure.com')) {
+      if (processedBaseUrl.includes("openai.azure.com")) {
         return NextResponse.json({
           valid: true,
           message: `Model deployment '${modelDeployment}' is accessible and ready`,
@@ -214,17 +240,18 @@ export async function PUT(request: NextRequest) {
         } else if (Array.isArray(data)) {
           models = data;
         }
-        
-        const modelExists = models.some(model => 
-          model.id === modelId || 
-          model.name === modelId ||
-          model.id === modelDeployment ||
-          model.name === modelDeployment
+
+        const modelExists = models.some(
+          (model) =>
+            model.id === modelId ||
+            model.name === modelId ||
+            model.id === modelDeployment ||
+            model.name === modelDeployment,
         );
-        
+
         return NextResponse.json({
           valid: modelExists,
-          message: modelExists 
+          message: modelExists
             ? `Model '${modelId}' is available in the endpoint`
             : `Model '${modelId}' is not found in the endpoint`,
           modelId,
@@ -237,8 +264,11 @@ export async function PUT(request: NextRequest) {
       }
     } else {
       const errorText = await response.text();
-      logger.warn('Model validation failed:', { status: response.status, error: errorText });
-      
+      logger.warn("Model validation failed:", {
+        status: response.status,
+        error: errorText,
+      });
+
       return NextResponse.json({
         valid: false,
         message: `Model validation failed: ${response.status} ${response.statusText}`,
@@ -250,14 +280,16 @@ export async function PUT(request: NextRequest) {
         validated_at: new Date().toISOString(),
       });
     }
-
   } catch (error) {
-    logger.error('Model validation error:', error);
-    return NextResponse.json({
-      valid: false,
-      message: 'Failed to validate model due to server error',
-      error: error instanceof Error ? error.message : 'Unknown error',
-    }, { status: 500 });
+    logger.error("Model validation error:", error);
+    return NextResponse.json(
+      {
+        valid: false,
+        message: "Failed to validate model due to server error",
+        error: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 },
+    );
   }
 }
 
@@ -270,12 +302,12 @@ export async function DELETE() {
     // Return success - client handles localStorage clearing
     return NextResponse.json({
       success: true,
-      message: 'Models configuration reset request acknowledged',
+      message: "Models configuration reset request acknowledged",
     });
   } catch (error) {
-    logger.error('Models config DELETE error:', error);
+    logger.error("Models config DELETE error:", error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: "Internal server error" },
       { status: 500 },
     );
   }

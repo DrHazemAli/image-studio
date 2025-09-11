@@ -1,25 +1,25 @@
-import { ConfigManager, StorageType, UnifiedSettings } from './types';
-import { LocalStorage } from './storage/local-storage';
-import { CookieStorage } from './storage/cookie-storage';
-import { SessionStorage } from './storage/session-storage';
+import { ConfigManager, StorageType, UnifiedSettings } from "./types";
+import { LocalStorage } from "./storage/local-storage";
+import { CookieStorage } from "./storage/cookie-storage";
+import { SessionStorage } from "./storage/session-storage";
 import {
   serialize,
   deserialize,
   getNestedValue,
   setNestedValue,
-} from './utils/serialization';
+} from "./utils/serialization";
 
 export class AppSettings implements ConfigManager {
   private storages: Record<
     StorageType,
     LocalStorage | CookieStorage | SessionStorage
   >;
-  private defaultStorage: StorageType = 'localStorage';
+  private defaultStorage: StorageType = "localStorage";
   private isServerSide: boolean;
 
   constructor() {
-    this.isServerSide = typeof window === 'undefined';
-    
+    this.isServerSide = typeof window === "undefined";
+
     this.storages = {
       localStorage: new LocalStorage(),
       cookies: new CookieStorage(),
@@ -38,7 +38,7 @@ export class AppSettings implements ConfigManager {
     key: string,
     defaultValue?: unknown,
     storage?: StorageType,
-    encrypted?: boolean
+    encrypted?: boolean,
   ): unknown {
     // Return default value immediately on server-side
     if (this.isServerSide) {
@@ -58,7 +58,7 @@ export class AppSettings implements ConfigManager {
       const value = deserialize(serializedValue, encrypted);
 
       // Support dot notation for nested values
-      if (key.includes('.')) {
+      if (key.includes(".")) {
         return getNestedValue(value, key) ?? defaultValue;
       }
 
@@ -80,7 +80,7 @@ export class AppSettings implements ConfigManager {
     key: string,
     value: unknown,
     storage?: StorageType,
-    encrypted?: boolean
+    encrypted?: boolean,
   ): void {
     // Skip storage operations on server-side
     if (this.isServerSide) {
@@ -92,7 +92,7 @@ export class AppSettings implements ConfigManager {
 
     try {
       // Support dot notation for nested values
-      if (key.includes('.')) {
+      if (key.includes(".")) {
         const existingValue = this.get(key, {}, storageType, encrypted);
         const updatedValue = setNestedValue(existingValue, key, value);
         const serializedValue = serialize(updatedValue, encrypted);
@@ -202,7 +202,7 @@ export class AppSettings implements ConfigManager {
     } catch (error) {
       console.warn(
         `Failed to get all config values from "${storageType}":`,
-        error
+        error,
       );
       return {};
     }
@@ -262,7 +262,7 @@ export class AppSettings implements ConfigManager {
     key: string,
     fromStorage: StorageType,
     toStorage: StorageType,
-    removeFromSource: boolean = true
+    removeFromSource: boolean = true,
   ): boolean {
     // Skip migration on server-side
     if (this.isServerSide) {
@@ -299,7 +299,7 @@ export class AppSettings implements ConfigManager {
     }
 
     const storageType = storage || this.defaultStorage;
-    const settings = this.get('az_settings', {}, storageType);
+    const settings = this.get("az_settings", {}, storageType);
     return settings as Partial<UnifiedSettings>;
   }
 
@@ -308,14 +308,17 @@ export class AppSettings implements ConfigManager {
    * @param settings - Settings object to set
    * @param storage - Storage type to set in
    */
-  setUnifiedSettings(settings: Partial<UnifiedSettings>, storage?: StorageType): void {
+  setUnifiedSettings(
+    settings: Partial<UnifiedSettings>,
+    storage?: StorageType,
+  ): void {
     // Skip storage operations on server-side
     if (this.isServerSide) {
       return;
     }
 
     const storageType = storage || this.defaultStorage;
-    this.set('az_settings', settings, storageType);
+    this.set("az_settings", settings, storageType);
   }
 
   /**
@@ -324,7 +327,11 @@ export class AppSettings implements ConfigManager {
    * @param value - Value to set
    * @param storage - Storage type to use
    */
-  updateUnifiedSetting(key: string, value: unknown, storage?: StorageType): void {
+  updateUnifiedSetting(
+    key: string,
+    value: unknown,
+    storage?: StorageType,
+  ): void {
     // Skip storage operations on server-side
     if (this.isServerSide) {
       return;
@@ -342,7 +349,11 @@ export class AppSettings implements ConfigManager {
    * @param defaultValue - Default value if key doesn't exist
    * @param storage - Storage type to get from
    */
-  getUnifiedSetting(key: string, defaultValue?: unknown, storage?: StorageType): unknown {
+  getUnifiedSetting(
+    key: string,
+    defaultValue?: unknown,
+    storage?: StorageType,
+  ): unknown {
     // Return default value on server-side
     if (this.isServerSide) {
       return defaultValue;

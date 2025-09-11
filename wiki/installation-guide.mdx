@@ -34,11 +34,11 @@
 
 ### Operating System Compatibility
 
-| Platform | Minimum Version | Recommended | Notes |
-|----------|----------------|-------------|-------|
-| **Windows** | Windows 10 (1903+) | Windows 11 22H2+ | WSL2 recommended for development |
-| **macOS** | macOS 10.15 (Catalina) | macOS 13+ (Ventura) | ARM64 (M1/M2) fully supported |
-| **Linux** | Ubuntu 18.04 LTS | Ubuntu 22.04 LTS | Also supports CentOS, RHEL, Arch |
+| Platform    | Minimum Version        | Recommended         | Notes                            |
+| ----------- | ---------------------- | ------------------- | -------------------------------- |
+| **Windows** | Windows 10 (1903+)     | Windows 11 22H2+    | WSL2 recommended for development |
+| **macOS**   | macOS 10.15 (Catalina) | macOS 13+ (Ventura) | ARM64 (M1/M2) fully supported    |
+| **Linux**   | Ubuntu 18.04 LTS       | Ubuntu 22.04 LTS    | Also supports CentOS, RHEL, Arch |
 
 ### Node.js Version Requirements
 
@@ -50,6 +50,7 @@ npm --version   # Should output 8.0.0+
 ```
 
 **Supported Node.js Versions:**
+
 - ✅ Node.js 18.x LTS (Minimum)
 - ✅ Node.js 20.x LTS (Recommended)
 - ✅ Node.js 22.x (Latest)
@@ -57,6 +58,7 @@ npm --version   # Should output 8.0.0+
 ### Hardware Recommendations
 
 #### Minimum Requirements
+
 - **CPU**: 2-core processor (x64 architecture)
 - **RAM**: 4 GB
 - **Storage**: 5 GB free space
@@ -64,6 +66,7 @@ npm --version   # Should output 8.0.0+
 - **GPU**: Not required (CPU-based processing)
 
 #### Recommended Configuration
+
 - **CPU**: 4+ core processor (Intel i5/AMD Ryzen 5 or better)
 - **RAM**: 8 GB or more
 - **Storage**: 20 GB free space (SSD preferred)
@@ -71,6 +74,7 @@ npm --version   # Should output 8.0.0+
 - **GPU**: Dedicated graphics card (improves UI performance)
 
 #### Professional/Production Setup
+
 - **CPU**: 8+ core processor (Intel i7/AMD Ryzen 7 or better)
 - **RAM**: 16 GB or more
 - **Storage**: 50 GB+ free space (NVMe SSD)
@@ -79,13 +83,13 @@ npm --version   # Should output 8.0.0+
 
 ### Browser Compatibility
 
-| Browser | Minimum Version | Recommended | Features |
-|---------|----------------|-------------|----------|
-| **Chrome** | 90+ | Latest stable | Full feature support |
-| **Firefox** | 88+ | Latest stable | Full feature support |
-| **Safari** | 14+ | Latest stable | Full feature support |
-| **Edge** | 90+ | Latest stable | Full feature support |
-| **Opera** | 76+ | Latest stable | Basic support |
+| Browser     | Minimum Version | Recommended   | Features             |
+| ----------- | --------------- | ------------- | -------------------- |
+| **Chrome**  | 90+             | Latest stable | Full feature support |
+| **Firefox** | 88+             | Latest stable | Full feature support |
+| **Safari**  | 14+             | Latest stable | Full feature support |
+| **Edge**    | 90+             | Latest stable | Full feature support |
+| **Opera**   | 76+             | Latest stable | Basic support        |
 
 **Note**: Modern browsers with JavaScript ES2020+ support are required.
 
@@ -96,6 +100,7 @@ npm --version   # Should output 8.0.0+
 ### Azure Subscription Requirements
 
 #### Step 1: Azure Account Setup
+
 1. **Create Azure Account**: Visit [Azure Portal](https://portal.azure.com)
 2. **Subscription**: Active Azure subscription (Free tier available)
 3. **Billing**: Valid payment method (required even for free tier)
@@ -104,6 +109,7 @@ npm --version   # Should output 8.0.0+
 #### Step 2: Required Azure Services
 
 ##### Azure OpenAI Service Setup
+
 ```bash
 # Check available regions for Azure OpenAI
 az cognitiveservices account list-kinds --query "[?contains(kind, 'OpenAI')]"
@@ -119,6 +125,7 @@ az cognitiveservices account list-kinds --query "[?contains(kind, 'OpenAI')]"
    - GPT-4 Vision (gpt-4-vision-preview)
 
 ##### Azure AI Foundry Access
+
 1. **Visit** [Azure AI Foundry](https://ai.azure.com)
 2. **Create Project** or use existing one
 3. **Enable FLUX Models**:
@@ -129,6 +136,7 @@ az cognitiveservices account list-kinds --query "[?contains(kind, 'OpenAI')]"
 #### Step 3: API Key Generation
 
 ##### For Azure OpenAI:
+
 ```bash
 # Using Azure CLI
 az cognitiveservices account keys list \
@@ -137,6 +145,7 @@ az cognitiveservices account keys list \
 ```
 
 ##### Manual Steps:
+
 1. **Navigate** to your Azure OpenAI resource
 2. **Go to** "Keys and Endpoint" section
 3. **Copy** Key 1 or Key 2
@@ -146,6 +155,7 @@ az cognitiveservices account keys list \
 #### Step 4: Permissions & Roles
 
 Required Azure roles:
+
 - **Cognitive Services User**: For Azure OpenAI access
 - **AI Developer**: For Azure AI Foundry
 - **Contributor**: For resource management (optional)
@@ -163,15 +173,19 @@ az role assignment create \
 ## 📦 Installation Methods
 
 ### Method 1: Development Installation (Recommended)
+
 **Best for**: Developers, customization, local development
 
 ### Method 2: Production Deployment
+
 **Best for**: Production environments, scaling
 
 ### Method 3: Docker Setup
+
 **Best for**: Containerized deployments, consistent environments
 
 ### Method 4: CLI Installation
+
 **Best for**: Command-line usage, automation, scripts
 
 ---
@@ -183,6 +197,7 @@ az role assignment create \
 #### Step 1: Environment Preparation
 
 **Windows (PowerShell/CMD)**:
+
 ```powershell
 # Install Node.js using winget (Windows 11)
 winget install OpenJS.NodeJS.LTS
@@ -196,6 +211,7 @@ npm --version
 ```
 
 **macOS (Terminal)**:
+
 ```bash
 # Install Node.js using Homebrew (recommended)
 brew install node
@@ -212,6 +228,7 @@ npm --version
 ```
 
 **Linux (Ubuntu/Debian)**:
+
 ```bash
 # Install Node.js from NodeSource repository
 curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
@@ -226,6 +243,7 @@ npm --version
 ```
 
 **Linux (CentOS/RHEL/Fedora)**:
+
 ```bash
 # Using NodeSource
 curl -fsSL https://rpm.nodesource.com/setup_lts.x | sudo bash -
@@ -251,6 +269,7 @@ ls -la
 ```
 
 **Expected output:**
+
 ```
 drwxr-xr-x   cli/
 drwxr-xr-x   docs/
@@ -276,6 +295,7 @@ npm list --depth=0
 ```
 
 **Troubleshooting dependency issues:**
+
 ```bash
 # Clear npm cache if installation fails
 npm cache clean --force
@@ -303,6 +323,7 @@ vim .env.local
 ```
 
 **Configure .env.local:**
+
 ```env
 # AZURE API KEY (Required)
 AZURE_API_KEY=your_azure_openai_api_key_here
@@ -359,6 +380,7 @@ cp .env.example .env.production
 #### Step 2: Production Configuration
 
 **Configure .env.production:**
+
 ```env
 # Production settings
 NODE_ENV=production
@@ -392,6 +414,7 @@ pm2 save
 #### Step 1: Create Dockerfile
 
 Create `Dockerfile` in project root:
+
 ```dockerfile
 # Multi-stage build for optimal size
 FROM node:20-alpine AS deps
@@ -429,8 +452,9 @@ CMD ["node", "server.js"]
 #### Step 2: Create Docker Compose
 
 Create `docker-compose.yml`:
+
 ```yaml
-version: '3.8'
+version: "3.8"
 
 services:
   azure-image-studio:
@@ -522,6 +546,7 @@ npm run dev
 ```
 
 **Expected output:**
+
 ```
 > azure-image-studio@1.0.1 dev
 > next dev --turbopack
@@ -546,6 +571,7 @@ Navigate to the settings page (`/settings`) to configure:
 ##### Azure Configuration Files
 
 **1. Azure Config (`src/app/config/azure-config.json`)**:
+
 ```json
 {
   "endpoints": [
@@ -577,6 +603,7 @@ Navigate to the settings page (`/settings`) to configure:
 ```
 
 **2. Models Configuration (`src/app/config/azure-models.json`)**:
+
 ```json
 {
   "imageModels": {
@@ -591,15 +618,23 @@ Navigate to the settings page (`/settings`) to configure:
           "capabilities": ["text-to-image"],
           "supportedSizes": [
             { "size": "1024x1024", "label": "Square (1:1)", "aspect": "1:1" },
-            { "size": "1024x1792", "label": "Portrait (9:16)", "aspect": "9:16" },
-            { "size": "1792x1024", "label": "Landscape (16:9)", "aspect": "16:9" }
+            {
+              "size": "1024x1792",
+              "label": "Portrait (9:16)",
+              "aspect": "9:16"
+            },
+            {
+              "size": "1792x1024",
+              "label": "Landscape (16:9)",
+              "aspect": "16:9"
+            }
           ],
           "supportedFormats": ["png"],
           "styleOptions": ["natural", "vivid"],
           "qualityLevels": ["standard", "hd"],
           "maxImages": 1,
           "requiresApproval": false,
-          "costPerImage": 0.040,
+          "costPerImage": 0.04,
           "estimatedTime": "10-30s"
         }
       ],
@@ -612,7 +647,11 @@ Navigate to the settings page (`/settings`) to configure:
           "capabilities": ["text-to-image", "image-to-image"],
           "supportedSizes": [
             { "size": "1024x1024", "label": "Square (1:1)", "aspect": "1:1" },
-            { "size": "1344x768", "label": "Landscape (16:9)", "aspect": "16:9" },
+            {
+              "size": "1344x768",
+              "label": "Landscape (16:9)",
+              "aspect": "16:9"
+            },
             { "size": "768x1344", "label": "Portrait (9:16)", "aspect": "9:16" }
           ],
           "supportedFormats": ["png", "jpeg"],
@@ -628,6 +667,7 @@ Navigate to the settings page (`/settings`) to configure:
 ```
 
 **3. App Configuration (`src/app/config/app-config.json`)**:
+
 ```json
 {
   "app": {
@@ -670,6 +710,7 @@ Navigate to the settings page (`/settings`) to configure:
 6. **Verify**: Image should generate successfully
 
 **Expected behavior**:
+
 - Loading indicator appears
 - Generation completes in 10-30 seconds
 - High-quality image is displayed
@@ -683,6 +724,7 @@ Navigate to the settings page (`/settings`) to configure:
 ### Unsplash API Setup
 
 #### Step 1: Create Unsplash Account
+
 1. **Visit** [Unsplash Developers](https://unsplash.com/developers)
 2. **Register** for a developer account
 3. **Create** a new application
@@ -691,6 +733,7 @@ Navigate to the settings page (`/settings`) to configure:
 #### Step 2: Configure Integration
 
 **Add to .env.local:**
+
 ```env
 # Unsplash API Configuration
 UNSPLASH_ACCESS_KEY=your_unsplash_access_key
@@ -699,6 +742,7 @@ UNSPLASH_APP_NAME=azure-image-studio
 ```
 
 **Update app-config.json:**
+
 ```json
 {
   "features": {
@@ -728,6 +772,7 @@ npm run dev
 ### Pexels API Setup
 
 #### Step 1: Create Pexels Account
+
 1. **Visit** [Pexels API](https://www.pexels.com/api/)
 2. **Sign up** for API access
 3. **Generate** API key
@@ -735,12 +780,14 @@ npm run dev
 #### Step 2: Configure Integration
 
 **Add to .env.local:**
+
 ```env
 # Pexels API Configuration
 PEXELS_API_KEY=your_pexels_api_key
 ```
 
 **Update app-config.json:**
+
 ```json
 {
   "features": {
@@ -765,7 +812,7 @@ Create custom provider in `src/lib/providers/`:
 
 ```typescript
 // src/lib/providers/custom-provider.ts
-import { AssetProvider, Asset } from '../types/assets';
+import { AssetProvider, Asset } from "../types/assets";
 
 export class CustomAssetProvider implements AssetProvider {
   private apiKey: string;
@@ -879,6 +926,7 @@ npm run test:e2e
 **Problem**: `npm ERR! peer dep missing: react@^18.0.0`
 
 **Solution**:
+
 ```bash
 # Check current Node.js version
 node --version
@@ -898,6 +946,7 @@ npm install
 **Problem**: `EACCES: permission denied`
 
 **Solution**:
+
 ```bash
 # Fix npm permissions
 sudo chown -R $(whoami) ~/.npm
@@ -914,6 +963,7 @@ nvm use --lts
 **Problem**: `Error: listen EADDRINUSE :::3000`
 
 **Solution**:
+
 ```bash
 # Find process using port 3000
 lsof -i :3000
@@ -934,6 +984,7 @@ npm run dev -- -p 3001
 **Problem**: Build fails with TypeScript errors
 
 **Solution**:
+
 ```bash
 # Clear Next.js cache
 rm -rf .next
@@ -956,6 +1007,7 @@ npm run build
 **Problem**: `401 Unauthorized` or `Invalid API Key`
 
 **Checklist**:
+
 - [ ] API key is correct and complete
 - [ ] Key has proper permissions
 - [ ] Endpoint URL matches resource
@@ -963,6 +1015,7 @@ npm run build
 - [ ] Resource is in correct region
 
 **Solution**:
+
 ```bash
 # Test API key manually
 curl -H "Authorization: Bearer YOUR_API_KEY" \
@@ -975,12 +1028,14 @@ curl -H "Authorization: Bearer YOUR_API_KEY" \
 **Problem**: `404 Not Found` or connection errors
 
 **Checklist**:
+
 - [ ] Endpoint URL is correctly formatted
 - [ ] Deployment names match Azure configuration
 - [ ] API version is supported by deployment
 - [ ] Network connectivity to Azure
 
 **Solution**:
+
 ```bash
 # Verify endpoint accessibility
 curl -I "https://your-resource.openai.azure.com"
@@ -996,6 +1051,7 @@ az cognitiveservices account deployment list \
 **Problem**: Model not showing in UI or API errors
 
 **Checklist**:
+
 - [ ] Model is deployed in Azure
 - [ ] Model has sufficient quota
 - [ ] Deployment name matches configuration
@@ -1008,6 +1064,7 @@ az cognitiveservices account deployment list \
 **Problem**: Application crashes with out-of-memory errors
 
 **Solution**:
+
 ```bash
 # Increase Node.js memory limit
 export NODE_OPTIONS="--max-old-space-size=4096"
@@ -1022,6 +1079,7 @@ npm run dev
 **Problem**: Slow image generation or UI lag
 
 **Diagnostics**:
+
 ```bash
 # Check system resources
 # Windows: Task Manager
@@ -1034,6 +1092,7 @@ clinic doctor -- npm start
 ```
 
 **Solutions**:
+
 - Increase system RAM
 - Use SSD storage
 - Check network connectivity
@@ -1047,6 +1106,7 @@ clinic doctor -- npm start
 **Problem**: Changes not reflected in browser
 
 **Solution**:
+
 ```bash
 # Clear Next.js cache
 rm -rf .next
@@ -1064,6 +1124,7 @@ sudo sysctl -p
 **Problem**: Formatting conflicts between tools
 
 **Solution**:
+
 ```bash
 # Fix formatting issues
 npm run lint -- --fix
@@ -1108,32 +1169,35 @@ npm run format
 ### Recommended Learning Path
 
 #### Beginner Path
+
 1. **[Quick Start Guide](quick-start-guide.mdx)**: Basic usage and concepts
 2. **[Features Guide](features-guide.mdx)**: Complete feature overview
 3. **[Tools Reference](tools-reference.mdx)**: Master image creation tools
 
 #### Developer Path
+
 1. **[Development Guide](development-guide.mdx)**: Code structure and development
 2. **[API Documentation](api-documentation.mdx)**: Integrate with your applications
 3. **[CLI Guide](cli-guide.mdx)**: Command-line usage
 
 #### Advanced Path
+
 1. **[Technical Architecture](technical-architecture.mdx)**: System design and components
 2. **[Settings Guide](settings-guide.mdx)**: Advanced configuration options
 3. **[Performance Guide](performance-guide.mdx)**: Performance optimization strategies
 
 ### Related Documentation
 
-| Document | Purpose | Audience |
-|----------|---------|----------|
-| **[Quick Start Guide](quick-start-guide.mdx)** | Quick start guide | All users |
-| **[Features Guide](features-guide.mdx)** | Complete user manual | End users |
-| **[Development Guide](development-guide.mdx)** | Development setup | Developers |
-| **[Settings Guide](settings-guide.mdx)** | Advanced configuration | Power users |
-| **[API Documentation](api-documentation.mdx)** | Technical reference | Developers |
-| **[CLI Guide](cli-guide.mdx)** | Command-line interface | Power users |
-| **[Performance Guide](performance-guide.mdx)** | Performance optimization | DevOps |
-| **[Security Guide](security-guide.mdx)** | Security best practices | All users |
+| Document                                       | Purpose                  | Audience    |
+| ---------------------------------------------- | ------------------------ | ----------- |
+| **[Quick Start Guide](quick-start-guide.mdx)** | Quick start guide        | All users   |
+| **[Features Guide](features-guide.mdx)**       | Complete user manual     | End users   |
+| **[Development Guide](development-guide.mdx)** | Development setup        | Developers  |
+| **[Settings Guide](settings-guide.mdx)**       | Advanced configuration   | Power users |
+| **[API Documentation](api-documentation.mdx)** | Technical reference      | Developers  |
+| **[CLI Guide](cli-guide.mdx)**                 | Command-line interface   | Power users |
+| **[Performance Guide](performance-guide.mdx)** | Performance optimization | DevOps      |
+| **[Security Guide](security-guide.mdx)**       | Security best practices  | All users   |
 
 ### Community Resources
 
@@ -1155,7 +1219,7 @@ npm run format
 
 **🎉 Congratulations! You've successfully installed Azure Image Studio!**
 
-*Now you're ready to create amazing AI-generated images with the power of Azure AI services.*
+_Now you're ready to create amazing AI-generated images with the power of Azure AI services._
 
 **Made with ❤️ by [Hazem Ali](https://linkedin.com/in/drhazemali), Microsoft AI MVP**
 

@@ -27,32 +27,32 @@ graph TB
             SWA[Azure Static Web Apps]
             CDN[Azure CDN]
         end
-        
+
         subgraph "Application Layer"
             ACA[Azure Container Apps]
             ACI[Azure Container Instances]
             AS[Azure App Service]
         end
-        
+
         subgraph "Data Layer"
             KV[Azure Key Vault]
             SA[Azure Storage Account]
             AI[Azure AI Services]
         end
-        
+
         subgraph "Monitoring"
             AI[Application Insights]
             LA[Log Analytics]
             AM[Azure Monitor]
         end
-        
+
         subgraph "Security"
             NSG[Network Security Groups]
             FW[Azure Firewall]
             RBAC[Azure RBAC]
         end
     end
-    
+
     User[Users] --> CDN
     CDN --> SWA
     SWA --> ACA
@@ -330,66 +330,67 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        source: '/api/:path*',
+        source: "/api/:path*",
         headers: [
           {
-            key: 'Access-Control-Allow-Origin',
-            value: process.env.NODE_ENV === 'production' 
-              ? 'https://yourdomain.com' 
-              : '*'
+            key: "Access-Control-Allow-Origin",
+            value:
+              process.env.NODE_ENV === "production"
+                ? "https://yourdomain.com"
+                : "*",
           },
           {
-            key: 'Access-Control-Allow-Methods',
-            value: 'GET, POST, PUT, DELETE, OPTIONS'
+            key: "Access-Control-Allow-Methods",
+            value: "GET, POST, PUT, DELETE, OPTIONS",
           },
           {
-            key: 'Access-Control-Allow-Headers',
-            value: 'Content-Type, Authorization'
-          }
-        ]
-      }
-    ]
-  }
-}
+            key: "Access-Control-Allow-Headers",
+            value: "Content-Type, Authorization",
+          },
+        ],
+      },
+    ];
+  },
+};
 ```
 
 #### Rate Limiting
 
 ```typescript
 // middleware.ts
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-const rateLimit = new Map()
+const rateLimit = new Map();
 
 export function middleware(request: NextRequest) {
-  const ip = request.ip ?? '127.0.0.1'
-  const limit = 100
-  const windowMs = 15 * 60 * 1000 // 15 minutes
-  
+  const ip = request.ip ?? "127.0.0.1";
+  const limit = 100;
+  const windowMs = 15 * 60 * 1000; // 15 minutes
+
   if (!rateLimit.has(ip)) {
-    rateLimit.set(ip, { count: 0, resetTime: Date.now() + windowMs })
+    rateLimit.set(ip, { count: 0, resetTime: Date.now() + windowMs });
   }
-  
-  const ipData = rateLimit.get(ip)
-  
+
+  const ipData = rateLimit.get(ip);
+
   if (Date.now() > ipData.resetTime) {
-    ipData.count = 0
-    ipData.resetTime = Date.now() + windowMs
+    ipData.count = 0;
+    ipData.resetTime = Date.now() + windowMs;
   }
-  
+
   if (ipData.count >= limit) {
-    return new NextResponse('Too Many Requests', { status: 429 })
+    return new NextResponse("Too Many Requests", { status: 429 });
   }
-  
-  ipData.count++
-  
-  return NextResponse.next()
+
+  ipData.count++;
+
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: '/api/:path*'
-}
+  matcher: "/api/:path*",
+};
 ```
 
 ## 📊 Monitoring and Logging
@@ -411,7 +412,7 @@ az monitor app-insights component create \
 
 ```typescript
 // lib/telemetry.ts
-import { ApplicationInsights } from '@microsoft/applicationinsights-web'
+import { ApplicationInsights } from "@microsoft/applicationinsights-web";
 
 const appInsights = new ApplicationInsights({
   config: {
@@ -421,14 +422,14 @@ const appInsights = new ApplicationInsights({
     enableRequestHeaderTracking: true,
     enableResponseHeaderTracking: true,
     enableAjaxErrorTracking: true,
-    enableUnhandledPromiseRejectionTracking: true
-  }
-})
+    enableUnhandledPromiseRejectionTracking: true,
+  },
+});
 
-appInsights.loadAppInsights()
-appInsights.trackPageView()
+appInsights.loadAppInsights();
+appInsights.trackPageView();
 
-export default appInsights
+export default appInsights;
 ```
 
 ### 2. Log Analytics Workspace
@@ -464,51 +465,51 @@ az monitor metrics alert create \
 
 ```typescript
 // app/api/health/route.ts
-import { NextResponse } from 'next/server'
+import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
     // Check Azure AI service connectivity
-    const aiHealth = await checkAzureAIHealth()
-    
+    const aiHealth = await checkAzureAIHealth();
+
     // Check database connectivity
-    const dbHealth = await checkDatabaseHealth()
-    
+    const dbHealth = await checkDatabaseHealth();
+
     // Check external dependencies
-    const depsHealth = await checkDependenciesHealth()
-    
+    const depsHealth = await checkDependenciesHealth();
+
     const health = {
-      status: 'healthy',
+      status: "healthy",
       timestamp: new Date().toISOString(),
       services: {
         azureAI: aiHealth,
         database: dbHealth,
-        dependencies: depsHealth
-      }
-    }
-    
-    return NextResponse.json(health)
+        dependencies: depsHealth,
+      },
+    };
+
+    return NextResponse.json(health);
   } catch (error) {
     return NextResponse.json(
-      { status: 'unhealthy', error: error.message },
-      { status: 500 }
-    )
+      { status: "unhealthy", error: error.message },
+      { status: 500 },
+    );
   }
 }
 
 async function checkAzureAIHealth() {
   // Implementation for Azure AI health check
-  return { status: 'healthy', responseTime: '50ms' }
+  return { status: "healthy", responseTime: "50ms" };
 }
 
 async function checkDatabaseHealth() {
   // Implementation for database health check
-  return { status: 'healthy', responseTime: '20ms' }
+  return { status: "healthy", responseTime: "20ms" };
 }
 
 async function checkDependenciesHealth() {
   // Implementation for external dependencies health check
-  return { status: 'healthy', responseTime: '100ms' }
+  return { status: "healthy", responseTime: "100ms" };
 }
 ```
 
@@ -527,56 +528,56 @@ trigger:
       - develop
 
 variables:
-  buildConfiguration: 'Release'
-  vmImageName: 'ubuntu-latest'
+  buildConfiguration: "Release"
+  vmImageName: "ubuntu-latest"
 
 stages:
-- stage: Build
-  displayName: 'Build and Test'
-  jobs:
-  - job: BuildJob
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '20.x'
-      displayName: 'Install Node.js'
-
-    - script: |
-        npm ci
-        npm run build
-        npm run test
-      displayName: 'Install dependencies, build and test'
-
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.ArtifactsStagingDirectory)'
-        ArtifactName: 'drop'
-        publishLocation: 'Container'
-
-- stage: Deploy
-  displayName: 'Deploy to Production'
-  dependsOn: Build
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
-  jobs:
-  - deployment: DeployJob
-    pool:
-      vmImage: $(vmImageName)
-    environment: 'production'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureWebApp@1
+  - stage: Build
+    displayName: "Build and Test"
+    jobs:
+      - job: BuildJob
+        pool:
+          vmImage: $(vmImageName)
+        steps:
+          - task: NodeTool@0
             inputs:
-              azureSubscription: 'Azure-Service-Connection'
-              appName: 'azure-image-studio-prod'
-              package: '$(Pipeline.Workspace)/drop'
-              appSettings: |
-                -NODE_ENV production
-                -AZURE_API_KEY $(AZURE_API_KEY)
-                -NEXT_PUBLIC_APP_URL $(NEXT_PUBLIC_APP_URL)
+              versionSpec: "20.x"
+            displayName: "Install Node.js"
+
+          - script: |
+              npm ci
+              npm run build
+              npm run test
+            displayName: "Install dependencies, build and test"
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: "$(Build.ArtifactsStagingDirectory)"
+              ArtifactName: "drop"
+              publishLocation: "Container"
+
+  - stage: Deploy
+    displayName: "Deploy to Production"
+    dependsOn: Build
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - deployment: DeployJob
+        pool:
+          vmImage: $(vmImageName)
+        environment: "production"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureWebApp@1
+                  inputs:
+                    azureSubscription: "Azure-Service-Connection"
+                    appName: "azure-image-studio-prod"
+                    package: "$(Pipeline.Workspace)/drop"
+                    appSettings: |
+                      -NODE_ENV production
+                      -AZURE_API_KEY $(AZURE_API_KEY)
+                      -NEXT_PUBLIC_APP_URL $(NEXT_PUBLIC_APP_URL)
 ```
 
 ### 2. GitHub Actions
@@ -594,8 +595,8 @@ on:
 
 env:
   AZURE_WEBAPP_NAME: azure-image-studio-prod
-  AZURE_WEBAPP_PACKAGE_PATH: '.'
-  NODE_VERSION: '20.x'
+  AZURE_WEBAPP_PACKAGE_PATH: "."
+  NODE_VERSION: "20.x"
 
 jobs:
   build:
@@ -607,7 +608,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
@@ -676,54 +677,54 @@ az cdn endpoint create \
 const nextConfig: NextConfig = {
   // Enable compression
   compress: true,
-  
+
   // Enable static optimization
   trailingSlash: false,
-  
+
   // Configure images
   images: {
-    domains: ['your-cdn-domain.com'],
-    formats: ['image/webp', 'image/avif'],
+    domains: ["your-cdn-domain.com"],
+    formats: ["image/webp", "image/avif"],
     minimumCacheTTL: 60,
   },
-  
+
   // Enable experimental features
   experimental: {
     optimizeCss: true,
-    optimizePackageImports: ['@radix-ui/react-icons'],
+    optimizePackageImports: ["@radix-ui/react-icons"],
   },
-  
+
   // Configure headers for caching
   async headers() {
     return [
       {
-        source: '/static/:path*',
+        source: "/static/:path*",
         headers: [
           {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
           },
         ],
       },
-    ]
+    ];
   },
-}
+};
 ```
 
 #### Database Optimization
 
 ```typescript
 // lib/database.ts
-import { Pool } from 'pg'
+import { Pool } from "pg";
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   max: 20, // Maximum number of clients in the pool
   idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
   connectionTimeoutMillis: 2000, // Return an error after 2 seconds if connection could not be established
-})
+});
 
-export default pool
+export default pool;
 ```
 
 ## 🔧 Troubleshooting

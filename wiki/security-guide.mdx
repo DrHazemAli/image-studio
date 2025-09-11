@@ -1,6 +1,6 @@
 # Security Best Practices Guide
 
-*Keep your Azure Image Studio installation secure and protected*
+_Keep your Azure Image Studio installation secure and protected_
 
 ---
 
@@ -23,13 +23,16 @@ This guide provides comprehensive security best practices for Azure Image Studio
 ### Default Credentials
 
 #### Critical Security Warning
+
 **⚠️ IMMEDIATE ACTION REQUIRED**: The default admin credentials are:
+
 - **Username**: `admin`
 - **Password**: `0000`
 
 **These credentials MUST be changed immediately in production environments!**
 
 #### Changing Default Credentials
+
 1. **Access Settings:**
    - Open Settings → General
    - Click "Change Credentials"
@@ -50,6 +53,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
 ### Authentication Best Practices
 
 #### Multi-Factor Authentication
+
 1. **Enable MFA:**
    - Use authenticator apps
    - Implement SMS verification
@@ -66,6 +70,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
    - Regular access reviews
 
 #### Password Security
+
 1. **Password Policies:**
    - Enforce strong password requirements
    - Implement password history
@@ -86,6 +91,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
 ### Encryption
 
 #### Data at Rest
+
 1. **Database Encryption:**
    - Encrypt sensitive data fields
    - Use database-level encryption
@@ -102,6 +108,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
    - Implement key rotation
 
 #### Data in Transit
+
 1. **HTTPS/TLS:**
    - Use TLS 1.3 or higher
    - Implement certificate pinning
@@ -120,6 +127,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
 ### Data Classification
 
 #### Sensitive Data Types
+
 1. **High Sensitivity:**
    - API keys and credentials
    - User authentication data
@@ -139,6 +147,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
    - Log files (non-sensitive)
 
 #### Data Handling Policies
+
 1. **Data Minimization:**
    - Collect only necessary data
    - Implement data retention policies
@@ -159,6 +168,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
 ### Network Configuration
 
 #### Firewall Rules
+
 1. **Inbound Rules:**
    - Allow only necessary ports
    - Block unnecessary services
@@ -175,6 +185,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
    - Regular port audits
 
 #### Network Segmentation
+
 1. **Network Isolation:**
    - Separate production and development
    - Use VLANs for segmentation
@@ -193,6 +204,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
 ### API Security
 
 #### API Authentication
+
 1. **API Keys:**
    - Use strong, unique API keys
    - Implement key rotation
@@ -209,6 +221,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
    - Monitor for abuse
 
 #### API Endpoint Security
+
 1. **Input Validation:**
    - Validate all inputs
    - Sanitize user data
@@ -229,6 +242,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
 ### Secure Development
 
 #### Code Security
+
 1. **Secure Coding Practices:**
    - Follow OWASP guidelines
    - Use secure coding patterns
@@ -245,6 +259,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
    - Implement proper error handling
 
 #### Configuration Security
+
 1. **Secure Defaults:**
    - Use secure default settings
    - Disable unnecessary features
@@ -263,6 +278,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
 ### Runtime Security
 
 #### Process Security
+
 1. **Process Isolation:**
    - Run with minimal privileges
    - Use process sandboxing
@@ -279,6 +295,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
    - Regular file system audits
 
 #### Monitoring and Logging
+
 1. **Security Monitoring:**
    - Monitor for suspicious activities
    - Implement intrusion detection
@@ -299,6 +316,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
 ### Data Privacy
 
 #### GDPR Compliance
+
 1. **Data Subject Rights:**
    - Implement data portability
    - Provide data deletion
@@ -315,6 +333,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
    - Regular privacy reviews
 
 #### CCPA Compliance
+
 1. **Consumer Rights:**
    - Implement data access rights
    - Provide data deletion
@@ -333,6 +352,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
 ### Security Governance
 
 #### Security Policies
+
 1. **Policy Development:**
    - Create comprehensive security policies
    - Regular policy updates
@@ -349,6 +369,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
    - Corrective action plans
 
 #### Security Training
+
 1. **Employee Training:**
    - Security awareness training
    - Regular security updates
@@ -369,6 +390,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
 ### Threat Detection
 
 #### Intrusion Detection
+
 1. **Network Monitoring:**
    - Monitor network traffic
    - Detect suspicious patterns
@@ -385,6 +407,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
    - Implement real-time alerts
 
 #### Vulnerability Management
+
 1. **Vulnerability Scanning:**
    - Regular vulnerability scans
    - Automated scanning tools
@@ -403,6 +426,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
 ### Security Analytics
 
 #### Log Analysis
+
 1. **Centralized Logging:**
    - Centralize security logs
    - Implement log correlation
@@ -419,6 +443,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
    - Maintain chain of custody
 
 #### Security Metrics
+
 1. **Key Metrics:**
    - Mean time to detection
    - Mean time to response
@@ -439,6 +464,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
 ### Incident Response Plan
 
 #### Preparation
+
 1. **Response Team:**
    - Define roles and responsibilities
    - Establish communication channels
@@ -455,6 +481,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
    - Stakeholder notification
 
 #### Detection and Analysis
+
 1. **Incident Detection:**
    - Automated detection systems
    - Manual monitoring
@@ -471,6 +498,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
    - Stakeholder notification
 
 #### Containment and Eradication
+
 1. **Containment:**
    - Isolate affected systems
    - Prevent further damage
@@ -487,6 +515,7 @@ This guide provides comprehensive security best practices for Azure Image Studio
    - Monitor for recurrence
 
 #### Post-Incident Activities
+
 1. **Lessons Learned:**
    - Conduct post-incident reviews
    - Identify improvements
@@ -515,4 +544,4 @@ This guide provides comprehensive security best practices for Azure Image Studio
 **Author**: Hazem Ali - Microsoft AI MVP  
 **Last Updated**: September 2025
 
-*For additional support, visit our [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions) or [report issues](https://github.com/DrHazemAli/azure-image-studio/issues).*
+_For additional support, visit our [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions) or [report issues](https://github.com/DrHazemAli/azure-image-studio/issues)._

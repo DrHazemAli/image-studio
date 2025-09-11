@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronDownIcon,
   ChevronUpIcon,
   InfoCircledIcon,
-} from '@radix-ui/react-icons';
+} from "@radix-ui/react-icons";
 
 interface CanvasInfoProps {
   canvasWidth: number;
@@ -35,7 +35,7 @@ export default function CanvasInfo({
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         className={`p-3 flex items-center hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-xl transition-colors ${
-          isExpanded ? 'w-full justify-between' : 'justify-center'
+          isExpanded ? "w-full justify-between" : "justify-center"
         }`}
       >
         <div className="flex items-center gap-2">
@@ -56,9 +56,9 @@ export default function CanvasInfo({
         {isExpanded && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
+            animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2, ease: 'easeInOut' }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
             className="overflow-hidden"
           >
             <div className="px-3 pb-3 text-xs text-gray-600 dark:text-gray-400 space-y-1">

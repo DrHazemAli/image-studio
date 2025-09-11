@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Canvas as FabricCanvas, FabricObject, FabricImage } from 'fabric';
-import { EyeOpenIcon, EyeClosedIcon } from '@radix-ui/react-icons';
-import { ImageAdjustments } from '../hooks/use-real-time-preview';
+import React, { useRef, useEffect, useState, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Canvas as FabricCanvas, FabricObject, FabricImage } from "fabric";
+import { EyeOpenIcon, EyeClosedIcon } from "@radix-ui/react-icons";
+import { ImageAdjustments } from "../hooks/use-real-time-preview";
 
 /**
  * Props interface for the ImagePreview component
@@ -31,7 +31,7 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
   fabricCanvas,
   selectedImage,
   adjustments,
-  className = '',
+  className = "",
   showBeforeAfter = true,
   onToggleBeforeAfter,
 }) => {
@@ -73,7 +73,7 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
         filters.push(`grayscale(${adj.grayscale}%)`);
       }
       if (adj.invert) {
-        filters.push('invert(100%)');
+        filters.push("invert(100%)");
       }
 
       // Approximate advanced filters using CSS
@@ -97,9 +97,9 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
         filters.push(`contrast(${clarityContrast}%)`);
       }
 
-      return filters.join(' ');
+      return filters.join(" ");
     },
-    []
+    [],
   );
 
   /**
@@ -143,7 +143,7 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
         });
       }
     } catch (error) {
-      console.error('Error extracting image data:', error);
+      console.error("Error extracting image data:", error);
       setImageData(null);
     }
   }, [selectedImage]);
@@ -182,7 +182,7 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
   }
 
   const filterString = isShowingBefore
-    ? ''
+    ? ""
     : adjustmentsToCSSFilter(adjustments);
   const opacity = isShowingBefore ? 1 : adjustments.opacity / 100;
 
@@ -227,8 +227,8 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
               linear-gradient(45deg, transparent 75%, #ccc 75%),
               linear-gradient(-45deg, transparent 75%, #ccc 75%)
             `,
-            backgroundSize: '12px 12px',
-            backgroundPosition: '0 0, 0 6px, 6px -6px, -6px 0px',
+            backgroundSize: "12px 12px",
+            backgroundPosition: "0 0, 0 6px, 6px -6px, -6px 0px",
           }}
         />
 

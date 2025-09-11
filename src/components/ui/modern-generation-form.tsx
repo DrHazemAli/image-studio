@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   MagicWandIcon,
   ImageIcon,
@@ -10,11 +10,11 @@ import {
   ArrowRightIcon,
   UpdateIcon,
   Cross2Icon,
-} from '@radix-ui/react-icons';
-import * as Select from '@radix-ui/react-select';
-import { Button, Progress, Badge, Separator } from '@radix-ui/themes';
-import { ModelSelector } from './model-selector';
-import { AzureDeployment } from '@/types/azure';
+} from "@radix-ui/react-icons";
+import * as Select from "@radix-ui/react-select";
+import { Button, Progress, Badge, Separator } from "@radix-ui/themes";
+import { ModelSelector } from "./model-selector";
+import { AzureDeployment } from "@/types/azure";
 
 interface ModernGenerationFormProps {
   deployments: AzureDeployment[];
@@ -31,16 +31,16 @@ interface ModernGenerationFormProps {
 }
 
 const IMAGE_SIZES = [
-  { value: '512x512', label: '512×512', aspect: 'Square' },
-  { value: '768x768', label: '768×768', aspect: 'Square' },
-  { value: '1024x1024', label: '1024×1024', aspect: 'Square' },
-  { value: '1024x1792', label: '1024×1792', aspect: 'Portrait' },
-  { value: '1792x1024', label: '1792×1024', aspect: 'Landscape' },
+  { value: "512x512", label: "512×512", aspect: "Square" },
+  { value: "768x768", label: "768×768", aspect: "Square" },
+  { value: "1024x1024", label: "1024×1024", aspect: "Square" },
+  { value: "1024x1792", label: "1024×1792", aspect: "Portrait" },
+  { value: "1792x1024", label: "1792×1024", aspect: "Landscape" },
 ];
 
 const IMAGE_FORMATS = [
-  { value: 'png', label: 'PNG', desc: 'High quality with transparency' },
-  { value: 'jpeg', label: 'JPEG', desc: 'Compressed, smaller file size' },
+  { value: "png", label: "PNG", desc: "High quality with transparency" },
+  { value: "jpeg", label: "JPEG", desc: "Compressed, smaller file size" },
 ];
 
 const IMAGE_COUNTS = [1, 2, 3, 4];
@@ -53,9 +53,9 @@ export function ModernGenerationForm({
   isGenerating,
   progress,
 }: ModernGenerationFormProps) {
-  const [prompt, setPrompt] = useState('');
-  const [size, setSize] = useState('1024x1024');
-  const [format, setFormat] = useState('png');
+  const [prompt, setPrompt] = useState("");
+  const [size, setSize] = useState("1024x1024");
+  const [format, setFormat] = useState("png");
   const [count, setCount] = useState(1);
   const [isExpanded, setIsExpanded] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -65,9 +65,9 @@ export function ModernGenerationForm({
 
   useEffect(() => {
     if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = "auto";
       textareaRef.current.style.height =
-        Math.min(textareaRef.current.scrollHeight, 200) + 'px';
+        Math.min(textareaRef.current.scrollHeight, 200) + "px";
     }
   }, [prompt]);
 
@@ -84,10 +84,10 @@ export function ModernGenerationForm({
   };
 
   const samplePrompts = [
-    'A futuristic city at sunset with flying cars',
-    'A serene mountain lake with perfect reflections',
-    'An astronaut painting in space',
-    'A cyberpunk cat with neon lights',
+    "A futuristic city at sunset with flying cars",
+    "A serene mountain lake with perfect reflections",
+    "An astronaut painting in space",
+    "A cyberpunk cat with neon lights",
   ];
 
   return (
@@ -118,7 +118,7 @@ export function ModernGenerationForm({
                 variant="ghost"
                 size="2"
                 onClick={() => setShowSettings(!showSettings)}
-                className={`transition-colors ${showSettings ? 'bg-gray-100 dark:bg-gray-800' : ''}`}
+                className={`transition-colors ${showSettings ? "bg-gray-100 dark:bg-gray-800" : ""}`}
               >
                 <GearIcon className="h-4 w-4" />
                 Settings
@@ -145,8 +145,8 @@ export function ModernGenerationForm({
                 layout
                 className={`relative rounded-xl border transition-all duration-300 ${
                   isExpanded
-                    ? 'border-blue-500 dark:border-blue-400 shadow-lg'
-                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                    ? "border-blue-500 dark:border-blue-400 shadow-lg"
+                    : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
                 }`}
               >
                 <textarea
@@ -159,7 +159,7 @@ export function ModernGenerationForm({
                   disabled={isGenerating}
                   rows={1}
                   className="w-full min-h-[60px] p-4 bg-transparent resize-none outline-none text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 disabled:opacity-50"
-                  style={{ maxHeight: '200px' }}
+                  style={{ maxHeight: "200px" }}
                 />
 
                 {/* Floating action button */}
@@ -212,7 +212,7 @@ export function ModernGenerationForm({
             {isGenerating && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
+                animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 className="px-6 pb-4"
               >
@@ -239,7 +239,7 @@ export function ModernGenerationForm({
             {showSettings && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
+                animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3 }}
                 className="border-t border-gray-200 dark:border-gray-700"
@@ -273,8 +273,8 @@ export function ModernGenerationForm({
                             disabled={isGenerating}
                             className={`p-3 rounded-lg border text-left transition-all ${
                               size === sizeOption.value
-                                ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/20'
-                                : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                                ? "border-blue-500 bg-blue-50 dark:bg-blue-950/20"
+                                : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
                             } disabled:opacity-50`}
                             whileHover={{
                               scale: size !== sizeOption.value ? 1.02 : 1,
@@ -299,7 +299,7 @@ export function ModernGenerationForm({
                       </label>
                       <div className="space-y-2">
                         {IMAGE_FORMATS.filter((fmt) =>
-                          selectedModel?.supportedFormats.includes(fmt.value)
+                          selectedModel?.supportedFormats.includes(fmt.value),
                         ).map((formatOption) => (
                           <motion.button
                             key={formatOption.value}
@@ -308,8 +308,8 @@ export function ModernGenerationForm({
                             disabled={isGenerating}
                             className={`w-full p-3 rounded-lg border text-left transition-all ${
                               format === formatOption.value
-                                ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/20'
-                                : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                                ? "border-blue-500 bg-blue-50 dark:bg-blue-950/20"
+                                : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
                             } disabled:opacity-50`}
                             whileHover={{
                               scale: format !== formatOption.value ? 1.02 : 1,
@@ -341,8 +341,8 @@ export function ModernGenerationForm({
                             disabled={isGenerating}
                             className={`p-3 rounded-lg border text-center transition-all ${
                               count === countOption
-                                ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/20'
-                                : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                                ? "border-blue-500 bg-blue-50 dark:bg-blue-950/20"
+                                : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
                             } disabled:opacity-50`}
                             whileHover={{
                               scale: count !== countOption ? 1.05 : 1,
@@ -351,7 +351,7 @@ export function ModernGenerationForm({
                           >
                             <div className="font-medium">{countOption}</div>
                             <div className="text-xs text-gray-500 dark:text-gray-400">
-                              {countOption === 1 ? 'image' : 'images'}
+                              {countOption === 1 ? "image" : "images"}
                             </div>
                           </motion.button>
                         ))}
@@ -368,12 +368,12 @@ export function ModernGenerationForm({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Badge variant="soft" color="blue">
-                  {selectedModel?.name || 'No model selected'}
+                  {selectedModel?.name || "No model selected"}
                 </Badge>
                 <Separator orientation="vertical" className="h-4" />
                 <span className="text-xs text-gray-500 dark:text-gray-400">
-                  {size} • {format.toUpperCase()} • {count}{' '}
-                  {count === 1 ? 'image' : 'images'}
+                  {size} • {format.toUpperCase()} • {count}{" "}
+                  {count === 1 ? "image" : "images"}
                 </span>
               </div>
 
@@ -389,7 +389,7 @@ export function ModernGenerationForm({
                     className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg disabled:opacity-50"
                   >
                     <MagicWandIcon className="h-4 w-4" />
-                    {isGenerating ? 'Generating...' : 'Generate Image'}
+                    {isGenerating ? "Generating..." : "Generate Image"}
                   </Button>
                 </motion.div>
               )}

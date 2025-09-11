@@ -1,6 +1,6 @@
 # API Documentation
 
-**Last Updated**: September 8, 2025  
+**Last Updated**: September 8, 2025
 
 This document provides comprehensive API documentation for Azure GenAI Image Studio.
 

@@ -1,6 +1,6 @@
 # API Documentation
 
-*Complete API reference for Azure Image Studio's REST endpoints*
+_Complete API reference for Azure Image Studio's REST endpoints_
 
 ---
 
@@ -25,17 +25,20 @@ Azure Image Studio provides a comprehensive REST API built on Next.js App Router
 The API supports multiple authentication methods:
 
 #### Cookie-Based Authentication
+
 - **Method**: HTTP cookies with encrypted configuration
 - **Key**: `azure_config_object`
 - **Format**: URL-encoded JSON containing Azure configuration
 - **Security**: Encrypted storage of sensitive data
 
 #### Environment Variables
+
 - **Primary**: `AZURE_API_KEY` environment variable
 - **Fallback**: Used when cookie configuration is unavailable
 - **Priority**: Cookie configuration takes precedence
 
 ### Authentication Flow
+
 1. User configures Azure settings through the web interface
 2. Configuration is encrypted and stored in cookies
 3. API endpoints validate configuration from cookies
@@ -44,6 +47,7 @@ The API supports multiple authentication methods:
 ## 📡 Base URL
 
 All API endpoints are relative to your application's base URL:
+
 ```
 https://your-domain.com/api/
 ```
@@ -55,6 +59,7 @@ https://your-domain.com/api/
 Generate images using Azure AI models.
 
 #### Request Body
+
 ```json
 {
   "deploymentId": "string",
@@ -69,6 +74,7 @@ Generate images using Azure AI models.
 ```
 
 #### Parameters
+
 - **deploymentId** (required): Azure deployment identifier
 - **prompt** (required): Text description for image generation
 - **size** (optional): Image dimensions (default: "1024x1024")
@@ -79,6 +85,7 @@ Generate images using Azure AI models.
 - **mask** (optional): Base64 encoded mask for selective editing
 
 #### Response
+
 ```json
 {
   "success": true,
@@ -99,6 +106,7 @@ Generate images using Azure AI models.
 ```
 
 #### Error Responses
+
 ```json
 {
   "error": "Azure is not configured, Please configure Azure first from settings",
@@ -113,6 +121,7 @@ Generate images using Azure AI models.
 Retrieve current Azure configuration and validation status.
 
 #### Response
+
 ```json
 {
   "success": true,
@@ -144,6 +153,7 @@ Retrieve current Azure configuration and validation status.
 Retrieve application configuration and metadata.
 
 #### Response
+
 ```json
 {
   "success": true,
@@ -168,6 +178,7 @@ Retrieve application configuration and metadata.
 Search for assets from external providers.
 
 #### Query Parameters
+
 - **query** (required): Search term
 - **provider** (optional): "pexels" | "unsplash"
 - **page** (optional): Page number (default: 1)
@@ -176,6 +187,7 @@ Search for assets from external providers.
 - **color** (optional): Dominant color filter
 
 #### Response
+
 ```json
 {
   "success": true,
@@ -206,6 +218,7 @@ Search for assets from external providers.
 Retrieve available asset categories.
 
 #### Response
+
 ```json
 {
   "success": true,
@@ -233,6 +246,7 @@ Retrieve available asset categories.
 Retrieve featured assets.
 
 #### Response
+
 ```json
 {
   "success": true,
@@ -261,6 +275,7 @@ Retrieve featured assets.
 Retrieve available Azure AI models.
 
 #### Response
+
 ```json
 {
   "success": true,
@@ -292,6 +307,7 @@ Retrieve available Azure AI models.
 Validate Azure configuration and credentials.
 
 #### Request Body
+
 ```json
 {
   "apiKey": "your-api-key",
@@ -301,6 +317,7 @@ Validate Azure configuration and credentials.
 ```
 
 #### Response
+
 ```json
 {
   "success": true,
@@ -320,6 +337,7 @@ Validate Azure configuration and credentials.
 Remove background from images using AI.
 
 #### Request Body
+
 ```json
 {
   "image": "base64_string",
@@ -329,6 +347,7 @@ Remove background from images using AI.
 ```
 
 #### Response
+
 ```json
 {
   "success": true,
@@ -350,6 +369,7 @@ Remove background from images using AI.
 Authenticate user and establish session.
 
 #### Request Body
+
 ```json
 {
   "username": "admin",
@@ -358,6 +378,7 @@ Authenticate user and establish session.
 ```
 
 #### Response
+
 ```json
 {
   "success": true,
@@ -379,6 +400,7 @@ Authenticate user and establish session.
 Retrieve application version information.
 
 #### Response
+
 ```json
 {
   "success": true,
@@ -400,6 +422,7 @@ Retrieve application version information.
 ## 🚨 Error Handling
 
 ### Standard Error Response Format
+
 ```json
 {
   "error": "Error message description",
@@ -412,6 +435,7 @@ Retrieve application version information.
 ```
 
 ### Common Error Codes
+
 - **400**: Bad Request - Invalid parameters
 - **401**: Unauthorized - Authentication required
 - **403**: Forbidden - Insufficient permissions
@@ -423,12 +447,14 @@ Retrieve application version information.
 ## 🔄 Rate Limiting
 
 ### Rate Limits
+
 - **Image Generation**: 10 requests per minute
 - **Asset Search**: 60 requests per minute
 - **Configuration**: 30 requests per minute
 - **Background Removal**: 20 requests per minute
 
 ### Rate Limit Headers
+
 ```
 X-RateLimit-Limit: 10
 X-RateLimit-Remaining: 8
@@ -440,12 +466,14 @@ X-RateLimit-Reset: 1640995200
 ### Complete Image Generation Flow
 
 #### 1. Check Configuration
+
 ```bash
 curl -X GET "https://your-domain.com/api/config" \
   -H "Cookie: azure_config_object=encoded_config"
 ```
 
 #### 2. Generate Image
+
 ```bash
 curl -X POST "https://your-domain.com/api/generate" \
   -H "Content-Type: application/json" \
@@ -459,18 +487,19 @@ curl -X POST "https://your-domain.com/api/generate" \
 ```
 
 #### 3. Process Response
+
 ```javascript
-const response = await fetch('/api/generate', {
-  method: 'POST',
+const response = await fetch("/api/generate", {
+  method: "POST",
   headers: {
-    'Content-Type': 'application/json',
-    'Cookie': 'azure_config_object=encoded_config'
+    "Content-Type": "application/json",
+    Cookie: "azure_config_object=encoded_config",
   },
   body: JSON.stringify({
-    deploymentId: 'dalle-3',
-    prompt: 'a beautiful sunset over mountains',
-    size: '1024x1024'
-  })
+    deploymentId: "dalle-3",
+    prompt: "a beautiful sunset over mountains",
+    size: "1024x1024",
+  }),
 });
 
 const data = await response.json();
@@ -483,6 +512,7 @@ if (data.success) {
 ## 🔧 SDK Integration
 
 ### JavaScript/TypeScript
+
 ```typescript
 class AzureImageStudioAPI {
   private baseUrl: string;
@@ -495,17 +525,17 @@ class AzureImageStudioAPI {
 
   async generateImage(prompt: string, options: GenerationOptions) {
     const response = await fetch(`${this.baseUrl}/api/generate`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Cookie': `azure_config_object=${this.config}`
+        "Content-Type": "application/json",
+        Cookie: `azure_config_object=${this.config}`,
       },
       body: JSON.stringify({
         deploymentId: options.model,
         prompt,
         size: options.size,
-        count: options.count || 1
-      })
+        count: options.count || 1,
+      }),
     });
 
     return response.json();
@@ -514,6 +544,7 @@ class AzureImageStudioAPI {
 ```
 
 ### Python
+
 ```python
 import requests
 import json
@@ -541,12 +572,14 @@ class AzureImageStudioAPI:
 ## 🛡️ Security Considerations
 
 ### API Security
+
 - **HTTPS Only**: All API calls must use HTTPS
 - **Input Validation**: All inputs are validated and sanitized
 - **Rate Limiting**: Prevents abuse and ensures fair usage
 - **Error Handling**: Sensitive information is not exposed in errors
 
 ### Data Protection
+
 - **Encryption**: Sensitive data is encrypted in transit and at rest
 - **No Logging**: API keys and sensitive data are not logged
 - **Secure Storage**: Configuration is stored securely in encrypted cookies
@@ -564,4 +597,4 @@ class AzureImageStudioAPI:
 **Author**: Hazem Ali - Microsoft AI MVP  
 **Last Updated**: September 2025
 
-*For additional support, visit our [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions) or [report issues](https://github.com/DrHazemAli/azure-image-studio/issues).*
+_For additional support, visit our [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions) or [report issues](https://github.com/DrHazemAli/azure-image-studio/issues)._

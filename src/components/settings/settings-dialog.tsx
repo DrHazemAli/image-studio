@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, {
   useState,
@@ -8,8 +8,8 @@ import React, {
   Suspense,
   useRef,
   useEffect,
-} from 'react';
-import * as Dialog from '@radix-ui/react-dialog';
+} from "react";
+import * as Dialog from "@radix-ui/react-dialog";
 import {
   X,
   Settings,
@@ -22,10 +22,10 @@ import {
   Package,
   Terminal,
   ExternalLink,
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { config } from '@/lib/settings';
-import appConfig from '@/app/config/app-config.json';
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { config } from "@/lib/settings";
+import appConfig from "@/app/config/app-config.json";
 import {
   GeneralSettingsSkeleton,
   AzureSettingsSkeleton,
@@ -33,43 +33,43 @@ import {
   AdvancedSettingsSkeleton,
   AboutSettingsSkeleton,
   LoggerSettingsSkeleton,
-} from '@/components/settings/settings-skeletons';
+} from "@/components/settings/settings-skeletons";
 
 // Lazy load settings components
 const GeneralSettings = lazy(() =>
-  import('@/components/settings/general-settings').then(m => ({
+  import("@/components/settings/general-settings").then((m) => ({
     default: m.GeneralSettings,
-  }))
+  })),
 );
 const AzureSettings = lazy(() =>
-  import('@/components/settings/azure-settings').then(m => ({
+  import("@/components/settings/azure-settings").then((m) => ({
     default: m.AzureSettings,
-  }))
+  })),
 );
 const ModelsSettings = lazy(() =>
-  import('@/components/settings/models-settings').then(m => ({
+  import("@/components/settings/models-settings").then((m) => ({
     default: m.ModelsSettings,
-  }))
+  })),
 );
 const AdvancedSettings = lazy(() =>
-  import('@/components/settings/advanced-settings').then(m => ({
+  import("@/components/settings/advanced-settings").then((m) => ({
     default: m.AdvancedSettings,
-  }))
+  })),
 );
 const AboutSettings = lazy(() =>
-  import('@/components/settings/about-settings').then(m => ({
+  import("@/components/settings/about-settings").then((m) => ({
     default: m.AboutSettings,
-  }))
+  })),
 );
 const LoggerSettings = lazy(() =>
-  import('@/components/settings/logger-settings').then(m => ({
+  import("@/components/settings/logger-settings").then((m) => ({
     default: m.LoggerSettings,
-  }))
+  })),
 );
 const AssetStoreSettings = lazy(() =>
-  import('@/components/settings/asset-store-settings').then(m => ({
+  import("@/components/settings/asset-store-settings").then((m) => ({
     default: m.AssetStoreSettings,
-  }))
+  })),
 );
 
 interface SettingsDialogProps {
@@ -77,7 +77,14 @@ interface SettingsDialogProps {
   onClose: () => void;
 }
 
-type SettingsTab = 'general' | 'azure' | 'models' | 'assetStore' | 'advanced' | 'logger' | 'about';
+type SettingsTab =
+  | "general"
+  | "azure"
+  | "models"
+  | "assetStore"
+  | "advanced"
+  | "logger"
+  | "about";
 
 const getTabs = (developerMode: boolean, isDevelopment: boolean) => {
   const baseTabs: Array<{
@@ -87,61 +94,61 @@ const getTabs = (developerMode: boolean, isDevelopment: boolean) => {
     description: string;
   }> = [
     {
-      id: 'general',
-      label: 'General',
+      id: "general",
+      label: "General",
       icon: Settings,
-      description: 'Appearance, interface, and auto-save settings',
+      description: "Appearance, interface, and auto-save settings",
     },
     {
-      id: 'azure',
-      label: 'Azure',
+      id: "azure",
+      label: "Azure",
       icon: Globe,
-      description: 'API keys, endpoints, and cloud configuration',
+      description: "API keys, endpoints, and cloud configuration",
     },
     {
-      id: 'models',
-      label: 'Models',
+      id: "models",
+      label: "Models",
       icon: Package,
-      description: 'AI image generation models configuration',
+      description: "AI image generation models configuration",
     },
     {
-      id: 'assetStore',
-      label: 'Asset Store',
+      id: "assetStore",
+      label: "Asset Store",
       icon: ExternalLink,
-      description: 'External asset providers and stock photos',
+      description: "External asset providers and stock photos",
     },
     {
-      id: 'advanced',
-      label: 'Advanced',
+      id: "advanced",
+      label: "Advanced",
       icon: Sliders,
-      description: 'Data management and system settings',
+      description: "Data management and system settings",
     },
   ];
 
   // Add logger tab only if developer mode is enabled and in development
   if (developerMode && isDevelopment) {
     baseTabs.push({
-      id: 'logger',
-      label: 'Logger',
+      id: "logger",
+      label: "Logger",
       icon: Terminal,
-      description: 'Development logging configuration',
+      description: "Development logging configuration",
     });
   }
 
   baseTabs.push({
-    id: 'about',
-    label: 'About',
+    id: "about",
+    label: "About",
     icon: Info,
-    description: 'Application information and features',
+    description: "Application information and features",
   });
 
   return baseTabs;
 };
 
 export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
-  const [activeTab, setActiveTab] = useState<SettingsTab>('general');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
+  const [activeTab, setActiveTab] = useState<SettingsTab>("general");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
@@ -163,13 +170,13 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
 
       // Load data after a short delay to allow modal to render first
       initializationTimeoutRef.current = setTimeout(() => {
-        setSearchQuery('');
-        setDebouncedSearchQuery('');
+        setSearchQuery("");
+        setDebouncedSearchQuery("");
         if (searchInputRef.current) {
           searchInputRef.current.blur();
         }
         // Load developer mode setting
-        setDeveloperMode(config('developer.mode', false) as boolean);
+        setDeveloperMode(config("developer.mode", false) as boolean);
         setIsDataLoaded(true);
       }, 50); // Very short delay to allow modal to show first
     } else if (!isOpen) {
@@ -192,21 +199,27 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
       setDeveloperMode(event.detail.enabled);
     };
 
-    window.addEventListener('developerModeChanged', handleDeveloperModeChange as EventListener);
+    window.addEventListener(
+      "developerModeChanged",
+      handleDeveloperModeChange as EventListener,
+    );
     return () => {
-      window.removeEventListener('developerModeChanged', handleDeveloperModeChange as EventListener);
+      window.removeEventListener(
+        "developerModeChanged",
+        handleDeveloperModeChange as EventListener,
+      );
     };
   }, []);
 
   // Handle logger tab availability changes
   useEffect(() => {
-    const isDevelopment = process.env.NODE_ENV === 'development';
+    const isDevelopment = process.env.NODE_ENV === "development";
     const tabs = getTabs(developerMode, isDevelopment);
-    const isLoggerTabAvailable = tabs.some(tab => tab.id === 'logger');
-    
+    const isLoggerTabAvailable = tabs.some((tab) => tab.id === "logger");
+
     // If currently on logger tab but it's no longer available, switch to general
-    if (activeTab === 'logger' && !isLoggerTabAvailable) {
-      setActiveTab('general');
+    if (activeTab === "logger" && !isLoggerTabAvailable) {
+      setActiveTab("general");
     }
   }, [developerMode, activeTab]);
 
@@ -231,16 +244,16 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
 
   // Memoize filtered tabs to prevent unnecessary recalculations
   const filteredTabs = useMemo(() => {
-    const isDevelopment = process.env.NODE_ENV === 'development';
+    const isDevelopment = process.env.NODE_ENV === "development";
     const tabs = getTabs(developerMode, isDevelopment);
-    
+
     if (!debouncedSearchQuery.trim()) return tabs;
 
     const query = debouncedSearchQuery.toLowerCase();
     return tabs.filter(
-      tab =>
+      (tab) =>
         tab.label.toLowerCase().includes(query) ||
-        tab.description.toLowerCase().includes(query)
+        tab.description.toLowerCase().includes(query),
     );
   }, [debouncedSearchQuery, developerMode]);
 
@@ -252,43 +265,43 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
     }
 
     switch (activeTab) {
-      case 'general':
+      case "general":
         return (
           <Suspense fallback={<GeneralSettingsSkeleton />}>
             <GeneralSettings />
           </Suspense>
         );
-      case 'azure':
+      case "azure":
         return (
           <Suspense fallback={<AzureSettingsSkeleton />}>
             <AzureSettings />
           </Suspense>
         );
-      case 'models':
+      case "models":
         return (
           <Suspense fallback={<ModelsSettingsSkeleton />}>
             <ModelsSettings />
           </Suspense>
         );
-      case 'assetStore':
+      case "assetStore":
         return (
           <Suspense fallback={<GeneralSettingsSkeleton />}>
             <AssetStoreSettings />
           </Suspense>
         );
-      case 'advanced':
+      case "advanced":
         return (
           <Suspense fallback={<AdvancedSettingsSkeleton />}>
             <AdvancedSettings />
           </Suspense>
         );
-      case 'logger':
+      case "logger":
         return (
           <Suspense fallback={<LoggerSettingsSkeleton />}>
             <LoggerSettings />
           </Suspense>
         );
-      case 'about':
+      case "about":
         return (
           <Suspense fallback={<AboutSettingsSkeleton />}>
             <AboutSettings />
@@ -309,42 +322,42 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
       if (!isDataLoaded) return;
       setSearchQuery(e.target.value);
     },
-    [isDataLoaded]
+    [isDataLoaded],
   );
 
   const handleTabChange = useCallback(
     (tabId: SettingsTab) => {
       // Check if logger tab is available
-      const isDevelopment = process.env.NODE_ENV === 'development';
+      const isDevelopment = process.env.NODE_ENV === "development";
       const tabs = getTabs(developerMode, isDevelopment);
-      const isLoggerTabAvailable = tabs.some(tab => tab.id === 'logger');
-      
+      const isLoggerTabAvailable = tabs.some((tab) => tab.id === "logger");
+
       // If trying to access logger tab but it's not available, switch to general
-      if (tabId === 'logger' && !isLoggerTabAvailable) {
-        setActiveTab('general');
+      if (tabId === "logger" && !isLoggerTabAvailable) {
+        setActiveTab("general");
       } else {
         setActiveTab(tabId);
       }
 
       // Only clear search if data is loaded
       if (isDataLoaded) {
-        setSearchQuery('');
-        setDebouncedSearchQuery('');
+        setSearchQuery("");
+        setDebouncedSearchQuery("");
         // Blur search input to prevent focus issues
         if (searchInputRef.current) {
           searchInputRef.current.blur();
         }
       }
     },
-    [isDataLoaded, developerMode]
+    [isDataLoaded, developerMode],
   );
 
   const toggleSearchExpanded = useCallback(() => {
-    setIsSearchExpanded(prev => !prev);
+    setIsSearchExpanded((prev) => !prev);
   }, []);
 
   const toggleUserMenu = useCallback(() => {
-    setShowUserMenu(prev => !prev);
+    setShowUserMenu((prev) => !prev);
   }, []);
 
   return (
@@ -400,10 +413,10 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
                     <button
                       onClick={toggleUserMenu}
                       className="p-1 hover:bg-gray-200/50 dark:hover:bg-gray-600/50 rounded-lg transition-colors duration-150"
-                      style={{ willChange: 'auto' }}
+                      style={{ willChange: "auto" }}
                     >
                       <ChevronDown
-                        className={`w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform duration-150 ${showUserMenu ? 'rotate-180' : ''}`}
+                        className={`w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform duration-150 ${showUserMenu ? "rotate-180" : ""}`}
                       />
                     </button>
                   </div>
@@ -420,7 +433,7 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
 
                 {/* Search Bar */}
                 <div className="mb-4">
-                  <form autoComplete="off" onSubmit={e => e.preventDefault()}>
+                  <form autoComplete="off" onSubmit={(e) => e.preventDefault()}>
                     <div className="relative">
                       <button
                         type="button"
@@ -447,18 +460,18 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
                         name="settings-search"
                         id="settings-search"
                         className={cn(
-                          'w-full pl-10 pr-4 py-2 bg-white/50 dark:bg-gray-900/50 border border-gray-200/50 dark:border-gray-700/50 rounded-lg text-sm placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-colors duration-150',
-                          isSearchExpanded ? 'opacity-100' : 'opacity-70',
-                          !isDataLoaded && 'opacity-50 cursor-not-allowed'
+                          "w-full pl-10 pr-4 py-2 bg-white/50 dark:bg-gray-900/50 border border-gray-200/50 dark:border-gray-700/50 rounded-lg text-sm placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-colors duration-150",
+                          isSearchExpanded ? "opacity-100" : "opacity-70",
+                          !isDataLoaded && "opacity-50 cursor-not-allowed",
                         )}
-                        style={{ willChange: 'auto' }}
+                        style={{ willChange: "auto" }}
                       />
                     </div>
                   </form>
                 </div>
 
                 <nav className="space-y-0.5">
-                  {filteredTabs.map(tab => {
+                  {filteredTabs.map((tab) => {
                     const IconComponent = tab.icon;
                     const isHighlighted =
                       debouncedSearchQuery &&
@@ -474,21 +487,21 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
                         key={tab.id}
                         onClick={() => handleTabChange(tab.id)}
                         className={cn(
-                          'w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors duration-150 group relative',
+                          "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors duration-150 group relative",
                           activeTab === tab.id
-                            ? 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-700/50'
-                            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100/50 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-white',
+                            ? "bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-700/50"
+                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100/50 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-white",
                           isHighlighted &&
-                            'bg-yellow-100/50 dark:bg-yellow-900/20 border border-yellow-200/50 dark:border-yellow-700/50'
+                            "bg-yellow-100/50 dark:bg-yellow-900/20 border border-yellow-200/50 dark:border-yellow-700/50",
                         )}
-                        style={{ willChange: 'auto' }}
+                        style={{ willChange: "auto" }}
                       >
                         <IconComponent
                           className={cn(
-                            'w-4 h-4 transition-colors flex-shrink-0',
+                            "w-4 h-4 transition-colors flex-shrink-0",
                             activeTab === tab.id
-                              ? 'text-blue-600 dark:text-blue-400'
-                              : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300'
+                              ? "text-blue-600 dark:text-blue-400"
+                              : "text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300",
                           )}
                         />
                         <div className="flex-1 min-w-0">

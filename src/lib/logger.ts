@@ -4,14 +4,14 @@
  * Only works in development mode by default
  */
 
-import { AppSettings } from './settings/app-settings';
+import { AppSettings } from "./settings/app-settings";
 
 export interface LoggerConfig {
   enabled: boolean;
   developmentOnly: boolean;
   prefix?: string;
   timestamp?: boolean;
-  level?: 'debug' | 'info' | 'warn' | 'error' | 'log';
+  level?: "debug" | "info" | "warn" | "error" | "log";
 }
 
 export interface LoggerMethods {
@@ -46,15 +46,15 @@ class Logger implements LoggerMethods {
 
   constructor() {
     this.appSettings = new AppSettings();
-    this.isDevelopment = process.env.NODE_ENV === 'development';
-    
+    this.isDevelopment = process.env.NODE_ENV === "development";
+
     // Default configuration
     this.config = {
       enabled: true,
       developmentOnly: true,
-      prefix: '[Logger]',
+      prefix: "[Logger]",
       timestamp: true,
-      level: 'debug'
+      level: "debug",
     };
 
     // Load configuration from app settings
@@ -65,7 +65,7 @@ class Logger implements LoggerMethods {
    * Load logger configuration from app settings
    */
   private loadConfig(): void {
-    const savedConfig = this.appSettings.get('logger.config', null);
+    const savedConfig = this.appSettings.get("logger.config", null);
     if (savedConfig) {
       this.config = { ...this.config, ...savedConfig };
     }
@@ -93,24 +93,24 @@ class Logger implements LoggerMethods {
    */
   private formatMessage(level: string, ...args: any[]): any[] {
     const formattedArgs = [...args];
-    
+
     if (this.config.prefix || this.config.timestamp) {
       const prefixParts: string[] = [];
-      
+
       if (this.config.prefix) {
         prefixParts.push(this.config.prefix);
       }
-      
+
       if (this.config.timestamp) {
         const timestamp = new Date().toISOString();
         prefixParts.push(`[${timestamp}]`);
       }
-      
+
       prefixParts.push(`[${level.toUpperCase()}]`);
-      
-      formattedArgs.unshift(prefixParts.join(' '));
+
+      formattedArgs.unshift(prefixParts.join(" "));
     }
-    
+
     return formattedArgs;
   }
 
@@ -122,8 +122,8 @@ class Logger implements LoggerMethods {
       return false;
     }
 
-    const levels = ['debug', 'log', 'info', 'warn', 'error'];
-    const currentLevelIndex = levels.indexOf(this.config.level || 'debug');
+    const levels = ["debug", "log", "info", "warn", "error"];
+    const currentLevelIndex = levels.indexOf(this.config.level || "debug");
     const messageLevelIndex = levels.indexOf(level);
 
     return messageLevelIndex >= currentLevelIndex;
@@ -132,7 +132,11 @@ class Logger implements LoggerMethods {
   /**
    * Generic log method
    */
-  private logMethod(consoleMethod: keyof Console, level: string, ...args: any[]): void {
+  private logMethod(
+    consoleMethod: keyof Console,
+    level: string,
+    ...args: any[]
+  ): void {
     if (!this.shouldLog(level)) {
       return;
     }
@@ -143,28 +147,28 @@ class Logger implements LoggerMethods {
 
   // Console-compatible methods
   log(...args: any[]): void {
-    this.logMethod('log', 'log', ...args);
+    this.logMethod("log", "log", ...args);
   }
 
   info(...args: any[]): void {
-    this.logMethod('info', 'info', ...args);
+    this.logMethod("info", "info", ...args);
   }
 
   warn(...args: any[]): void {
-    this.logMethod('warn', 'warn', ...args);
+    this.logMethod("warn", "warn", ...args);
   }
 
   error(...args: any[]): void {
-    this.logMethod('error', 'error', ...args);
+    this.logMethod("error", "error", ...args);
   }
 
   debug(...args: any[]): void {
-    this.logMethod('debug', 'debug', ...args);
+    this.logMethod("debug", "debug", ...args);
   }
 
   trace(...args: any[]): void {
     if (!this.isEnabled()) return;
-    const formattedArgs = this.formatMessage('trace', ...args);
+    const formattedArgs = this.formatMessage("trace", ...args);
     console.trace(...formattedArgs);
   }
 
@@ -175,13 +179,13 @@ class Logger implements LoggerMethods {
 
   group(...args: any[]): void {
     if (!this.isEnabled()) return;
-    const formattedArgs = this.formatMessage('group', ...args);
+    const formattedArgs = this.formatMessage("group", ...args);
     console.group(...formattedArgs);
   }
 
   groupCollapsed(...args: any[]): void {
     if (!this.isEnabled()) return;
-    const formattedArgs = this.formatMessage('group', ...args);
+    const formattedArgs = this.formatMessage("group", ...args);
     console.groupCollapsed(...formattedArgs);
   }
 
@@ -255,7 +259,7 @@ class Logger implements LoggerMethods {
    */
   updateConfig(newConfig: Partial<LoggerConfig>): void {
     this.config = { ...this.config, ...newConfig };
-    this.appSettings.set('logger.config', this.config);
+    this.appSettings.set("logger.config", this.config);
   }
 
   /**

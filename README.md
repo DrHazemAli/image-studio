@@ -56,7 +56,6 @@ Azure Image Studio is a community-developed, production-ready platform that inte
 
 **✅ Production Status**: Azure Image Studio is currently **production-ready** (v1.0.2) with comprehensive features implemented and documented. The platform is stable and ready for professional use. Please see our [Development Roadmap](docs/legacy/roadmap.md) for current status and planned features.
 
-
 ## ✨ Features
 
 ### 🎨 **Professional Image Studio**

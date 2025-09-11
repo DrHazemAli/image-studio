@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ExclamationTriangleIcon, Cross2Icon } from '@radix-ui/react-icons';
+import React, { useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ExclamationTriangleIcon, Cross2Icon } from "@radix-ui/react-icons";
 
 interface ErrorNotificationProps {
   error: string | null;
@@ -22,7 +22,7 @@ export const ErrorNotification = React.memo<ErrorNotificationProps>(
             initial={{ opacity: 0, x: 300, scale: 0.9 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: 300, scale: 0.9 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className="fixed top-4 right-4 z-60 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-red-200 dark:border-red-800 rounded-2xl shadow-2xl max-w-md"
           >
             <div className="p-4">
@@ -51,7 +51,7 @@ export const ErrorNotification = React.memo<ErrorNotificationProps>(
         )}
       </AnimatePresence>
     );
-  }
+  },
 );
 
-ErrorNotification.displayName = 'ErrorNotification';
+ErrorNotification.displayName = "ErrorNotification";

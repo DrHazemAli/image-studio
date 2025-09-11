@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { LayersIcon } from '@radix-ui/react-icons';
-import appConfig from '@/app/config/app-config.json';
+import { motion } from "framer-motion";
+import { LayersIcon } from "@radix-ui/react-icons";
+import appConfig from "@/app/config/app-config.json";
 interface StudioLoadingProps {
   isVisible: boolean;
 }
@@ -24,7 +24,7 @@ export function StudioLoading({ isVisible }: StudioLoadingProps) {
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.6, ease: 'easeOut' }}
+          transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
           className="mb-12"
         >
           <div className="relative w-48 h-48 mx-auto">
@@ -35,8 +35,8 @@ export function StudioLoading({ isVisible }: StudioLoadingProps) {
                 scale: [1, 1.05, 1],
               }}
               transition={{
-                rotate: { duration: 8, repeat: Infinity, ease: 'linear' },
-                scale: { duration: 3, repeat: Infinity, ease: 'easeInOut' },
+                rotate: { duration: 8, repeat: Infinity, ease: "linear" },
+                scale: { duration: 3, repeat: Infinity, ease: "easeInOut" },
               }}
               className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full opacity-20"
             />
@@ -48,8 +48,8 @@ export function StudioLoading({ isVisible }: StudioLoadingProps) {
                 scale: [1, 1.1, 1],
               }}
               transition={{
-                rotate: { duration: 6, repeat: Infinity, ease: 'linear' },
-                scale: { duration: 2, repeat: Infinity, ease: 'easeInOut' },
+                rotate: { duration: 6, repeat: Infinity, ease: "linear" },
+                scale: { duration: 2, repeat: Infinity, ease: "easeInOut" },
               }}
               className="absolute inset-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full opacity-30"
             />
@@ -60,8 +60,8 @@ export function StudioLoading({ isVisible }: StudioLoadingProps) {
                 scale: [1, 1.15, 1],
               }}
               transition={{
-                rotate: { duration: 4, repeat: Infinity, ease: 'linear' },
-                scale: { duration: 2.5, repeat: Infinity, ease: 'easeInOut' },
+                rotate: { duration: 4, repeat: Infinity, ease: "linear" },
+                scale: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
               }}
               className="absolute inset-8 bg-gradient-to-r from-pink-500 to-red-500 rounded-full opacity-40"
             />
@@ -73,8 +73,8 @@ export function StudioLoading({ isVisible }: StudioLoadingProps) {
                 rotate: [0, 5, -5, 0],
               }}
               transition={{
-                scale: { duration: 2, repeat: Infinity, ease: 'easeInOut' },
-                rotate: { duration: 3, repeat: Infinity, ease: 'easeInOut' },
+                scale: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+                rotate: { duration: 3, repeat: Infinity, ease: "easeInOut" },
               }}
               className="absolute inset-0 flex items-center justify-center"
             >
@@ -96,7 +96,7 @@ export function StudioLoading({ isVisible }: StudioLoadingProps) {
                   duration: 2 + i * 0.3,
                   repeat: Infinity,
                   delay: i * 0.2,
-                  ease: 'easeInOut',
+                  ease: "easeInOut",
                 }}
                 className="absolute w-3 h-3 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full"
                 style={{
@@ -118,19 +118,19 @@ export function StudioLoading({ isVisible }: StudioLoadingProps) {
         >
           <motion.span
             animate={{
-              backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+              backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
             }}
             transition={{
               duration: 2.5,
               repeat: Infinity,
-              ease: 'easeInOut',
+              ease: "easeInOut",
               repeatDelay: 1,
             }}
             className="bg-gradient-to-r from-gray-900 via-blue-500 to-gray-900 dark:from-white dark:via-blue-400 dark:to-white bg-clip-text text-transparent bg-[length:200%_100%]"
             style={{
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundSize: '200% 100%',
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundSize: "200% 100%",
             }}
           >
             {appConfig.app.name}
@@ -146,19 +146,19 @@ export function StudioLoading({ isVisible }: StudioLoadingProps) {
         >
           <motion.span
             animate={{
-              backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+              backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
             }}
             transition={{
               duration: 3,
               repeat: Infinity,
-              ease: 'easeInOut',
+              ease: "easeInOut",
               repeatDelay: 1.5,
             }}
             className="bg-gradient-to-r from-gray-600 via-purple-500 to-gray-600 dark:from-gray-300 dark:via-purple-400 dark:to-gray-300 bg-clip-text text-transparent bg-[length:200%_100%]"
             style={{
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundSize: '200% 100%',
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundSize: "200% 100%",
             }}
           >
             Loading your creative workspace...
@@ -168,17 +168,17 @@ export function StudioLoading({ isVisible }: StudioLoadingProps) {
         {/* Loading Bar */}
         <motion.div
           initial={{ width: 0, opacity: 0 }}
-          animate={{ width: '100%', opacity: 1 }}
+          animate={{ width: "100%", opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.6 }}
           className="w-96 h-3 bg-gray-200 dark:bg-gray-800 rounded-full mx-auto mb-8 overflow-hidden"
         >
           <motion.div
-            initial={{ x: '-100%' }}
-            animate={{ x: '100%' }}
+            initial={{ x: "-100%" }}
+            animate={{ x: "100%" }}
             transition={{
               duration: 2,
               repeat: Infinity,
-              ease: 'easeInOut',
+              ease: "easeInOut",
               repeatDelay: 0.5,
             }}
             className="h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"
@@ -203,7 +203,7 @@ export function StudioLoading({ isVisible }: StudioLoadingProps) {
                 duration: 1.5,
                 repeat: Infinity,
                 delay: i * 0.2,
-                ease: 'easeInOut',
+                ease: "easeInOut",
               }}
               className="w-3 h-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"
             />
@@ -219,19 +219,19 @@ export function StudioLoading({ isVisible }: StudioLoadingProps) {
         >
           {[
             {
-              icon: '🎨',
-              text: 'AI Generation',
-              color: 'from-blue-500 to-cyan-500',
+              icon: "🎨",
+              text: "AI Generation",
+              color: "from-blue-500 to-cyan-500",
             },
             {
-              icon: '🖼️',
-              text: 'Image Editing',
-              color: 'from-purple-500 to-pink-500',
+              icon: "🖼️",
+              text: "Image Editing",
+              color: "from-purple-500 to-pink-500",
             },
             {
-              icon: '⚡',
-              text: 'Real-time',
-              color: 'from-green-500 to-emerald-500',
+              icon: "⚡",
+              text: "Real-time",
+              color: "from-green-500 to-emerald-500",
             },
           ].map((feature, index) => (
             <motion.div
@@ -250,7 +250,7 @@ export function StudioLoading({ isVisible }: StudioLoadingProps) {
                 transition={{
                   duration: 2 + index * 0.5,
                   repeat: Infinity,
-                  ease: 'easeInOut',
+                  ease: "easeInOut",
                 }}
               >
                 {feature.icon}
@@ -268,41 +268,41 @@ export function StudioLoading({ isVisible }: StudioLoadingProps) {
       {/* Floating Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[
-          { left: 10, top: 20, color: 'bg-blue-400', delay: 0, duration: 4 },
+          { left: 10, top: 20, color: "bg-blue-400", delay: 0, duration: 4 },
           {
             left: 25,
             top: 60,
-            color: 'bg-purple-400',
+            color: "bg-purple-400",
             delay: 0.5,
             duration: 5,
           },
-          { left: 45, top: 15, color: 'bg-pink-400', delay: 1, duration: 4.5 },
+          { left: 45, top: 15, color: "bg-pink-400", delay: 1, duration: 4.5 },
           {
             left: 70,
             top: 80,
-            color: 'bg-blue-400',
+            color: "bg-blue-400",
             delay: 1.5,
             duration: 5.5,
           },
           {
             left: 85,
             top: 35,
-            color: 'bg-purple-400',
+            color: "bg-purple-400",
             delay: 2,
             duration: 4.2,
           },
           {
             left: 15,
             top: 75,
-            color: 'bg-pink-400',
+            color: "bg-pink-400",
             delay: 2.5,
             duration: 5.8,
           },
-          { left: 60, top: 45, color: 'bg-blue-400', delay: 3, duration: 4.8 },
+          { left: 60, top: 45, color: "bg-blue-400", delay: 3, duration: 4.8 },
           {
             left: 35,
             top: 90,
-            color: 'bg-purple-400',
+            color: "bg-purple-400",
             delay: 3.5,
             duration: 5.2,
           },
@@ -322,7 +322,7 @@ export function StudioLoading({ isVisible }: StudioLoadingProps) {
               duration: particle.duration,
               repeat: Infinity,
               delay: particle.delay,
-              ease: 'easeOut',
+              ease: "easeOut",
             }}
             className={`absolute w-2 h-2 rounded-full ${particle.color}`}
             style={{

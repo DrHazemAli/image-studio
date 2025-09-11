@@ -1,6 +1,6 @@
 # Performance Optimization Guide
 
-*Get the best performance from your Azure Image Studio setup*
+_Get the best performance from your Azure Image Studio setup_
 
 ---
 
@@ -21,6 +21,7 @@ This guide provides comprehensive strategies for optimizing Azure Image Studio's
 ## 🖥️ System Requirements
 
 ### Minimum Requirements
+
 - **CPU**: 2-core processor (Intel i3/AMD Ryzen 3 or better)
 - **RAM**: 4GB available memory
 - **Storage**: 2GB free disk space
@@ -28,6 +29,7 @@ This guide provides comprehensive strategies for optimizing Azure Image Studio's
 - **Browser**: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
 
 ### Recommended Requirements
+
 - **CPU**: 4-core processor (Intel i5/AMD Ryzen 5 or better)
 - **RAM**: 8GB available memory
 - **Storage**: 10GB free disk space (SSD preferred)
@@ -35,6 +37,7 @@ This guide provides comprehensive strategies for optimizing Azure Image Studio's
 - **GPU**: Dedicated graphics card (optional but recommended)
 
 ### Optimal Requirements
+
 - **CPU**: 8-core processor (Intel i7/AMD Ryzen 7 or better)
 - **RAM**: 16GB+ available memory
 - **Storage**: 50GB+ free disk space (NVMe SSD)
@@ -46,12 +49,14 @@ This guide provides comprehensive strategies for optimizing Azure Image Studio's
 ### Hardware Optimization
 
 #### CPU Optimization
+
 1. **Multi-Core Utilization:**
    - Enable multi-threading in settings
    - Use parallel generation for batch operations
    - Close unnecessary applications
 
 2. **CPU Affinity:**
+
    ```bash
    # Set high priority for the application
    sudo nice -n -10 azure-image-studio
@@ -63,6 +68,7 @@ This guide provides comprehensive strategies for optimizing Azure Image Studio's
    - Use thermal throttling if needed
 
 #### Memory Optimization
+
 1. **RAM Allocation:**
    - Allocate 4-8GB for the application
    - Use memory-mapped files for large projects
@@ -79,6 +85,7 @@ This guide provides comprehensive strategies for optimizing Azure Image Studio's
    - Monitor memory usage patterns
 
 #### Storage Optimization
+
 1. **SSD Usage:**
    - Install on SSD for faster I/O
    - Use SSD for cache and temporary files
@@ -97,6 +104,7 @@ This guide provides comprehensive strategies for optimizing Azure Image Studio's
 ### Network Optimization
 
 #### Connection Optimization
+
 1. **Bandwidth Management:**
    - Use wired connection instead of WiFi
    - Prioritize application traffic
@@ -113,6 +121,7 @@ This guide provides comprehensive strategies for optimizing Azure Image Studio's
    - Implement smart prefetching
 
 #### Azure Configuration
+
 1. **Region Selection:**
    - Choose geographically closest region
    - Consider latency vs. cost trade-offs
@@ -131,6 +140,7 @@ This guide provides comprehensive strategies for optimizing Azure Image Studio's
 ### Application Optimization
 
 #### Canvas Performance
+
 1. **Rendering Optimization:**
    - Enable hardware acceleration
    - Use efficient rendering algorithms
@@ -147,6 +157,7 @@ This guide provides comprehensive strategies for optimizing Azure Image Studio's
    - Cache zoom levels
 
 #### Generation Performance
+
 1. **Prompt Optimization:**
    - Use concise, clear prompts
    - Avoid overly complex descriptions
@@ -163,6 +174,7 @@ This guide provides comprehensive strategies for optimizing Azure Image Studio's
    - Implement queue management
 
 #### Memory Management
+
 1. **Asset Management:**
    - Compress images before processing
    - Use appropriate image formats
@@ -183,6 +195,7 @@ This guide provides comprehensive strategies for optimizing Azure Image Studio's
 ### Settings Optimization
 
 #### Performance Settings
+
 ```json
 {
   "performance": {
@@ -196,6 +209,7 @@ This guide provides comprehensive strategies for optimizing Azure Image Studio's
 ```
 
 #### Generation Settings
+
 ```json
 {
   "generation": {
@@ -209,6 +223,7 @@ This guide provides comprehensive strategies for optimizing Azure Image Studio's
 ```
 
 #### Network Settings
+
 ```json
 {
   "network": {
@@ -224,6 +239,7 @@ This guide provides comprehensive strategies for optimizing Azure Image Studio's
 ### Advanced Configuration
 
 #### GPU Acceleration
+
 1. **Enable GPU Support:**
    - Install latest graphics drivers
    - Enable hardware acceleration
@@ -240,6 +256,7 @@ This guide provides comprehensive strategies for optimizing Azure Image Studio's
    - Monitor performance impact
 
 #### Memory Optimization
+
 1. **Memory Pools:**
    - Pre-allocate memory pools
    - Use object pooling
@@ -260,6 +277,7 @@ This guide provides comprehensive strategies for optimizing Azure Image Studio's
 ### Built-in Monitoring
 
 #### Performance Metrics
+
 - **Generation Time**: Average time per image
 - **Memory Usage**: RAM consumption over time
 - **CPU Usage**: Processor utilization
@@ -267,6 +285,7 @@ This guide provides comprehensive strategies for optimizing Azure Image Studio's
 - **Cache Hit Rate**: Cache effectiveness
 
 #### Real-time Monitoring
+
 ```bash
 # Monitor performance in real-time
 azure-image-studio dev monitor
@@ -280,6 +299,7 @@ azure-image-studio dev monitor --metric network
 ### External Monitoring
 
 #### System Monitoring
+
 1. **Resource Monitoring:**
    - Use htop, top, or Activity Monitor
    - Monitor disk I/O with iotop
@@ -296,6 +316,7 @@ azure-image-studio dev monitor --metric network
    - Track performance trends
 
 #### Performance Testing
+
 1. **Load Testing:**
    - Test with multiple concurrent users
    - Measure response times
@@ -316,6 +337,7 @@ azure-image-studio dev monitor --metric network
 ### General Best Practices
 
 #### System Maintenance
+
 1. **Regular Updates:**
    - Keep OS and drivers updated
    - Update application regularly
@@ -332,6 +354,7 @@ azure-image-studio dev monitor --metric network
    - Implement resource limits
 
 #### Application Usage
+
 1. **Efficient Workflows:**
    - Use keyboard shortcuts
    - Batch similar operations
@@ -350,6 +373,7 @@ azure-image-studio dev monitor --metric network
 ### Advanced Techniques
 
 #### Parallel Processing
+
 1. **Multi-threading:**
    - Enable parallel generation
    - Use worker threads
@@ -366,6 +390,7 @@ azure-image-studio dev monitor --metric network
    - Implement priority queues
 
 #### Caching Strategies
+
 1. **Multi-level Caching:**
    - Use memory, disk, and network caches
    - Implement cache hierarchies
@@ -386,6 +411,7 @@ azure-image-studio dev monitor --metric network
 ### Common Performance Problems
 
 #### Slow Generation
+
 1. **Network Issues:**
    - Check internet connection speed
    - Verify Azure endpoint accessibility
@@ -402,6 +428,7 @@ azure-image-studio dev monitor --metric network
    - Verify API credentials
 
 #### High Memory Usage
+
 1. **Memory Leaks:**
    - Monitor memory growth over time
    - Use memory profiling tools
@@ -418,6 +445,7 @@ azure-image-studio dev monitor --metric network
    - Use efficient cache policies
 
 #### Slow UI Response
+
 1. **Rendering Issues:**
    - Enable hardware acceleration
    - Reduce canvas complexity
@@ -436,6 +464,7 @@ azure-image-studio dev monitor --metric network
 ### Performance Debugging
 
 #### Debug Tools
+
 ```bash
 # Enable performance debugging
 export DEBUG=azure-image-studio:performance
@@ -448,6 +477,7 @@ azure-image-studio dev report --performance
 ```
 
 #### Profiling Techniques
+
 1. **CPU Profiling:**
    - Use sampling profilers
    - Identify hot spots
@@ -468,18 +498,21 @@ azure-image-studio dev report --performance
 ### Key Performance Indicators
 
 #### Generation Performance
+
 - **Average Generation Time**: Target < 30 seconds
 - **Success Rate**: Target > 95%
 - **Throughput**: Images per minute
 - **Queue Time**: Time waiting for processing
 
 #### System Performance
+
 - **CPU Utilization**: Target < 80%
 - **Memory Usage**: Target < 70% of available
 - **Disk I/O**: Monitor read/write operations
 - **Network Latency**: Target < 100ms
 
 #### User Experience
+
 - **UI Responsiveness**: Target < 100ms
 - **Load Time**: Target < 3 seconds
 - **Error Rate**: Target < 1%
@@ -488,12 +521,14 @@ azure-image-studio dev report --performance
 ### Performance Benchmarks
 
 #### Baseline Benchmarks
+
 - **Single Image Generation**: 15-30 seconds
 - **Batch Generation (5 images)**: 2-5 minutes
 - **UI Response Time**: < 100ms
 - **Memory Usage**: < 2GB for typical usage
 
 #### Optimization Targets
+
 - **Generation Time**: Reduce by 20-30%
 - **Memory Usage**: Reduce by 15-25%
 - **UI Responsiveness**: Improve by 40-50%
@@ -512,4 +547,4 @@ azure-image-studio dev report --performance
 **Author**: Hazem Ali - Microsoft AI MVP  
 **Last Updated**: September 2025
 
-*For additional support, visit our [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions) or [report issues](https://github.com/DrHazemAli/azure-image-studio/issues).*
+_For additional support, visit our [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions) or [report issues](https://github.com/DrHazemAli/azure-image-studio/issues)._

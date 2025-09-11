@@ -1,6 +1,6 @@
 # Configuration Guide
 
-**Last Updated**: September 8, 2025  
+**Last Updated**: September 8, 2025
 
 This comprehensive guide covers all aspects of configuring Azure Image Studio, from basic setup to advanced customization options.
 

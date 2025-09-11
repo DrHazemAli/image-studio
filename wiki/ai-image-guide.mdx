@@ -12,24 +12,28 @@ Azure Image Studio leverages the full power of Azure AI services to provide prof
 ## 🤖 Available AI Models
 
 ### DALL-E 3
+
 - **Provider**: Azure OpenAI
 - **Best For**: Photorealistic images, artistic creations, complex scenes
 - **Strengths**: High quality, detailed understanding, creative interpretation
 - **Use Cases**: Marketing materials, social media content, artistic projects
 
 ### FLUX 1.1 Pro
+
 - **Provider**: Microsoft Azure
 - **Best For**: Fast generation, diverse styles, commercial use
 - **Strengths**: Speed, versatility, commercial licensing
 - **Use Cases**: Rapid prototyping, batch generation, commercial projects
 
 ### Florence 2.0
+
 - **Provider**: Microsoft Azure
 - **Best For**: Image understanding, editing, inpainting
 - **Strengths**: Vision-language understanding, precise editing
 - **Use Cases**: Image editing, background removal, object manipulation
 
 ### GPT-Image-1
+
 - **Provider**: Azure OpenAI
 - **Best For**: Advanced multimodal capabilities, complex editing
 - **Strengths**: Latest technology, enhanced capabilities
@@ -44,25 +48,27 @@ Azure Image Studio leverages the full power of Azure AI services to provide prof
 ```typescript
 // Basic image generation example
 const generateImage = async (prompt: string) => {
-  const response = await fetch('/api/generate', {
-    method: 'POST',
+  const response = await fetch("/api/generate", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       prompt: prompt,
-      model: 'dall-e-3',
-      size: '1024x1024',
-      quality: 'standard',
-      style: 'vivid'
-    })
+      model: "dall-e-3",
+      size: "1024x1024",
+      quality: "standard",
+      style: "vivid",
+    }),
   });
-  
+
   return await response.json();
 };
 
 // Usage
-const image = await generateImage('A futuristic cityscape at sunset with flying cars');
+const image = await generateImage(
+  "A futuristic cityscape at sunset with flying cars",
+);
 ```
 
 #### 2. Advanced Generation Parameters
@@ -70,25 +76,25 @@ const image = await generateImage('A futuristic cityscape at sunset with flying 
 ```typescript
 // Advanced generation with all parameters
 const advancedGeneration = async (prompt: string) => {
-  const response = await fetch('/api/generate', {
-    method: 'POST',
+  const response = await fetch("/api/generate", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       prompt: prompt,
-      model: 'flux-1.1-pro',
-      size: '1024x1024',
-      quality: 'hd',
-      style: 'natural',
-      aspectRatio: '16:9',
-      negativePrompt: 'blurry, low quality, distorted',
+      model: "flux-1.1-pro",
+      size: "1024x1024",
+      quality: "hd",
+      style: "natural",
+      aspectRatio: "16:9",
+      negativePrompt: "blurry, low quality, distorted",
       seed: 12345,
       steps: 50,
-      guidanceScale: 7.5
-    })
+      guidanceScale: 7.5,
+    }),
   });
-  
+
   return await response.json();
 };
 ```
@@ -102,27 +108,38 @@ const advancedGeneration = async (prompt: string) => {
 ```
 
 **Example:**
+
 ```
 "A professional businesswoman in a modern office, confidently presenting to a team, corporate photography style, high resolution, professional lighting, 4K quality"
 ```
 
 #### 2. Style Descriptors
 
-| Style Category | Keywords | Use Cases |
-|----------------|----------|-----------|
-| **Photography** | `photography`, `portrait`, `landscape`, `macro` | Realistic images, professional photos |
-| **Artistic** | `oil painting`, `watercolor`, `digital art`, `sketch` | Creative projects, artistic content |
-| **Technical** | `technical drawing`, `blueprint`, `diagram`, `infographic` | Technical documentation, diagrams |
-| **Commercial** | `advertisement`, `marketing`, `product shot`, `lifestyle` | Marketing materials, commercial use |
+| Style Category  | Keywords                                                   | Use Cases                             |
+| --------------- | ---------------------------------------------------------- | ------------------------------------- |
+| **Photography** | `photography`, `portrait`, `landscape`, `macro`            | Realistic images, professional photos |
+| **Artistic**    | `oil painting`, `watercolor`, `digital art`, `sketch`      | Creative projects, artistic content   |
+| **Technical**   | `technical drawing`, `blueprint`, `diagram`, `infographic` | Technical documentation, diagrams     |
+| **Commercial**  | `advertisement`, `marketing`, `product shot`, `lifestyle`  | Marketing materials, commercial use   |
 
 #### 3. Quality Modifiers
 
 ```typescript
 const qualityModifiers = {
-  resolution: ['4K', '8K', 'high resolution', 'ultra HD'],
-  detail: ['detailed', 'intricate', 'fine details', 'sharp'],
-  lighting: ['professional lighting', 'studio lighting', 'natural light', 'dramatic lighting'],
-  composition: ['rule of thirds', 'golden ratio', 'symmetrical', 'dynamic composition']
+  resolution: ["4K", "8K", "high resolution", "ultra HD"],
+  detail: ["detailed", "intricate", "fine details", "sharp"],
+  lighting: [
+    "professional lighting",
+    "studio lighting",
+    "natural light",
+    "dramatic lighting",
+  ],
+  composition: [
+    "rule of thirds",
+    "golden ratio",
+    "symmetrical",
+    "dynamic composition",
+  ],
 };
 ```
 
@@ -137,15 +154,15 @@ const iterativeGeneration = async (basePrompt: string) => {
     basePrompt,
     `${basePrompt}, high quality, detailed`,
     `${basePrompt}, professional photography, studio lighting`,
-    `${basePrompt}, 4K resolution, sharp focus, vibrant colors`
+    `${basePrompt}, 4K resolution, sharp focus, vibrant colors`,
   ];
-  
+
   const results = [];
   for (const prompt of iterations) {
     const result = await generateImage(prompt);
     results.push({ prompt, result });
   }
-  
+
   return results;
 };
 ```
@@ -159,10 +176,10 @@ const styleTransfer = async (subject: string, style: string) => {
     `${subject} in the style of ${style}`,
     `${subject}, ${style} aesthetic`,
     `${subject}, rendered as ${style}`,
-    `${subject}, ${style} art style`
+    `${subject}, ${style} art style`,
   ];
-  
-  return await Promise.all(prompts.map(p => generateImage(p)));
+
+  return await Promise.all(prompts.map((p) => generateImage(p)));
 };
 ```
 
@@ -171,27 +188,30 @@ const styleTransfer = async (subject: string, style: string) => {
 ```typescript
 // Batch generation for multiple variations
 const batchGeneration = async (basePrompt: string, variations: string[]) => {
-  const prompts = variations.map(variation => `${basePrompt}, ${variation}`);
-  
+  const prompts = variations.map((variation) => `${basePrompt}, ${variation}`);
+
   const results = await Promise.all(
     prompts.map(async (prompt, index) => {
       const result = await generateImage(prompt);
       return { variation: variations[index], prompt, result };
-    })
+    }),
   );
-  
+
   return results;
 };
 
 // Usage
 const variations = [
-  'morning lighting',
-  'evening lighting',
-  'winter scene',
-  'summer scene'
+  "morning lighting",
+  "evening lighting",
+  "winter scene",
+  "summer scene",
 ];
 
-const batchResults = await batchGeneration('A cozy cabin in the woods', variations);
+const batchResults = await batchGeneration(
+  "A cozy cabin in the woods",
+  variations,
+);
 ```
 
 ## ✏️ AI-Powered Image Editing
@@ -203,19 +223,19 @@ const batchResults = await batchGeneration('A cozy cabin in the woods', variatio
 ```typescript
 // Background removal using Florence 2.0
 const removeBackground = async (imageData: string) => {
-  const response = await fetch('/api/background-removal', {
-    method: 'POST',
+  const response = await fetch("/api/background-removal", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       image: imageData,
-      model: 'florence-2.0',
-      outputFormat: 'png',
-      transparency: true
-    })
+      model: "florence-2.0",
+      outputFormat: "png",
+      transparency: true,
+    }),
   });
-  
+
   return await response.json();
 };
 ```
@@ -224,16 +244,22 @@ const removeBackground = async (imageData: string) => {
 
 ```typescript
 // Replace background with AI-generated content
-const replaceBackground = async (imageData: string, newBackgroundPrompt: string) => {
+const replaceBackground = async (
+  imageData: string,
+  newBackgroundPrompt: string,
+) => {
   // First, remove the background
   const removedBg = await removeBackground(imageData);
-  
+
   // Generate new background
   const newBackground = await generateImage(newBackgroundPrompt);
-  
+
   // Composite the images
-  const composite = await compositeImages(removedBg.foreground, newBackground.image);
-  
+  const composite = await compositeImages(
+    removedBg.foreground,
+    newBackground.image,
+  );
+
   return composite;
 };
 ```
@@ -245,20 +271,20 @@ const replaceBackground = async (imageData: string, newBackgroundPrompt: string)
 ```typescript
 // Remove unwanted objects from images
 const removeObject = async (imageData: string, maskData: string) => {
-  const response = await fetch('/api/inpaint', {
-    method: 'POST',
+  const response = await fetch("/api/inpaint", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       image: imageData,
       mask: maskData,
-      prompt: 'remove object, seamless background',
-      model: 'gpt-image-1',
-      strength: 0.8
-    })
+      prompt: "remove object, seamless background",
+      model: "gpt-image-1",
+      strength: 0.8,
+    }),
   });
-  
+
   return await response.json();
 };
 ```
@@ -267,21 +293,25 @@ const removeObject = async (imageData: string, maskData: string) => {
 
 ```typescript
 // Add objects to images
-const addObject = async (imageData: string, maskData: string, objectPrompt: string) => {
-  const response = await fetch('/api/inpaint', {
-    method: 'POST',
+const addObject = async (
+  imageData: string,
+  maskData: string,
+  objectPrompt: string,
+) => {
+  const response = await fetch("/api/inpaint", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       image: imageData,
       mask: maskData,
       prompt: objectPrompt,
-      model: 'dall-e-3',
-      strength: 0.9
-    })
+      model: "dall-e-3",
+      strength: 0.9,
+    }),
   });
-  
+
   return await response.json();
 };
 ```
@@ -290,21 +320,25 @@ const addObject = async (imageData: string, maskData: string, objectPrompt: stri
 
 ```typescript
 // Extend images beyond their original boundaries
-const extendImage = async (imageData: string, direction: string, prompt: string) => {
-  const response = await fetch('/api/outpaint', {
-    method: 'POST',
+const extendImage = async (
+  imageData: string,
+  direction: string,
+  prompt: string,
+) => {
+  const response = await fetch("/api/outpaint", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       image: imageData,
       direction: direction, // 'left', 'right', 'top', 'bottom'
       prompt: prompt,
-      model: 'flux-1.1-pro',
-      extensionSize: 512
-    })
+      model: "flux-1.1-pro",
+      extensionSize: 512,
+    }),
   });
-  
+
   return await response.json();
 };
 ```
@@ -316,19 +350,19 @@ const extendImage = async (imageData: string, direction: string, prompt: string)
 ```typescript
 // Apply artistic styles to images
 const applyStyle = async (imageData: string, stylePrompt: string) => {
-  const response = await fetch('/api/style-transfer', {
-    method: 'POST',
+  const response = await fetch("/api/style-transfer", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       image: imageData,
       style: stylePrompt,
-      model: 'florence-2.0',
-      strength: 0.7
-    })
+      model: "florence-2.0",
+      strength: 0.7,
+    }),
   });
-  
+
   return await response.json();
 };
 ```
@@ -339,24 +373,24 @@ const applyStyle = async (imageData: string, stylePrompt: string) => {
 // AI-powered color grading
 const colorGrade = async (imageData: string, mood: string) => {
   const colorPrompts = {
-    'warm': 'warm color palette, golden hour lighting',
-    'cool': 'cool color palette, blue tones, professional',
-    'vintage': 'vintage color grading, film look, muted tones',
-    'vibrant': 'vibrant colors, high saturation, energetic'
+    warm: "warm color palette, golden hour lighting",
+    cool: "cool color palette, blue tones, professional",
+    vintage: "vintage color grading, film look, muted tones",
+    vibrant: "vibrant colors, high saturation, energetic",
   };
-  
-  const response = await fetch('/api/color-grade', {
-    method: 'POST',
+
+  const response = await fetch("/api/color-grade", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       image: imageData,
       style: colorPrompts[mood],
-      model: 'gpt-image-1'
-    })
+      model: "gpt-image-1",
+    }),
   });
-  
+
   return await response.json();
 };
 ```
@@ -371,17 +405,17 @@ const colorGrade = async (imageData: string, mood: string) => {
 // Combine multiple AI models for complex workflows
 const hybridWorkflow = async (prompt: string) => {
   // Step 1: Generate base image with DALL-E 3
-  const baseImage = await generateImage(prompt, 'dall-e-3');
-  
+  const baseImage = await generateImage(prompt, "dall-e-3");
+
   // Step 2: Enhance with FLUX 1.1 Pro
-  const enhanced = await enhanceImage(baseImage.image, 'flux-1.1-pro');
-  
+  const enhanced = await enhanceImage(baseImage.image, "flux-1.1-pro");
+
   // Step 3: Apply style with Florence 2.0
-  const styled = await applyStyle(enhanced.image, 'professional photography');
-  
+  const styled = await applyStyle(enhanced.image, "professional photography");
+
   // Step 4: Final touches with GPT-Image-1
-  const final = await finalizeImage(styled.image, 'gpt-image-1');
-  
+  const final = await finalizeImage(styled.image, "gpt-image-1");
+
   return final;
 };
 ```
@@ -393,18 +427,18 @@ const hybridWorkflow = async (prompt: string) => {
 const refinementPipeline = async (initialPrompt: string) => {
   let currentImage = await generateImage(initialPrompt);
   let currentPrompt = initialPrompt;
-  
+
   const refinements = [
-    { model: 'dall-e-3', action: 'enhance_details' },
-    { model: 'flux-1.1-pro', action: 'improve_lighting' },
-    { model: 'florence-2.0', action: 'refine_composition' },
-    { model: 'gpt-image-1', action: 'final_polish' }
+    { model: "dall-e-3", action: "enhance_details" },
+    { model: "flux-1.1-pro", action: "improve_lighting" },
+    { model: "florence-2.0", action: "refine_composition" },
+    { model: "gpt-image-1", action: "final_polish" },
   ];
-  
+
   for (const refinement of refinements) {
     currentImage = await refineImage(currentImage, refinement);
   }
-  
+
   return currentImage;
 };
 ```
@@ -424,9 +458,9 @@ const batchProcess = async (imageList: string[], operation: string) => {
       } catch (error) {
         return { index, success: false, error: error.message };
       }
-    })
+    }),
   );
-  
+
   return results;
 };
 ```
@@ -435,18 +469,22 @@ const batchProcess = async (imageList: string[], operation: string) => {
 
 ```typescript
 // Track progress of batch operations
-const batchProcessWithProgress = async (imageList: string[], operation: string, onProgress: (progress: number) => void) => {
+const batchProcessWithProgress = async (
+  imageList: string[],
+  operation: string,
+  onProgress: (progress: number) => void,
+) => {
   const results = [];
   const total = imageList.length;
-  
+
   for (let i = 0; i < imageList.length; i++) {
     const result = await processImage(imageList[i], operation);
     results.push(result);
-    
+
     const progress = ((i + 1) / total) * 100;
     onProgress(progress);
   }
-  
+
   return results;
 };
 ```
@@ -460,17 +498,17 @@ const batchProcessWithProgress = async (imageList: string[], operation: string, 
 ```typescript
 // API authentication
 const authenticate = async () => {
-  const response = await fetch('/api/auth/login', {
-    method: 'POST',
+  const response = await fetch("/api/auth/login", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       username: process.env.API_USERNAME,
-      password: process.env.API_PASSWORD
-    })
+      password: process.env.API_PASSWORD,
+    }),
   });
-  
+
   const { token } = await response.json();
   return token;
 };
@@ -483,23 +521,23 @@ const authenticate = async () => {
 const apiCall = async (endpoint: string, data: any) => {
   try {
     const token = await authenticate();
-    
+
     const response = await fetch(endpoint, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
-    
+
     if (!response.ok) {
       throw new Error(`API Error: ${response.status} ${response.statusText}`);
     }
-    
+
     return await response.json();
   } catch (error) {
-    console.error('API Call Failed:', error);
+    console.error("API Call Failed:", error);
     throw error;
   }
 };
@@ -511,22 +549,25 @@ const apiCall = async (endpoint: string, data: any) => {
 
 ```typescript
 // Real-time image generation with WebSocket
-const realTimeGeneration = (prompt: string, onProgress: (progress: any) => void) => {
-  const ws = new WebSocket('wss://your-domain.com/ws/generate');
-  
+const realTimeGeneration = (
+  prompt: string,
+  onProgress: (progress: any) => void,
+) => {
+  const ws = new WebSocket("wss://your-domain.com/ws/generate");
+
   ws.onopen = () => {
-    ws.send(JSON.stringify({ prompt, model: 'dall-e-3' }));
+    ws.send(JSON.stringify({ prompt, model: "dall-e-3" }));
   };
-  
+
   ws.onmessage = (event) => {
     const data = JSON.parse(event.data);
     onProgress(data);
   };
-  
+
   ws.onerror = (error) => {
-    console.error('WebSocket Error:', error);
+    console.error("WebSocket Error:", error);
   };
-  
+
   return ws;
 };
 ```
@@ -543,14 +584,14 @@ const imageCache = new Map();
 
 const getCachedImage = async (prompt: string, model: string) => {
   const cacheKey = `${model}:${prompt}`;
-  
+
   if (imageCache.has(cacheKey)) {
     return imageCache.get(cacheKey);
   }
-  
+
   const image = await generateImage(prompt, model);
   imageCache.set(cacheKey, image);
-  
+
   return image;
 };
 ```
@@ -564,15 +605,15 @@ const optimizedBatch = async (prompts: string[], batchSize: number = 5) => {
   for (let i = 0; i < prompts.length; i += batchSize) {
     batches.push(prompts.slice(i, i + batchSize));
   }
-  
+
   const results = [];
   for (const batch of batches) {
     const batchResults = await Promise.all(
-      batch.map(prompt => generateImage(prompt))
+      batch.map((prompt) => generateImage(prompt)),
     );
     results.push(...batchResults);
   }
-  
+
   return results;
 };
 ```
@@ -585,15 +626,19 @@ const optimizedBatch = async (prompts: string[], batchSize: number = 5) => {
 // Create consistent brand assets
 const createBrandAssets = async (brandPrompt: string) => {
   const assets = [
-    { type: 'logo', prompt: `${brandPrompt} logo, minimalist, professional` },
-    { type: 'hero', prompt: `${brandPrompt} hero image, marketing style` },
-    { type: 'social', prompt: `${brandPrompt} social media post, square format` },
-    { type: 'banner', prompt: `${brandPrompt} banner, wide format, web header` }
+    { type: "logo", prompt: `${brandPrompt} logo, minimalist, professional` },
+    { type: "hero", prompt: `${brandPrompt} hero image, marketing style` },
+    {
+      type: "social",
+      prompt: `${brandPrompt} social media post, square format`,
+    },
+    {
+      type: "banner",
+      prompt: `${brandPrompt} banner, wide format, web header`,
+    },
   ];
-  
-  return await Promise.all(
-    assets.map(asset => generateImage(asset.prompt))
-  );
+
+  return await Promise.all(assets.map((asset) => generateImage(asset.prompt)));
 };
 ```
 
@@ -603,13 +648,13 @@ const createBrandAssets = async (brandPrompt: string) => {
 // Generate content series with consistent style
 const createContentSeries = async (theme: string, count: number) => {
   const series = [];
-  
+
   for (let i = 0; i < count; i++) {
     const prompt = `${theme} part ${i + 1}, consistent style, series`;
     const image = await generateImage(prompt);
     series.push({ part: i + 1, image });
   }
-  
+
   return series;
 };
 ```
@@ -620,16 +665,16 @@ const createContentSeries = async (theme: string, count: number) => {
 // Generate A/B test variations
 const createABTestVariations = async (basePrompt: string) => {
   const variations = [
-    { name: 'A', prompt: `${basePrompt}, version A, bright colors` },
-    { name: 'B', prompt: `${basePrompt}, version B, muted colors` },
-    { name: 'C', prompt: `${basePrompt}, version C, high contrast` }
+    { name: "A", prompt: `${basePrompt}, version A, bright colors` },
+    { name: "B", prompt: `${basePrompt}, version B, muted colors` },
+    { name: "C", prompt: `${basePrompt}, version C, high contrast` },
   ];
-  
+
   return await Promise.all(
-    variations.map(variation => ({
+    variations.map((variation) => ({
       ...variation,
-      image: generateImage(variation.prompt)
-    }))
+      image: generateImage(variation.prompt),
+    })),
   );
 };
 ```
@@ -648,7 +693,7 @@ const generateWithRetry = async (prompt: string, maxRetries: number = 3) => {
       return await generateImage(prompt);
     } catch (error) {
       if (i === maxRetries - 1) throw error;
-      await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+      await new Promise((resolve) => setTimeout(resolve, 1000 * (i + 1)));
     }
   }
 };
@@ -660,17 +705,17 @@ const generateWithRetry = async (prompt: string, maxRetries: number = 3) => {
 // Quality improvement techniques
 const improveQuality = async (image: string) => {
   const improvements = [
-    'high resolution, 4K quality',
-    'professional photography, sharp focus',
-    'enhanced details, crisp edges',
-    'vibrant colors, perfect lighting'
+    "high resolution, 4K quality",
+    "professional photography, sharp focus",
+    "enhanced details, crisp edges",
+    "vibrant colors, perfect lighting",
   ];
-  
+
   let currentImage = image;
   for (const improvement of improvements) {
     currentImage = await enhanceImage(currentImage, improvement);
   }
-  
+
   return currentImage;
 };
 ```
@@ -705,19 +750,19 @@ const improveQuality = async (image: string) => {
 ```typescript
 // Train custom models for specific styles
 const trainCustomModel = async (trainingData: string[], styleName: string) => {
-  const response = await fetch('/api/train-model', {
-    method: 'POST',
+  const response = await fetch("/api/train-model", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       trainingData,
       styleName,
       epochs: 100,
-      learningRate: 0.001
-    })
+      learningRate: 0.001,
+    }),
   });
-  
+
   return await response.json();
 };
 ```
@@ -728,11 +773,11 @@ const trainCustomModel = async (trainingData: string[], styleName: string) => {
 // Integrate with external design tools
 const exportToDesignTool = async (image: string, tool: string) => {
   const integrations = {
-    'figma': () => exportToFigma(image),
-    'adobe': () => exportToAdobe(image),
-    'canva': () => exportToCanva(image)
+    figma: () => exportToFigma(image),
+    adobe: () => exportToAdobe(image),
+    canva: () => exportToCanva(image),
   };
-  
+
   return await integrations[tool]();
 };
 ```
