@@ -66,6 +66,7 @@ interface UnsplashSearchResponse {
   results: UnsplashPhoto[];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface UnsplashFeaturedResponse extends Array<UnsplashPhoto> {}
 
 export class UnsplashProvider extends BaseAssetProvider {
