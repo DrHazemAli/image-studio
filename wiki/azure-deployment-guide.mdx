@@ -1,15 +1,15 @@
 # Azure Production Deployment Guide
 
-This comprehensive guide covers deploying Azure Image Studio to Azure production environments with enterprise-grade security, scalability, and monitoring.
+This comprehensive guide covers deploying Image Studio to Azure production environments with enterprise-grade security, scalability, and monitoring.
 
 > ⚠️ **Important**: This is a **community project** and is not affiliated with or endorsed by Microsoft or Azure. It's an independent project that uses Azure AI services.
 
 **Last Updated**: January 2025  
-**Version**: 1.0.2
+**Version**: 1.0.3
 
 ## 🎯 Overview
 
-This guide provides step-by-step instructions for deploying Azure Image Studio to Azure production environments using various Azure services:
+This guide provides step-by-step instructions for deploying Image Studio to Azure production environments using various Azure services:
 
 - **Azure App Service** - For containerized applications
 - **Azure Container Apps** - For microservices architecture
@@ -84,7 +84,7 @@ az login
 
 # Create resource group
 az group create \
-  --name rg-azure-image-studio-prod \
+  --name rg-image-studio-prod \
   --location "East US"
 ```
 
@@ -93,8 +93,8 @@ az group create \
 ```bash
 # Create App Service Plan
 az appservice plan create \
-  --name asp-azure-image-studio-prod \
-  --resource-group rg-azure-image-studio-prod \
+  --name asp-image-studio-prod \
+  --resource-group rg-image-studio-prod \
   --sku P1V2 \
   --is-linux
 ```
@@ -104,9 +104,9 @@ az appservice plan create \
 ```bash
 # Create Web App
 az webapp create \
-  --name azure-image-studio-prod \
-  --resource-group rg-azure-image-studio-prod \
-  --plan asp-azure-image-studio-prod \
+  --name image-studio-prod \
+  --resource-group rg-image-studio-prod \
+  --plan asp-image-studio-prod \
   --runtime "NODE|20-lts"
 ```
 
@@ -115,12 +115,12 @@ az webapp create \
 ```bash
 # Set environment variables
 az webapp config appsettings set \
-  --name azure-image-studio-prod \
-  --resource-group rg-azure-image-studio-prod \
+  --name image-studio-prod \
+  --resource-group rg-image-studio-prod \
   --settings \
     NODE_ENV=production \
     AZURE_API_KEY=your_production_api_key \
-    NEXT_PUBLIC_APP_URL=https://azure-image-studio-prod.azurewebsites.net \
+    NEXT_PUBLIC_APP_URL=https://image-studio-prod.azurewebsites.net \
     PORT=8080
 ```
 
@@ -129,9 +129,9 @@ az webapp config appsettings set \
 ```bash
 # Configure deployment source
 az webapp deployment source config \
-  --name azure-image-studio-prod \
-  --resource-group rg-azure-image-studio-prod \
-  --repo-url https://github.com/yourusername/azure-image-studio \
+  --name image-studio-prod \
+  --resource-group rg-image-studio-prod \
+  --repo-url https://github.com/yourusername/image-studio \
   --branch main \
   --manual-integration
 ```
@@ -141,14 +141,14 @@ az webapp deployment source config \
 ```bash
 # Add custom domain
 az webapp config hostname add \
-  --webapp-name azure-image-studio-prod \
-  --resource-group rg-azure-image-studio-prod \
+  --webapp-name image-studio-prod \
+  --resource-group rg-image-studio-prod \
   --hostname yourdomain.com
 
 # Configure SSL
 az webapp config ssl bind \
-  --name azure-image-studio-prod \
-  --resource-group rg-azure-image-studio-prod \
+  --name image-studio-prod \
+  --resource-group rg-image-studio-prod \
   --certificate-thumbprint your_cert_thumbprint
 ```
 
@@ -161,8 +161,8 @@ Best for: Microservices and containerized applications
 ```bash
 # Create Container Apps environment
 az containerapp env create \
-  --name cae-azure-image-studio-prod \
-  --resource-group rg-azure-image-studio-prod \
+  --name cae-image-studio-prod \
+  --resource-group rg-image-studio-prod \
   --location "East US"
 ```
 
@@ -171,10 +171,10 @@ az containerapp env create \
 ```bash
 # Create Container App
 az containerapp create \
-  --name ca-azure-image-studio-prod \
-  --resource-group rg-azure-image-studio-prod \
-  --environment cae-azure-image-studio-prod \
-  --image your-registry.azurecr.io/azure-image-studio:latest \
+  --name ca-image-studio-prod \
+  --resource-group rg-image-studio-prod \
+  --environment cae-image-studio-prod \
+  --image your-registry.azurecr.io/image-studio:latest \
   --target-port 3000 \
   --ingress external \
   --min-replicas 1 \
@@ -184,7 +184,7 @@ az containerapp create \
   --env-vars \
     NODE_ENV=production \
     AZURE_API_KEY=your_production_api_key \
-    NEXT_PUBLIC_APP_URL=https://ca-azure-image-studio-prod.azurecontainerapps.io
+    NEXT_PUBLIC_APP_URL=https://ca-image-studio-prod.azurecontainerapps.io
 ```
 
 #### 3. Configure Auto-scaling
@@ -192,8 +192,8 @@ az containerapp create \
 ```bash
 # Configure auto-scaling
 az containerapp update \
-  --name ca-azure-image-studio-prod \
-  --resource-group rg-azure-image-studio-prod \
+  --name ca-image-studio-prod \
+  --resource-group rg-image-studio-prod \
   --min-replicas 2 \
   --max-replicas 20 \
   --scale-rule-name "http-scaling" \
@@ -210,9 +210,9 @@ Best for: Static frontend with API integration
 ```bash
 # Create Static Web App
 az staticwebapp create \
-  --name swa-azure-image-studio-prod \
-  --resource-group rg-azure-image-studio-prod \
-  --source https://github.com/yourusername/azure-image-studio \
+  --name swa-image-studio-prod \
+  --resource-group rg-image-studio-prod \
+  --source https://github.com/yourusername/image-studio \
   --location "East US 2" \
   --branch main \
   --app-location "/" \
@@ -225,10 +225,10 @@ az staticwebapp create \
 ```bash
 # Configure API settings
 az staticwebapp appsettings set \
-  --name swa-azure-image-studio-prod \
+  --name swa-image-studio-prod \
   --setting-names \
     AZURE_API_KEY=your_production_api_key \
-    NEXT_PUBLIC_APP_URL=https://swa-azure-image-studio-prod.azurestaticapps.net
+    NEXT_PUBLIC_APP_URL=https://swa-image-studio-prod.azurestaticapps.net
 ```
 
 ## 🔐 Security Configuration
@@ -240,8 +240,8 @@ az staticwebapp appsettings set \
 ```bash
 # Create Key Vault
 az keyvault create \
-  --name kv-azure-image-studio-prod \
-  --resource-group rg-azure-image-studio-prod \
+  --name kv-image-studio-prod \
+  --resource-group rg-image-studio-prod \
   --location "East US" \
   --sku standard
 ```
@@ -251,13 +251,13 @@ az keyvault create \
 ```bash
 # Store API key
 az keyvault secret set \
-  --vault-name kv-azure-image-studio-prod \
+  --vault-name kv-image-studio-prod \
   --name "azure-api-key" \
   --value "your_production_api_key"
 
 # Store database connection string
 az keyvault secret set \
-  --vault-name kv-azure-image-studio-prod \
+  --vault-name kv-image-studio-prod \
   --name "database-connection" \
   --value "your_database_connection_string"
 ```
@@ -267,13 +267,13 @@ az keyvault secret set \
 ```bash
 # Enable system-assigned managed identity
 az webapp identity assign \
-  --name azure-image-studio-prod \
-  --resource-group rg-azure-image-studio-prod
+  --name image-studio-prod \
+  --resource-group rg-image-studio-prod
 
 # Grant access to Key Vault
 az keyvault set-policy \
-  --name kv-azure-image-studio-prod \
-  --object-id $(az webapp identity show --name azure-image-studio-prod --resource-group rg-azure-image-studio-prod --query principalId -o tsv) \
+  --name kv-image-studio-prod \
+  --object-id $(az webapp identity show --name image-studio-prod --resource-group rg-image-studio-prod --query principalId -o tsv) \
   --secret-permissions get list
 ```
 
@@ -284,16 +284,16 @@ az keyvault set-policy \
 ```bash
 # Create virtual network
 az network vnet create \
-  --name vnet-azure-image-studio-prod \
-  --resource-group rg-azure-image-studio-prod \
+  --name vnet-image-studio-prod \
+  --resource-group rg-image-studio-prod \
   --location "East US" \
   --address-prefix 10.0.0.0/16
 
 # Create subnet
 az network vnet subnet create \
-  --name snet-azure-image-studio-prod \
-  --resource-group rg-azure-image-studio-prod \
-  --vnet-name vnet-azure-image-studio-prod \
+  --name snet-image-studio-prod \
+  --resource-group rg-image-studio-prod \
+  --vnet-name vnet-image-studio-prod \
   --address-prefix 10.0.1.0/24
 ```
 
@@ -302,15 +302,15 @@ az network vnet subnet create \
 ```bash
 # Create NSG
 az network nsg create \
-  --name nsg-azure-image-studio-prod \
-  --resource-group rg-azure-image-studio-prod \
+  --name nsg-image-studio-prod \
+  --resource-group rg-image-studio-prod \
   --location "East US"
 
 # Allow HTTPS traffic
 az network nsg rule create \
   --name "AllowHTTPS" \
-  --resource-group rg-azure-image-studio-prod \
-  --nsg-name nsg-azure-image-studio-prod \
+  --resource-group rg-image-studio-prod \
+  --nsg-name nsg-image-studio-prod \
   --priority 100 \
   --source-address-prefixes "*" \
   --source-port-ranges "*" \
@@ -402,9 +402,9 @@ export const config = {
 ```bash
 # Create Application Insights
 az monitor app-insights component create \
-  --app ai-azure-image-studio-prod \
+  --app ai-image-studio-prod \
   --location "East US" \
-  --resource-group rg-azure-image-studio-prod \
+  --resource-group rg-image-studio-prod \
   --application-type web
 ```
 
@@ -439,8 +439,8 @@ export default appInsights;
 ```bash
 # Create Log Analytics workspace
 az monitor log-analytics workspace create \
-  --name law-azure-image-studio-prod \
-  --resource-group rg-azure-image-studio-prod \
+  --name law-image-studio-prod \
+  --resource-group rg-image-studio-prod \
   --location "East US"
 ```
 
@@ -450,8 +450,8 @@ az monitor log-analytics workspace create \
 # Create alert rule for high error rate
 az monitor metrics alert create \
   --name "High Error Rate" \
-  --resource-group rg-azure-image-studio-prod \
-  --scopes /subscriptions/your-subscription-id/resourceGroups/rg-azure-image-studio-prod/providers/Microsoft.Web/sites/azure-image-studio-prod \
+  --resource-group rg-image-studio-prod \
+  --scopes /subscriptions/your-subscription-id/resourceGroups/rg-image-studio-prod/providers/Microsoft.Web/sites/image-studio-prod \
   --condition "count 'exceptions/count' > 10" \
   --description "Alert when error rate is high" \
   --evaluation-frequency 1m \
@@ -572,7 +572,7 @@ stages:
                 - task: AzureWebApp@1
                   inputs:
                     azureSubscription: "Azure-Service-Connection"
-                    appName: "azure-image-studio-prod"
+                    appName: "image-studio-prod"
                     package: "$(Pipeline.Workspace)/drop"
                     appSettings: |
                       -NODE_ENV production
@@ -594,7 +594,7 @@ on:
     branches: [main]
 
 env:
-  AZURE_WEBAPP_NAME: azure-image-studio-prod
+  AZURE_WEBAPP_NAME: image-studio-prod
   AZURE_WEBAPP_PACKAGE_PATH: "."
   NODE_VERSION: "20.x"
 
@@ -655,17 +655,17 @@ jobs:
 ```bash
 # Create CDN profile
 az cdn profile create \
-  --name cdn-azure-image-studio-prod \
-  --resource-group rg-azure-image-studio-prod \
+  --name cdn-image-studio-prod \
+  --resource-group rg-image-studio-prod \
   --sku Standard_Microsoft
 
 # Create CDN endpoint
 az cdn endpoint create \
-  --name cdn-endpoint-azure-image-studio-prod \
-  --profile-name cdn-azure-image-studio-prod \
-  --resource-group rg-azure-image-studio-prod \
-  --origin azure-image-studio-prod.azurewebsites.net \
-  --origin-host-header azure-image-studio-prod.azurewebsites.net
+  --name cdn-endpoint-image-studio-prod \
+  --profile-name cdn-image-studio-prod \
+  --resource-group rg-image-studio-prod \
+  --origin image-studio-prod.azurewebsites.net \
+  --origin-host-header image-studio-prod.azurewebsites.net
 ```
 
 ### 2. Application Performance
@@ -735,10 +735,10 @@ export default pool;
 
 ```bash
 # Check application logs
-az webapp log tail --name azure-image-studio-prod --resource-group rg-azure-image-studio-prod
+az webapp log tail --name image-studio-prod --resource-group rg-image-studio-prod
 
 # Check application settings
-az webapp config appsettings list --name azure-image-studio-prod --resource-group rg-azure-image-studio-prod
+az webapp config appsettings list --name image-studio-prod --resource-group rg-image-studio-prod
 ```
 
 #### 2. Performance Issues
@@ -746,12 +746,12 @@ az webapp config appsettings list --name azure-image-studio-prod --resource-grou
 ```bash
 # Check metrics
 az monitor metrics list \
-  --resource /subscriptions/your-subscription-id/resourceGroups/rg-azure-image-studio-prod/providers/Microsoft.Web/sites/azure-image-studio-prod \
+  --resource /subscriptions/your-subscription-id/resourceGroups/rg-image-studio-prod/providers/Microsoft.Web/sites/image-studio-prod \
   --metric "CpuPercentage,MemoryPercentage,HttpResponseTime"
 
 # Check Application Insights
 az monitor app-insights query \
-  --app ai-azure-image-studio-prod \
+  --app ai-image-studio-prod \
   --analytics-query "requests | where timestamp > ago(1h) | summarize avg(duration) by bin(timestamp, 5m)"
 ```
 
@@ -759,23 +759,23 @@ az monitor app-insights query \
 
 ```bash
 # Check security recommendations
-az security assessment list --resource-group rg-azure-image-studio-prod
+az security assessment list --resource-group rg-image-studio-prod
 
 # Check Key Vault access
-az keyvault secret list --vault-name kv-azure-image-studio-prod
+az keyvault secret list --vault-name kv-image-studio-prod
 ```
 
 ### Monitoring Commands
 
 ```bash
 # Check application status
-az webapp show --name azure-image-studio-prod --resource-group rg-azure-image-studio-prod --query "state"
+az webapp show --name image-studio-prod --resource-group rg-image-studio-prod --query "state"
 
 # Check scaling status
-az monitor autoscale list --resource-group rg-azure-image-studio-prod
+az monitor autoscale list --resource-group rg-image-studio-prod
 
 # Check alerts
-az monitor activity-log list --resource-group rg-azure-image-studio-prod --start-time 2024-01-01T00:00:00Z
+az monitor activity-log list --resource-group rg-image-studio-prod --start-time 2024-01-01T00:00:00Z
 ```
 
 ## 📚 Additional Resources
@@ -805,8 +805,8 @@ az monitor activity-log list --resource-group rg-azure-image-studio-prod --start
 ### Getting Help
 
 - Check the [troubleshooting section](#troubleshooting)
-- Review the [GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
-- Join [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
+- Review the [GitHub Issues](https://github.com/DrHazemAli/image-studio/issues)
+- Join [GitHub Discussions](https://github.com/DrHazemAli/image-studio/discussions)
 
 ### Contact
 
@@ -826,4 +826,4 @@ az monitor activity-log list --resource-group rg-azure-image-studio-prod --start
 
 ---
 
-This guide provides comprehensive Azure production deployment instructions for Azure Image Studio. For more information, see the [Azure Setup Guide](azure-setup-guide.mdx) or [Technical Architecture](technical-architecture.mdx).
+This guide provides comprehensive Azure production deployment instructions for Image Studio. For more information, see the [Azure Setup Guide](azure-setup-guide.mdx) or [Technical Architecture](technical-architecture.mdx).

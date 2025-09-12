@@ -2,7 +2,7 @@
 
 **Last Updated**: September 8, 2025
 
-This comprehensive guide covers all aspects of configuring Azure Image Studio, from basic setup to advanced customization options.
+This comprehensive guide covers all aspects of configuring Image Studio, from basic setup to advanced customization options.
 
 ## 📋 Table of Contents
 
@@ -29,8 +29,8 @@ This comprehensive guide covers all aspects of configuring Azure Image Studio, f
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/DrHazemAli/azure-image-studio.git
-   cd azure-image-studio
+   git clone https://github.com/DrHazemAli/image-studio.git
+   cd image-studio
    ```
 
 2. **Install dependencies**
@@ -295,11 +295,11 @@ This file controls application behavior, UI settings, and feature toggles:
 ```json
 {
   "app": {
-    "name": "Azure Image Studio",
+    "name": "Image Studio",
     "version": "1.0.1",
     "description": "AI-powered image generation and editing platform",
     "environment": "development",
-    "github": "https://github.com/DrHazemAli/azure-image-studio"
+    "github": "https://github.com/DrHazemAli/image-studio"
   },
   "features": {
     "floatingImageToolbar": {
@@ -676,8 +676,8 @@ npm run cli -- generate --prompt "test image" --model dalle-3
 
 ### Support
 
-- [GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues) - Bug reports and feature requests
-- [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions) - Community support
+- [GitHub Issues](https://github.com/DrHazemAli/image-studio/issues) - Bug reports and feature requests
+- [GitHub Discussions](https://github.com/DrHazemAli/image-studio/discussions) - Community support
 - [Azure Support](https://azure.microsoft.com/en-us/support/) - Azure service support
 
 ---
@@ -692,6 +692,6 @@ npm run cli -- generate --prompt "test image" --model dalle-3
 
 ---
 
-**Need help?** Check out our [Getting Started Guide](getting-started.md) for quick setup instructions or visit our [GitHub repository](https://github.com/DrHazemAli/azure-image-studio) for the latest updates.
+**Need help?** Check out our [Getting Started Guide](getting-started.md) for quick setup instructions or visit our [GitHub repository](https://github.com/DrHazemAli/image-studio) for the latest updates.
 
-Made with ❤️ by the Azure Image Studio community
+Made with ❤️ by the Image Studio community

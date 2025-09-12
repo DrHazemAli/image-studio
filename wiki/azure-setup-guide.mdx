@@ -1,11 +1,11 @@
-# Azure Image Studio - Complete Azure Setup & Configuration Guide
+# Image Studio - Complete Azure Setup & Configuration Guide
 
 **Version:** 1.0.1  
 **Author:** Hazem Ali, Microsoft AI MVP  
 **GitHub:** [https://github.com/DrHazemAli](https://github.com/DrHazemAli)  
 **LinkedIn:** [https://www.linkedin.com/in/drhazemali/](https://www.linkedin.com/in/drhazemali/)  
 **Website:** [https://www.skytells.ai](https://www.skytells.ai)  
-**Repository:** [https://github.com/DrHazemAli/azure-image-studio](https://github.com/DrHazemAli/azure-image-studio)  
+**Repository:** [https://github.com/DrHazemAli/image-studio](https://github.com/DrHazemAli/image-studio)  
 **Last Updated:** September 10, 2025
 
 ---
@@ -64,7 +64,7 @@ Before deploying to any environment accessible by others:
 
 ### 1.1 Authentication System Overview
 
-Azure Image Studio uses a token-based authentication system with the following components:
+Image Studio uses a token-based authentication system with the following components:
 
 - **Admin Authentication:** Simple username/password authentication
 - **Token Generation:** Secure random tokens with 1-hour expiration
@@ -176,7 +176,7 @@ CSRF_TOKEN_SECRET=your_csrf_secret_here
 
 ### 2.1 Azure Subscription Requirements
 
-Before configuring Azure Image Studio, ensure you have:
+Before configuring Image Studio, ensure you have:
 
 - **Active Azure Subscription** with sufficient credits
 - **Contributor or Owner role** on the subscription
@@ -197,7 +197,7 @@ Before configuring Azure Image Studio, ensure you have:
 4. Configure the resource:
    ```
    Subscription: Your Azure subscription
-   Resource Group: rg-azure-image-studio
+   Resource Group: rg-image-studio
    Region: East US (recommended for latest models)
    Name: aoai-image-studio-prod
    Pricing Tier: Standard S0
@@ -215,8 +215,8 @@ Before configuring Azure Image Studio, ensure you have:
 2. Sign in with your Azure account
 3. Create a new project:
    ```
-   Project Name: azure-image-studio-models
-   Resource Group: rg-azure-image-studio
+   Project Name: image-studio-models
+   Resource Group: rg-image-studio
    Location: East US
    ```
 4. Enable required model families:
@@ -230,13 +230,13 @@ Create a dedicated resource group for better organization:
 
 ```bash
 # Using Azure CLI
-az group create --name rg-azure-image-studio --location eastus
+az group create --name rg-image-studio --location eastus
 ```
 
 **Recommended Resource Structure:**
 
 ```
-rg-azure-image-studio/
+rg-image-studio/
 ├── aoai-image-studio-prod (Azure OpenAI Service)
 ├── ai-foundry-image-studio (AI Foundry Hub)
 ├── kv-image-studio-secrets (Key Vault - optional)
@@ -249,14 +249,14 @@ For production deployments, create a service principal:
 
 ```bash
 # Create service principal
-az ad sp create-for-rbac --name "azure-image-studio-sp" \
+az ad sp create-for-rbac --name "image-studio-sp" \
     --role "Cognitive Services Contributor" \
-    --scopes /subscriptions/{subscription-id}/resourceGroups/rg-azure-image-studio
+    --scopes /subscriptions/{subscription-id}/resourceGroups/rg-image-studio
 
 # Output example:
 {
   "appId": "12345678-1234-1234-1234-123456789012",
-  "displayName": "azure-image-studio-sp",
+  "displayName": "image-studio-sp",
   "password": "your-service-principal-password",
   "tenant": "87654321-4321-4321-4321-210987654321"
 }
@@ -266,11 +266,11 @@ az ad sp create-for-rbac --name "azure-image-studio-sp" \
 
 ## 3. Step-by-Step Azure Configuration
 
-### 3.1 Accessing Settings in Azure Image Studio
+### 3.1 Accessing Settings in Image Studio
 
 #### Step 1: Application Login
 
-1. Start Azure Image Studio application
+1. Start Image Studio application
 2. Navigate to the login screen
 3. Enter credentials:
    - **Username:** `hazem` (default)
@@ -336,7 +336,7 @@ Animations Enabled: true (improves user experience)
 
 #### Step 6: Adding Multiple Endpoints
 
-Azure Image Studio supports multiple Azure endpoints for load balancing and redundancy:
+Image Studio supports multiple Azure endpoints for load balancing and redundancy:
 
 1. Scroll down to the "Endpoint Management" section
 2. Click "Add New Endpoint"
@@ -547,7 +547,7 @@ async function validateAzureConfig(config: AzureConfig) {
 
 ### 5.1 Adding Models via Settings UI
 
-The Azure Image Studio supports multiple AI models for different use cases:
+The Image Studio supports multiple AI models for different use cases:
 
 #### Step 1: Navigate to Models Tab
 
@@ -781,7 +781,7 @@ Different providers have unique configuration requirements:
 
 ### 6.1 Auto-Sync Functionality Setup
 
-Azure Image Studio includes advanced data synchronization capabilities:
+Image Studio includes advanced data synchronization capabilities:
 
 #### Configuration Storage:
 
@@ -896,7 +896,7 @@ Configure how data is stored and managed:
 
 ### 7.1 Multiple Endpoint Support
 
-Azure Image Studio supports sophisticated endpoint management for enterprise environments:
+Image Studio supports sophisticated endpoint management for enterprise environments:
 
 #### Load Balancing Configuration:
 
@@ -1210,7 +1210,7 @@ Error: The API deployment for this resource does not exist
    - Go to Azure OpenAI Studio
    - Navigate to Deployments
    - Create new deployment with exact name used in config
-2. Update deployment name in Azure Image Studio settings
+2. Update deployment name in Image Studio settings
 3. Verify API version is supported
 
 #### Issue: Endpoint Not Reachable
@@ -1725,7 +1725,7 @@ interface ScalingConfig {
 
 ## Conclusion
 
-This comprehensive guide provides all the necessary information to successfully configure and deploy Azure Image Studio with Azure services. The application leverages cutting-edge AI models from Azure OpenAI and Azure AI Foundry to deliver professional-grade image generation capabilities.
+This comprehensive guide provides all the necessary information to successfully configure and deploy Image Studio with Azure services. The application leverages cutting-edge AI models from Azure OpenAI and Azure AI Foundry to deliver professional-grade image generation capabilities.
 
 ### Key Takeaways:
 
@@ -1745,7 +1745,7 @@ This comprehensive guide provides all the necessary information to successfully 
 
 ### Support and Community:
 
-- **GitHub Repository:** [https://github.com/DrHazemAli/azure-image-studio](https://github.com/DrHazemAli/azure-image-studio)
+- **GitHub Repository:** [https://github.com/DrHazemAli/image-studio](https://github.com/DrHazemAli/image-studio)
 - **Author Contact:** [Hazem Ali - Microsoft AI MVP](https://www.linkedin.com/in/drhazemali/)
 - **Website:** [https://www.skytells.ai](https://www.skytells.ai)
 
@@ -1753,8 +1753,8 @@ For additional support, please refer to the [Troubleshooting Guide](troubleshoot
 
 ---
 
-_This guide is part of the Azure Image Studio documentation suite. For more guides and tutorials, visit the [wiki directory](.)._
+_This guide is part of the Image Studio documentation suite. For more guides and tutorials, visit the [wiki directory](.)._
 
 **Document Version:** 1.0.1  
 **Last Updated:** September 10, 2025  
-**Compatibility:** Azure Image Studio v1.0.1+
+**Compatibility:** Image Studio v1.0.1+

@@ -161,7 +161,7 @@ export function getReleaseNotesUrl(
 
   // Fallback to default format
   const cleanVersion = version.replace(/^v/, "");
-  return `https://github.com/DrHazemAli/azure-image-studio/releases/tag/v${cleanVersion}`;
+  return `https://github.com/DrHazemAli/image-studio/releases/tag/v${cleanVersion}`;
 }
 
 /**
@@ -178,7 +178,7 @@ export function getDownloadUrl(
 
   // Fallback to default format
   const cleanVersion = version.replace(/^v/, "");
-  return `https://github.com/DrHazemAli/azure-image-studio/releases/download/v${cleanVersion}/azure-image-studio-v${cleanVersion}.zip`;
+  return `https://github.com/DrHazemAli/image-studio/releases/download/v${cleanVersion}/image-studio-v${cleanVersion}.zip`;
 }
 
 /**

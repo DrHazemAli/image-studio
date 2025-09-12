@@ -91,7 +91,7 @@ function validateConfig(config: AppConfig): {
 function getDefaultConfig(): AppConfig {
   return {
     app: {
-      name: "Azure Image Studio",
+      name: "Image Studio",
       version: "1.0.1",
       description: "AI-powered image generation and editing platform",
       environment: "development",

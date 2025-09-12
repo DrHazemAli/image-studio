@@ -1,6 +1,6 @@
-# Azure Image Studio CLI - User Guide
+# Image Studio CLI - User Guide
 
-This comprehensive guide will help you master the Azure Image Studio CLI for AI-powered image generation and editing.
+This comprehensive guide will help you master the Image Studio CLI for AI-powered image generation and editing.
 
 ## 📋 Table of Contents
 
@@ -22,14 +22,14 @@ Choose your preferred installation method:
 
 ```bash
 # Option 1: Global installation (recommended)
-npm install -g azure-image-studio-cli
+npm install -g image-studio-cli
 
 # Option 2: Use with npx (no installation)
-npx azure-image-studio-cli --help
+npx image-studio-cli --help
 
 # Option 3: Install from source
-git clone https://github.com/DrHazemAli/azure-image-studio.git
-cd azure-image-studio/cli
+git clone https://github.com/DrHazemAli/image-studio.git
+cd image-studio/cli
 npm install && npm run build
 ```
 
@@ -38,13 +38,13 @@ npm install && npm run build
 1. **Initialize Configuration**
 
    ```bash
-   azure-image-studio config init
+   image-studio config init
    ```
 
 2. **Set API Key**
 
    ```bash
-   azure-image-studio config set-api-key
+   image-studio config set-api-key
    ```
 
 3. **Configure Azure Endpoints**
@@ -52,8 +52,8 @@ npm install && npm run build
 
 4. **Validate Setup**
    ```bash
-   azure-image-studio config validate
-   azure-image-studio config test
+   image-studio config validate
+   image-studio config test
    ```
 
 ### Quick Test
@@ -61,7 +61,7 @@ npm install && npm run build
 Generate your first image:
 
 ```bash
-azure-image-studio generate single --prompt "a beautiful sunset over mountains"
+image-studio generate single --prompt "a beautiful sunset over mountains"
 ```
 
 ## ⚙️ Configuration Management
@@ -71,7 +71,7 @@ azure-image-studio generate single --prompt "a beautiful sunset over mountains"
 The CLI uses two main configuration files:
 
 - **`src/app/config/azure-config.json`** - Azure endpoints and models
-- **`.azure-image-studio-cli.json`** - CLI-specific settings
+- **`.image-studio-cli.json`** - CLI-specific settings
 
 ### Azure Configuration Structure
 
@@ -109,30 +109,30 @@ The CLI uses two main configuration files:
 
 ```bash
 # Create default configuration
-azure-image-studio config init
+image-studio config init
 
 # Force overwrite existing config
-azure-image-studio config init --force
+image-studio config init --force
 ```
 
 #### Validate Configuration
 
 ```bash
 # Check configuration validity
-azure-image-studio config validate
+image-studio config validate
 
 # Test with actual API call
-azure-image-studio config test --model dalle-3
+image-studio config test --model dalle-3
 ```
 
 #### Manage API Keys
 
 ```bash
 # Set API key interactively
-azure-image-studio config set-api-key
+image-studio config set-api-key
 
 # Set API key directly
-azure-image-studio config set-api-key --key your-api-key-here
+image-studio config set-api-key --key your-api-key-here
 
 # Use environment variable
 export AZURE_API_KEY=your-api-key-here
@@ -142,10 +142,10 @@ export AZURE_API_KEY=your-api-key-here
 
 ```bash
 # Show full configuration
-azure-image-studio config show
+image-studio config show
 
 # Hide sensitive information
-azure-image-studio config show --hide-sensitive
+image-studio config show --hide-sensitive
 ```
 
 ## 🎨 Image Generation
@@ -156,35 +156,35 @@ azure-image-studio config show --hide-sensitive
 
 ```bash
 # Simple prompt
-azure-image-studio generate single --prompt "a cat sitting on a windowsill"
+image-studio generate single --prompt "a cat sitting on a windowsill"
 
 # With specific model
-azure-image-studio generate single --prompt "a futuristic city" --model dalle-3
+image-studio generate single --prompt "a futuristic city" --model dalle-3
 
 # High quality
-azure-image-studio generate single --prompt "a sunset" --quality hd --size 1024x1024
+image-studio generate single --prompt "a sunset" --quality hd --size 1024x1024
 ```
 
 #### Advanced Options
 
 ```bash
 # Multiple images
-azure-image-studio generate single --prompt "a flower" --count 4
+image-studio generate single --prompt "a flower" --count 4
 
 # Custom output location
-azure-image-studio generate single --prompt "a landscape" --output ./my-images
+image-studio generate single --prompt "a landscape" --output ./my-images
 
 # Specific format
-azure-image-studio generate single --prompt "a portrait" --format jpeg
+image-studio generate single --prompt "a portrait" --format jpeg
 
 # With style
-azure-image-studio generate single --prompt "a painting" --style vivid
+image-studio generate single --prompt "a painting" --style vivid
 
 # Reproducible results
-azure-image-studio generate single --prompt "a building" --seed 12345
+image-studio generate single --prompt "a building" --seed 12345
 
 # Negative prompts
-azure-image-studio generate single --prompt "a clean room" --negative-prompt "messy, cluttered"
+image-studio generate single --prompt "a clean room" --negative-prompt "messy, cluttered"
 ```
 
 ### Batch Generation
@@ -196,30 +196,30 @@ azure-image-studio generate single --prompt "a clean room" --negative-prompt "me
 echo -e "a beautiful sunset\na mountain landscape\na city skyline\na peaceful lake" > prompts.txt
 
 # Generate from file
-azure-image-studio generate batch --file prompts.txt --output ./batch-images
+image-studio generate batch --file prompts.txt --output ./batch-images
 
 # With custom settings
-azure-image-studio generate batch --file prompts.txt --model flux-1-1-pro --quality hd --delay 2000
+image-studio generate batch --file prompts.txt --model flux-1-1-pro --quality hd --delay 2000
 ```
 
 #### Batch Options
 
 ```bash
 # Control concurrency
-azure-image-studio generate batch --file prompts.txt --max-concurrent 2
+image-studio generate batch --file prompts.txt --max-concurrent 2
 
 # Custom delay between requests
-azure-image-studio generate batch --file prompts.txt --delay 3000
+image-studio generate batch --file prompts.txt --delay 3000
 
 # Verbose output
-azure-image-studio generate batch --file prompts.txt --verbose
+image-studio generate batch --file prompts.txt --verbose
 ```
 
 ### Interactive Generation
 
 ```bash
 # Guided interactive mode
-azure-image-studio generate interactive
+image-studio generate interactive
 ```
 
 This will prompt you for:
@@ -236,20 +236,20 @@ This will prompt you for:
 
 ```bash
 # Table format (default)
-azure-image-studio models list
+image-studio models list
 
 # JSON format
-azure-image-studio models list --format json
+image-studio models list --format json
 
 # With detailed information
-azure-image-studio models list --verbose
+image-studio models list --verbose
 ```
 
 ### Model Information
 
 ```bash
 # Get detailed model info
-azure-image-studio models info --model dalle-3
+image-studio models info --model dalle-3
 
 # Information includes:
 # - Model capabilities
@@ -262,20 +262,20 @@ azure-image-studio models info --model dalle-3
 
 ```bash
 # Test specific model
-azure-image-studio models test --model flux-1-1-pro
+image-studio models test --model flux-1-1-pro
 
 # Custom test prompt
-azure-image-studio models test --model dalle-3 --prompt "a test image"
+image-studio models test --model dalle-3 --prompt "a test image"
 
 # Don't save test image
-azure-image-studio models test --model dalle-3 --no-save
+image-studio models test --model dalle-3 --no-save
 ```
 
 ### Check Model Status
 
 ```bash
 # Check all models
-azure-image-studio models status
+image-studio models status
 
 # Shows:
 # - Online/offline status
@@ -289,70 +289,70 @@ azure-image-studio models status
 
 ```bash
 # List all assets
-azure-image-studio assets list
+image-studio assets list
 
 # Filter by type
-azure-image-studio assets list --type generation
+image-studio assets list --type generation
 
 # Sort by date
-azure-image-studio assets list --sort date
+image-studio assets list --sort date
 
 # Limit results
-azure-image-studio assets list --limit 20
+image-studio assets list --limit 20
 
 # JSON output
-azure-image-studio assets list --format json
+image-studio assets list --format json
 ```
 
 ### Export Assets
 
 ```bash
 # Export to different format
-azure-image-studio assets export --format webp
+image-studio assets export --format webp
 
 # Export with quality settings
-azure-image-studio assets export --format jpeg --quality 85
+image-studio assets export --format jpeg --quality 85
 
 # Resize during export
-azure-image-studio assets export --resize 512x512
+image-studio assets export --resize 512x512
 
 # Filter by type
-azure-image-studio assets export --filter generation
+image-studio assets export --filter generation
 
 # Custom output directory
-azure-image-studio assets export --output ./exports
+image-studio assets export --output ./exports
 ```
 
 ### Clean Assets
 
 ```bash
 # Clean files older than 7 days
-azure-image-studio assets clean --older-than 7d
+image-studio assets clean --older-than 7d
 
 # Clean files older than 1 month
-azure-image-studio assets clean --older-than 30d
+image-studio assets clean --older-than 30d
 
 # Dry run (see what would be deleted)
-azure-image-studio assets clean --older-than 7d --dry-run
+image-studio assets clean --older-than 7d --dry-run
 
 # Skip confirmation
-azure-image-studio assets clean --older-than 7d --confirm
+image-studio assets clean --older-than 7d --confirm
 ```
 
 ### Organize Assets
 
 ```bash
 # Organize by date
-azure-image-studio assets organize --by-date
+image-studio assets organize --by-date
 
 # Organize by model
-azure-image-studio assets organize --by-model
+image-studio assets organize --by-model
 
 # Organize by type
-azure-image-studio assets organize --by-type
+image-studio assets organize --by-type
 
 # Preview organization
-azure-image-studio assets organize --by-date --dry-run
+image-studio assets organize --by-date --dry-run
 ```
 
 ## 🛠️ Development Tools
@@ -361,49 +361,49 @@ azure-image-studio assets organize --by-date --dry-run
 
 ```bash
 # Start on default port (3000)
-azure-image-studio dev start
+image-studio dev start
 
 # Custom port
-azure-image-studio dev start --port 8080
+image-studio dev start --port 8080
 
 # Don't open browser
-azure-image-studio dev start --no-open
+image-studio dev start --no-open
 ```
 
 ### Setup Development Environment
 
 ```bash
 # Full setup
-azure-image-studio dev setup
+image-studio dev setup
 
 # Skip dependency installation
-azure-image-studio dev setup --skip-deps
+image-studio dev setup --skip-deps
 
 # Skip configuration setup
-azure-image-studio dev setup --skip-config
+image-studio dev setup --skip-config
 ```
 
 ### Test Endpoints
 
 ```bash
 # Test specific endpoint
-azure-image-studio dev test --endpoint https://your-endpoint.openai.azure.com
+image-studio dev test --endpoint https://your-endpoint.openai.azure.com
 
 # Test with specific API key
-azure-image-studio dev test --endpoint https://your-endpoint.openai.azure.com --key your-key
+image-studio dev test --endpoint https://your-endpoint.openai.azure.com --key your-key
 ```
 
 ### View Logs
 
 ```bash
 # Show recent logs
-azure-image-studio dev logs
+image-studio dev logs
 
 # Show specific number of lines
-azure-image-studio dev logs --lines 100
+image-studio dev logs --lines 100
 
 # Follow logs in real-time
-azure-image-studio dev logs --follow
+image-studio dev logs --follow
 ```
 
 ## 🚀 Advanced Usage
@@ -432,13 +432,13 @@ export VERBOSE=true
 #!/bin/bash
 
 # Generate images for social media
-azure-image-studio generate batch --file social-prompts.txt --output ./social-media
+image-studio generate batch --file social-prompts.txt --output ./social-media
 
 # Export for web
-azure-image-studio assets export --format webp --quality 80 --resize 800x600
+image-studio assets export --format webp --quality 80 --resize 800x600
 
 # Clean old assets
-azure-image-studio assets clean --older-than 30d --confirm
+image-studio assets clean --older-than 30d --confirm
 ```
 
 #### Node.js Script Example
@@ -448,7 +448,7 @@ const { spawn } = require("child_process");
 
 async function generateImages(prompts) {
   return new Promise((resolve, reject) => {
-    const child = spawn("azure-image-studio", [
+    const child = spawn("image-studio", [
       "generate",
       "batch",
       "--file",
@@ -483,14 +483,14 @@ jobs:
           node-version: "18"
 
       - name: Install CLI
-        run: npm install -g azure-image-studio-cli
+        run: npm install -g image-studio-cli
 
       - name: Generate Images
         env:
           AZURE_API_KEY: ${{ secrets.AZURE_API_KEY }}
         run: |
-          azure-image-studio config init
-          azure-image-studio generate batch --file prompts.txt
+          image-studio config init
+          image-studio generate batch --file prompts.txt
 ```
 
 ### Custom Configuration
@@ -542,13 +542,13 @@ jobs:
 
 ```bash
 # Check configuration
-azure-image-studio config show
+image-studio config show
 
 # Validate configuration
-azure-image-studio config validate
+image-studio config validate
 
 # Test configuration
-azure-image-studio config test
+image-studio config test
 ```
 
 #### API Key Issues
@@ -558,36 +558,36 @@ azure-image-studio config test
 echo $AZURE_API_KEY
 
 # Set API key
-azure-image-studio config set-api-key
+image-studio config set-api-key
 
 # Test with specific key
-azure-image-studio dev test --key your-key
+image-studio dev test --key your-key
 ```
 
 #### Model Issues
 
 ```bash
 # List available models
-azure-image-studio models list
+image-studio models list
 
 # Check model status
-azure-image-studio models status
+image-studio models status
 
 # Test specific model
-azure-image-studio models test --model your-model-id
+image-studio models test --model your-model-id
 ```
 
 #### Generation Issues
 
 ```bash
 # Test with simple prompt
-azure-image-studio generate single --prompt "test" --verbose
+image-studio generate single --prompt "test" --verbose
 
 # Check model availability
-azure-image-studio models status
+image-studio models status
 
 # Validate configuration
-azure-image-studio config validate
+image-studio config validate
 ```
 
 ### Debug Mode
@@ -599,7 +599,7 @@ Enable verbose logging:
 export VERBOSE=true
 
 # Or use --verbose flag
-azure-image-studio generate single --prompt "test" --verbose
+image-studio generate single --prompt "test" --verbose
 ```
 
 ### Log Files
@@ -611,7 +611,7 @@ Check log files for detailed error information:
 cat logs/development.log
 
 # CLI logs
-cat ~/.azure-image-studio-cli/logs/cli.log
+cat ~/.image-studio-cli/logs/cli.log
 
 # Follow logs
 tail -f logs/development.log
@@ -635,23 +635,23 @@ Common error codes and solutions:
 
    ```bash
    # Use batch processing for multiple images
-   azure-image-studio generate batch --file prompts.txt --max-concurrent 3
+   image-studio generate batch --file prompts.txt --max-concurrent 3
    ```
 
 2. **Appropriate Sizes**
 
    ```bash
    # Use smaller sizes for testing
-   azure-image-studio generate single --prompt "test" --size 256x256
+   image-studio generate single --prompt "test" --size 256x256
 
    # Use full size for final images
-   azure-image-studio generate single --prompt "final" --size 1024x1024
+   image-studio generate single --prompt "final" --size 1024x1024
    ```
 
 3. **Rate Limiting**
    ```bash
    # Add delays between requests
-   azure-image-studio generate batch --file prompts.txt --delay 2000
+   image-studio generate batch --file prompts.txt --delay 2000
    ```
 
 ### Security Best Practices
@@ -670,7 +670,7 @@ Common error codes and solutions:
 2. **Configuration Security**
    ```bash
    # Hide sensitive information
-   azure-image-studio config show --hide-sensitive
+   image-studio config show --hide-sensitive
    ```
 
 ### Organization Best Practices
@@ -679,23 +679,23 @@ Common error codes and solutions:
 
    ```bash
    # Organize by date
-   azure-image-studio assets organize --by-date
+   image-studio assets organize --by-date
 
    # Organize by project
-   azure-image-studio assets organize --by-model
+   image-studio assets organize --by-model
    ```
 
 2. **Regular Cleanup**
 
    ```bash
    # Clean old assets weekly
-   azure-image-studio assets clean --older-than 7d
+   image-studio assets clean --older-than 7d
    ```
 
 3. **Backup Important Assets**
    ```bash
    # Export important assets
-   azure-image-studio assets export --filter generation --output ./backup
+   image-studio assets export --filter generation --output ./backup
    ```
 
 ### Prompt Engineering
@@ -704,28 +704,28 @@ Common error codes and solutions:
 
    ```bash
    # Good: Specific and descriptive
-   azure-image-studio generate single --prompt "a photorealistic portrait of a golden retriever, sitting pose, golden hour lighting, shallow depth of field"
+   image-studio generate single --prompt "a photorealistic portrait of a golden retriever, sitting pose, golden hour lighting, shallow depth of field"
 
    # Better: Include technical details
-   azure-image-studio generate single --prompt "professional photograph of a golden retriever, 85mm lens, f/2.8, golden hour, bokeh background, high resolution"
+   image-studio generate single --prompt "professional photograph of a golden retriever, 85mm lens, f/2.8, golden hour, bokeh background, high resolution"
    ```
 
 2. **Negative Prompts**
 
    ```bash
    # Use negative prompts to avoid unwanted elements
-   azure-image-studio generate single --prompt "a clean modern kitchen" --negative-prompt "messy, cluttered, dirty"
+   image-studio generate single --prompt "a clean modern kitchen" --negative-prompt "messy, cluttered, dirty"
    ```
 
 3. **Style Consistency**
    ```bash
    # Use consistent style keywords
-   azure-image-studio generate single --prompt "a landscape painting in impressionist style"
+   image-studio generate single --prompt "a landscape painting in impressionist style"
    ```
 
 ---
 
-This guide covers the essential features and workflows of the Azure Image Studio CLI. For more detailed information, see:
+This guide covers the essential features and workflows of the Image Studio CLI. For more detailed information, see:
 
 - [CLI README](../README.md) - Installation and quick start
 - [CLI API Documentation](./CLI-API-Documentation.md) - Technical reference

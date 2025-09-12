@@ -1,6 +1,6 @@
-# Contributing to Azure Image Studio
+# Contributing to Image Studio
 
-Thank you for your interest in contributing to Azure Image Studio! This document provides guidelines and information for contributors.
+Thank you for your interest in contributing to Image Studio! This document provides guidelines and information for contributors.
 
 ## 🤝 How to Contribute
 
@@ -28,8 +28,8 @@ We welcome contributions from developers of all skill levels. There are many way
 
    ```bash
    # Fork the repo on GitHub, then clone your fork
-   git clone https://github.com/YOUR_USERNAME/azure-image-studio.git
-   cd azure-image-studio
+   git clone https://github.com/YOUR_USERNAME/image-studio.git
+   cd image-studio
    ```
 
 2. **Install dependencies**
@@ -302,8 +302,8 @@ Contributors will be recognized in:
 
 ## 📄 License
 
-By contributing to Azure Image Studio, you agree that your contributions will be licensed under the MIT License.
+By contributing to Image Studio, you agree that your contributions will be licensed under the MIT License.
 
 ---
 
-Thank you for contributing to Azure Image Studio! Your efforts help make this project better for everyone. 🎉
+Thank you for contributing to Image Studio! Your efforts help make this project better for everyone. 🎉

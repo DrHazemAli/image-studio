@@ -1,16 +1,16 @@
-# Complete Installation Guide - Azure Image Studio
+# Complete Installation Guide - Image Studio
 
-> **Azure Image Studio** is a cutting-edge image generation and editing platform that harnesses the full power of Azure AI services. This comprehensive guide will walk you through every step of the installation process, from system requirements to advanced configurations.
+> **Image Studio** is a cutting-edge image generation and editing platform that harnesses the full power of Azure AI services. This comprehensive guide will walk you through every step of the installation process, from system requirements to advanced configurations.
 
 <div align="center">
 
-![Azure Image Studio](https://img.shields.io/badge/Azure-Image%20Studio-blue?style=for-the-badge&logo=microsoft-azure)
-![Version](https://img.shields.io/badge/Version-1.0.2-green?style=for-the-badge)
+![Image Studio](https://img.shields.io/badge/Azure-Image%20Studio-blue?style=for-the-badge&logo=microsoft-azure)
+![Version](https://img.shields.io/badge/Version-1.0.3-green?style=for-the-badge)
 ![Community Project](https://img.shields.io/badge/Type-Community%20Project-orange?style=for-the-badge)
 
 **Author**: [Hazem Ali](https://linkedin.com/in/drhazemali), Microsoft AI MVP  
 **GitHub**: [@DrHazemAli](https://github.com/DrHazemAli) | **Facebook**: [@drhazemx](https://facebook.com/drhazemx)  
-**Repository**: [azure-image-studio](https://github.com/DrHazemAli/azure-image-studio)
+**Repository**: [image-studio](https://github.com/DrHazemAli/image-studio)
 
 </div>
 
@@ -259,10 +259,10 @@ npm --version
 
 ```bash
 # Clone the repository
-git clone https://github.com/DrHazemAli/azure-image-studio.git
+git clone https://github.com/DrHazemAli/image-studio.git
 
 # Navigate to project directory
-cd azure-image-studio
+cd image-studio
 
 # Check project structure
 ls -la
@@ -367,8 +367,8 @@ npm run build
 
 ```bash
 # Clone repository (if not already done)
-git clone https://github.com/DrHazemAli/azure-image-studio.git
-cd azure-image-studio
+git clone https://github.com/DrHazemAli/image-studio.git
+cd image-studio
 
 # Install production dependencies only
 npm ci --production
@@ -404,7 +404,7 @@ npm start
 
 # Or use PM2 for production process management
 npm install -g pm2
-pm2 start npm --name "azure-image-studio" -- start
+pm2 start npm --name "image-studio" -- start
 pm2 startup
 pm2 save
 ```
@@ -457,7 +457,7 @@ Create `docker-compose.yml`:
 version: "3.8"
 
 services:
-  azure-image-studio:
+  image-studio:
     build:
       context: .
       dockerfile: Dockerfile
@@ -511,7 +511,7 @@ npm run build
 npm link
 
 # Verify installation
-azure-image-studio --version
+image-studio --version
 # or
 ais --version
 ```
@@ -548,7 +548,7 @@ npm run dev
 **Expected output:**
 
 ```
-> azure-image-studio@1.0.1 dev
+> image-studio@1.0.1 dev
 > next dev --turbopack
 
   ▲ Next.js 15.5.2
@@ -561,7 +561,7 @@ npm run dev
 #### Step 2: Access Web Interface
 
 1. **Open browser** and navigate to `http://localhost:3000`
-2. **Verify loading** - you should see the Azure Image Studio homepage
+2. **Verify loading** - you should see the Image Studio homepage
 3. **Check console** - no errors should appear in browser console
 
 #### Step 3: Configuration Overview
@@ -671,11 +671,11 @@ Navigate to the settings page (`/settings`) to configure:
 ```json
 {
   "app": {
-    "name": "Azure Image Studio",
-    "version": "1.0.2",
+    "name": "Image Studio",
+    "version": "1.0.3",
     "description": "AI-powered image generation and editing platform",
     "author": "Hazem Ali",
-    "repository": "https://github.com/DrHazemAli/azure-image-studio"
+    "repository": "https://github.com/DrHazemAli/image-studio"
   },
   "features": {
     "imageGeneration": true,
@@ -738,7 +738,7 @@ Navigate to the settings page (`/settings`) to configure:
 # Unsplash API Configuration
 UNSPLASH_ACCESS_KEY=your_unsplash_access_key
 UNSPLASH_SECRET_KEY=your_unsplash_secret_key
-UNSPLASH_APP_NAME=azure-image-studio
+UNSPLASH_APP_NAME=image-studio
 ```
 
 **Update app-config.json:**
@@ -1140,14 +1140,14 @@ npm run format
 
 1. **Check logs**: Always check browser console and terminal output
 2. **Review documentation**: See [wiki/](.) for detailed guides
-3. **Search issues**: Check [GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
-4. **Community discussions**: Visit [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
+3. **Search issues**: Check [GitHub Issues](https://github.com/DrHazemAli/image-studio/issues)
+4. **Community discussions**: Visit [GitHub Discussions](https://github.com/DrHazemAli/image-studio/discussions)
 
 #### Community Support
 
 - **GitHub Issues**: Report bugs and feature requests
 - **GitHub Discussions**: General questions and community help
-- **Stack Overflow**: Use tag `azure-image-studio`
+- **Stack Overflow**: Use tag `image-studio`
 
 #### Professional Support
 
@@ -1201,10 +1201,10 @@ npm run format
 
 ### Community Resources
 
-- **📚 Wiki**: [Project Wiki](https://github.com/DrHazemAli/azure-image-studio/wiki)
-- **💬 Discussions**: [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
-- **🐛 Issues**: [Report Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
-- **🔄 Pull Requests**: [Contribute Code](https://github.com/DrHazemAli/azure-image-studio/pulls)
+- **📚 Wiki**: [Project Wiki](https://github.com/DrHazemAli/image-studio/wiki)
+- **💬 Discussions**: [GitHub Discussions](https://github.com/DrHazemAli/image-studio/discussions)
+- **🐛 Issues**: [Report Issues](https://github.com/DrHazemAli/image-studio/issues)
+- **🔄 Pull Requests**: [Contribute Code](https://github.com/DrHazemAli/image-studio/pulls)
 
 ### Stay Updated
 
@@ -1217,7 +1217,7 @@ npm run format
 
 <div align="center">
 
-**🎉 Congratulations! You've successfully installed Azure Image Studio!**
+**🎉 Congratulations! You've successfully installed Image Studio!**
 
 _Now you're ready to create amazing AI-generated images with the power of Azure AI services._
 
@@ -1232,6 +1232,6 @@ _Now you're ready to create amazing AI-generated images with the power of Azure 
 ---
 
 **Last Updated**: September 10, 2025  
-**Version**: 1.0.2  
+**Version**: 1.0.3  
 **License**: MIT  
-**Repository**: [azure-image-studio](https://github.com/DrHazemAli/azure-image-studio)
+**Repository**: [image-studio](https://github.com/DrHazemAli/image-studio)

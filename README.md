@@ -1,30 +1,30 @@
-# Azure Image Studio
+# Image Studio
 
-Azure Image Studio is a cutting-edge image generation and editing platform that harnesses the full power of Azure AI services. Built and maintained by Microsoft MVPs, this professional-grade solution delivers state-of-the-art AI capabilities through an intuitive, modern interface. Whether you're creating stunning visuals, editing professional content, or building automated image workflows, Azure Image Studio provides the tools and performance you need to transform your creative vision into reality.
+Image Studio is a cutting-edge image generation and editing platform that harnesses the full power of Azure AI services. Built and maintained by Microsoft MVPs, this professional-grade solution delivers state-of-the-art AI capabilities through an intuitive, modern interface. Whether you're creating stunning visuals, editing professional content, or building automated image workflows, Image Studio provides the tools and performance you need to transform your creative vision into reality.
 
-![Azure Image Studio](https://github.com/DrHazemAli/azure-image-studio/blob/main/public/image-studio.jpg)
+![Image Studio](https://github.com/DrHazemAli/image-studio/blob/main/public/image-studio.jpg)
 
 <div align="center">
 
-![Azure Image Studio](https://img.shields.io/badge/Azure-Image%20Studio-blue?style=for-the-badge&logo=microsoft-azure)
+![Image Studio](https://img.shields.io/badge/Azure-Image%20Studio-blue?style=for-the-badge&logo=microsoft-azure)
 ![Next.js](https://img.shields.io/badge/Next.js-15.5.2-black?style=for-the-badge&logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)
 ![React](https://img.shields.io/badge/React-19.1.0-blue?style=for-the-badge&logo=react)
 
-[![Version](https://img.shields.io/badge/Version-1.0.2-green?style=for-the-badge)](https://github.com/DrHazemAli/azure-image-studio)
-[![Community Project](https://img.shields.io/badge/Type-Community%20Project-orange?style=for-the-badge)](https://github.com/DrHazemAli/azure-image-studio)
+[![Version](https://img.shields.io/badge/Version-1.0.3-green?style=for-the-badge)](https://github.com/DrHazemAli/image-studio)
+[![Community Project](https://img.shields.io/badge/Type-Community%20Project-orange?style=for-the-badge)](https://github.com/DrHazemAli/image-studio)
 [![Microsoft MVP](https://img.shields.io/badge/Author-Microsoft%20MVP-purple?style=for-the-badge)](https://github.com/DrHazemAli)
 [![Code Coverage](https://img.shields.io/badge/Code%20Coverage-85%25-brightgreen?style=for-the-badge)](CODE_COVERAGE.md)
-[![Last Updated](https://img.shields.io/badge/Last%20Updated-September%2010%2C%202025-blue?style=for-the-badge)](https://github.com/DrHazemAli/azure-image-studio)
+[![Last Updated](https://img.shields.io/badge/Last%20Updated-September%2010%2C%202025-blue?style=for-the-badge)](https://github.com/DrHazemAli/image-studio)
 
 </div>
 
 <div align="center">
 
-[![GitHub stars](https://img.shields.io/github/stars/DrHazemAli/azure-image-studio?style=social)](https://github.com/DrHazemAli/azure-image-studio/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/DrHazemAli/azure-image-studio?style=social)](https://github.com/DrHazemAli/azure-image-studio/network/members)
-[![GitHub issues](https://img.shields.io/github/issues/DrHazemAli/azure-image-studio)](https://github.com/DrHazemAli/azure-image-studio/issues)
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/DrHazemAli/azure-image-studio)](https://github.com/DrHazemAli/azure-image-studio/pulls)
+[![GitHub stars](https://img.shields.io/github/stars/DrHazemAli/image-studio?style=social)](https://github.com/DrHazemAli/image-studio/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/DrHazemAli/image-studio?style=social)](https://github.com/DrHazemAli/image-studio/network/members)
+[![GitHub issues](https://img.shields.io/github/issues/DrHazemAli/image-studio)](https://github.com/DrHazemAli/image-studio/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/DrHazemAli/image-studio)](https://github.com/DrHazemAli/image-studio/pulls)
 
 </div>
 
@@ -50,11 +50,11 @@ Azure Image Studio is a cutting-edge image generation and editing platform that 
 
 ## 🚀 Overview
 
-Azure Image Studio is a community-developed, production-ready platform that integrates with Azure AI services to provide professional-grade image generation and editing capabilities. This independent project is built with modern web technologies and offers both a simple generation interface and a full-featured studio environment for advanced image manipulation.
+Image Studio is a community-developed, production-ready platform that integrates with Azure AI services to provide professional-grade image generation and editing capabilities. This independent project is built with modern web technologies and offers both a simple generation interface and a full-featured studio environment for advanced image manipulation.
 
 **Note**: This is not an official Microsoft or Azure product, but rather a community project that utilizes Azure's AI services.
 
-**✅ Production Status**: Azure Image Studio is currently **production-ready** (v1.0.2) with comprehensive features implemented and documented. The platform is stable and ready for professional use. Please see our [Development Roadmap](docs/legacy/roadmap.md) for current status and planned features.
+**✅ Production Status**: Image Studio is currently **production-ready** (v1.0.3) with comprehensive features implemented and documented. The platform is stable and ready for professional use. Please see our [Development Roadmap](docs/legacy/roadmap.md) for current status and planned features.
 
 ## ✨ Features
 
@@ -144,8 +144,8 @@ Azure Image Studio is a community-developed, production-ready platform that inte
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/DrHazemAli/azure-image-studio.git
-   cd azure-image-studio
+   git clone https://github.com/DrHazemAli/image-studio.git
+   cd image-studio
    ```
 
 2. **Install dependencies**
@@ -244,7 +244,7 @@ AZURE_API_BASE_URL=your_azure_api_base_url_here
 
 ### Professional Studio
 
-1. Click "Launch Azure Image Studio"
+1. Click "Launch Image Studio"
 2. Use the toolbar to select tools
 3. Generate or import images
 4. Edit using the advanced canvas
@@ -255,7 +255,7 @@ AZURE_API_BASE_URL=your_azure_api_base_url_here
 ## 📁 Project Structure
 
 ```
-azure-image-studio/
+image-studio/
 ├── src/                    # Next.js Application
 │   ├── app/               # Next.js App Router
 │   │   ├── api/           # API routes
@@ -381,16 +381,16 @@ This is a **community-driven project**! We welcome contributions from developers
 
 ### Thank you to all our amazing contributors! 🎉
 
-[![Contributors](https://contrib.rocks/image?repo=DrHazemAli/azure-image-studio)](https://github.com/DrHazemAli/azure-image-studio/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=DrHazemAli/image-studio)](https://github.com/DrHazemAli/image-studio/graphs/contributors)
 
 </div>
 
 ## 📞 Support
 
-- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
-- 💡 **Feature Requests**: [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
+- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/DrHazemAli/image-studio/issues)
+- 💡 **Feature Requests**: [GitHub Discussions](https://github.com/DrHazemAli/image-studio/discussions)
 - 📧 **Contact**: [GitHub Profile](https://github.com/DrHazemAli)
-- 📖 **Documentation**: [Wiki](https://github.com/DrHazemAli/azure-image-studio/wiki)
+- 📖 **Documentation**: [Wiki](https://github.com/DrHazemAli/image-studio/wiki)
 
 ## 📄 License
 
@@ -418,7 +418,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **⭐ If you find this project helpful, please give it a star! It helps us grow and improve.**
 
-[![Star this repo](https://img.shields.io/github/stars/DrHazemAli/azure-image-studio?style=for-the-badge&label=Star%20this%20repo)](https://github.com/DrHazemAli/azure-image-studio)
+[![Star this repo](https://img.shields.io/github/stars/DrHazemAli/image-studio?style=for-the-badge&label=Star%20this%20repo)](https://github.com/DrHazemAli/image-studio)
 
 Made with ❤️ by [Hazem Ali](https://github.com/DrHazemAli) and the community
 

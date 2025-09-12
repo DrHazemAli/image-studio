@@ -1,7 +1,7 @@
 # User Guide
 
 **Last Updated**: September 8, 2025  
-**Version**: 1.0.2
+**Version**: 1.0.3
 
 Welcome to the Azure GenAI Image Studio User Guide! This comprehensive guide will help you master all the features and capabilities of our AI-powered image generation and editing platform.
 

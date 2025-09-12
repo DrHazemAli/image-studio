@@ -19,10 +19,10 @@ export function createGenerateCommand(): Command {
       "after",
       `
 Examples:
-  $ azure-image-studio generate --prompt "a beautiful sunset"
-  $ azure-image-studio generate --prompt "a cat" --model dalle-3 --size 1024x1024
-  $ azure-image-studio generate --file prompts.txt --batch
-  $ azure-image-studio generate --prompt "..." --quality hd --count 4
+  $ image-studio generate --prompt "a beautiful sunset"
+  $ image-studio generate --prompt "a cat" --model dalle-3 --size 1024x1024
+  $ image-studio generate --file prompts.txt --batch
+  $ image-studio generate --prompt "..." --quality hd --count 4
     `,
     );
 
@@ -131,7 +131,7 @@ async function generateSingleImage(options: any) {
 
   if (!config || !apiKey) {
     throw new Error(
-      'Configuration or API key not found. Run "azure-image-studio config init" first.',
+      'Configuration or API key not found. Run "image-studio config init" first.',
     );
   }
 
@@ -210,7 +210,7 @@ async function generateBatchImages(options: BatchGenerationOptions) {
 
   if (!config || !apiKey) {
     throw new Error(
-      'Configuration or API key not found. Run "azure-image-studio config init" first.',
+      'Configuration or API key not found. Run "image-studio config init" first.',
     );
   }
 
@@ -316,7 +316,7 @@ async function interactiveGeneration() {
 
   if (!config || !apiKey) {
     throw new Error(
-      'Configuration or API key not found. Run "azure-image-studio config init" first.',
+      'Configuration or API key not found. Run "image-studio config init" first.',
     );
   }
 

@@ -9,7 +9,7 @@ export class ConfigManager {
   constructor(projectRoot?: string) {
     const root = projectRoot || process.cwd();
     this.configPath = path.join(root, "src/app/config/azure-config.json");
-    this.cliConfigPath = path.join(root, ".azure-image-studio-cli.json");
+    this.cliConfigPath = path.join(root, ".image-studio-cli.json");
   }
 
   async loadAzureConfig(): Promise<AzureConfig | null> {
@@ -98,7 +98,7 @@ export class ConfigManager {
     // Check if config file exists
     if (!(await fs.pathExists(this.configPath))) {
       errors.push(
-        'Azure config file not found. Run "azure-image-studio config init" to create one.',
+        'Azure config file not found. Run "image-studio config init" to create one.',
       );
       return { isValid: false, errors };
     }
@@ -107,7 +107,7 @@ export class ConfigManager {
     const apiKey = await this.getApiKey();
     if (!apiKey) {
       errors.push(
-        'Azure API key not found. Set AZURE_API_KEY environment variable or run "azure-image-studio config set-api-key"',
+        'Azure API key not found. Set AZURE_API_KEY environment variable or run "image-studio config set-api-key"',
       );
     }
 

@@ -103,6 +103,6 @@ export const PROJECT_CONSTANTS = {
   // Metadata defaults
   METADATA: {
     TAGS: [],
-    AUTHOR: "Azure Image Studio",
+    AUTHOR: "Image Studio",
   },
 };

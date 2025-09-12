@@ -250,7 +250,7 @@ export class AppConfigService {
   private static getDefaultConfig(): AppConfig {
     return {
       app: {
-        name: "Azure Image Studio",
+        name: "Image Studio",
         version: "1.0.2",
         description: "AI-powered image generation and editing platform",
         environment: "development",

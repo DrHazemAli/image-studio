@@ -16,7 +16,7 @@ const program = new Command();
 
 // ASCII Art Banner
 function showBanner() {
-  const banner = figlet.textSync("Azure Image Studio", {
+  const banner = figlet.textSync("Image Studio", {
     font: "ANSI Shadow",
     horizontalLayout: "default",
     verticalLayout: "default",
@@ -38,9 +38,9 @@ function showBanner() {
 
 // Main program setup
 program
-  .name("azure-image-studio")
+  .name("image-studio")
   .description(
-    "Command-line interface for Azure Image Studio - AI-powered image generation and editing",
+    "Command-line interface for Image Studio - AI-powered image generation and editing",
   )
   .version("1.0.0")
   .addHelpText("before", () => {
@@ -51,18 +51,18 @@ program
     "after",
     `
 Examples:
-  $ azure-image-studio config init
-  $ azure-image-studio generate --prompt "a beautiful sunset"
-  $ azure-image-studio models list
-  $ azure-image-studio assets list
-  $ azure-image-studio project create --name "My Project"
-  $ azure-image-studio dev start
+  $ image-studio config init
+  $ image-studio generate --prompt "a beautiful sunset"
+  $ image-studio models list
+  $ image-studio assets list
+  $ image-studio project create --name "My Project"
+  $ image-studio dev start
 
 Documentation:
-  https://github.com/DrHazemAli/azure-image-studio
+  https://github.com/DrHazemAli/image-studio
 
 Support:
-  https://github.com/DrHazemAli/azure-image-studio/issues
+  https://github.com/DrHazemAli/image-studio/issues
   `,
   );
 

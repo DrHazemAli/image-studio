@@ -1,12 +1,12 @@
 # Troubleshooting Guide
 
-_Comprehensive troubleshooting guide for Azure Image Studio_
+_Comprehensive troubleshooting guide for Image Studio_
 
 ---
 
 **Author:** Hazem Ali, Microsoft AI MVP  
-**Repository:** [Azure Image Studio](https://github.com/DrHazemAli/azure-image-studio)  
-**Documentation:** [Wiki](https://github.com/DrHazemAli/azure-image-studio/wiki)
+**Repository:** [Image Studio](https://github.com/DrHazemAli/image-studio)  
+**Documentation:** [Wiki](https://github.com/DrHazemAli/image-studio/wiki)
 
 [![GitHub](https://img.shields.io/badge/GitHub-DrHazemAli-blue)](https://github.com/DrHazemAli)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-drhazemali-blue)](https://linkedin.com/in/drhazemali)
@@ -16,7 +16,7 @@ _Comprehensive troubleshooting guide for Azure Image Studio_
 
 ## 🎯 Overview
 
-This guide helps you diagnose and resolve common issues with Azure Image Studio. Whether you're experiencing problems with image generation, configuration, or performance, this guide provides step-by-step solutions.
+This guide helps you diagnose and resolve common issues with Image Studio. Whether you're experiencing problems with image generation, configuration, or performance, this guide provides step-by-step solutions.
 
 **Note**: This is not an official Microsoft or Azure product, but rather a community project maintained by Microsoft MVPs that utilizes Azure's AI services.
 
@@ -28,25 +28,25 @@ Run this command to check your system status:
 
 ```bash
 # Check application status
-azure-image-studio config validate
+image-studio config validate
 
 # Check system requirements
-azure-image-studio dev check-system
+image-studio dev check-system
 
 # View current configuration
-azure-image-studio config show
+image-studio config show
 ```
 
 ### Health Check
 
 ```bash
 # Comprehensive health check
-azure-image-studio dev health-check
+image-studio dev health-check
 
 # Check specific components
-azure-image-studio dev health-check --component azure
-azure-image-studio dev health-check --component assets
-azure-image-studio dev health-check --component projects
+image-studio dev health-check --component azure
+image-studio dev health-check --component assets
+image-studio dev health-check --component projects
 ```
 
 ## 🚨 Common Issues
@@ -66,7 +66,7 @@ azure-image-studio dev health-check --component projects
 1. **Check Configuration:**
 
    ```bash
-   azure-image-studio config show
+   image-studio config show
    ```
 
 2. **Reconfigure Azure:**
@@ -78,13 +78,13 @@ azure-image-studio dev health-check --component projects
 3. **Verify API Key:**
 
    ```bash
-   azure-image-studio config validate --test-connection
+   image-studio config validate --test-connection
    ```
 
 4. **Reset Configuration:**
    ```bash
-   azure-image-studio config reset
-   azure-image-studio config init
+   image-studio config reset
+   image-studio config init
    ```
 
 #### Problem: Generation Timeout
@@ -156,7 +156,7 @@ azure-image-studio dev health-check --component projects
 1. **Check Model Configuration:**
 
    ```bash
-   azure-image-studio models list
+   image-studio models list
    ```
 
 2. **Update Model Configuration:**
@@ -185,22 +185,22 @@ azure-image-studio dev health-check --component projects
 
    ```bash
    # Check write permissions
-   ls -la ~/.azure-image-studio/
+   ls -la ~/.image-studio/
 
    # Fix permissions if needed
-   chmod 755 ~/.azure-image-studio/
+   chmod 755 ~/.image-studio/
    ```
 
 2. **Clear Configuration Cache:**
 
    ```bash
-   azure-image-studio config clear-cache
+   image-studio config clear-cache
    ```
 
 3. **Reset Settings:**
 
    ```bash
-   azure-image-studio config reset --backup
+   image-studio config reset --backup
    ```
 
 4. **Check Storage Space:**
@@ -231,7 +231,7 @@ azure-image-studio dev health-check --component projects
 3. **Test Connection:**
 
    ```bash
-   azure-image-studio config validate --test-connection
+   image-studio config validate --test-connection
    ```
 
 4. **Check Permissions:**
@@ -321,7 +321,7 @@ azure-image-studio dev health-check --component projects
 2. **Test API Connection:**
 
    ```bash
-   azure-image-studio assets test-connection
+   image-studio assets test-connection
    ```
 
 3. **Check Network:**
@@ -389,17 +389,17 @@ azure-image-studio dev health-check --component projects
 3. **Project Validation:**
 
    ```bash
-   azure-image-studio project validate --name "Project Name"
+   image-studio project validate --name "Project Name"
    ```
 
 4. **Backup and Restore:**
 
    ```bash
    # Export project
-   azure-image-studio project export --name "Project Name" --backup
+   image-studio project export --name "Project Name" --backup
 
    # Clear project cache
-   azure-image-studio project clear-cache
+   image-studio project clear-cache
    ```
 
 #### Problem: Project Won't Load
@@ -420,13 +420,13 @@ azure-image-studio dev health-check --component projects
 2. **Project Repair:**
 
    ```bash
-   azure-image-studio project repair --name "Project Name"
+   image-studio project repair --name "Project Name"
    ```
 
 3. **Restore from Backup:**
 
    ```bash
-   azure-image-studio project restore --backup ./backup/project.zip
+   image-studio project restore --backup ./backup/project.zip
    ```
 
 4. **Create New Project:**
@@ -442,30 +442,30 @@ azure-image-studio dev health-check --component projects
 
 ```bash
 # Set debug environment variable
-export DEBUG=azure-image-studio:*
+export DEBUG=image-studio:*
 
 # Run with debug output
-azure-image-studio generate single --prompt "test" --debug
+image-studio generate single --prompt "test" --debug
 ```
 
 #### Debug Configuration
 
 ```bash
 # Check configuration details
-azure-image-studio config show --debug
+image-studio config show --debug
 
 # Validate with verbose output
-azure-image-studio config validate --verbose
+image-studio config validate --verbose
 ```
 
 #### Debug Generation
 
 ```bash
 # Generate with debug info
-azure-image-studio generate single --prompt "test" --verbose --debug
+image-studio generate single --prompt "test" --verbose --debug
 
 # Check generation logs
-azure-image-studio dev logs --tail 100
+image-studio dev logs --tail 100
 ```
 
 ### System Diagnostics
@@ -480,7 +480,7 @@ node --version
 npm --version
 
 # Check system resources
-azure-image-studio dev check-system
+image-studio dev check-system
 ```
 
 #### Network Diagnostics
@@ -493,7 +493,7 @@ curl -I https://your-azure-endpoint.openai.azure.com/
 nslookup your-azure-endpoint.openai.azure.com
 
 # Test API endpoint
-azure-image-studio config validate --test-connection
+image-studio config validate --test-connection
 ```
 
 #### File System Check
@@ -503,10 +503,10 @@ azure-image-studio config validate --test-connection
 df -h
 
 # Check file permissions
-ls -la ~/.azure-image-studio/
+ls -la ~/.image-studio/
 
 # Check for corrupted files
-azure-image-studio dev check-files
+image-studio dev check-files
 ```
 
 ### Log Analysis
@@ -515,34 +515,34 @@ azure-image-studio dev check-files
 
 ```bash
 # View recent logs
-azure-image-studio dev logs
+image-studio dev logs
 
 # View specific log types
-azure-image-studio dev logs --type error
-azure-image-studio dev logs --type generation
+image-studio dev logs --type error
+image-studio dev logs --type generation
 
 # Follow logs in real-time
-azure-image-studio dev logs --follow
+image-studio dev logs --follow
 ```
 
 #### Log Locations
 
-- **Application Logs**: `~/.azure-image-studio/logs/`
-- **Error Logs**: `~/.azure-image-studio/logs/error.log`
-- **Generation Logs**: `~/.azure-image-studio/logs/generation.log`
-- **System Logs**: `~/.azure-image-studio/logs/system.log`
+- **Application Logs**: `~/.image-studio/logs/`
+- **Error Logs**: `~/.image-studio/logs/error.log`
+- **Generation Logs**: `~/.image-studio/logs/generation.log`
+- **System Logs**: `~/.image-studio/logs/system.log`
 
 #### Common Log Patterns
 
 ```bash
 # Search for errors
-grep -i "error" ~/.azure-image-studio/logs/*.log
+grep -i "error" ~/.image-studio/logs/*.log
 
 # Search for generation issues
-grep -i "generation" ~/.azure-image-studio/logs/*.log
+grep -i "generation" ~/.image-studio/logs/*.log
 
 # Search for API errors
-grep -i "api" ~/.azure-image-studio/logs/*.log
+grep -i "api" ~/.image-studio/logs/*.log
 ```
 
 ## 🛠️ Recovery Procedures
@@ -551,45 +551,45 @@ grep -i "api" ~/.azure-image-studio/logs/*.log
 
 ```bash
 # Backup current configuration
-azure-image-studio config export --backup
+image-studio config export --backup
 
 # Reset all settings
-azure-image-studio config reset --all
+image-studio config reset --all
 
 # Reinitialize configuration
-azure-image-studio config init
+image-studio config init
 
 # Restore from backup if needed
-azure-image-studio config import --backup ./backup/config.json
+image-studio config import --backup ./backup/config.json
 ```
 
 ### Project Recovery
 
 ```bash
 # List all projects
-azure-image-studio project list
+image-studio project list
 
 # Export all projects
-azure-image-studio project export-all --output ./backup
+image-studio project export-all --output ./backup
 
 # Repair specific project
-azure-image-studio project repair --name "Project Name"
+image-studio project repair --name "Project Name"
 
 # Restore from backup
-azure-image-studio project import --file ./backup/project.zip
+image-studio project import --file ./backup/project.zip
 ```
 
 ### Data Recovery
 
 ```bash
 # Check for corrupted data
-azure-image-studio dev check-data
+image-studio dev check-data
 
 # Repair corrupted files
-azure-image-studio dev repair-data
+image-studio dev repair-data
 
 # Restore from backup
-azure-image-studio dev restore-data --backup ./backup
+image-studio dev restore-data --backup ./backup
 ```
 
 ## 📞 Getting Help
@@ -613,9 +613,9 @@ When reporting issues, include:
 
 ### Contact Information
 
-- **GitHub Issues**: [Report Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
-- **Documentation**: [Wiki](https://github.com/DrHazemAli/azure-image-studio/wiki)
+- **GitHub Issues**: [Report Issues](https://github.com/DrHazemAli/image-studio/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/DrHazemAli/image-studio/discussions)
+- **Documentation**: [Wiki](https://github.com/DrHazemAli/image-studio/wiki)
 
 ## 📚 Related Documentation
 
@@ -630,4 +630,4 @@ When reporting issues, include:
 **Author**: Hazem Ali - Microsoft AI MVP  
 **Last Updated**: September 2025
 
-_For additional support, visit our [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions) or [report issues](https://github.com/DrHazemAli/azure-image-studio/issues)._
+_For additional support, visit our [GitHub Discussions](https://github.com/DrHazemAli/image-studio/discussions) or [report issues](https://github.com/DrHazemAli/image-studio/issues)._

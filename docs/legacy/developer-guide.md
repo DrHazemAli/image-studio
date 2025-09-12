@@ -1,6 +1,6 @@
-# Developer Guide - Azure Image Studio
+# Developer Guide - Image Studio
 
-This comprehensive guide provides everything developers need to understand, contribute to, and extend Azure Image Studio.
+This comprehensive guide provides everything developers need to understand, contribute to, and extend Image Studio.
 
 > ⚠️ **Important**: This is a **community project** and is not affiliated with or endorsed by Microsoft or Azure. It's an independent project that uses Azure AI services.
 
@@ -19,8 +19,8 @@ This comprehensive guide provides everything developers need to understand, cont
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/DrHazemAli/azure-image-studio.git
-   cd azure-image-studio
+   git clone https://github.com/DrHazemAli/image-studio.git
+   cd image-studio
    ```
 
 2. **Install dependencies**
@@ -798,9 +798,9 @@ changes
 
 ### Community
 
-- [GitHub Repository](https://github.com/DrHazemAli/azure-image-studio)
-- [GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
-- [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
+- [GitHub Repository](https://github.com/DrHazemAli/image-studio)
+- [GitHub Issues](https://github.com/DrHazemAli/image-studio/issues)
+- [GitHub Discussions](https://github.com/DrHazemAli/image-studio/discussions)
 
 ---
 
@@ -814,6 +814,6 @@ changes
 
 ---
 
-This guide provides comprehensive information for developers working with Azure Image Studio. For more specific information, refer to the individual guides for each component.
+This guide provides comprehensive information for developers working with Image Studio. For more specific information, refer to the individual guides for each component.
 
 Happy coding! 🚀

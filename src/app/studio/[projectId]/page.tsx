@@ -652,16 +652,16 @@ export default function ProjectStudioPage() {
   }, []);
 
   const handleShowDocumentation = useCallback(() => {
-    window.open("https://github.com/DrHazemAli/azure-image-studio", "_blank");
+    window.open("https://github.com/DrHazemAli/image-studio", "_blank");
   }, []);
 
   const handleShowGitHub = useCallback(() => {
-    window.open("https://github.com/DrHazemAli/azure-image-studio", "_blank");
+    window.open("https://github.com/DrHazemAli/image-studio", "_blank");
   }, []);
 
   const handleShowSupport = useCallback(() => {
     window.open(
-      "https://github.com/DrHazemAli/azure-image-studio/issues",
+      "https://github.com/DrHazemAli/image-studio/issues",
       "_blank",
     );
   }, []);
@@ -1345,7 +1345,7 @@ export default function ProjectStudioPage() {
             <GearIcon className="w-4 h-4 text-gray-600 dark:text-gray-400" />
           </button>
           <a
-            href="https://github.com/DrHazemAli/azure-image-studio"
+            href="https://github.com/DrHazemAli/image-studio"
             target="_blank"
             rel="noopener noreferrer"
           >

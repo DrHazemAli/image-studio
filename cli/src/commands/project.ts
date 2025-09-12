@@ -13,15 +13,15 @@ export function createProjectCommand(): Command {
   const assetsDir = path.join(process.cwd(), "assets");
   const projectsDir = path.join(process.cwd(), "projects");
 
-  projectCommand.description("Manage Azure Image Studio projects").addHelpText(
+  projectCommand.description("Manage Image Studio projects").addHelpText(
     "after",
     `
 Examples:
-  $ azure-image-studio project create --name "My Project"
-  $ azure-image-studio project export --name "My Project" --output ./exports
-  $ azure-image-studio project import --file project.zip
-  $ azure-image-studio project list
-  $ azure-image-studio project delete --name "My Project"
+  $ image-studio project create --name "My Project"
+  $ image-studio project export --name "My Project" --output ./exports
+  $ image-studio project import --file project.zip
+  $ image-studio project list
+  $ image-studio project delete --name "My Project"
     `,
   );
 
@@ -157,7 +157,7 @@ Examples:
         if (projectDirs.length === 0) {
           console.log(
             chalk.yellow(
-              "No projects found. Create a project with: azure-image-studio project create",
+              "No projects found. Create a project with: image-studio project create",
             ),
           );
           return;
@@ -218,7 +218,7 @@ Examples:
           table(tableData, {
             header: {
               alignment: "center",
-              content: "Azure Image Studio Projects",
+              content: "Image Studio Projects",
             },
           }),
         );

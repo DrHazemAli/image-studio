@@ -1,10 +1,10 @@
 {
-  "name": "azure-image-studio-cli",
+  "name": "image-studio-cli",
   "version": "1.0.0",
-  "description": "Command-line interface for Azure Image Studio - AI-powered image generation and editing",
+  "description": "Command-line interface for Image Studio - AI-powered image generation and editing",
   "main": "dist/index.js",
   "bin": {
-    "azure-image-studio": "dist/index.js",
+    "image-studio": "dist/index.js",
     "ais": "dist/index.js"
   },
   "scripts": {
@@ -72,11 +72,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/DrHazemAli/azure-image-studio.git",
+    "url": "https://github.com/DrHazemAli/image-studio.git",
     "directory": "cli"
   },
   "bugs": {
-    "url": "https://github.com/DrHazemAli/azure-image-studio/issues"
+    "url": "https://github.com/DrHazemAli/image-studio/issues"
   },
-  "homepage": "https://github.com/DrHazemAli/azure-image-studio#readme"
+  "homepage": "https://github.com/DrHazemAli/image-studio#readme"
 }

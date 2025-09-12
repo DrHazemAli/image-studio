@@ -14,10 +14,10 @@ export function createAssetsCommand(): Command {
     "after",
     `
 Examples:
-  $ azure-image-studio assets list
-  $ azure-image-studio assets export --format png
-  $ azure-image-studio assets clean --older-than 7d
-  $ azure-image-studio assets organize --by-date
+  $ image-studio assets list
+  $ image-studio assets export --format png
+  $ image-studio assets clean --older-than 7d
+  $ image-studio assets organize --by-date
     `,
   );
 

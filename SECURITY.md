@@ -1,11 +1,11 @@
 # Security Policy
 
 **Last Updated**: September 8, 2025  
-**Version**: 1.0.2
+**Version**: 1.0.3
 
 ## 🔒 Supported Versions
 
-We provide security updates for the following versions of Azure Image Studio:
+We provide security updates for the following versions of Image Studio:
 
 | Version | Supported          |
 | ------- | ------------------ |
@@ -15,7 +15,7 @@ We provide security updates for the following versions of Azure Image Studio:
 
 ## 🚨 Reporting a Vulnerability
 
-We take security vulnerabilities seriously. If you discover a security vulnerability in Azure Image Studio, please report it responsibly.
+We take security vulnerabilities seriously. If you discover a security vulnerability in Image Studio, please report it responsibly.
 
 ### How to Report
 
@@ -203,4 +203,4 @@ For security-related questions or concerns:
 
 ## 🙏 Acknowledgments
 
-We appreciate the security research community and responsible disclosure practices. Thank you for helping keep Azure Image Studio secure for all users.
+We appreciate the security research community and responsible disclosure practices. Thank you for helping keep Image Studio secure for all users.

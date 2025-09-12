@@ -14,30 +14,30 @@ export function createDevCommand(): Command {
     "after",
     `
 Examples:
-  $ azure-image-studio dev start
-  $ azure-image-studio dev test --endpoint <url>
-  $ azure-image-studio dev logs --follow
-  $ azure-image-studio dev setup
+  $ image-studio dev start
+  $ image-studio dev test --endpoint <url>
+  $ image-studio dev logs --follow
+  $ image-studio dev setup
     `,
   );
 
   // Start development server
   devCommand
     .command("start")
-    .description("Start the Azure Image Studio development server")
+    .description("Start the Image Studio development server")
     .option("-p, --port <port>", "Port to run on", "3000")
     .option("--no-open", "Don't open browser automatically")
     .action(async (options) => {
       try {
         console.log(
-          chalk.blue("🚀 Starting Azure Image Studio development server..."),
+          chalk.blue("🚀 Starting Image Studio development server..."),
         );
 
         // Check if we're in the right directory
         const packageJsonPath = path.join(process.cwd(), "package.json");
         if (!(await fs.pathExists(packageJsonPath))) {
           console.log(
-            chalk.red("❌ Not in Azure Image Studio project directory."),
+            chalk.red("❌ Not in Image Studio project directory."),
           );
           console.log(
             chalk.yellow(
@@ -227,7 +227,7 @@ Examples:
       try {
         console.log(
           chalk.blue(
-            "🛠️  Setting up Azure Image Studio development environment...",
+            "🛠️  Setting up Image Studio development environment...",
           ),
         );
 
@@ -235,7 +235,7 @@ Examples:
         const packageJsonPath = path.join(process.cwd(), "package.json");
         if (!(await fs.pathExists(packageJsonPath))) {
           console.log(
-            chalk.red("❌ Not in Azure Image Studio project directory."),
+            chalk.red("❌ Not in Image Studio project directory."),
           );
           console.log(
             chalk.yellow(
@@ -278,7 +278,7 @@ Examples:
             console.log(
               chalk.yellow("⚠️  No API key found. You can set one with:"),
             );
-            console.log(chalk.gray("  azure-image-studio config set-api-key"));
+            console.log(chalk.gray("  image-studio config set-api-key"));
           } else {
             console.log(chalk.green("✅ API key found"));
           }
@@ -306,12 +306,12 @@ Examples:
         );
         console.log(
           chalk.gray(
-            "2. Set your API key: azure-image-studio config set-api-key",
+            "2. Set your API key: image-studio config set-api-key",
           ),
         );
         console.log(
           chalk.gray(
-            "3. Start the development server: azure-image-studio dev start",
+            "3. Start the development server: image-studio dev start",
           ),
         );
       } catch (error) {

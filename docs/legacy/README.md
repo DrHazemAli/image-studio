@@ -1,15 +1,15 @@
-# Azure Image Studio - Complete Documentation
+# Image Studio - Complete Documentation
 
-Welcome to the comprehensive documentation for Azure Image Studio, a community-built platform that leverages Azure AI services for professional image generation and editing.
+Welcome to the comprehensive documentation for Image Studio, a community-built platform that leverages Azure AI services for professional image generation and editing.
 
 > ⚠️ **Important**: This is a **community project** and is not affiliated with or endorsed by Microsoft or Azure. It's an independent project that uses Azure AI services.
 
 ## 📚 Documentation Overview
 
-This documentation provides complete guidance for using, developing, and understanding Azure Image Studio. Whether you're a new user, developer, or system administrator, you'll find the information you need here.
+This documentation provides complete guidance for using, developing, and understanding Image Studio. Whether you're a new user, developer, or system administrator, you'll find the information you need here.
 
 **Last Updated**: September 8, 2025  
-**Version**: 1.0.2
+**Version**: 1.0.3
 
 ## 🎯 Quick Navigation
 
@@ -280,9 +280,9 @@ How to contribute covering:
 
 ### External Resources
 
-- [GitHub Repository](https://github.com/DrHazemAli/azure-image-studio)
-- [GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
-- [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
+- [GitHub Repository](https://github.com/DrHazemAli/image-studio)
+- [GitHub Issues](https://github.com/DrHazemAli/image-studio/issues)
+- [GitHub Discussions](https://github.com/DrHazemAli/image-studio/discussions)
 
 ---
 
@@ -291,4 +291,4 @@ How to contribute covering:
 - **New Users**: Begin with the [Getting Started Guide](getting-started.md)
 - **Developers**: Start with the [Developer Guide](developer-guide.md)
 
-Made with ❤️ by the Azure Image Studio community.
+Made with ❤️ by the Image Studio community.

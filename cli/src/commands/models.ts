@@ -13,9 +13,9 @@ export function createModelsCommand(): Command {
     "after",
     `
 Examples:
-  $ azure-image-studio models list
-  $ azure-image-studio models info --model dalle-3
-  $ azure-image-studio models test --model flux-1-1-pro
+  $ image-studio models list
+  $ image-studio models info --model dalle-3
+  $ image-studio models test --model flux-1-1-pro
     `,
   );
 
@@ -33,7 +33,7 @@ Examples:
         if (!config) {
           console.log(
             chalk.yellow(
-              'No configuration found. Run "azure-image-studio config init" to create one.',
+              'No configuration found. Run "image-studio config init" to create one.',
             ),
           );
           return;
@@ -98,7 +98,7 @@ Examples:
               },
             }),
             {
-              title: "Azure Image Studio Models",
+              title: "Image Studio Models",
               titleAlignment: "center",
               padding: 1,
               margin: 1,
@@ -142,7 +142,7 @@ Examples:
         if (!config) {
           console.log(
             chalk.yellow(
-              'No configuration found. Run "azure-image-studio config init" to create one.',
+              'No configuration found. Run "image-studio config init" to create one.',
             ),
           );
           return;
@@ -155,7 +155,7 @@ Examples:
           console.log(chalk.red(`❌ Model "${options.model}" not found.`));
           console.log(
             chalk.yellow(
-              'Run "azure-image-studio models list" to see available models.',
+              'Run "image-studio models list" to see available models.',
             ),
           );
           return;
@@ -218,7 +218,7 @@ Examples:
         if (!config || !apiKey) {
           console.log(
             chalk.red(
-              '❌ Configuration or API key not found. Run "azure-image-studio config init" first.',
+              '❌ Configuration or API key not found. Run "image-studio config init" first.',
             ),
           );
           return;
@@ -307,7 +307,7 @@ Examples:
         if (!config) {
           console.log(
             chalk.yellow(
-              'No configuration found. Run "azure-image-studio config init" to create one.',
+              'No configuration found. Run "image-studio config init" to create one.',
             ),
           );
           return;
@@ -316,7 +316,7 @@ Examples:
         if (!apiKey) {
           console.log(
             chalk.red(
-              '❌ API key not found. Run "azure-image-studio config set-api-key" first.',
+              '❌ API key not found. Run "image-studio config set-api-key" first.',
             ),
           );
           return;

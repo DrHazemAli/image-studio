@@ -106,7 +106,7 @@ Retrieves current application configuration.
       "baseUrl": "https://your-resource.openai.azure.com"
     },
     "app": {
-      "version": "1.0.2",
+      "version": "1.0.3",
       "features": ["image_generation", "image_editing"]
     }
   }

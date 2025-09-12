@@ -1,12 +1,12 @@
 # Performance Optimization Guide
 
-_Get the best performance from your Azure Image Studio setup_
+_Get the best performance from your Image Studio setup_
 
 ---
 
 **Author:** Hazem Ali, Microsoft AI MVP  
-**Repository:** [Azure Image Studio](https://github.com/DrHazemAli/azure-image-studio)  
-**Documentation:** [Wiki](https://github.com/DrHazemAli/azure-image-studio/wiki)
+**Repository:** [Image Studio](https://github.com/DrHazemAli/image-studio)  
+**Documentation:** [Wiki](https://github.com/DrHazemAli/image-studio/wiki)
 
 [![GitHub](https://img.shields.io/badge/GitHub-DrHazemAli-blue)](https://github.com/DrHazemAli)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-drhazemali-blue)](https://linkedin.com/in/drhazemali)
@@ -16,7 +16,7 @@ _Get the best performance from your Azure Image Studio setup_
 
 ## 🎯 Overview
 
-This guide provides comprehensive strategies for optimizing Azure Image Studio's performance across different hardware configurations and use cases. Learn how to maximize generation speed, minimize resource usage, and ensure smooth operation.
+This guide provides comprehensive strategies for optimizing Image Studio's performance across different hardware configurations and use cases. Learn how to maximize generation speed, minimize resource usage, and ensure smooth operation.
 
 ## 🖥️ System Requirements
 
@@ -59,7 +59,7 @@ This guide provides comprehensive strategies for optimizing Azure Image Studio's
 
    ```bash
    # Set high priority for the application
-   sudo nice -n -10 azure-image-studio
+   sudo nice -n -10 image-studio
    ```
 
 3. **Thermal Management:**
@@ -288,12 +288,12 @@ This guide provides comprehensive strategies for optimizing Azure Image Studio's
 
 ```bash
 # Monitor performance in real-time
-azure-image-studio dev monitor
+image-studio dev monitor
 
 # Check specific metrics
-azure-image-studio dev monitor --metric memory
-azure-image-studio dev monitor --metric cpu
-azure-image-studio dev monitor --metric network
+image-studio dev monitor --metric memory
+image-studio dev monitor --metric cpu
+image-studio dev monitor --metric network
 ```
 
 ### External Monitoring
@@ -467,13 +467,13 @@ azure-image-studio dev monitor --metric network
 
 ```bash
 # Enable performance debugging
-export DEBUG=azure-image-studio:performance
+export DEBUG=image-studio:performance
 
 # Run with performance profiling
-azure-image-studio dev profile
+image-studio dev profile
 
 # Generate performance report
-azure-image-studio dev report --performance
+image-studio dev report --performance
 ```
 
 #### Profiling Techniques
@@ -547,4 +547,4 @@ azure-image-studio dev report --performance
 **Author**: Hazem Ali - Microsoft AI MVP  
 **Last Updated**: September 2025
 
-_For additional support, visit our [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions) or [report issues](https://github.com/DrHazemAli/azure-image-studio/issues)._
+_For additional support, visit our [GitHub Discussions](https://github.com/DrHazemAli/image-studio/discussions) or [report issues](https://github.com/DrHazemAli/image-studio/issues)._

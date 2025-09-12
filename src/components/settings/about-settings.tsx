@@ -57,11 +57,11 @@ export function AboutSettings() {
 
   const appConfig = useMemo(
     () => ({
-      name: "Azure Image Studio",
+      name: "Image Studio",
       version: getCurrentVersion(),
       description: "AI-powered image generation and editing platform",
       author: "Hazem Ali",
-      github: "https://github.com/DrHazemAli/azure-image-studio",
+      github: "https://github.com/DrHazemAli/image-studio",
       linkedin: "https://linkedin.com/in/drhazemali",
       website: "https://www.skytells.ai",
     }),

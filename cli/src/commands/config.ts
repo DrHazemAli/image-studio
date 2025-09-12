@@ -10,15 +10,15 @@ export function createConfigCommand(): Command {
   const configManager = new ConfigManager();
 
   configCommand
-    .description("Manage Azure Image Studio configuration")
+    .description("Manage Image Studio configuration")
     .addHelpText(
       "after",
       `
 Examples:
-  $ azure-image-studio config init
-  $ azure-image-studio config validate
-  $ azure-image-studio config set-api-key
-  $ azure-image-studio config show
+  $ image-studio config init
+  $ image-studio config validate
+  $ image-studio config set-api-key
+  $ image-studio config show
     `,
     );
 
@@ -41,7 +41,7 @@ Examples:
         }
 
         console.log(
-          chalk.blue("Initializing Azure Image Studio configuration..."),
+          chalk.blue("Initializing Image Studio configuration..."),
         );
         await configManager.createDefaultConfig();
 
@@ -53,7 +53,7 @@ Examples:
         );
         console.log(
           chalk.yellow(
-            "🔑 Set your API key with: azure-image-studio config set-api-key",
+            "🔑 Set your API key with: image-studio config set-api-key",
           ),
         );
       } catch (error) {
@@ -138,7 +138,7 @@ Examples:
         if (!config) {
           console.log(
             chalk.yellow(
-              'No configuration found. Run "azure-image-studio config init" to create one.',
+              'No configuration found. Run "image-studio config init" to create one.',
             ),
           );
           return;
@@ -169,7 +169,7 @@ Examples:
 
         console.log(
           boxen(JSON.stringify(displayConfig, null, 2), {
-            title: "Azure Image Studio Configuration",
+            title: "Image Studio Configuration",
             titleAlignment: "center",
             padding: 1,
             margin: 1,

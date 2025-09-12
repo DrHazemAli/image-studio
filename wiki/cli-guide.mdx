@@ -1,12 +1,12 @@
 # CLI Developer Guide
 
-_Complete command-line interface documentation for Azure Image Studio_
+_Complete command-line interface documentation for Image Studio_
 
 ---
 
 **Author:** Hazem Ali, Microsoft AI MVP  
-**Repository:** [Azure Image Studio](https://github.com/DrHazemAli/azure-image-studio)  
-**Documentation:** [Wiki](https://github.com/DrHazemAli/azure-image-studio/wiki)
+**Repository:** [Image Studio](https://github.com/DrHazemAli/image-studio)  
+**Documentation:** [Wiki](https://github.com/DrHazemAli/image-studio/wiki)
 
 [![GitHub](https://img.shields.io/badge/GitHub-DrHazemAli-blue)](https://github.com/DrHazemAli)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-hazemali-blue)](https://linkedin.com/in/drhazemali)
@@ -16,7 +16,7 @@ _Complete command-line interface documentation for Azure Image Studio_
 
 ## 🎯 Overview
 
-Azure Image Studio includes a powerful CLI tool built with Commander.js, providing developers and power users with command-line access to all major features. The CLI supports image generation, project management, configuration, and batch operations.
+Image Studio includes a powerful CLI tool built with Commander.js, providing developers and power users with command-line access to all major features. The CLI supports image generation, project management, configuration, and batch operations.
 
 ## 🚀 Installation
 
@@ -24,7 +24,7 @@ Azure Image Studio includes a powerful CLI tool built with Commander.js, providi
 
 - Node.js 18+
 - npm or yarn package manager
-- Azure Image Studio project installed
+- Image Studio project installed
 
 ### CLI Installation
 
@@ -49,7 +49,7 @@ npm link
 npm install -g .
 
 # Verify installation
-azure-image-studio --version
+image-studio --version
 ```
 
 ## 📋 Available Commands
@@ -69,17 +69,17 @@ azure-image-studio --version
 
 ```bash
 # Basic generation
-azure-image-studio generate single --prompt "a beautiful sunset"
+image-studio generate single --prompt "a beautiful sunset"
 
 # With specific model and size
-azure-image-studio generate single \
+image-studio generate single \
   --prompt "a cat sitting on a windowsill" \
   --model dalle-3 \
   --size 1024x1024 \
   --quality hd
 
 # With output options
-azure-image-studio generate single \
+image-studio generate single \
   --prompt "abstract art" \
   --output ./generated-images \
   --format png \
@@ -104,10 +104,10 @@ azure-image-studio generate single \
 
 ```bash
 # From file
-azure-image-studio generate batch --file prompts.txt
+image-studio generate batch --file prompts.txt
 
 # With custom options
-azure-image-studio generate batch \
+image-studio generate batch \
   --file prompts.txt \
   --model dalle-3 \
   --size 1024x1024 \
@@ -140,7 +140,7 @@ a futuristic cityscape
 
 ```bash
 # Start interactive mode
-azure-image-studio generate interactive
+image-studio generate interactive
 
 # Follow prompts to configure generation
 ? Enter your prompt: a beautiful landscape
@@ -156,16 +156,16 @@ azure-image-studio generate interactive
 
 ```bash
 # Basic project creation
-azure-image-studio project create --name "My Project"
+image-studio project create --name "My Project"
 
 # With description and template
-azure-image-studio project create \
+image-studio project create \
   --name "Social Media Campaign" \
   --description "Instagram posts for product launch" \
   --template social-media
 
 # Interactive creation
-azure-image-studio project create
+image-studio project create
 ```
 
 #### Project Templates
@@ -180,52 +180,52 @@ azure-image-studio project create
 
 ```bash
 # List all projects
-azure-image-studio project list
+image-studio project list
 
 # With details
-azure-image-studio project list --detailed
+image-studio project list --detailed
 
 # Filter by category
-azure-image-studio project list --category social-media
+image-studio project list --category social-media
 ```
 
 ### Export Project
 
 ```bash
 # Export to directory
-azure-image-studio project export --name "My Project" --output ./exports
+image-studio project export --name "My Project" --output ./exports
 
 # Export as ZIP
-azure-image-studio project export --name "My Project" --zip
+image-studio project export --name "My Project" --zip
 
 # Export with assets
-azure-image-studio project export --name "My Project" --include-assets
+image-studio project export --name "My Project" --include-assets
 ```
 
 ### Import Project
 
 ```bash
 # Import from ZIP file
-azure-image-studio project import --file project.zip
+image-studio project import --file project.zip
 
 # Import from directory
-azure-image-studio project import --directory ./project-folder
+image-studio project import --directory ./project-folder
 
 # Import with validation
-azure-image-studio project import --file project.zip --validate
+image-studio project import --file project.zip --validate
 ```
 
 ### Delete Project
 
 ```bash
 # Delete project
-azure-image-studio project delete --name "My Project"
+image-studio project delete --name "My Project"
 
 # Force delete (no confirmation)
-azure-image-studio project delete --name "My Project" --force
+image-studio project delete --name "My Project" --force
 
 # Delete with assets
-azure-image-studio project delete --name "My Project" --include-assets
+image-studio project delete --name "My Project" --include-assets
 ```
 
 ## ⚙️ Configuration Commands
@@ -234,39 +234,39 @@ azure-image-studio project delete --name "My Project" --include-assets
 
 ```bash
 # Initialize default configuration
-azure-image-studio config init
+image-studio config init
 
 # Force overwrite existing config
-azure-image-studio config init --force
+image-studio config init --force
 
 # Initialize with specific settings
-azure-image-studio config init --template production
+image-studio config init --template production
 ```
 
 ### Validate Configuration
 
 ```bash
 # Validate current configuration
-azure-image-studio config validate
+image-studio config validate
 
 # Validate specific settings
-azure-image-studio config validate --api-key --endpoints
+image-studio config validate --api-key --endpoints
 
 # Test Azure connection
-azure-image-studio config validate --test-connection
+image-studio config validate --test-connection
 ```
 
 ### Set API Key
 
 ```bash
 # Set API key interactively
-azure-image-studio config set-api-key
+image-studio config set-api-key
 
 # Set API key directly
-azure-image-studio config set-api-key --key "your-api-key"
+image-studio config set-api-key --key "your-api-key"
 
 # Set with endpoint
-azure-image-studio config set-api-key \
+image-studio config set-api-key \
   --key "your-api-key" \
   --endpoint "https://your-resource.openai.azure.com/"
 ```
@@ -275,26 +275,26 @@ azure-image-studio config set-api-key \
 
 ```bash
 # Show current configuration
-azure-image-studio config show
+image-studio config show
 
 # Show specific settings
-azure-image-studio config show --api-key --endpoints
+image-studio config show --api-key --endpoints
 
 # Export configuration
-azure-image-studio config show --export ./config-backup.json
+image-studio config show --export ./config-backup.json
 ```
 
 ### Reset Configuration
 
 ```bash
 # Reset to defaults
-azure-image-studio config reset
+image-studio config reset
 
 # Reset specific settings
-azure-image-studio config reset --api-key --endpoints
+image-studio config reset --api-key --endpoints
 
 # Reset with backup
-azure-image-studio config reset --backup
+image-studio config reset --backup
 ```
 
 ## 🤖 Model Management Commands
@@ -303,36 +303,36 @@ azure-image-studio config reset --backup
 
 ```bash
 # List available models
-azure-image-studio models list
+image-studio models list
 
 # List with details
-azure-image-studio models list --detailed
+image-studio models list --detailed
 
 # Filter by type
-azure-image-studio models list --type image-generation
+image-studio models list --type image-generation
 ```
 
 ### Model Information
 
 ```bash
 # Get model details
-azure-image-studio models info --model dalle-3
+image-studio models info --model dalle-3
 
 # Check model capabilities
-azure-image-studio models capabilities --model dalle-3
+image-studio models capabilities --model dalle-3
 
 # Test model connection
-azure-image-studio models test --model dalle-3
+image-studio models test --model dalle-3
 ```
 
 ### Model Configuration
 
 ```bash
 # Configure model settings
-azure-image-studio models configure --model dalle-3
+image-studio models configure --model dalle-3
 
 # Set model parameters
-azure-image-studio models configure \
+image-studio models configure \
   --model dalle-3 \
   --max-tokens 1000 \
   --temperature 0.7
@@ -344,17 +344,17 @@ azure-image-studio models configure \
 
 ```bash
 # Search for assets
-azure-image-studio assets search --query "nature landscape"
+image-studio assets search --query "nature landscape"
 
 # Search with filters
-azure-image-studio assets search \
+image-studio assets search \
   --query "business people" \
   --provider unsplash \
   --orientation landscape \
   --color blue
 
 # Search and download
-azure-image-studio assets search \
+image-studio assets search \
   --query "abstract art" \
   --download \
   --output ./assets
@@ -364,10 +364,10 @@ azure-image-studio assets search \
 
 ```bash
 # Download by ID
-azure-image-studio assets download --id "12345" --output ./assets
+image-studio assets download --id "12345" --output ./assets
 
 # Download multiple assets
-azure-image-studio assets download \
+image-studio assets download \
   --ids "12345,67890,11111" \
   --output ./assets \
   --format png
@@ -377,13 +377,13 @@ azure-image-studio assets download \
 
 ```bash
 # List local assets
-azure-image-studio assets list
+image-studio assets list
 
 # Organize assets
-azure-image-studio assets organize --directory ./assets
+image-studio assets organize --directory ./assets
 
 # Clean up unused assets
-azure-image-studio assets cleanup --dry-run
+image-studio assets cleanup --dry-run
 ```
 
 ## 🛠️ Development Commands
@@ -392,42 +392,42 @@ azure-image-studio assets cleanup --dry-run
 
 ```bash
 # Start dev server
-azure-image-studio dev start
+image-studio dev start
 
 # Start with specific port
-azure-image-studio dev start --port 3001
+image-studio dev start --port 3001
 
 # Start with hot reload
-azure-image-studio dev start --watch
+image-studio dev start --watch
 
 # Start with debug mode
-azure-image-studio dev start --debug
+image-studio dev start --debug
 ```
 
 ### Build Application
 
 ```bash
 # Build for production
-azure-image-studio dev build
+image-studio dev build
 
 # Build with optimization
-azure-image-studio dev build --optimize
+image-studio dev build --optimize
 
 # Build specific components
-azure-image-studio dev build --components cli,api
+image-studio dev build --components cli,api
 ```
 
 ### Run Tests
 
 ```bash
 # Run all tests
-azure-image-studio dev test
+image-studio dev test
 
 # Run specific test suite
-azure-image-studio dev test --suite cli
+image-studio dev test --suite cli
 
 # Run with coverage
-azure-image-studio dev test --coverage
+image-studio dev test --coverage
 ```
 
 ## 📊 Advanced Usage
@@ -447,7 +447,7 @@ prompts=(
 )
 
 for prompt in "${prompts[@]}"; do
-  azure-image-studio generate single \
+  image-studio generate single \
     --prompt "$prompt" \
     --output ./generated \
     --model dalle-3
@@ -462,7 +462,7 @@ const path = require("path");
 
 async function generateImages(prompts) {
   for (const prompt of prompts) {
-    const command = `azure-image-studio generate single --prompt "${prompt}" --output ./generated`;
+    const command = `image-studio generate single --prompt "${prompt}" --output ./generated`;
 
     try {
       const { stdout, stderr } = await exec(command);
@@ -484,7 +484,7 @@ import json
 
 def generate_image(prompt, model='dalle-3', size='1024x1024'):
     cmd = [
-        'azure-image-studio', 'generate', 'single',
+        'image-studio', 'generate', 'single',
         '--prompt', prompt,
         '--model', model,
         '--size', size,
@@ -519,7 +519,7 @@ for prompt in prompts:
 
 #### CLI Configuration
 
-Create `~/.azure-image-studio/config.json`:
+Create `~/.image-studio/config.json`:
 
 ```json
 {
@@ -543,7 +543,7 @@ Create `~/.azure-image-studio/config.json`:
 
 #### Project Templates
 
-Create custom project templates in `~/.azure-image-studio/templates/`:
+Create custom project templates in `~/.image-studio/templates/`:
 
 ```json
 {
@@ -574,52 +574,52 @@ Create custom project templates in `~/.azure-image-studio/templates/`:
 
 ```bash
 # Check configuration status
-azure-image-studio config validate
+image-studio config validate
 
 # Reset configuration
-azure-image-studio config reset
+image-studio config reset
 
 # Reinitialize configuration
-azure-image-studio config init --force
+image-studio config init --force
 ```
 
 #### Generation Failures
 
 ```bash
 # Test with verbose output
-azure-image-studio generate single --prompt "test" --verbose
+image-studio generate single --prompt "test" --verbose
 
 # Check model availability
-azure-image-studio models list
+image-studio models list
 
 # Test Azure connection
-azure-image-studio config validate --test-connection
+image-studio config validate --test-connection
 ```
 
 #### Project Issues
 
 ```bash
 # Validate project
-azure-image-studio project validate --name "My Project"
+image-studio project validate --name "My Project"
 
 # Repair project
-azure-image-studio project repair --name "My Project"
+image-studio project repair --name "My Project"
 
 # Export for backup
-azure-image-studio project export --name "My Project" --backup
+image-studio project export --name "My Project" --backup
 ```
 
 ### Debug Mode
 
 ```bash
 # Enable debug logging
-export DEBUG=azure-image-studio:*
+export DEBUG=image-studio:*
 
 # Run with debug output
-azure-image-studio generate single --prompt "test" --debug
+image-studio generate single --prompt "test" --debug
 
 # Check logs
-azure-image-studio dev logs --tail 100
+image-studio dev logs --tail 100
 ```
 
 ## 📚 Environment Variables
@@ -661,12 +661,12 @@ jobs:
 
       - name: Configure Azure
         run: |
-          azure-image-studio config set-api-key --key ${{ secrets.AZURE_API_KEY }}
-          azure-image-studio config set-endpoint --endpoint ${{ secrets.AZURE_ENDPOINT }}
+          image-studio config set-api-key --key ${{ secrets.AZURE_API_KEY }}
+          image-studio config set-endpoint --endpoint ${{ secrets.AZURE_ENDPOINT }}
 
       - name: Generate images
         run: |
-          azure-image-studio generate batch --file prompts.txt --output ./generated
+          image-studio generate batch --file prompts.txt --output ./generated
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
@@ -689,7 +689,7 @@ COPY . .
 
 RUN npm run build
 
-CMD ["azure-image-studio", "dev", "start"]
+CMD ["image-studio", "dev", "start"]
 ```
 
 ## 📚 Related Documentation
@@ -705,4 +705,4 @@ CMD ["azure-image-studio", "dev", "start"]
 **Author**: Hazem Ali - Microsoft AI MVP  
 **Last Updated**: September 2025
 
-_For additional support, visit our [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions) or [report issues](https://github.com/DrHazemAli/azure-image-studio/issues)._
+_For additional support, visit our [GitHub Discussions](https://github.com/DrHazemAli/image-studio/discussions) or [report issues](https://github.com/DrHazemAli/image-studio/issues)._

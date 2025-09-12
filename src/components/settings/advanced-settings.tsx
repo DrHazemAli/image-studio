@@ -79,7 +79,7 @@ export function AdvancedSettings() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "azure-image-studio-settings.json";
+    a.download = "image-studio-settings.json";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

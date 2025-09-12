@@ -1,15 +1,15 @@
-# Tools Reference - Azure Image Studio
+# Tools Reference - Image Studio
 
-This comprehensive guide covers all available tools and their usage in Azure Image Studio.
+This comprehensive guide covers all available tools and their usage in Image Studio.
 
 > ⚠️ **Important**: This is a **community project** and is not affiliated with or endorsed by Microsoft or Azure. It's an independent project that uses Azure AI services.
 
 **Last Updated**: September 8, 2025  
-**Version**: 1.0.2
+**Version**: 1.0.3
 
 ## 🛠️ Tools Overview
 
-Azure Image Studio provides a comprehensive set of tools for image generation, editing, and manipulation. All tools are accessible through the toolbar and can be used with keyboard shortcuts for efficient workflow.
+Image Studio provides a comprehensive set of tools for image generation, editing, and manipulation. All tools are accessible through the toolbar and can be used with keyboard shortcuts for efficient workflow.
 
 ## 🎨 Navigation Tools
 
@@ -645,9 +645,9 @@ Azure Image Studio provides a comprehensive set of tools for image generation, e
 
 ### Community
 
-- [GitHub Repository](https://github.com/DrHazemAli/azure-image-studio)
-- [GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
-- [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
+- [GitHub Repository](https://github.com/DrHazemAli/image-studio)
+- [GitHub Issues](https://github.com/DrHazemAli/image-studio/issues)
+- [GitHub Discussions](https://github.com/DrHazemAli/image-studio/discussions)
 
 ---
 
@@ -661,4 +661,4 @@ Azure Image Studio provides a comprehensive set of tools for image generation, e
 
 ---
 
-This guide provides comprehensive information about all available tools in Azure Image Studio. For more specific information, refer to the individual guides for each feature area.
+This guide provides comprehensive information about all available tools in Image Studio. For more specific information, refer to the individual guides for each feature area.

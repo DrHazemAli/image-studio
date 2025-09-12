@@ -1,13 +1,13 @@
 # Custom Development Guide
 
-_Extending and customizing Azure Image Studio for your needs_
+_Extending and customizing Image Studio for your needs_
 
 ---
 
 **Author:** Hazem Ali, Microsoft AI MVP  
 **Version:** 1.0.1  
-**Repository:** [Azure Image Studio](https://github.com/DrHazemAli/azure-image-studio)  
-**Documentation:** [Wiki](https://github.com/DrHazemAli/azure-image-studio/wiki)
+**Repository:** [Image Studio](https://github.com/DrHazemAli/image-studio)  
+**Documentation:** [Wiki](https://github.com/DrHazemAli/image-studio/wiki)
 
 [![GitHub](https://img.shields.io/badge/GitHub-DrHazemAli-blue)](https://github.com/DrHazemAli)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-hazemali-blue)](https://linkedin.com/in/drhazemali)
@@ -17,7 +17,7 @@ _Extending and customizing Azure Image Studio for your needs_
 
 ## 🎯 Overview
 
-This guide provides comprehensive information for developers who want to extend, customize, or contribute to Azure Image Studio. Learn about the codebase structure, development workflows, and how to create custom features and integrations.
+This guide provides comprehensive information for developers who want to extend, customize, or contribute to Image Studio. Learn about the codebase structure, development workflows, and how to create custom features and integrations.
 
 **Note**: This is not an official Microsoft or Azure product, but rather a community project maintained by Microsoft MVPs that utilizes Azure's AI services.
 
@@ -46,10 +46,10 @@ This guide provides comprehensive information for developers who want to extend,
 
 ```bash
 # Clone the repository
-git clone https://github.com/DrHazemAli/azure-image-studio.git
+git clone https://github.com/DrHazemAli/image-studio.git
 
 # Navigate to project directory
-cd azure-image-studio
+cd image-studio
 
 # Install dependencies
 npm install
@@ -83,7 +83,7 @@ DEBUG=* npm run dev
 #### Core Directories
 
 ```
-azure-image-studio/
+image-studio/
 ├── src/                    # Source code
 │   ├── app/               # Next.js app directory
 │   ├── components/        # React components
@@ -166,10 +166,10 @@ App
 ```bash
 # Fork the repository on GitHub
 # Clone your fork
-git clone https://github.com/your-username/azure-image-studio.git
+git clone https://github.com/your-username/image-studio.git
 
 # Add upstream remote
-git remote add upstream https://github.com/DrHazemAli/azure-image-studio.git
+git remote add upstream https://github.com/DrHazemAli/image-studio.git
 ```
 
 #### 2. Create Feature Branch
@@ -549,7 +549,7 @@ CMD ["npm", "start"]
 ```yaml
 version: "3.8"
 services:
-  azure-image-studio:
+  image-studio:
     build: .
     ports:
       - "3000:3000"
@@ -567,7 +567,7 @@ services:
 
 ```bash
 # .env.local
-NEXT_PUBLIC_APP_NAME="Azure Image Studio"
+NEXT_PUBLIC_APP_NAME="Image Studio"
 NEXT_PUBLIC_APP_VERSION="1.0.1"
 AZURE_API_KEY="your-api-key"
 AZURE_ENDPOINT="your-endpoint"
@@ -579,7 +579,7 @@ AZURE_ENDPOINT="your-endpoint"
 
 ```json
 {
-  "name": "Azure Image Studio",
+  "name": "Image Studio",
   "version": "1.0.1",
   "features": {
     "assetStore": true,
@@ -839,4 +839,4 @@ What actually happens
 **Author**: Hazem Ali - Microsoft AI MVP  
 **Last Updated**: September 2025
 
-_For additional support, visit our [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions) or [report issues](https://github.com/DrHazemAli/azure-image-studio/issues)._
+_For additional support, visit our [GitHub Discussions](https://github.com/DrHazemAli/image-studio/discussions) or [report issues](https://github.com/DrHazemAli/image-studio/issues)._
