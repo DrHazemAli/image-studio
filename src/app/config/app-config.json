@@ -1,6 +1,6 @@
 {
   "app": {
-    "name": "Image Studio",
+    "name": "AI Image Studio",
     "version": "1.0.3",
     "description": "AI-powered image generation and editing platform",
     "environment": "development",

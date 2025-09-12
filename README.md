@@ -1,6 +1,6 @@
-# Image Studio
+# AI Image Studio
 
-Image Studio is a cutting-edge image generation and editing platform that harnesses the full power of Azure AI services. Built and maintained by Microsoft MVPs, this professional-grade solution delivers state-of-the-art AI capabilities through an intuitive, modern interface. Whether you're creating stunning visuals, editing professional content, or building automated image workflows, Image Studio provides the tools and performance you need to transform your creative vision into reality.
+AI Image Studio is a cutting-edge image generation and editing platform that harnesses the full power of Azure AI services. Built and maintained by Microsoft MVPs, this professional-grade solution delivers state-of-the-art AI capabilities through an intuitive, modern interface. Whether you're creating stunning visuals, editing professional content, or building automated image workflows, Image Studio provides the tools and performance you need to transform your creative vision into reality.
 
 ![Image Studio](https://github.com/DrHazemAli/image-studio/blob/main/public/image-studio.jpg)
 
