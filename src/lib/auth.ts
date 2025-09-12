@@ -1,4 +1,4 @@
-import crypto from 'crypto';
+import crypto from "crypto";
 
 // Simple token storage (in production, use Redis or database)
 const tokenStore = new Map<string, { expires: number; userId: string }>();
@@ -10,7 +10,7 @@ const TOKEN_EXPIRY_MS = 60 * 60 * 1000;
  * Generate a secure random token
  */
 export function generateToken(): string {
-  return crypto.randomBytes(32).toString('hex');
+  return crypto.randomBytes(32).toString("hex");
 }
 
 /**
@@ -50,14 +50,15 @@ export function verifyToken(token: string): {
   try {
     // Simple validation: check if token exists and is not too old
     // This is a basic approach for development
-    if (token && token.length === 64) { // Our tokens are 64 characters
+    if (token && token.length === 64) {
+      // Our tokens are 64 characters
       // For now, we'll trust any 64-character token
       // In production, you'd want proper JWT verification
       const userInfo = getUserInfo();
       return { valid: true, userId: userInfo.userId };
     }
   } catch (error) {
-    console.error('Token verification error:', error);
+    console.error("Token verification error:", error);
   }
 
   return { valid: false };
@@ -89,7 +90,7 @@ export function verifyPassword(password: string): boolean {
   // In production, you'd want to hash the password and compare hashes
   // For now, we'll use the plain text password from config
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const appConfig = require('@/app/config/app-config.json');
+  const appConfig = require("@/app/config/app-config.json");
   return password === appConfig.admin.password;
 }
 
@@ -98,7 +99,7 @@ export function verifyPassword(password: string): boolean {
  */
 export function getUserInfo() {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const appConfig = require('@/app/config/app-config.json');
+  const appConfig = require("@/app/config/app-config.json");
   return {
     userId: appConfig.admin.user_id,
     username: appConfig.admin.username,

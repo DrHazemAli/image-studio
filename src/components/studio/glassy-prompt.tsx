@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   MagicWandIcon,
   Cross2Icon,
@@ -12,9 +12,9 @@ import {
   VideoIcon,
   QuestionMarkCircledIcon,
   ArrowUpIcon,
-} from '@radix-ui/react-icons';
-import { Button, Badge } from '@radix-ui/themes';
-import * as Select from '@radix-ui/react-select';
+} from "@radix-ui/react-icons";
+import { Button, Badge } from "@radix-ui/themes";
+import * as Select from "@radix-ui/react-select";
 
 interface GlassyPromptProps {
   isOpen: boolean;
@@ -32,36 +32,36 @@ interface GlassyPromptProps {
 
 const models = [
   {
-    id: 'gpt-image-1',
-    name: 'GPT-Image-1',
-    provider: 'Azure OpenAI',
+    id: "gpt-image-1",
+    name: "GPT-Image-1",
+    provider: "Azure OpenAI",
     premium: true,
   },
   {
-    id: 'dalle-3',
-    name: 'DALL-E 3',
-    provider: 'Azure OpenAI',
+    id: "dalle-3",
+    name: "DALL-E 3",
+    provider: "Azure OpenAI",
     premium: false,
   },
   {
-    id: 'flux-1-1-pro',
-    name: 'FLUX 1.1 Pro',
-    provider: 'Black Forest Labs',
+    id: "flux-1-1-pro",
+    name: "FLUX 1.1 Pro",
+    provider: "Black Forest Labs",
     premium: false,
   },
   {
-    id: 'flux-1-kontext-pro',
-    name: 'FLUX Kontext Pro',
-    provider: 'Black Forest Labs',
+    id: "flux-1-kontext-pro",
+    name: "FLUX Kontext Pro",
+    provider: "Black Forest Labs",
     premium: false,
   },
 ];
 
 const quickPrompts = [
-  'A majestic dragon soaring through cloudy skies at sunset',
-  'A cyberpunk cityscape with neon lights reflecting on wet streets',
-  'An astronaut floating in space with Earth in the background',
-  'A cozy library with floating books and magical lighting',
+  "A majestic dragon soaring through cloudy skies at sunset",
+  "A cyberpunk cityscape with neon lights reflecting on wet streets",
+  "An astronaut floating in space with Earth in the background",
+  "A cozy library with floating books and magical lighting",
 ];
 
 export function GlassyPrompt({
@@ -71,10 +71,10 @@ export function GlassyPrompt({
   isGenerating = false,
   progress = 0,
 }: GlassyPromptProps) {
-  const [prompt, setPrompt] = useState('');
-  const [selectedModel, setSelectedModel] = useState('dalle-3');
-  const [size, setSize] = useState('1024x1024');
-  const [quality, setQuality] = useState('hd');
+  const [prompt, setPrompt] = useState("");
+  const [selectedModel, setSelectedModel] = useState("dalle-3");
+  const [size, setSize] = useState("1024x1024");
+  const [quality, setQuality] = useState("hd");
   const [count, setCount] = useState(1);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -100,10 +100,10 @@ export function GlassyPrompt({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
       e.preventDefault();
       handleGenerate();
-    } else if (e.key === 'Escape') {
+    } else if (e.key === "Escape") {
       onClose();
     }
   };
@@ -116,7 +116,7 @@ export function GlassyPrompt({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-50 flex items-end justify-center pb-8 p-4"
-          style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.6)" }}
           onClick={onClose}
         >
           {/* Ultra Glassy Backdrop Blur */}
@@ -127,7 +127,7 @@ export function GlassyPrompt({
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 50 }}
             transition={{
-              type: 'spring',
+              type: "spring",
               stiffness: 400,
               damping: 25,
               duration: 0.4,
@@ -182,7 +182,7 @@ export function GlassyPrompt({
                     {/* Image Type Button */}
                     <motion.div
                       className="flex items-center gap-2 bg-gray-800/50 border border-gray-600/30 rounded-full px-4 py-2 text-white cursor-pointer"
-                      whileHover={{ backgroundColor: 'rgba(55, 65, 81, 0.7)' }}
+                      whileHover={{ backgroundColor: "rgba(55, 65, 81, 0.7)" }}
                     >
                       <ImageIcon className="w-4 h-4" />
                       <span className="text-sm">Image</span>
@@ -193,11 +193,11 @@ export function GlassyPrompt({
                       <Select.Trigger className="flex items-center gap-2 bg-gray-800/50 border border-gray-600/30 rounded-full px-4 py-2 text-white hover:bg-gray-700/50 transition-colors">
                         <div className="w-4 h-4 border border-gray-400 rounded-sm" />
                         <span className="text-sm">
-                          {size === '1024x1024'
-                            ? '2:3'
-                            : size === '1792x1024'
-                              ? '16:9'
-                              : '3:2'}
+                          {size === "1024x1024"
+                            ? "2:3"
+                            : size === "1792x1024"
+                              ? "16:9"
+                              : "3:2"}
                         </span>
                         <ChevronDownIcon className="w-3 h-3" />
                       </Select.Trigger>
@@ -245,7 +245,7 @@ export function GlassyPrompt({
                     {/* More Options */}
                     <motion.div
                       className="flex items-center gap-2 bg-gray-800/50 border border-gray-600/30 rounded-full px-4 py-2 text-white cursor-pointer"
-                      whileHover={{ backgroundColor: 'rgba(55, 65, 81, 0.7)' }}
+                      whileHover={{ backgroundColor: "rgba(55, 65, 81, 0.7)" }}
                     >
                       <div className="w-4 h-4 bg-gray-600 rounded-sm" />
                     </motion.div>
@@ -277,7 +277,7 @@ export function GlassyPrompt({
                 {isGenerating && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
+                    animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
                     className="border-t border-gray-600/30 bg-gray-900/50 p-4"
                   >
@@ -503,7 +503,7 @@ export function GlassyPrompt({
                                 value={num.toString()}
                                 className="p-2 hover:bg-white/20 dark:hover:bg-white/10 rounded text-sm text-gray-900 dark:text-white"
                               >
-                                {num} image{num !== 1 ? 's' : ''}
+                                {num} image{num !== 1 ? "s" : ""}
                               </Select.Item>
                             ))}
                           </Select.Viewport>
@@ -518,7 +518,7 @@ export function GlassyPrompt({
                   {isGenerating && (
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
+                      animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       className="bg-blue-500/10 dark:bg-blue-500/5 border border-blue-500/20 dark:border-blue-500/10 rounded-xl p-4 backdrop-blur-sm"
                     >
@@ -566,14 +566,14 @@ export function GlassyPrompt({
 
                 {/* Keyboard Hint */}
                 <div className="text-xs text-gray-500 dark:text-gray-400 text-center bg-white/5 dark:bg-white/5 rounded-lg p-2 backdrop-blur-sm">
-                  Press{' '}
+                  Press{" "}
                   <kbd className="px-1.5 py-0.5 bg-white/20 dark:bg-white/10 rounded text-xs">
                     ⌘ Enter
-                  </kbd>{' '}
-                  to generate •{' '}
+                  </kbd>{" "}
+                  to generate •{" "}
                   <kbd className="px-1.5 py-0.5 bg-white/20 dark:bg-white/10 rounded text-xs">
                     Esc
-                  </kbd>{' '}
+                  </kbd>{" "}
                   to close
                 </div>
               </div>

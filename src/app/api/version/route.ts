@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
-import appConfig from '@/app/config/app-config.json';
+import { NextRequest, NextResponse } from "next/server";
+import appConfig from "@/app/config/app-config.json";
 
 interface VersionInfo {
   current: string;
   latest: string;
   isUpdateAvailable: boolean;
-  updateType: 'major' | 'minor' | 'patch' | 'none';
+  updateType: "major" | "minor" | "patch" | "none";
   publishedAt?: string;
   releaseNotesUrl?: string;
   downloadUrl?: string;
@@ -22,7 +22,7 @@ interface VersionInfo {
  */
 function compareVersions(v1: string, v2: string): number {
   const parseVersion = (version: string) => {
-    return version.replace(/^v/, '').split('.').map(Number);
+    return version.replace(/^v/, "").split(".").map(Number);
   };
 
   const v1Parts = parseVersion(v1);
@@ -42,17 +42,20 @@ function compareVersions(v1: string, v2: string): number {
 /**
  * Determine the type of update based on version comparison
  */
-function getUpdateType(current: string, latest: string): 'major' | 'minor' | 'patch' | 'none' {
-  if (current === latest) return 'none';
+function getUpdateType(
+  current: string,
+  latest: string,
+): "major" | "minor" | "patch" | "none" {
+  if (current === latest) return "none";
 
-  const currentParts = current.replace(/^v/, '').split('.').map(Number);
-  const latestParts = latest.replace(/^v/, '').split('.').map(Number);
+  const currentParts = current.replace(/^v/, "").split(".").map(Number);
+  const latestParts = latest.replace(/^v/, "").split(".").map(Number);
 
-  if (latestParts[0] > currentParts[0]) return 'major';
-  if (latestParts[1] > currentParts[1]) return 'minor';
-  if (latestParts[2] > currentParts[2]) return 'patch';
+  if (latestParts[0] > currentParts[0]) return "major";
+  if (latestParts[1] > currentParts[1]) return "minor";
+  if (latestParts[2] > currentParts[2]) return "patch";
 
-  return 'none';
+  return "none";
 }
 
 /**
@@ -61,47 +64,52 @@ function getUpdateType(current: string, latest: string): 'major' | 'minor' | 'pa
 function getRepositoryInfo(githubUrl: string): { owner: string; repo: string } {
   try {
     const url = new URL(githubUrl);
-    const pathParts = url.pathname.split('/').filter(part => part);
-    
+    const pathParts = url.pathname.split("/").filter((part) => part);
+
     if (pathParts.length >= 2) {
       return {
         owner: pathParts[0],
-        repo: pathParts[1]
+        repo: pathParts[1],
       };
     }
-    
-    throw new Error('Invalid GitHub URL format');
+
+    throw new Error("Invalid GitHub URL format");
   } catch (error) {
-    console.error('Error parsing GitHub URL:', error);
-    throw new Error('Invalid repository configuration');
+    console.error("Error parsing GitHub URL:", error);
+    throw new Error("Invalid repository configuration");
   }
 }
 
 /**
  * Fetch latest version from GitHub repository
  */
-async function fetchLatestVersion(): Promise<{ version: string; publishedAt?: string }> {
+async function fetchLatestVersion(): Promise<{
+  version: string;
+  publishedAt?: string;
+}> {
   try {
     const { owner, repo } = getRepositoryInfo(appConfig.app.github);
-    
+
     // Try GitHub API first (more reliable and includes metadata)
     const githubResponse = await fetch(
       `https://api.github.com/repos/${owner}/${repo}/contents/package.json?ref=stable`,
       {
         headers: {
-          'Accept': 'application/vnd.github.v3+json',
-          'User-Agent': `${appConfig.app.name}-updater`
-        }
-      }
+          Accept: "application/vnd.github.v3+json",
+          "User-Agent": `${appConfig.app.name}-updater`,
+        },
+      },
     );
 
     if (githubResponse.ok) {
       const data = await githubResponse.json();
-      const packageJson = JSON.parse(Buffer.from(data.content, 'base64').toString());
-      
+      const packageJson = JSON.parse(
+        Buffer.from(data.content, "base64").toString(),
+      );
+
       return {
         version: packageJson.version,
-        publishedAt: data.commit?.commit?.committer?.date
+        publishedAt: data.commit?.commit?.committer?.date,
       };
     }
 
@@ -110,22 +118,22 @@ async function fetchLatestVersion(): Promise<{ version: string; publishedAt?: st
       `https://raw.githubusercontent.com/${owner}/${repo}/stable/package.json`,
       {
         headers: {
-          'User-Agent': `${appConfig.app.name}-updater`
-        }
-      }
+          "User-Agent": `${appConfig.app.name}-updater`,
+        },
+      },
     );
 
     if (rawResponse.ok) {
       const packageJson = await rawResponse.json();
       return {
-        version: packageJson.version
+        version: packageJson.version,
       };
     }
 
-    throw new Error('Failed to fetch from both GitHub API and raw content');
+    throw new Error("Failed to fetch from both GitHub API and raw content");
   } catch (error) {
-    console.error('Error fetching latest version:', error);
-    throw new Error('Unable to fetch latest version information');
+    console.error("Error fetching latest version:", error);
+    throw new Error("Unable to fetch latest version information");
   }
 }
 
@@ -135,10 +143,12 @@ async function fetchLatestVersion(): Promise<{ version: string; publishedAt?: st
 function getCurrentVersion(): string {
   try {
     // Get version from app-config.json first, then fallback to environment variable
-    return appConfig.app.version || process.env.NEXT_PUBLIC_APP_VERSION || '1.0.1';
+    return (
+      appConfig.app.version || process.env.NEXT_PUBLIC_APP_VERSION || "1.0.1"
+    );
   } catch (error) {
-    console.error('Error reading current version:', error);
-    return '1.0.1'; // fallback
+    console.error("Error reading current version:", error);
+    return "1.0.1"; // fallback
   }
 }
 
@@ -147,7 +157,7 @@ function getCurrentVersion(): string {
  */
 function getReleaseNotesUrl(version: string): string {
   const { owner, repo } = getRepositoryInfo(appConfig.app.github);
-  const cleanVersion = version.replace(/^v/, '');
+  const cleanVersion = version.replace(/^v/, "");
   return `https://github.com/${owner}/${repo}/releases/tag/v${cleanVersion}`;
 }
 
@@ -156,8 +166,8 @@ function getReleaseNotesUrl(version: string): string {
  */
 function getDownloadUrl(version: string): string {
   const { owner, repo } = getRepositoryInfo(appConfig.app.github);
-  const cleanVersion = version.replace(/^v/, '');
-  return `https://github.com/${owner}/${repo}/releases/download/v${cleanVersion}/${appConfig.app.name.toLowerCase().replace(/\s+/g, '-')}-v${cleanVersion}.zip`;
+  const cleanVersion = version.replace(/^v/, "");
+  return `https://github.com/${owner}/${repo}/releases/download/v${cleanVersion}/${appConfig.app.name.toLowerCase().replace(/\s+/g, "-")}-v${cleanVersion}.zip`;
 }
 
 export async function GET() {
@@ -179,9 +189,9 @@ export async function GET() {
         current: currentVersion,
         latest: currentVersion,
         isUpdateAvailable: false,
-        updateType: 'none' as const,
-        error: 'Unable to check for updates',
-        lastChecked: new Date().toISOString()
+        updateType: "none" as const,
+        error: "Unable to check for updates",
+        lastChecked: new Date().toISOString(),
       } as VersionInfo & { error: string; lastChecked: string });
     }
 
@@ -204,27 +214,30 @@ export async function GET() {
       repository: {
         owner,
         name: repo,
-        url: appConfig.app.github
-      }
+        url: appConfig.app.github,
+      },
     };
 
     // Add cache headers
     const headers = new Headers();
-    headers.set('Cache-Control', 'public, max-age=300, stale-while-revalidate=600'); // 5 min cache, 10 min stale
+    headers.set(
+      "Cache-Control",
+      "public, max-age=300, stale-while-revalidate=600",
+    ); // 5 min cache, 10 min stale
 
     return NextResponse.json(response, { headers });
   } catch (error) {
-    console.error('Version check error:', error);
-    
+    console.error("Version check error:", error);
+
     return NextResponse.json(
       {
-        error: 'Failed to check for updates',
+        error: "Failed to check for updates",
         current: getCurrentVersion(),
         latest: getCurrentVersion(),
         isUpdateAvailable: false,
-        updateType: 'none' as const
+        updateType: "none" as const,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -234,14 +247,14 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { action } = body;
 
-    if (action === 'check-update') {
+    if (action === "check-update") {
       // Force a fresh check
       return GET();
     }
 
-    return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
+    return NextResponse.json({ error: "Invalid action" }, { status: 400 });
   } catch (error) {
-    console.error('Version check POST error:', error);
-    return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
+    console.error("Version check POST error:", error);
+    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 }

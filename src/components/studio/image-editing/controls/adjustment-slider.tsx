@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { motion } from 'framer-motion';
-import * as Tooltip from '@radix-ui/react-tooltip';
-import { ResetIcon } from '@radix-ui/react-icons';
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { motion } from "framer-motion";
+import * as Tooltip from "@radix-ui/react-tooltip";
+import { ResetIcon } from "@radix-ui/react-icons";
 
 /**
  * Props interface for the AdjustmentSlider component
@@ -26,14 +26,14 @@ export interface AdjustmentSliderProps {
   description?: string;
 
   // Visual customization
-  color?: 'blue' | 'red' | 'green' | 'orange' | 'purple' | 'gray';
+  color?: "blue" | "red" | "green" | "orange" | "purple" | "gray";
   showValue?: boolean;
   showReset?: boolean;
   disabled?: boolean;
 
   // Layout
-  orientation?: 'horizontal' | 'vertical';
-  size?: 'sm' | 'md' | 'lg';
+  orientation?: "horizontal" | "vertical";
+  size?: "sm" | "md" | "lg";
 
   // Advanced features
   formatValue?: (value: number) => string;
@@ -57,22 +57,22 @@ export const AdjustmentSlider: React.FC<AdjustmentSliderProps> = ({
   step = 1,
   defaultValue = 0,
   label,
-  unit = '',
+  unit = "",
   description,
-  color = 'blue',
+  color = "blue",
   showValue = true,
   showReset = true,
   disabled = false,
-  orientation = 'horizontal',
-  size = 'md',
+  orientation = "horizontal",
+  size = "md",
   formatValue,
   parseValue,
   marks,
-  className = '',
+  className = "",
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [inputValue, setInputValue] = useState(
-    (value ?? defaultValue ?? 0).toString()
+    (value ?? defaultValue ?? 0).toString(),
   );
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, value: 0 });
@@ -84,40 +84,40 @@ export const AdjustmentSlider: React.FC<AdjustmentSliderProps> = ({
   // Color theme mappings
   const colorThemes = {
     blue: {
-      track: 'bg-blue-500',
-      thumb: 'bg-blue-600 border-blue-700',
-      focus: 'ring-blue-500',
-      reset: 'text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20',
+      track: "bg-blue-500",
+      thumb: "bg-blue-600 border-blue-700",
+      focus: "ring-blue-500",
+      reset: "text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20",
     },
     red: {
-      track: 'bg-red-500',
-      thumb: 'bg-red-600 border-red-700',
-      focus: 'ring-red-500',
-      reset: 'text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20',
+      track: "bg-red-500",
+      thumb: "bg-red-600 border-red-700",
+      focus: "ring-red-500",
+      reset: "text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20",
     },
     green: {
-      track: 'bg-green-500',
-      thumb: 'bg-green-600 border-green-700',
-      focus: 'ring-green-500',
-      reset: 'text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20',
+      track: "bg-green-500",
+      thumb: "bg-green-600 border-green-700",
+      focus: "ring-green-500",
+      reset: "text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20",
     },
     orange: {
-      track: 'bg-orange-500',
-      thumb: 'bg-orange-600 border-orange-700',
-      focus: 'ring-orange-500',
-      reset: 'text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-900/20',
+      track: "bg-orange-500",
+      thumb: "bg-orange-600 border-orange-700",
+      focus: "ring-orange-500",
+      reset: "text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-900/20",
     },
     purple: {
-      track: 'bg-purple-500',
-      thumb: 'bg-purple-600 border-purple-700',
-      focus: 'ring-purple-500',
-      reset: 'text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20',
+      track: "bg-purple-500",
+      thumb: "bg-purple-600 border-purple-700",
+      focus: "ring-purple-500",
+      reset: "text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20",
     },
     gray: {
-      track: 'bg-gray-500',
-      thumb: 'bg-gray-600 border-gray-700',
-      focus: 'ring-gray-500',
-      reset: 'text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-900/20',
+      track: "bg-gray-500",
+      thumb: "bg-gray-600 border-gray-700",
+      focus: "ring-gray-500",
+      reset: "text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-900/20",
     },
   };
 
@@ -125,9 +125,9 @@ export const AdjustmentSlider: React.FC<AdjustmentSliderProps> = ({
 
   // Size configurations
   const sizeConfig = {
-    sm: { height: 'h-4', thumb: 'w-4 h-4', track: 'h-1' },
-    md: { height: 'h-5', thumb: 'w-5 h-5', track: 'h-2' },
-    lg: { height: 'h-6', thumb: 'w-6 h-6', track: 'h-2.5' },
+    sm: { height: "h-4", thumb: "w-4 h-4", track: "h-1" },
+    md: { height: "h-5", thumb: "w-5 h-5", track: "h-2" },
+    lg: { height: "h-6", thumb: "w-6 h-6", track: "h-2.5" },
   };
 
   const config = sizeConfig[size];
@@ -149,13 +149,13 @@ export const AdjustmentSlider: React.FC<AdjustmentSliderProps> = ({
       if (formatValue) return formatValue(val);
       return `${val}${unit}`;
     },
-    [formatValue, unit]
+    [formatValue, unit],
   );
 
   // Handle slider interaction
   const handleSliderInteraction = useCallback(
     (clientX: number) => {
-      if (!trackRef.current || disabled || typeof clientX !== 'number') return;
+      if (!trackRef.current || disabled || typeof clientX !== "number") return;
 
       try {
         const rect = trackRef.current.getBoundingClientRect();
@@ -163,7 +163,7 @@ export const AdjustmentSlider: React.FC<AdjustmentSliderProps> = ({
 
         const progress = Math.max(
           0,
-          Math.min(1, (clientX - rect.left) / rect.width)
+          Math.min(1, (clientX - rect.left) / rect.width),
         );
         const newValue =
           Math.round((min + progress * (max - min)) / step) * step;
@@ -173,10 +173,10 @@ export const AdjustmentSlider: React.FC<AdjustmentSliderProps> = ({
           onChange(clampedValue);
         }
       } catch (error) {
-        console.warn('Error in slider interaction:', error);
+        console.warn("Error in slider interaction:", error);
       }
     },
-    [min, max, step, onChange, disabled]
+    [min, max, step, onChange, disabled],
   );
 
   // Mouse/touch event handlers
@@ -189,7 +189,7 @@ export const AdjustmentSlider: React.FC<AdjustmentSliderProps> = ({
       setDragStart({ x: event.clientX, value: safeValue });
       handleSliderInteraction(event.clientX);
     },
-    [disabled, safeValue, handleSliderInteraction]
+    [disabled, safeValue, handleSliderInteraction],
   );
 
   const handleMouseMove = useCallback(
@@ -197,7 +197,7 @@ export const AdjustmentSlider: React.FC<AdjustmentSliderProps> = ({
       if (!isDragging) return;
       handleSliderInteraction(event.clientX);
     },
-    [isDragging, handleSliderInteraction]
+    [isDragging, handleSliderInteraction],
   );
 
   const handleMouseUp = useCallback(() => {
@@ -210,11 +210,11 @@ export const AdjustmentSlider: React.FC<AdjustmentSliderProps> = ({
   // Set up mouse event listeners
   useEffect(() => {
     if (isDragging) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
       return () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
+        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseup", handleMouseUp);
       };
     }
   }, [isDragging, handleMouseMove, handleMouseUp]);
@@ -243,9 +243,9 @@ export const AdjustmentSlider: React.FC<AdjustmentSliderProps> = ({
   };
 
   const handleInputKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleInputSubmit();
-    } else if (e.key === 'Escape') {
+    } else if (e.key === "Escape") {
       setInputValue(value.toString());
       setIsEditing(false);
     }
@@ -349,7 +349,7 @@ export const AdjustmentSlider: React.FC<AdjustmentSliderProps> = ({
               relative w-full ${config.track}
               bg-gray-200 dark:bg-gray-700 rounded-full
               cursor-pointer
-              ${disabled ? 'cursor-not-allowed opacity-50' : ''}
+              ${disabled ? "cursor-not-allowed opacity-50" : ""}
             `}
             onMouseDown={handleMouseDown}
           >
@@ -380,7 +380,7 @@ export const AdjustmentSlider: React.FC<AdjustmentSliderProps> = ({
                 rounded-full border-2 shadow-lg
                 cursor-grab active:cursor-grabbing
                 focus:outline-none focus:ring-2 ${theme.focus} focus:ring-offset-2
-                ${disabled ? 'cursor-not-allowed' : ''}
+                ${disabled ? "cursor-not-allowed" : ""}
               `}
               style={{ left: `${Math.max(0, Math.min(100, percentage))}%` }}
               whileHover={!disabled ? { scale: 1.1 } : {}}
@@ -388,7 +388,7 @@ export const AdjustmentSlider: React.FC<AdjustmentSliderProps> = ({
               animate={{
                 scale: isDragging ? 1.2 : 1,
               }}
-              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
               tabIndex={disabled ? -1 : 0}
               role="slider"
               aria-valuemin={min}

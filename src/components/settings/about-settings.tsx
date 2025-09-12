@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from "react";
 import {
   Info,
   Github,
@@ -12,19 +12,19 @@ import {
   CheckCircle,
   AlertCircle,
   Clock,
-} from 'lucide-react';
-import { 
-  checkForUpdates, 
-  getCurrentVersion, 
-  formatVersion, 
-  getUpdateTypeColor, 
-  getUpdateTypeLabel, 
+} from "lucide-react";
+import {
+  checkForUpdates,
+  getCurrentVersion,
+  formatVersion,
+  getUpdateTypeColor,
+  getUpdateTypeLabel,
   getUpdateTypeIcon,
   formatRelativeTime,
   getReleaseNotesUrl,
   getDownloadUrl,
-  type VersionInfo 
-} from '@/lib/version-utils';
+  type VersionInfo,
+} from "@/lib/version-utils";
 
 export function AboutSettings() {
   // Version check state
@@ -47,21 +47,26 @@ export function AboutSettings() {
       setVersionInfo(result);
       setLastChecked(new Date());
     } catch (error) {
-      setUpdateError(error instanceof Error ? error.message : 'Failed to check for updates');
+      setUpdateError(
+        error instanceof Error ? error.message : "Failed to check for updates",
+      );
     } finally {
       setIsCheckingUpdate(false);
     }
   };
 
-  const appConfig = useMemo(() => ({
-    name: 'Azure Image Studio',
-    version: getCurrentVersion(),
-    description: 'AI-powered image generation and editing platform',
-    author: 'Hazem Ali',
-    github: 'https://github.com/DrHazemAli/azure-image-studio',
-    linkedin: 'https://linkedin.com/in/hazemali',
-    website: 'https://www.skytells.ai',
-  }), []);
+  const appConfig = useMemo(
+    () => ({
+      name: "Image Studio",
+      version: getCurrentVersion(),
+      description: "AI-powered image generation and editing platform",
+      author: "Hazem Ali",
+      github: "https://github.com/DrHazemAli/image-studio",
+      linkedin: "https://linkedin.com/in/drhazemali",
+      website: "https://www.skytells.ai",
+    }),
+    [],
+  );
 
   return (
     <div className="space-y-6">
@@ -148,7 +153,9 @@ export function AboutSettings() {
                 <span className="text-lg">
                   {getUpdateTypeIcon(versionInfo.updateType)}
                 </span>
-                <span className={`text-xs font-medium ${getUpdateTypeColor(versionInfo.updateType)}`}>
+                <span
+                  className={`text-xs font-medium ${getUpdateTypeColor(versionInfo.updateType)}`}
+                >
                   {getUpdateTypeLabel(versionInfo.updateType)}
                 </span>
               </div>
@@ -165,7 +172,8 @@ export function AboutSettings() {
                     Update Available
                   </div>
                   <div className="text-xs text-blue-700 dark:text-blue-300 mb-2">
-                    A new version is available with latest features and improvements.
+                    A new version is available with latest features and
+                    improvements.
                   </div>
                   <div className="flex items-center gap-2">
                     <a
@@ -267,7 +275,8 @@ export function AboutSettings() {
                 {appConfig.author}
               </h5>
               <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
-                Full-stack developer passionate about AI and modern web technologies
+                Full-stack developer passionate about AI and modern web
+                technologies
               </p>
               <div className="flex items-center gap-3">
                 <a

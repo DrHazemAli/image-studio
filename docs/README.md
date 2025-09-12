@@ -1,10 +1,11 @@
-# Azure Image Studio - Documentation
+# AI Image Studio - Documentation
 
 > 📚 **Documentation Moved**: The main documentation has been moved to the **[wiki/](../wiki/)** directory for better organization and maintenance.
 
 ## 📖 Where to Find Documentation
 
 ### 🎯 Main Documentation
+
 All current documentation is now located in the **[wiki/](../wiki/)** directory:
 
 - **[Wiki Home](../wiki/README.mdx)** - Main documentation hub
@@ -23,6 +24,7 @@ All current documentation is now located in the **[wiki/](../wiki/)** directory:
 - And many more guides...
 
 ### 📁 Legacy Documentation
+
 Legacy documentation remains available in the **[legacy/](legacy/)** folder for reference purposes.
 
 ---
@@ -33,9 +35,9 @@ Legacy documentation remains available in the **[legacy/](legacy/)** folder for 
 
 - **[Go to Wiki Documentation](../wiki/README.mdx)** - Main documentation hub
 - **[Legacy Documentation](legacy/)** - Historical documentation
-- **[GitHub Repository](https://github.com/DrHazemAli/azure-image-studio)** - Source code
-- **[GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues)** - Report bugs
-- **[GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)** - Community discussions
+- **[GitHub Repository](https://github.com/DrHazemAli/image-studio)** - Source code
+- **[GitHub Issues](https://github.com/DrHazemAli/image-studio/issues)** - Report bugs
+- **[GitHub Discussions](https://github.com/DrHazemAli/image-studio/discussions)** - Community discussions
 
 ---
 
@@ -44,4 +46,4 @@ Legacy documentation remains available in the **[legacy/](legacy/)** folder for 
 - **New Users**: Begin with the [Quick Start Guide](../wiki/quick-start-guide.mdx)
 - **Developers**: Start with the [Development Guide](../wiki/development-guide.mdx)
 
-Made with ❤️ by the Azure Image Studio community.
+Made with ❤️ by the AI Image Studio community.

@@ -3,7 +3,12 @@
  * Abstract base class for all asset providers (Unsplash, Pexels, etc.)
  */
 
-import { Asset, AssetSearchParams, AssetApiResponse, AssetProviderConfig } from '@/types/asset-store';
+import {
+  Asset,
+  AssetSearchParams,
+  AssetApiResponse,
+  AssetProviderConfig,
+} from "@/types/asset-store";
 
 export abstract class BaseAssetProvider {
   protected config: AssetProviderConfig;
@@ -34,7 +39,9 @@ export abstract class BaseAssetProvider {
   /**
    * Get featured/popular assets
    */
-  abstract getFeaturedAssets(params?: Omit<AssetSearchParams, 'query'>): Promise<AssetApiResponse>;
+  abstract getFeaturedAssets(
+    params?: Omit<AssetSearchParams, "query">,
+  ): Promise<AssetApiResponse>;
 
   /**
    * Get asset categories
@@ -59,14 +66,16 @@ export abstract class BaseAssetProvider {
   protected async makeRequest<T>(
     endpoint: string,
     params: Record<string, string | number> = {},
-    retries: number = 1
+    retries: number = 1,
   ): Promise<T> {
     if (!this.isEnabled()) {
-      throw new Error(`${this.getProviderName()} provider is not enabled or configured`);
+      throw new Error(
+        `${this.getProviderName()} provider is not enabled or configured`,
+      );
     }
 
     const url = new URL(endpoint, this.baseUrl);
-    
+
     // Add query parameters
     Object.entries(params).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
@@ -77,44 +86,55 @@ export abstract class BaseAssetProvider {
     for (let attempt = 0; attempt <= retries; attempt++) {
       try {
         const response = await fetch(url.toString(), {
-          method: 'GET',
+          method: "GET",
           headers: {
-            'Authorization': this.getAuthHeader(),
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            Authorization: this.getAuthHeader(),
+            "User-Agent":
+              "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
           },
         });
 
         if (!response.ok) {
           const errorText = await response.text();
-          
+
           // Check if this is a retryable error
           if (this.isRetryableError(response.status) && attempt < retries) {
             const delay = Math.pow(2, attempt) * 1000; // Exponential backoff
-            console.warn(`${this.getProviderName()} API error ${response.status}, retrying in ${delay}ms...`);
-            await new Promise(resolve => setTimeout(resolve, delay));
+            console.warn(
+              `${this.getProviderName()} API error ${response.status}, retrying in ${delay}ms...`,
+            );
+            await new Promise((resolve) => setTimeout(resolve, delay));
             continue;
           }
-          
-          throw new Error(`API request failed: ${response.status} ${errorText}`);
+
+          throw new Error(
+            `API request failed: ${response.status} ${errorText}`,
+          );
         }
 
         return response.json();
       } catch (error) {
         // Handle network errors and timeouts
-        if (error instanceof Error && 
-            (error.name === 'AbortError' || error.message.includes('timeout')) && 
-            attempt < retries) {
+        if (
+          error instanceof Error &&
+          (error.name === "AbortError" || error.message.includes("timeout")) &&
+          attempt < retries
+        ) {
           const delay = Math.pow(2, attempt) * 1000;
-          console.warn(`${this.getProviderName()} request timeout, retrying in ${delay}ms...`);
-          await new Promise(resolve => setTimeout(resolve, delay));
+          console.warn(
+            `${this.getProviderName()} request timeout, retrying in ${delay}ms...`,
+          );
+          await new Promise((resolve) => setTimeout(resolve, delay));
           continue;
         }
-        
+
         throw error;
       }
     }
 
-    throw new Error(`${this.getProviderName()} API request failed after ${retries + 1} attempts`);
+    throw new Error(
+      `${this.getProviderName()} API request failed after ${retries + 1} attempts`,
+    );
   }
 
   /**
@@ -141,14 +161,14 @@ export abstract class BaseAssetProvider {
   protected transformResponse(
     apiResponse: unknown,
     currentPage: number,
-    perPage: number
+    perPage: number,
   ): AssetApiResponse {
     // This will be implemented by each provider
     // Suppress unused parameter warnings for abstract method
     void apiResponse;
     void currentPage;
     void perPage;
-    throw new Error('transformResponse must be implemented by subclass');
+    throw new Error("transformResponse must be implemented by subclass");
   }
 
   /**
@@ -157,7 +177,7 @@ export abstract class BaseAssetProvider {
   protected async handleRateLimit(): Promise<void> {
     // Simple rate limiting - in production, you'd want more sophisticated handling
     const delay = 1000 / this.config.rateLimit; // Convert requests per second to delay
-    await new Promise(resolve => setTimeout(resolve, delay));
+    await new Promise((resolve) => setTimeout(resolve, delay));
   }
 
   /**
@@ -166,7 +186,7 @@ export abstract class BaseAssetProvider {
   protected getErrorMessage(error: unknown): string {
     if (error instanceof Error) {
       // Handle specific HTTP status codes
-      if (error.message.includes('API request failed:')) {
+      if (error.message.includes("API request failed:")) {
         const statusMatch = error.message.match(/API request failed: (\d+)/);
         if (statusMatch) {
           const status = parseInt(statusMatch[1]);
@@ -185,7 +205,7 @@ export abstract class BaseAssetProvider {
               return `${this.getProviderName()} service temporarily unavailable. Please try again later`;
             case 522:
               const providerName = this.getProviderName();
-              if (providerName.toLowerCase().includes('pexels')) {
+              if (providerName.toLowerCase().includes("pexels")) {
                 return `${providerName} connection timeout. This usually indicates server issues or maintenance. Please try again in a few minutes. If the issue persists, check Pexels status page.`;
               }
               return `${providerName} connection timeout. This usually indicates server issues or maintenance. Please try again in a few minutes.`;
@@ -196,6 +216,6 @@ export abstract class BaseAssetProvider {
       }
       return error.message;
     }
-    return 'Unknown error occurred';
+    return "Unknown error occurred";
   }
 }

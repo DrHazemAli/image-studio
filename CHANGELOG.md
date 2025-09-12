@@ -1,11 +1,11 @@
 # Changelog
 
-All notable changes to Azure Image Studio will be documented in this file.
+All notable changes to AI Image Studio will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.2] - 2025-09-10
+## [1.0.3] - 2025-09-10
 
 ### Added
 
@@ -72,9 +72,9 @@ For questions about specific versions or migration issues:
 - **Documentation**: Check the [Getting Started Guide](docs/getting-started.md)
 - **Configuration**: See the [Configuration Guide](docs/configuration.md)
 - **User Guide**: Complete [User Guide](docs/user-guide.md)
-- **Issues**: Report issues on [GitHub](https://github.com/DrHazemAli/azure-image-studio/issues)
-- **Discussions**: Join discussions on [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
-- **LinkedIn**: Contact [LinkedIn](https://www.linkedin.com/in/hazemali/)
+- **Issues**: Report issues on [GitHub](https://github.com/DrHazemAli/image-studio/issues)
+- **Discussions**: Join discussions on [GitHub Discussions](https://github.com/DrHazemAli/image-studio/discussions)
+- **LinkedIn**: Contact [LinkedIn](https://www.linkedin.com/in/drhazemali/)
 
 ---
 

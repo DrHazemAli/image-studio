@@ -1,8 +1,8 @@
-# Azure Image Studio - Complete Tools Reference Guide
+# AI Image Studio - Complete Tools Reference Guide
 
 **Author:** Hazem Ali, Microsoft AI MVP  
-**Repository:** [https://github.com/DrHazemAli/azure-image-studio](https://github.com/DrHazemAli/azure-image-studio)  
-**LinkedIn:** [https://linkedin.com/in/drhazemali](https://linkedin.com/in/DrHazemAli)  
+**Repository:** [https://github.com/DrHazemAli/image-studio](https://github.com/DrHazemAli/image-studio)  
+**LinkedIn:** [https://linkedin.com/in/drhazemali](https://linkedin.com/in/DrHazemAli)
 
 ---
 
@@ -25,7 +25,7 @@
 
 ## Tool Overview
 
-Azure Image Studio features a comprehensive toolkit of 20 specialized tools designed for professional image creation and editing. These tools are organized into logical categories and feature seamless integration with Azure AI services for advanced image generation capabilities.
+AI Image Studio features a comprehensive toolkit of 20 specialized tools designed for professional image creation and editing. These tools are organized into logical categories and feature seamless integration with Azure AI services for advanced image generation capabilities.
 
 ### Tool Categories
 
@@ -46,15 +46,18 @@ Azure Image Studio features a comprehensive toolkit of 20 specialized tools desi
 **Activation:** `Cmd+1` | Toolbar Click | Tools Menu
 
 #### Overview
+
 The primary selection tool for interacting with objects on the canvas. Essential for object manipulation, property editing, and multi-object operations.
 
 #### Tool Settings
+
 - **Selection Mode**: Individual or Group selection
 - **Smart Selection**: Automatic object detection
 - **Bounding Box Display**: Visual selection feedback
 - **Multi-select**: Hold Shift to select multiple objects
 
 #### Usage Instructions
+
 1. Click the Select tool in the toolbar or press `Cmd+1`
 2. Click on any object to select it
 3. Hold Shift and click additional objects for multi-selection
@@ -62,24 +65,28 @@ The primary selection tool for interacting with objects on the canvas. Essential
 5. Use bounding box handles to resize selected objects
 
 #### Advanced Techniques
+
 - **Precision Selection**: Zoom in for pixel-perfect selections
 - **Selection Locking**: Lock selections to prevent accidental deselection
 - **Group Operations**: Apply transformations to multiple objects simultaneously
 - **Layer Selection**: Double-click to select through layers
 
 #### Integration
+
 - Works with all transform tools for object manipulation
 - Integrates with property panels for object editing
 - Essential for layer management operations
 - Required for copy/paste operations
 
 #### Troubleshooting
+
 - **Issue**: Can't select small objects
   - **Solution**: Increase zoom level or use selection rectangle
 - **Issue**: Accidental multi-selection
   - **Solution**: Click empty area to clear selection, then re-select
 
 #### Examples
+
 - **Basic Selection**: Single-click to select an image or text object
 - **Multi-Object Transform**: Select multiple shapes to resize them together
 - **Layer Navigation**: Select objects across different layers for complex compositions
@@ -91,15 +98,18 @@ The primary selection tool for interacting with objects on the canvas. Essential
 **Activation:** `Cmd+M` | Toolbar Click | Tools Menu
 
 #### Overview
+
 Dedicated tool for moving objects across the canvas with precision. Provides visual feedback and snap-to-grid functionality for accurate positioning.
 
 #### Tool Settings
+
 - **Grid Snapping**: Snap to invisible grid for alignment
 - **Object Snapping**: Snap to other objects and guides
 - **Movement Constraints**: Lock to horizontal/vertical axes
 - **Distance Indicators**: Show pixel distances during movement
 
 #### Usage Instructions
+
 1. Select the Move tool (`Cmd+M`)
 2. Click and drag any object to reposition it
 3. Hold Shift while dragging to constrain movement to axes
@@ -107,24 +117,28 @@ Dedicated tool for moving objects across the canvas with precision. Provides vis
 5. Release to complete the move operation
 
 #### Advanced Techniques
+
 - **Nudging**: Use arrow keys for 1-pixel movements
 - **Shift+Arrow**: Move objects in 10-pixel increments
 - **Alt+Drag**: Duplicate while moving (creates copy)
 - **Smart Guides**: Visual alignment helpers appear automatically
 
 #### Integration
+
 - Works seamlessly with all selectable objects
 - Integrates with undo/redo system for movement history
 - Supports layer-aware movement operations
 - Connects to snap settings in preferences
 
 #### Troubleshooting
+
 - **Issue**: Objects jumping to unexpected positions
   - **Solution**: Disable snap-to-grid or adjust snap sensitivity
 - **Issue**: Can't move object
   - **Solution**: Check if object/layer is locked
 
 #### Examples
+
 - **Layout Adjustment**: Move text elements to perfect positions in designs
 - **Object Alignment**: Use smart guides to align multiple objects
 - **Composition Refinement**: Fine-tune object positions in complex layouts
@@ -136,15 +150,18 @@ Dedicated tool for moving objects across the canvas with precision. Provides vis
 **Activation:** `Cmd+H` | Toolbar Click | Hold Spacebar (temporary)
 
 #### Overview
+
 Navigation tool for panning around the canvas when zoomed in. Essential for working with large canvases or detailed work at high zoom levels.
 
 #### Tool Settings
+
 - **Pan Speed**: Adjust movement sensitivity
 - **Momentum Scrolling**: Smooth deceleration after panning
 - **Touch Support**: Multi-touch gesture compatibility
 - **Auto-Switch**: Automatically activate when dragging with spacebar
 
 #### Usage Instructions
+
 1. Select Hand tool (`Cmd+H`) or hold Spacebar
 2. Click and drag to pan the canvas view
 3. Use scroll wheel to zoom while panning
@@ -152,24 +169,28 @@ Navigation tool for panning around the canvas when zoomed in. Essential for work
 5. Release Spacebar to return to previous tool
 
 #### Advanced Techniques
+
 - **One-Hand Navigation**: Hold spacebar with left hand while drawing
 - **Precision Panning**: Small movements for fine positioning
 - **Zoom + Pan**: Combine with scroll wheel for smooth navigation
 - **Touch Gestures**: Use pinch-to-zoom on touch devices
 
 #### Integration
+
 - Works at any zoom level for smooth navigation
 - Maintains current tool state when using spacebar shortcut
 - Integrates with zoom controls for unified navigation
 - Supports multi-touch trackpad gestures
 
 #### Troubleshooting
+
 - **Issue**: Panning feels sluggish or laggy
   - **Solution**: Reduce canvas quality or disable smooth scrolling
 - **Issue**: Can't pan with spacebar
   - **Solution**: Ensure no text input fields are focused
 
 #### Examples
+
 - **Detail Work**: Pan around while working on intricate designs
 - **Large Canvas Navigation**: Move across high-resolution images efficiently
 - **Quick Overview**: Double-click to see entire canvas, then pan to specific areas
@@ -181,15 +202,18 @@ Navigation tool for panning around the canvas when zoomed in. Essential for work
 **Activation:** `Cmd+2` | Toolbar Click | Scroll Wheel | Pinch Gestures
 
 #### Overview
+
 Dedicated zoom tool for magnifying specific areas of the canvas. Provides precise zoom control with multiple interaction methods.
 
 #### Tool Settings
+
 - **Zoom Range**: 10% to 400% magnification
 - **Zoom Step**: 25% increments (configurable)
 - **Zoom Mode**: Click to zoom in, Alt+Click to zoom out
 - **Fit Options**: Fit to screen, fit to selection, actual size
 
 #### Usage Instructions
+
 1. Select Zoom tool (`Cmd+2`)
 2. Click to zoom in on specific point
 3. Alt+Click to zoom out
@@ -197,24 +221,28 @@ Dedicated zoom tool for magnifying specific areas of the canvas. Provides precis
 5. Use scroll wheel for smooth zoom control
 
 #### Advanced Techniques
+
 - **Rectangle Zoom**: Drag to select area to zoom into
 - **Quick Zoom Levels**: Number keys (1-9) for preset zoom levels
 - **Zoom to Selection**: Fit selected objects to view
 - **Actual Size**: `Cmd+0` to view at 100% scale
 
 #### Integration
+
 - Maintains zoom level across tool switches
 - Integrates with Hand tool for zoom+pan navigation
 - Works with all tools at any zoom level
 - Saves zoom preferences per project
 
 #### Troubleshooting
+
 - **Issue**: Zoom feels too sensitive
   - **Solution**: Adjust zoom step in preferences
 - **Issue**: Can't zoom past certain level
   - **Solution**: Check zoom limits in settings
 
 #### Examples
+
 - **Detail Editing**: Zoom to 200-400% for pixel-perfect work
 - **Overview Editing**: Zoom out to see entire composition
 - **Precision Work**: Rectangle zoom to specific areas needing attention
@@ -228,9 +256,11 @@ Dedicated zoom tool for magnifying specific areas of the canvas. Provides precis
 **Activation:** `Cmd+G` | Toolbar Click (Gradient Style) | AI Menu
 
 #### Overview
+
 Primary AI image generation tool powered by Azure OpenAI services. Creates images from text prompts using advanced DALL-E and other Azure AI models.
 
 #### Tool Settings
+
 - **Model Selection**: Choose from available Azure AI models
 - **Image Size**: 1024x1024, 1792x1024, 1024x1792 formats
 - **Quality**: Standard or HD generation
@@ -238,6 +268,7 @@ Primary AI image generation tool powered by Azure OpenAI services. Creates image
 - **Batch Generation**: Generate multiple variations
 
 #### Usage Instructions
+
 1. Activate Generate tool (`Cmd+G`)
 2. Enter descriptive text prompt in the generation panel
 3. Select desired image size and quality settings
@@ -245,6 +276,7 @@ Primary AI image generation tool powered by Azure OpenAI services. Creates image
 5. Click Generate to create image
 
 #### Advanced Techniques
+
 - **Prompt Engineering**: Use detailed, specific descriptions
 - **Style Modifiers**: Add style keywords like "photorealistic", "abstract"
 - **Composition Control**: Specify camera angles, lighting, mood
@@ -252,12 +284,14 @@ Primary AI image generation tool powered by Azure OpenAI services. Creates image
 - **Batch Generation**: Create multiple variations for selection
 
 #### Integration
+
 - Generated images appear directly on canvas
 - Integrates with history system for generation tracking
 - Works with all editing tools for post-generation refinement
 - Connects to Azure AI services with automatic model management
 
 #### Troubleshooting
+
 - **Issue**: Generation fails or times out
   - **Solution**: Check Azure AI configuration and network connection
 - **Issue**: Poor quality results
@@ -266,6 +300,7 @@ Primary AI image generation tool powered by Azure OpenAI services. Creates image
   - **Solution**: Use more specific prompts and negative prompts
 
 #### Examples
+
 - **Concept Art**: "Futuristic cityscape at sunset with flying cars, cyberpunk style"
 - **Product Mockups**: "Professional product photo of wireless headphones on white background"
 - **Artistic Images**: "Abstract watercolor painting of mountains and lakes, vibrant colors"
@@ -277,9 +312,11 @@ Primary AI image generation tool powered by Azure OpenAI services. Creates image
 **Activation:** `Cmd+E` | Toolbar Click (Gradient Style) | AI Menu
 
 #### Overview
+
 AI-powered image editing tool for making intelligent modifications to existing images. Uses Azure AI models to understand and modify image content contextually.
 
 #### Tool Settings
+
 - **Edit Mode**: Inpainting, outpainting, or style transfer
 - **Brush Size**: Adjustable selection brush for edit areas
 - **Edit Strength**: Control intensity of AI modifications
@@ -287,6 +324,7 @@ AI-powered image editing tool for making intelligent modifications to existing i
 - **Model Selection**: Choose appropriate AI model for edit type
 
 #### Usage Instructions
+
 1. Select an image on the canvas
 2. Activate Edit tool (`Cmd+E`)
 3. Use brush to mark areas to edit
@@ -294,6 +332,7 @@ AI-powered image editing tool for making intelligent modifications to existing i
 5. Configure edit settings and apply changes
 
 #### Advanced Techniques
+
 - **Selective Editing**: Use precise brush strokes for targeted changes
 - **Style Transfer**: Change artistic style while preserving content
 - **Object Replacement**: Replace objects with AI-generated alternatives
@@ -301,12 +340,14 @@ AI-powered image editing tool for making intelligent modifications to existing i
 - **Color Correction**: AI-powered color and lighting adjustments
 
 #### Integration
+
 - Works with existing canvas images and generated content
 - Integrates with selection tools for precise edit areas
 - Maintains edit history for iterative improvements
 - Connects to brush tools for manual touch-ups
 
 #### Troubleshooting
+
 - **Issue**: Edits don't match expectations
   - **Solution**: Use more specific prompts and adjust edit strength
 - **Issue**: Edit boundaries too harsh
@@ -315,6 +356,7 @@ AI-powered image editing tool for making intelligent modifications to existing i
   - **Solution**: Check image format and Azure AI service status
 
 #### Examples
+
 - **Object Removal**: Remove unwanted elements from photos
 - **Style Changes**: Convert photograph to painting style
 - **Color Adjustments**: Change object colors while maintaining realism
@@ -326,9 +368,11 @@ AI-powered image editing tool for making intelligent modifications to existing i
 **Activation:** `Cmd+I` | Toolbar Click (Gradient Style) | AI Menu
 
 #### Overview
+
 Specialized AI inpainting tool for filling in or replacing specific areas of images. Uses advanced AI models to generate contextually appropriate content for selected regions.
 
 #### Tool Settings
+
 - **Inpaint Brush**: Variable size brush for selecting areas
 - **Feathering**: Soft edge blending for seamless results
 - **Content Awareness**: AI understanding of surrounding context
@@ -336,6 +380,7 @@ Specialized AI inpainting tool for filling in or replacing specific areas of ima
 - **Multiple Iterations**: Generate several options for comparison
 
 #### Usage Instructions
+
 1. Select an image to edit
 2. Activate Inpaint tool (`Cmd+I`)
 3. Paint over areas to inpaint with the brush
@@ -343,6 +388,7 @@ Specialized AI inpainting tool for filling in or replacing specific areas of ima
 5. Execute inpainting operation and review results
 
 #### Advanced Techniques
+
 - **Precise Masking**: Use different brush sizes for detailed selection
 - **Context Prompting**: Describe both what to remove and what to add
 - **Multiple Attempts**: Generate several variations for best results
@@ -350,12 +396,14 @@ Specialized AI inpainting tool for filling in or replacing specific areas of ima
 - **Progressive Inpainting**: Work in small sections for complex edits
 
 #### Integration
+
 - Works with all image formats and sizes on canvas
 - Integrates with brush tools for mask creation and refinement
 - Maintains inpainting history for comparison and undo operations
 - Connects to Azure AI models with automatic optimization
 
 #### Troubleshooting
+
 - **Issue**: Inpainted areas look artificial
   - **Solution**: Refine mask edges and use more detailed context prompts
 - **Issue**: Color/lighting doesn't match
@@ -364,6 +412,7 @@ Specialized AI inpainting tool for filling in or replacing specific areas of ima
   - **Solution**: Normal - inpainting often requires iteration for best results
 
 #### Examples
+
 - **Object Removal**: Remove people or objects from backgrounds
 - **Damage Repair**: Fix scratches, tears, or missing parts in images
 - **Creative Additions**: Add new elements that blend naturally with existing content
@@ -375,9 +424,11 @@ Specialized AI inpainting tool for filling in or replacing specific areas of ima
 **Activation:** `Cmd+O` | Toolbar Click (Gradient Style) | AI Menu
 
 #### Overview
+
 AI outpainting tool for extending images beyond their current boundaries. Creates new content that seamlessly continues the existing image in any direction.
 
 #### Tool Settings
+
 - **Extension Direction**: Choose sides to extend (top, bottom, left, right)
 - **Extension Amount**: Specify pixels or percentage to extend
 - **Seamless Blending**: Ensure smooth transitions at boundaries
@@ -385,6 +436,7 @@ AI outpainting tool for extending images beyond their current boundaries. Create
 - **Aspect Ratio Options**: Maintain or modify image proportions
 
 #### Usage Instructions
+
 1. Select an image to extend
 2. Activate Outpaint tool (`Cmd+O`)
 3. Choose extension direction(s) and amount
@@ -392,6 +444,7 @@ AI outpainting tool for extending images beyond their current boundaries. Create
 5. Execute outpainting and refine as needed
 
 #### Advanced Techniques
+
 - **Multi-Directional Extension**: Extend in multiple directions simultaneously
 - **Contextual Prompting**: Describe expected content in extended areas
 - **Iterative Extension**: Extend in stages for large expansions
@@ -399,12 +452,14 @@ AI outpainting tool for extending images beyond their current boundaries. Create
 - **Composition Awareness**: Consider overall composition balance
 
 #### Integration
+
 - Automatically resizes canvas to accommodate extensions
 - Works with any image format and maintains quality
 - Integrates with crop tool for post-outpainting adjustments
 - Maintains layer structure during extension operations
 
 #### Troubleshooting
+
 - **Issue**: Extended areas don't match original style
   - **Solution**: Use more specific style descriptions in prompts
 - **Issue**: Visible seams at extension boundaries
@@ -413,6 +468,7 @@ AI outpainting tool for extending images beyond their current boundaries. Create
   - **Solution**: Provide more detailed context about surrounding content
 
 #### Examples
+
 - **Landscape Extension**: Extend scenic photos to create panoramic views
 - **Portrait Backgrounds**: Extend portrait backgrounds for different compositions
 - **Artwork Expansion**: Extend paintings or digital art for larger formats
@@ -426,9 +482,11 @@ AI outpainting tool for extending images beyond their current boundaries. Create
 **Activation:** `Cmd+B` | Toolbar Click | Drawing Menu
 
 #### Overview
+
 Professional digital brush tool for freehand drawing and painting. Features pressure sensitivity, multiple brush types, and advanced blending options.
 
 #### Tool Settings
+
 - **Brush Size**: 1-100px with pressure sensitivity support
 - **Brush Color**: Full color picker with opacity control
 - **Brush Type**: Round, square, textured, and custom brushes
@@ -437,6 +495,7 @@ Professional digital brush tool for freehand drawing and painting. Features pres
 - **Flow Rate**: Controls paint application density
 
 #### Usage Instructions
+
 1. Select Brush tool (`Cmd+B`)
 2. Choose brush size and color from options panel
 3. Adjust opacity and blending mode as needed
@@ -444,6 +503,7 @@ Professional digital brush tool for freehand drawing and painting. Features pres
 5. Use bracket keys `[` `]` to adjust size while drawing
 
 #### Advanced Techniques
+
 - **Pressure Sensitivity**: Use graphics tablet for variable line weights
 - **Color Mixing**: Use low opacity for smooth color blending
 - **Custom Brushes**: Create and save custom brush presets
@@ -451,12 +511,14 @@ Professional digital brush tool for freehand drawing and painting. Features pres
 - **Mask Painting**: Paint on layer masks for selective effects
 
 #### Integration
+
 - Works on any canvas layer including image layers
 - Integrates with color picker for sampling colors while painting
 - Connects to tablet pressure sensitivity and tilt controls
 - Works with selection tools for confined painting areas
 
 #### Troubleshooting
+
 - **Issue**: Brush strokes appear jaggy or pixelated
   - **Solution**: Increase brush smoothing or use higher resolution canvas
 - **Issue**: Colors not blending as expected
@@ -465,6 +527,7 @@ Professional digital brush tool for freehand drawing and painting. Features pres
   - **Solution**: Ensure tablet drivers are installed and configured
 
 #### Examples
+
 - **Digital Painting**: Create original artwork with natural brush strokes
 - **Photo Retouching**: Paint corrections and enhancements on separate layers
 - **Mask Creation**: Paint precise selection masks for complex selections
@@ -476,9 +539,11 @@ Professional digital brush tool for freehand drawing and painting. Features pres
 **Activation:** `Shift+E` | Toolbar Click | Drawing Menu
 
 #### Overview
+
 Digital eraser tool for removing pixels or making areas transparent. Works with layers and supports various erasing modes for different effects.
 
 #### Tool Settings
+
 - **Eraser Size**: Adjustable from 1-100px
 - **Eraser Mode**: Pixel eraser or layer transparency
 - **Hardness**: Control edge softness (0-100%)
@@ -486,6 +551,7 @@ Digital eraser tool for removing pixels or making areas transparent. Works with 
 - **Background Eraser**: Automatically erase similar colors
 
 #### Usage Instructions
+
 1. Select Eraser tool (`Shift+E`)
 2. Choose eraser size and hardness
 3. Click and drag to erase areas
@@ -493,6 +559,7 @@ Digital eraser tool for removing pixels or making areas transparent. Works with 
 5. Hold Shift while dragging for straight line erasing
 
 #### Advanced Techniques
+
 - **Soft Erasing**: Low hardness for gradual transparency effects
 - **Precision Erasing**: Small brush size with high zoom for detail work
 - **Background Erasing**: Automatically remove backgrounds based on color
@@ -500,12 +567,14 @@ Digital eraser tool for removing pixels or making areas transparent. Works with 
 - **Mask Erasing**: Edit layer masks for non-destructive corrections
 
 #### Integration
+
 - Works with all layer types and blending modes
 - Integrates with tablet pressure for variable erasing strength
 - Connects to selection tools for confined erasing areas
 - Maintains erasing history for precise undo operations
 
 #### Troubleshooting
+
 - **Issue**: Erasing affects wrong layer
   - **Solution**: Ensure correct layer is selected in layers panel
 - **Issue**: Can't erase certain areas
@@ -514,6 +583,7 @@ Digital eraser tool for removing pixels or making areas transparent. Works with 
   - **Solution**: Adjust pressure sensitivity settings
 
 #### Examples
+
 - **Background Removal**: Erase backgrounds for transparent images
 - **Detail Refinement**: Remove small imperfections from digital artwork
 - **Creative Effects**: Create artistic transparency effects in compositions
@@ -527,9 +597,11 @@ Digital eraser tool for removing pixels or making areas transparent. Works with 
 **Activation:** `Cmd+Shift+T` | Toolbar Click | Content Menu
 
 #### Overview
+
 Comprehensive text tool for adding typography to designs. Features extensive font control, formatting options, and text effects for professional typography work.
 
 #### Tool Settings
+
 - **Font Family**: System fonts plus web fonts library
 - **Font Size**: Scalable from 8px to 500px
 - **Font Weight**: Thin to black weight variations
@@ -539,6 +611,7 @@ Comprehensive text tool for adding typography to designs. Features extensive fon
 - **Character Spacing**: Letter spacing and kerning controls
 
 #### Usage Instructions
+
 1. Select Text tool (`Cmd+Shift+T`)
 2. Click on canvas where text should appear
 3. Type text content directly
@@ -546,6 +619,7 @@ Comprehensive text tool for adding typography to designs. Features extensive fon
 5. Press Escape or select another tool to finish editing
 
 #### Advanced Techniques
+
 - **Font Pairing**: Combine multiple fonts for hierarchy
 - **Text on Path**: Curve text along shapes or paths
 - **Text Effects**: Add shadows, outlines, and gradients
@@ -553,12 +627,14 @@ Comprehensive text tool for adding typography to designs. Features extensive fon
 - **Multi-line Text**: Create paragraph text with automatic wrapping
 
 #### Integration
+
 - Text becomes editable object that works with selection tools
 - Integrates with transform tools for rotation and scaling
 - Works with layer system for text layer management
 - Connects to color tools for advanced text coloring
 
 #### Troubleshooting
+
 - **Issue**: Text appears pixelated when scaled
   - **Solution**: Use vector text mode or higher resolution canvas
 - **Issue**: Font not displaying correctly
@@ -567,6 +643,7 @@ Comprehensive text tool for adding typography to designs. Features extensive fon
   - **Solution**: Double-click text object to enter edit mode
 
 #### Examples
+
 - **Logo Design**: Create branded text elements with custom styling
 - **Typography Layouts**: Design text-heavy layouts with proper hierarchy
 - **Artistic Text**: Create decorative text effects for creative projects
@@ -578,9 +655,11 @@ Comprehensive text tool for adding typography to designs. Features extensive fon
 **Activation:** `Cmd+U` | Toolbar Click | Content Menu
 
 #### Overview
+
 Vector shape creation tool with extensive library of geometric and custom shapes. Creates scalable vector objects with full styling control.
 
 #### Tool Settings
+
 - **Shape Library**: Rectangle, circle, polygon, star, arrows, and more
 - **Fill Options**: Solid colors, gradients, patterns, or no fill
 - **Stroke Options**: Color, width, style (solid, dashed, dotted)
@@ -589,6 +668,7 @@ Vector shape creation tool with extensive library of geometric and custom shapes
 - **Custom Shapes**: Import and create custom shape libraries
 
 #### Usage Instructions
+
 1. Select Shape tool (`Cmd+U`)
 2. Choose shape type from shapes panel
 3. Click and drag to create shape on canvas
@@ -596,6 +676,7 @@ Vector shape creation tool with extensive library of geometric and custom shapes
 5. Use shape properties panel to adjust fill and stroke
 
 #### Advanced Techniques
+
 - **Perfect Proportions**: Hold Shift while creating for circles and squares
 - **Shape Combining**: Use boolean operations to combine shapes
 - **Gradient Fills**: Create complex gradient effects within shapes
@@ -603,12 +684,14 @@ Vector shape creation tool with extensive library of geometric and custom shapes
 - **Shape Libraries**: Organize frequently used shapes in custom libraries
 
 #### Integration
+
 - Shapes work with all selection and transform tools
 - Integrates with color tools for advanced styling
 - Compatible with layer system for complex compositions
 - Works with alignment tools for precise positioning
 
 #### Troubleshooting
+
 - **Issue**: Shapes appear pixelated when scaled
   - **Solution**: Ensure vector mode is enabled for shape layer
 - **Issue**: Can't modify shape after creation
@@ -617,6 +700,7 @@ Vector shape creation tool with extensive library of geometric and custom shapes
   - **Solution**: Check GPU acceleration settings
 
 #### Examples
+
 - **Interface Design**: Create buttons, icons, and UI elements
 - **Geometric Art**: Build complex compositions from basic shapes
 - **Infographics**: Design charts and diagrams with precise shapes
@@ -630,9 +714,11 @@ Vector shape creation tool with extensive library of geometric and custom shapes
 **Activation:** `Cmd+4` | Toolbar Click | Transform Menu
 
 #### Overview
+
 Professional crop tool for trimming and resizing images with precision. Features aspect ratio constraints, composition guides, and non-destructive cropping options.
 
 #### Tool Settings
+
 - **Aspect Ratio**: Free, square, 4:3, 16:9, and custom ratios
 - **Crop Guides**: Rule of thirds, golden ratio, and grid overlays
 - **Crop Mode**: Destructive or non-destructive cropping
@@ -640,6 +726,7 @@ Professional crop tool for trimming and resizing images with precision. Features
 - **Content-Aware Fill**: AI-powered crop extension
 
 #### Usage Instructions
+
 1. Select image to crop
 2. Activate Crop tool (`Cmd+4`)
 3. Drag crop handles to define crop area
@@ -647,6 +734,7 @@ Professional crop tool for trimming and resizing images with precision. Features
 5. Press Enter to apply crop or Escape to cancel
 
 #### Advanced Techniques
+
 - **Composition Cropping**: Use rule of thirds guides for better compositions
 - **Aspect Ratio Locking**: Maintain specific ratios for consistent outputs
 - **Rotational Cropping**: Straighten horizons while cropping
@@ -654,12 +742,14 @@ Professional crop tool for trimming and resizing images with precision. Features
 - **Smart Cropping**: AI-assisted crop suggestions for optimal composition
 
 #### Integration
+
 - Works with any image layer or canvas content
 - Integrates with undo system for crop history
 - Maintains original image data for non-destructive workflows
 - Connects to export system for various output formats
 
 #### Troubleshooting
+
 - **Issue**: Crop handles not visible or responsive
   - **Solution**: Ensure image layer is selected and unlocked
 - **Issue**: Aspect ratio constraints too restrictive
@@ -668,6 +758,7 @@ Professional crop tool for trimming and resizing images with precision. Features
   - **Solution**: Use non-destructive cropping to maintain original quality
 
 #### Examples
+
 - **Photo Editing**: Remove unwanted areas and improve composition
 - **Social Media**: Crop images to specific platform requirements
 - **Print Preparation**: Crop to exact print dimensions with proper ratios
@@ -679,9 +770,11 @@ Professional crop tool for trimming and resizing images with precision. Features
 **Activation:** `Cmd+T` | Toolbar Click | Transform Menu
 
 #### Overview
+
 Comprehensive transformation tool for scaling, rotating, skewing, and distorting objects. Provides precise control over object geometry with numerical input options.
 
 #### Tool Settings
+
 - **Transform Modes**: Scale, rotate, skew, distort, and perspective
 - **Constraint Options**: Maintain aspect ratio, center scaling
 - **Numerical Input**: Exact values for precise transformations
@@ -690,6 +783,7 @@ Comprehensive transformation tool for scaling, rotating, skewing, and distorting
 - **Free Transform**: Combined mode for all transformation types
 
 #### Usage Instructions
+
 1. Select object to transform
 2. Activate Transform tool (`Cmd+T`)
 3. Drag corner handles to scale proportionally
@@ -698,6 +792,7 @@ Comprehensive transformation tool for scaling, rotating, skewing, and distorting
 6. Press Enter to apply or Escape to cancel
 
 #### Advanced Techniques
+
 - **Perspective Correction**: Fix perspective distortion in photos
 - **Precise Rotation**: Use numerical input for exact degree rotation
 - **Custom Pivot Points**: Move transform origin for specialized rotations
@@ -705,12 +800,14 @@ Comprehensive transformation tool for scaling, rotating, skewing, and distorting
 - **Transform Presets**: Save and reuse common transformation settings
 
 #### Integration
+
 - Works with all selectable objects including text and shapes
 - Integrates with smart guides for alignment during transformation
 - Maintains transform history for step-by-step undo operations
 - Works with multi-selection for batch transformations
 
 #### Troubleshooting
+
 - **Issue**: Transform handles not appearing
   - **Solution**: Ensure object is selected and layer is not locked
 - **Issue**: Transformations causing quality loss
@@ -719,6 +816,7 @@ Comprehensive transformation tool for scaling, rotating, skewing, and distorting
   - **Solution**: Hold Shift while dragging corner handles
 
 #### Examples
+
 - **Logo Scaling**: Resize brand elements maintaining proportions
 - **Perspective Correction**: Fix architectural photos with converging lines
 - **Creative Distortion**: Apply artistic transformations for special effects
@@ -732,9 +830,11 @@ Comprehensive transformation tool for scaling, rotating, skewing, and distorting
 **Activation:** `Alt` (temporary) | Toolbar Click | Utility Menu
 
 #### Overview
+
 Color sampling tool for picking colors from any part of the canvas or screen. Essential for maintaining color consistency and creating cohesive color schemes.
 
 #### Tool Settings
+
 - **Sample Size**: Single pixel, 3x3, or 5x5 average sampling
 - **Color Format**: RGB, HSV, HSL, or HEX color values
 - **Sample Source**: Canvas only or entire screen sampling
@@ -742,6 +842,7 @@ Color sampling tool for picking colors from any part of the canvas or screen. Es
 - **Precision Mode**: Magnified view for accurate color picking
 
 #### Usage Instructions
+
 1. Hold Alt key or select Eyedropper tool
 2. Click on any color to sample it
 3. Sampled color becomes active foreground color
@@ -749,6 +850,7 @@ Color sampling tool for picking colors from any part of the canvas or screen. Es
 5. Check color values in color panel
 
 #### Advanced Techniques
+
 - **Average Sampling**: Use 3x3 or 5x5 for smooth color transitions
 - **Screen Sampling**: Sample colors from outside the application
 - **Color Matching**: Build palettes by sampling multiple related colors
@@ -756,12 +858,14 @@ Color sampling tool for picking colors from any part of the canvas or screen. Es
 - **Batch Sampling**: Quickly build color libraries from reference images
 
 #### Integration
+
 - Works with all color-dependent tools (brush, text, shapes)
 - Integrates with color panel for detailed color information
 - Connects to color swatches for palette building
 - Works across all layers and canvas elements
 
 #### Troubleshooting
+
 - **Issue**: Sampled color doesn't match expected color
   - **Solution**: Check sampling size setting and zoom level
 - **Issue**: Can't sample from certain areas
@@ -770,6 +874,7 @@ Color sampling tool for picking colors from any part of the canvas or screen. Es
   - **Solution**: Check application permissions for screen access
 
 #### Examples
+
 - **Color Matching**: Sample brand colors from logos for consistent design
 - **Photo Color Grading**: Extract dominant colors for color scheme creation
 - **Artistic Color Study**: Sample colors from reference artwork for studies
@@ -781,9 +886,11 @@ Color sampling tool for picking colors from any part of the canvas or screen. Es
 **Activation:** `Shift+Alt+B` | Toolbar Click | Utility Menu
 
 #### Overview
+
 Advanced blending mode tool for controlling how layers interact with underlying content. Provides access to professional blending modes for creative effects.
 
 #### Tool Settings
+
 - **Blend Modes**: Normal, multiply, screen, overlay, soft light, and 20+ more
 - **Opacity Control**: Blend intensity from 0-100%
 - **Layer Targeting**: Apply blending to specific layers
@@ -791,6 +898,7 @@ Advanced blending mode tool for controlling how layers interact with underlying 
 - **Mode Categories**: Organized by effect type (darkening, lightening, contrast)
 
 #### Usage Instructions
+
 1. Select layer to apply blending to
 2. Activate Blend Mode tool (`Shift+Alt+B`)
 3. Choose blend mode from dropdown menu
@@ -798,6 +906,7 @@ Advanced blending mode tool for controlling how layers interact with underlying 
 5. Preview changes in real-time
 
 #### Advanced Techniques
+
 - **Mode Stacking**: Combine multiple blend modes on different layers
 - **Selective Blending**: Use layer masks with blend modes
 - **Color Blend Modes**: Separate control over color and luminosity
@@ -805,12 +914,14 @@ Advanced blending mode tool for controlling how layers interact with underlying 
 - **Photo Effects**: Create film and vintage effects with specific modes
 
 #### Integration
+
 - Works with entire layer stack system
 - Integrates with opacity controls for fine-tuning effects
 - Compatible with layer masks for selective application
 - Works with all layer types including text and shapes
 
 #### Troubleshooting
+
 - **Issue**: Blend mode effects not visible
   - **Solution**: Ensure layer has content below it to blend with
 - **Issue**: Unexpected color results
@@ -819,6 +930,7 @@ Advanced blending mode tool for controlling how layers interact with underlying 
   - **Solution**: Reduce layer count or merge layers when possible
 
 #### Examples
+
 - **Photo Enhancement**: Use overlay mode for contrast improvements
 - **Texture Application**: Apply paper textures using multiply mode
 - **Creative Effects**: Combine multiple exposures using screen mode
@@ -832,9 +944,11 @@ Advanced blending mode tool for controlling how layers interact with underlying 
 **Activation:** `Cmd+3` | Toolbar Click | View Menu
 
 #### Overview
+
 Comprehensive asset management system for organizing project resources. Handles images, graphics, fonts, and other media with tagging and search capabilities.
 
 #### Tool Settings
+
 - **View Modes**: Grid, list, or detailed view
 - **Sorting Options**: Name, date, size, type, or custom tags
 - **Filter Controls**: File type, size, and date range filters
@@ -843,6 +957,7 @@ Comprehensive asset management system for organizing project resources. Handles 
 - **Preview Options**: Thumbnails, tooltips, and quick preview
 
 #### Usage Instructions
+
 1. Open Assets panel (`Cmd+3`)
 2. Drag files into panel to import assets
 3. Use search and filters to find specific assets
@@ -850,6 +965,7 @@ Comprehensive asset management system for organizing project resources. Handles 
 5. Right-click assets for management options
 
 #### Advanced Techniques
+
 - **Smart Collections**: Auto-updating collections based on criteria
 - **Asset Linking**: Maintain links to external files for updates
 - **Batch Operations**: Apply tags or moves to multiple assets
@@ -857,12 +973,14 @@ Comprehensive asset management system for organizing project resources. Handles 
 - **Version Control**: Track asset versions and modifications
 
 #### Integration
+
 - Works with all canvas tools for asset placement
 - Integrates with import/export system
 - Connects to cloud storage for asset sync
 - Links with layer system for asset organization
 
 #### Troubleshooting
+
 - **Issue**: Assets not displaying thumbnails
   - **Solution**: Regenerate thumbnails or check file permissions
 - **Issue**: Imported assets not appearing
@@ -871,6 +989,7 @@ Comprehensive asset management system for organizing project resources. Handles 
   - **Solution**: Rebuild search index in asset preferences
 
 #### Examples
+
 - **Design System Management**: Organize brand assets and components
 - **Photo Library**: Manage large collections of stock photography
 - **Resource Collections**: Build libraries of icons, textures, and graphics
@@ -882,9 +1001,11 @@ Comprehensive asset management system for organizing project resources. Handles 
 **Activation:** `Cmd+4` | Toolbar Click | View Menu
 
 #### Overview
+
 Integrated marketplace for downloading stock images, graphics, and design resources. Features multiple provider integration and seamless import workflow.
 
 #### Tool Settings
+
 - **Provider Selection**: Unsplash, Pexels, and other integrated services
 - **Search Filters**: Category, color, orientation, and size filters
 - **Quality Settings**: Resolution and format preferences
@@ -893,6 +1014,7 @@ Integrated marketplace for downloading stock images, graphics, and design resour
 - **Collections**: Save favorite assets for later use
 
 #### Usage Instructions
+
 1. Open Asset Store panel (`Cmd+4`)
 2. Search for desired assets using keywords
 3. Apply filters to narrow results
@@ -900,6 +1022,7 @@ Integrated marketplace for downloading stock images, graphics, and design resour
 5. Click download to import to project
 
 #### Advanced Techniques
+
 - **Advanced Search**: Use detailed search operators for precise results
 - **Color Matching**: Find assets that match current project colors
 - **Batch Downloads**: Download multiple related assets efficiently
@@ -907,12 +1030,14 @@ Integrated marketplace for downloading stock images, graphics, and design resour
 - **Custom Providers**: Add additional stock photo services
 
 #### Integration
+
 - Downloaded assets automatically appear in Assets panel
 - Works with canvas tools for immediate placement
 - Integrates with project settings for consistent formatting
 - Connects to metadata system for asset information
 
 #### Troubleshooting
+
 - **Issue**: Unable to download assets
   - **Solution**: Check internet connection and provider API status
 - **Issue**: Downloaded assets low quality
@@ -921,6 +1046,7 @@ Integrated marketplace for downloading stock images, graphics, and design resour
   - **Solution**: Check license tracking settings and provider requirements
 
 #### Examples
+
 - **Stock Photography**: Find high-quality photos for design projects
 - **Icon Libraries**: Download consistent icon sets for UI design
 - **Texture Resources**: Find backgrounds and textures for creative work
@@ -932,9 +1058,11 @@ Integrated marketplace for downloading stock images, graphics, and design resour
 **Activation:** `Cmd+Y` | Toolbar Click | View Menu
 
 #### Overview
+
 Comprehensive history tracking system for all project actions. Provides detailed operation history with branching support and selective undo capabilities.
 
 #### Tool Settings
+
 - **History Depth**: Number of operations to track (default: 50)
 - **Display Mode**: List or visual timeline view
 - **Action Grouping**: Group related operations for cleaner history
@@ -943,6 +1071,7 @@ Comprehensive history tracking system for all project actions. Provides detailed
 - **Auto-Snapshots**: Automatic save points at regular intervals
 
 #### Usage Instructions
+
 1. Open History panel (`Cmd+Y`)
 2. Browse list of previous operations
 3. Click any operation to revert to that state
@@ -950,6 +1079,7 @@ Comprehensive history tracking system for all project actions. Provides detailed
 5. Search history for specific operations
 
 #### Advanced Techniques
+
 - **Selective Undo**: Undo specific operations without affecting others
 - **History Branching**: Explore alternative approaches from any point
 - **Batch Reversion**: Undo multiple related operations together
@@ -957,12 +1087,14 @@ Comprehensive history tracking system for all project actions. Provides detailed
 - **History Export**: Save operation sequences as presets
 
 #### Integration
+
 - Tracks operations from all tools and panels
 - Integrates with save system for persistent history
 - Works with project management for history sharing
 - Connects to performance monitoring for optimization
 
 #### Troubleshooting
+
 - **Issue**: History missing recent operations
   - **Solution**: Check history depth settings and memory usage
 - **Issue**: Can't revert to specific state
@@ -971,6 +1103,7 @@ Comprehensive history tracking system for all project actions. Provides detailed
   - **Solution**: Reduce history depth or clear old entries
 
 #### Examples
+
 - **Experimental Design**: Try multiple approaches with easy reversion
 - **Error Recovery**: Quickly recover from accidental operations
 - **Process Documentation**: Review and learn from successful workflows
@@ -982,9 +1115,11 @@ Comprehensive history tracking system for all project actions. Provides detailed
 **Activation:** `Cmd+P` | Toolbar Click | AI Menu
 
 #### Overview
+
 Enhanced prompt input system for AI operations with intelligent suggestions, templates, and prompt engineering assistance. Central hub for all AI interactions.
 
 #### Tool Settings
+
 - **Prompt Templates**: Pre-built templates for common scenarios
 - **Auto-Suggestions**: Intelligent prompt completion
 - **History Tracking**: Save and reuse successful prompts
@@ -993,6 +1128,7 @@ Enhanced prompt input system for AI operations with intelligent suggestions, tem
 - **Quality Presets**: Optimize prompts for different AI models
 
 #### Usage Instructions
+
 1. Open Prompt Box (`Cmd+P`)
 2. Type or select prompt template
 3. Use suggestions for prompt enhancement
@@ -1000,6 +1136,7 @@ Enhanced prompt input system for AI operations with intelligent suggestions, tem
 5. Execute prompt with selected tool
 
 #### Advanced Techniques
+
 - **Prompt Chaining**: Link multiple prompts for complex operations
 - **Conditional Prompts**: Create prompts that adapt to content
 - **Style Transfer Prompts**: Specialized prompts for style consistency
@@ -1007,12 +1144,14 @@ Enhanced prompt input system for AI operations with intelligent suggestions, tem
 - **Weighted Prompts**: Control emphasis of different prompt elements
 
 #### Integration
+
 - Works with all AI-powered tools (Generate, Edit, Inpaint, Outpaint)
 - Integrates with history system for prompt tracking
 - Connects to template library for prompt sharing
 - Links with model management for optimal AI selection
 
 #### Troubleshooting
+
 - **Issue**: Prompts not producing expected results
   - **Solution**: Try more specific descriptions and check model selection
 - **Issue**: Prompt suggestions not relevant
@@ -1021,6 +1160,7 @@ Enhanced prompt input system for AI operations with intelligent suggestions, tem
   - **Solution**: Check template file integrity and reload templates
 
 #### Examples
+
 - **Detailed Art Prompts**: "Create a photorealistic portrait of a woman with flowing auburn hair, soft natural lighting, painted in the style of Renaissance masters"
 - **Product Photography**: "Professional product shot of a smartphone on white background, studio lighting, high resolution, commercial photography style"
 - **Abstract Art**: "Abstract geometric composition with vibrant blues and golds, modern minimalist style, clean lines and balanced composition"
@@ -1030,68 +1170,76 @@ Enhanced prompt input system for AI operations with intelligent suggestions, tem
 ## Keyboard Shortcuts Reference
 
 ### Selection & Navigation
-| Tool | Shortcut | Description |
-|------|----------|-------------|
-| Select | `Cmd+1` | Activate selection tool |
-| Move | `Cmd+M` | Activate move tool |
-| Hand | `Cmd+H` / `Space` | Pan canvas view |
-| Zoom | `Cmd+2` | Activate zoom tool |
+
+| Tool   | Shortcut          | Description             |
+| ------ | ----------------- | ----------------------- |
+| Select | `Cmd+1`           | Activate selection tool |
+| Move   | `Cmd+M`           | Activate move tool      |
+| Hand   | `Cmd+H` / `Space` | Pan canvas view         |
+| Zoom   | `Cmd+2`           | Activate zoom tool      |
 
 ### AI Tools
-| Tool | Shortcut | Description |
-|------|----------|-------------|
-| Generate | `Cmd+G` | AI image generation |
-| Edit | `Cmd+E` | AI image editing |
-| Inpaint | `Cmd+I` | AI inpainting |
-| Outpaint | `Cmd+O` | AI outpainting |
+
+| Tool     | Shortcut | Description         |
+| -------- | -------- | ------------------- |
+| Generate | `Cmd+G`  | AI image generation |
+| Edit     | `Cmd+E`  | AI image editing    |
+| Inpaint  | `Cmd+I`  | AI inpainting       |
+| Outpaint | `Cmd+O`  | AI outpainting      |
 
 ### Drawing & Content
-| Tool | Shortcut | Description |
-|------|----------|-------------|
-| Brush | `Cmd+B` | Activate brush tool |
-| Eraser | `Shift+E` | Activate eraser tool |
-| Text | `Cmd+Shift+T` | Add text to canvas |
-| Shapes | `Cmd+U` | Add shapes |
+
+| Tool   | Shortcut      | Description          |
+| ------ | ------------- | -------------------- |
+| Brush  | `Cmd+B`       | Activate brush tool  |
+| Eraser | `Shift+E`     | Activate eraser tool |
+| Text   | `Cmd+Shift+T` | Add text to canvas   |
+| Shapes | `Cmd+U`       | Add shapes           |
 
 ### Transform & Utility
-| Tool | Shortcut | Description |
-|------|----------|-------------|
-| Crop | `Cmd+4` | Crop images |
-| Transform | `Cmd+T` | Transform objects |
-| Eyedropper | `Alt` | Sample colors |
-| Blend | `Shift+Alt+B` | Blend mode tool |
+
+| Tool       | Shortcut      | Description       |
+| ---------- | ------------- | ----------------- |
+| Crop       | `Cmd+4`       | Crop images       |
+| Transform  | `Cmd+T`       | Transform objects |
+| Eyedropper | `Alt`         | Sample colors     |
+| Blend      | `Shift+Alt+B` | Blend mode tool   |
 
 ### Management & Panels
-| Tool | Shortcut | Description |
-|------|----------|-------------|
-| Assets | `Cmd+3` | Assets panel |
-| Asset Store | `Cmd+4` | Asset Store panel |
-| History | `Cmd+Y` | History panel |
-| Prompt Box | `Cmd+P` | AI prompt interface |
+
+| Tool        | Shortcut | Description         |
+| ----------- | -------- | ------------------- |
+| Assets      | `Cmd+3`  | Assets panel        |
+| Asset Store | `Cmd+4`  | Asset Store panel   |
+| History     | `Cmd+Y`  | History panel       |
+| Prompt Box  | `Cmd+P`  | AI prompt interface |
 
 ### Canvas Operations
-| Action | Shortcut | Description |
-|--------|----------|-------------|
-| Zoom In | `Cmd++` | Increase zoom |
-| Zoom Out | `Cmd+-` | Decrease zoom |
-| Fit to Screen | `Cmd+0` | Fit canvas to view |
-| Actual Size | `Cmd+1` | 100% zoom level |
+
+| Action        | Shortcut | Description        |
+| ------------- | -------- | ------------------ |
+| Zoom In       | `Cmd++`  | Increase zoom      |
+| Zoom Out      | `Cmd+-`  | Decrease zoom      |
+| Fit to Screen | `Cmd+0`  | Fit canvas to view |
+| Actual Size   | `Cmd+1`  | 100% zoom level    |
 
 ### General Commands
-| Action | Shortcut | Description |
-|--------|----------|-------------|
-| Undo | `Cmd+Z` | Undo last action |
-| Redo | `Cmd+Shift+Z` | Redo last undone action |
-| Copy | `Cmd+C` | Copy selected object |
-| Paste | `Cmd+V` | Paste from clipboard |
-| Delete | `Delete` | Delete selected object |
-| Select All | `Cmd+A` | Select all objects |
+
+| Action     | Shortcut      | Description             |
+| ---------- | ------------- | ----------------------- |
+| Undo       | `Cmd+Z`       | Undo last action        |
+| Redo       | `Cmd+Shift+Z` | Redo last undone action |
+| Copy       | `Cmd+C`       | Copy selected object    |
+| Paste      | `Cmd+V`       | Paste from clipboard    |
+| Delete     | `Delete`      | Delete selected object  |
+| Select All | `Cmd+A`       | Select all objects      |
 
 ---
 
 ## Tool Workflows
 
 ### Basic Image Editing Workflow
+
 1. **Import/Generate**: Use Generate tool or import existing image
 2. **Initial Adjustments**: Use Transform tool for basic sizing and positioning
 3. **AI Enhancements**: Apply Edit or Inpaint tools for intelligent modifications
@@ -1100,6 +1248,7 @@ Enhanced prompt input system for AI operations with intelligent suggestions, tem
 6. **Export**: Save final result in desired format
 
 ### Creative Design Workflow
+
 1. **Canvas Setup**: Use appropriate canvas size and resolution
 2. **Base Generation**: Generate initial concept with AI Generate tool
 3. **Composition Building**: Add shapes, text, and additional elements
@@ -1109,6 +1258,7 @@ Enhanced prompt input system for AI operations with intelligent suggestions, tem
 7. **Final Polish**: Apply finishing touches with manual tools
 
 ### Photo Enhancement Workflow
+
 1. **Image Import**: Load photo using Assets panel
 2. **Basic Corrections**: Use Transform tool for perspective and cropping
 3. **AI Enhancement**: Apply Edit tool for intelligent improvements
@@ -1118,6 +1268,7 @@ Enhanced prompt input system for AI operations with intelligent suggestions, tem
 7. **Quality Check**: Review at actual size before export
 
 ### Logo Design Workflow
+
 1. **Concept Sketching**: Use Brush tool for initial ideas
 2. **Shape Foundation**: Build logo structure with Shape tool
 3. **Typography Integration**: Add text elements with Text tool
@@ -1131,13 +1282,15 @@ Enhanced prompt input system for AI operations with intelligent suggestions, tem
 ## Customization & Settings
 
 ### Toolbar Customization
+
 - **Position**: Drag toolbar to any screen position
-- **Height**: Resize toolbar height with bottom handle  
+- **Height**: Resize toolbar height with bottom handle
 - **Tool Organization**: Customize tool groupings and separators
 - **Keyboard Shortcuts**: Modify shortcuts in preferences
 - **Quick Access**: Pin frequently used tools to top positions
 
 ### Brush Customization
+
 - **Custom Brushes**: Create and save custom brush presets
 - **Pressure Curves**: Adjust tablet pressure sensitivity
 - **Brush Libraries**: Import and export brush collections
@@ -1145,6 +1298,7 @@ Enhanced prompt input system for AI operations with intelligent suggestions, tem
 - **Performance**: Optimize brush rendering for your hardware
 
 ### AI Model Settings
+
 - **Model Selection**: Choose preferred AI models for different tasks
 - **Quality Presets**: Save quality settings for different use cases
 - **Prompt Templates**: Create and organize prompt libraries
@@ -1152,6 +1306,7 @@ Enhanced prompt input system for AI operations with intelligent suggestions, tem
 - **Usage Monitoring**: Track AI service usage and costs
 
 ### Workspace Preferences
+
 - **Panel Layout**: Customize panel positions and visibility
 - **Color Themes**: Switch between light/dark/custom themes
 - **Grid Settings**: Configure canvas grid and guides
@@ -1165,14 +1320,18 @@ Enhanced prompt input system for AI operations with intelligent suggestions, tem
 ### Common Issues
 
 #### Tool Selection Problems
+
 **Problem**: Tools not activating or responding
+
 - Check if another tool is locked in active state
 - Restart application if tools become unresponsive
 - Verify keyboard shortcuts haven't been modified
 - Ensure canvas has focus for keyboard shortcuts to work
 
 #### AI Tool Issues
+
 **Problem**: AI operations failing or producing poor results
+
 - Verify Azure AI service configuration and API keys
 - Check internet connection stability
 - Try different AI models for better results
@@ -1180,7 +1339,9 @@ Enhanced prompt input system for AI operations with intelligent suggestions, tem
 - Monitor Azure service quotas and billing status
 
 #### Performance Issues
+
 **Problem**: Slow tool response or laggy interface
+
 - Reduce canvas resolution for better performance
 - Close unnecessary panels and tools
 - Clear history and temporary files regularly
@@ -1188,7 +1349,9 @@ Enhanced prompt input system for AI operations with intelligent suggestions, tem
 - Consider hardware upgrade for intensive workflows
 
 #### File and Asset Problems
+
 **Problem**: Assets not loading or importing properly
+
 - Check file format compatibility
 - Verify file permissions and accessibility
 - Clear asset cache and regenerate thumbnails
@@ -1198,18 +1361,21 @@ Enhanced prompt input system for AI operations with intelligent suggestions, tem
 ### Getting Help
 
 #### Built-in Resources
+
 - **Help Menu**: Access comprehensive help documentation
-- **Tooltips**: Hover over tools for quick explanations  
+- **Tooltips**: Hover over tools for quick explanations
 - **Shortcuts Modal**: Press `Cmd+?` for keyboard reference
 - **Status Messages**: Monitor status bar for operation feedback
 
 #### Community Support
+
 - **GitHub Issues**: Report bugs and request features
 - **Documentation Wiki**: Access detailed guides and tutorials
 - **Community Forums**: Connect with other users and developers
 - **Social Media**: Follow updates on Twitter and LinkedIn
 
 #### Professional Support
+
 - **Microsoft MVP Network**: Connect with Azure AI experts
 - **Azure Support**: Get help with AI service configuration
 - **Enterprise Support**: Available for commercial implementations
@@ -1219,7 +1385,8 @@ Enhanced prompt input system for AI operations with intelligent suggestions, tem
 
 ## Version History
 
-### Version 1.0.2 (Current)
+### Version 1.0.3 (Current)
+
 - Complete tools documentation with 20 tools covered
 - Keyboard shortcuts reference added
 - Advanced workflows and customization options
@@ -1231,6 +1398,7 @@ Enhanced prompt input system for AI operations with intelligent suggestions, tem
 - Background removal tool added
 
 ### Planned Features
+
 - Additional AI models and providers
 - Enhanced brush engine with more customization
 - Advanced layer management tools
@@ -1251,6 +1419,7 @@ This documentation is open source and welcomes contributions from the community.
 5. **Documentation Standards**: Follow established formatting and style guidelines
 
 ### Areas Needing Contribution
+
 - **Video Tutorials**: Create tool demonstration videos
 - **Advanced Techniques**: Share professional workflow tips
 - **Localization**: Translate documentation to other languages
@@ -1259,9 +1428,10 @@ This documentation is open source and welcomes contributions from the community.
 
 ---
 
-**© 2024 Hazem Ali, Microsoft AI MVP. Azure Image Studio Tools Reference Guide.**
+**© 2024 Hazem Ali, Microsoft AI MVP. AI Image Studio Tools Reference Guide.**
 
 For questions, suggestions, or contributions, please contact:
+
 - **Email**: [Your Email]
 - **LinkedIn**: [https://linkedin.com/in/drhazemali](https://linkedin.com/in/DrHazemAli)
-- **GitHub**: [https://github.com/drhazemali/azure-image-studio](https://github.com/DrHazemAli/azure-image-studio)
+- **GitHub**: [https://github.com/drhazemali/image-studio](https://github.com/DrHazemAli/image-studio)

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   MagicWandIcon,
   ImageIcon,
@@ -14,10 +14,10 @@ import {
   DownloadIcon,
   CopyIcon,
   ShuffleIcon,
-} from '@radix-ui/react-icons';
-import { Button, Progress, Badge, Separator, Slider } from '@radix-ui/themes';
-import * as Select from '@radix-ui/react-select';
-import * as Tabs from '@radix-ui/react-tabs';
+} from "@radix-ui/react-icons";
+import { Button, Progress, Badge, Separator, Slider } from "@radix-ui/themes";
+import * as Select from "@radix-ui/react-select";
+import * as Tabs from "@radix-ui/react-tabs";
 
 interface GenerationPanelProps {
   isOpen: boolean;
@@ -40,42 +40,42 @@ interface GenerationParams {
 
 const models = [
   {
-    id: 'gpt-image-1',
-    name: 'GPT-Image-1',
-    provider: 'Azure OpenAI',
-    capabilities: ['generation', 'editing', 'inpainting'],
+    id: "gpt-image-1",
+    name: "GPT-Image-1",
+    provider: "Azure OpenAI",
+    capabilities: ["generation", "editing", "inpainting"],
     premium: true,
   },
   {
-    id: 'dalle-3',
-    name: 'DALL-E 3',
-    provider: 'Azure OpenAI',
-    capabilities: ['generation'],
+    id: "dalle-3",
+    name: "DALL-E 3",
+    provider: "Azure OpenAI",
+    capabilities: ["generation"],
     premium: false,
   },
   {
-    id: 'flux-1-1-pro',
-    name: 'FLUX 1.1 Pro',
-    provider: 'Black Forest Labs',
-    capabilities: ['generation'],
+    id: "flux-1-1-pro",
+    name: "FLUX 1.1 Pro",
+    provider: "Black Forest Labs",
+    capabilities: ["generation"],
     premium: false,
   },
   {
-    id: 'flux-1-kontext-pro',
-    name: 'FLUX Kontext Pro',
-    provider: 'Black Forest Labs',
-    capabilities: ['generation', 'editing', 'context'],
+    id: "flux-1-kontext-pro",
+    name: "FLUX Kontext Pro",
+    provider: "Black Forest Labs",
+    capabilities: ["generation", "editing", "context"],
     premium: false,
   },
 ];
 
 const presetPrompts = [
-  'A majestic dragon soaring through cloudy skies at sunset',
-  'A cyberpunk cityscape with neon lights reflecting on wet streets',
-  'An astronaut floating in space with Earth in the background',
-  'A cozy library with floating books and magical lighting',
-  'A photorealistic portrait of a wise old wizard',
-  'A serene Japanese garden with cherry blossoms and koi pond',
+  "A majestic dragon soaring through cloudy skies at sunset",
+  "A cyberpunk cityscape with neon lights reflecting on wet streets",
+  "An astronaut floating in space with Earth in the background",
+  "A cozy library with floating books and magical lighting",
+  "A photorealistic portrait of a wise old wizard",
+  "A serene Japanese garden with cherry blossoms and koi pond",
 ];
 
 export function GenerationPanel({
@@ -85,15 +85,15 @@ export function GenerationPanel({
   isGenerating = false,
   progress = 0,
 }: GenerationPanelProps) {
-  const [activeTab, setActiveTab] = useState('generate');
-  const [prompt, setPrompt] = useState('');
-  const [selectedModel, setSelectedModel] = useState('dalle-3');
-  const [size, setSize] = useState('1024x1024');
-  const [style, setStyle] = useState('vivid');
-  const [quality, setQuality] = useState('hd');
+  const [activeTab, setActiveTab] = useState("generate");
+  const [prompt, setPrompt] = useState("");
+  const [selectedModel, setSelectedModel] = useState("dalle-3");
+  const [size, setSize] = useState("1024x1024");
+  const [style, setStyle] = useState("vivid");
+  const [quality, setQuality] = useState("hd");
   const [count, setCount] = useState(1);
   const [seed, setSeed] = useState<number | undefined>();
-  const [negativePrompt, setNegativePrompt] = useState('');
+  const [negativePrompt, setNegativePrompt] = useState("");
   const [showAdvanced, setShowAdvanced] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -229,8 +229,8 @@ export function GenerationPanel({
                                     )}
                                   </div>
                                   <div className="text-xs text-gray-500 dark:text-gray-400">
-                                    {model.provider} •{' '}
-                                    {model.capabilities.join(', ')}
+                                    {model.provider} •{" "}
+                                    {model.capabilities.join(", ")}
                                   </div>
                                 </div>
                               </div>
@@ -372,7 +372,7 @@ export function GenerationPanel({
                     <GearIcon className="w-4 h-4 mr-2" />
                     Advanced Settings
                     <ChevronDownIcon
-                      className={`w-4 h-4 ml-2 transition-transform ${showAdvanced ? 'rotate-180' : ''}`}
+                      className={`w-4 h-4 ml-2 transition-transform ${showAdvanced ? "rotate-180" : ""}`}
                     />
                   </Button>
 
@@ -380,7 +380,7 @@ export function GenerationPanel({
                     {showAdvanced && (
                       <motion.div
                         initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
+                        animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
                         className="space-y-4"
                       >
@@ -393,12 +393,12 @@ export function GenerationPanel({
                             <div className="flex gap-2">
                               <input
                                 type="number"
-                                value={seed || ''}
+                                value={seed || ""}
                                 onChange={(e) =>
                                   setSeed(
                                     e.target.value
                                       ? Number(e.target.value)
-                                      : undefined
+                                      : undefined,
                                   )
                                 }
                                 placeholder="Random"

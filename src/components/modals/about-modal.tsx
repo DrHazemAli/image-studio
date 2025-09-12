@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { BaseModal } from './base-modal';
+import React from "react";
+import { BaseModal } from "./base-modal";
 import {
   InfoCircledIcon,
   ExternalLinkIcon,
   GlobeIcon,
   GitHubLogoIcon,
   LinkedInLogoIcon,
-} from '@radix-ui/react-icons';
-import appConfig from '@/app/config/app-config.json';
+} from "@radix-ui/react-icons";
+import appConfig from "@/app/config/app-config.json";
 
 interface AboutModalProps {
   isOpen: boolean;
@@ -60,9 +60,9 @@ export const AboutModal = React.memo<AboutModalProps>(({ isOpen, onClose }) => {
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
                 <span className="text-lg font-bold text-white">
                   {appConfig.author.name
-                    .split(' ')
+                    .split(" ")
                     .map((n) => n[0])
-                    .join('')}
+                    .join("")}
                 </span>
               </div>
               <div>
@@ -146,13 +146,13 @@ export const AboutModal = React.memo<AboutModalProps>(({ isOpen, onClose }) => {
           </h3>
           <div className="flex flex-wrap gap-2">
             {[
-              'Next.js',
-              'React',
-              'TypeScript',
-              'Azure AI',
-              'Fabric.js',
-              'Radix UI',
-              'Tailwind CSS',
+              "Next.js",
+              "React",
+              "TypeScript",
+              "Azure AI",
+              "Fabric.js",
+              "Radix UI",
+              "Tailwind CSS",
             ].map((tech, index) => (
               <span
                 key={index}
@@ -167,7 +167,7 @@ export const AboutModal = React.memo<AboutModalProps>(({ isOpen, onClose }) => {
         {/* Footer */}
         <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
           <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-            © 2025 {appConfig.app.name}. Built with ❤️ by{' '}
+            © 2025 {appConfig.app.name}. Built with ❤️ by{" "}
             {appConfig.author.name} using Azure AI services.
           </p>
         </div>
@@ -176,4 +176,4 @@ export const AboutModal = React.memo<AboutModalProps>(({ isOpen, onClose }) => {
   );
 });
 
-AboutModal.displayName = 'AboutModal';
+AboutModal.displayName = "AboutModal";

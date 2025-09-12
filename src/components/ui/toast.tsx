@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import React, { createContext, useContext, useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { createContext, useContext, useState, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   CheckCircledIcon,
   CrossCircledIcon,
   ExclamationTriangleIcon,
   InfoCircledIcon,
   Cross2Icon,
-} from '@radix-ui/react-icons';
+} from "@radix-ui/react-icons";
 
 /**
  * Toast Types and Interfaces
  */
-export type ToastType = 'success' | 'error' | 'warning' | 'info';
+export type ToastType = "success" | "error" | "warning" | "info";
 
 export interface Toast {
   id: string;
@@ -29,7 +29,7 @@ export interface Toast {
 
 interface ToastContextType {
   toasts: Toast[];
-  showToast: (toast: Omit<Toast, 'id'>) => void;
+  showToast: (toast: Omit<Toast, "id">) => void;
   removeToast: (id: string) => void;
 }
 
@@ -41,7 +41,7 @@ const ToastContext = createContext<ToastContextType | undefined>(undefined);
 export const useToast = () => {
   const context = useContext(ToastContext);
   if (!context) {
-    throw new Error('useToast must be used within a ToastProvider');
+    throw new Error("useToast must be used within a ToastProvider");
   }
   return context;
 };
@@ -54,7 +54,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
-  const showToast = useCallback((toast: Omit<Toast, 'id'>) => {
+  const showToast = useCallback((toast: Omit<Toast, "id">) => {
     const id = Math.random().toString(36).substr(2, 9);
     const newToast: Toast = {
       id,
@@ -110,35 +110,35 @@ const ToastItem: React.FC<{ toast: Toast; onRemove: (id: string) => void }> = ({
 }) => {
   const getToastStyles = () => {
     switch (toast.type) {
-      case 'success':
+      case "success":
         return {
-          bg: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800',
+          bg: "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800",
           icon: CheckCircledIcon,
-          iconColor: 'text-green-500',
+          iconColor: "text-green-500",
         };
-      case 'error':
+      case "error":
         return {
-          bg: 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800',
+          bg: "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800",
           icon: CrossCircledIcon,
-          iconColor: 'text-red-500',
+          iconColor: "text-red-500",
         };
-      case 'warning':
+      case "warning":
         return {
-          bg: 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800',
+          bg: "bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800",
           icon: ExclamationTriangleIcon,
-          iconColor: 'text-amber-500',
+          iconColor: "text-amber-500",
         };
-      case 'info':
+      case "info":
         return {
-          bg: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800',
+          bg: "bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800",
           icon: InfoCircledIcon,
-          iconColor: 'text-blue-500',
+          iconColor: "text-blue-500",
         };
       default:
         return {
-          bg: 'bg-gray-50 dark:bg-gray-900/20 border-gray-200 dark:border-gray-800',
+          bg: "bg-gray-50 dark:bg-gray-900/20 border-gray-200 dark:border-gray-800",
           icon: InfoCircledIcon,
-          iconColor: 'text-gray-500',
+          iconColor: "text-gray-500",
         };
     }
   };
@@ -199,19 +199,19 @@ export const useSuccessToast = () => {
   const { showToast } = useToast();
   return useCallback(
     (title: string, description?: string) => {
-      showToast({ type: 'success', title, description });
+      showToast({ type: "success", title, description });
     },
-    [showToast]
+    [showToast],
   );
 };
 
 export const useErrorToast = () => {
   const { showToast } = useToast();
   return useCallback(
-    (title: string, description?: string, action?: Toast['action']) => {
-      showToast({ type: 'error', title, description, action, duration: 8000 });
+    (title: string, description?: string, action?: Toast["action"]) => {
+      showToast({ type: "error", title, description, action, duration: 8000 });
     },
-    [showToast]
+    [showToast],
   );
 };
 
@@ -219,9 +219,9 @@ export const useWarningToast = () => {
   const { showToast } = useToast();
   return useCallback(
     (title: string, description?: string) => {
-      showToast({ type: 'warning', title, description, duration: 6000 });
+      showToast({ type: "warning", title, description, duration: 6000 });
     },
-    [showToast]
+    [showToast],
   );
 };
 
@@ -229,8 +229,8 @@ export const useInfoToast = () => {
   const { showToast } = useToast();
   return useCallback(
     (title: string, description?: string) => {
-      showToast({ type: 'info', title, description });
+      showToast({ type: "info", title, description });
     },
-    [showToast]
+    [showToast],
   );
 };

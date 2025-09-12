@@ -15,13 +15,13 @@ export interface AzureEndpoint {
   apiKey?: string; // Optional per-endpoint API key
   resourceName?: string; // Optional per-endpoint resource name
   deployments: AzureDeployment[];
-  status?: 'valid' | 'invalid' | 'pending' | 'idle'; // Current validation status
+  status?: "valid" | "invalid" | "pending" | "idle"; // Current validation status
   validated_at?: string | null; // ISO timestamp of last validation
 }
 
 export interface AzureConfig {
   primary: {
-    status?: 'valid' | 'invalid' | 'pending' | 'idle';
+    status?: "valid" | "invalid" | "pending" | "idle";
     validated_at?: string | null;
   };
   endpoints: AzureEndpoint[];
@@ -57,10 +57,10 @@ export interface ImageEditRequest {
 
 export interface BackgroundRemovalRequest {
   image: string; // base64 encoded image
-  model?: 'florence-2' | 'gpt-image-1';
-  quality?: 'standard' | 'high';
+  model?: "florence-2" | "gpt-image-1";
+  quality?: "standard" | "high";
   edgeRefinement?: boolean;
-  transparencyMode?: 'full' | 'soft';
+  transparencyMode?: "full" | "soft";
   output_format?: string;
 }
 
@@ -128,7 +128,7 @@ export interface AzureModel {
   primary?: boolean;
   features: ModelFeatures;
   // Additional fields for runtime use (not in base schema)
-  status?: 'valid' | 'invalid' | 'pending' | 'idle';
+  status?: "valid" | "invalid" | "pending" | "idle";
   validated_at?: string | null;
   deploymentName?: string;
   enabled?: boolean;

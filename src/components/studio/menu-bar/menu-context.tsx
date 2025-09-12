@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode } from "react";
 
 interface MenuContextType {
   activeMenu: string | null;
@@ -22,7 +22,7 @@ export function MenuProvider({ children }: { children: ReactNode }) {
 export function useMenuContext() {
   const context = useContext(MenuContext);
   if (context === undefined) {
-    throw new Error('useMenuContext must be used within a MenuProvider');
+    throw new Error("useMenuContext must be used within a MenuProvider");
   }
   return context;
 }

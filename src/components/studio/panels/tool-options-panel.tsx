@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Tool } from '@/components/studio/toolbar';
+import React from "react";
+import { motion } from "framer-motion";
+import { Tool } from "@/components/studio/toolbar";
 
 interface ToolOptionsPanelProps {
   activeTool: Tool;
@@ -21,10 +21,10 @@ export default function ToolOptionsPanel({
 }: ToolOptionsPanelProps) {
   if (
     !(
-      activeTool === 'brush' ||
-      activeTool === 'eraser' ||
-      activeTool === 'text' ||
-      activeTool === 'shape'
+      activeTool === "brush" ||
+      activeTool === "eraser" ||
+      activeTool === "text" ||
+      activeTool === "shape"
     )
   ) {
     return null;
@@ -37,7 +37,7 @@ export default function ToolOptionsPanel({
       className="absolute top-4 left-1/2 -translate-x-1/2 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-xl p-3 shadow-lg border border-gray-200 dark:border-gray-800"
     >
       <div className="flex items-center gap-4">
-        {activeTool === 'brush' && (
+        {activeTool === "brush" && (
           <>
             <div className="flex items-center gap-2">
               <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -66,7 +66,7 @@ export default function ToolOptionsPanel({
             </div>
           </>
         )}
-        {activeTool === 'eraser' && (
+        {activeTool === "eraser" && (
           <div className="flex items-center gap-2">
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
               Size:
@@ -82,7 +82,7 @@ export default function ToolOptionsPanel({
             <span className="text-xs text-gray-500 w-8">{brushSize}</span>
           </div>
         )}
-        {activeTool === 'text' && (
+        {activeTool === "text" && (
           <div className="flex items-center gap-2">
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
               Color:
@@ -95,7 +95,7 @@ export default function ToolOptionsPanel({
             />
           </div>
         )}
-        {activeTool === 'shape' && (
+        {activeTool === "shape" && (
           <div className="flex items-center gap-2">
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
               Color:

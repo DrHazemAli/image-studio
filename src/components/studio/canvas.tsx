@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { forwardRef } from 'react';
+import React, { forwardRef } from "react";
 import MainCanvas, {
   type MainCanvasRef,
-} from '@/components/studio/canvas/main-canvas';
+} from "@/components/studio/canvas/main-canvas";
 
 interface CanvasProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -41,7 +41,7 @@ export const Canvas = forwardRef<MainCanvasRef, CanvasProps>(
       onAssetSelect,
       projectId,
     },
-    ref
+    ref,
   ) => {
     return (
       <MainCanvas
@@ -60,7 +60,7 @@ export const Canvas = forwardRef<MainCanvasRef, CanvasProps>(
         projectId={projectId}
       />
     );
-  }
+  },
 );
 
-Canvas.displayName = 'Canvas';
+Canvas.displayName = "Canvas";

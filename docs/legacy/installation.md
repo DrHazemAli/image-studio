@@ -1,11 +1,11 @@
-# Installation Guide - Azure Image Studio
+# Installation Guide - AI Image Studio
 
-This guide provides detailed installation instructions for Azure Image Studio on different platforms and environments.
+This guide provides detailed installation instructions for AI Image Studio on different platforms and environments.
 
 > ⚠️ **Important**: This is a **community project** and is not affiliated with or endorsed by Microsoft or Azure. It's an independent project that uses Azure AI services.
 
 **Last Updated**: September 8, 2025  
-**Version**: 1.0.2
+**Version**: 1.0.3
 
 ## 📋 Prerequisites
 
@@ -66,8 +66,8 @@ npm --version
 #### 3. Clone Repository
 
 ```bash
-git clone https://github.com/DrHazemAli/azure-image-studio.git
-cd azure-image-studio
+git clone https://github.com/DrHazemAli/image-studio.git
+cd image-studio
 ```
 
 #### 4. Install Dependencies
@@ -97,8 +97,8 @@ npm --version
 #### 3. Clone Repository
 
 ```bash
-git clone https://github.com/DrHazemAli/azure-image-studio.git
-cd azure-image-studio
+git clone https://github.com/DrHazemAli/image-studio.git
+cd image-studio
 ```
 
 #### 4. Install Dependencies
@@ -121,8 +121,8 @@ node --version
 npm --version
 
 # Clone repository
-git clone https://github.com/DrHazemAli/azure-image-studio.git
-cd azure-image-studio
+git clone https://github.com/DrHazemAli/image-studio.git
+cd image-studio
 
 # Install dependencies
 npm install
@@ -143,8 +143,8 @@ node --version
 npm --version
 
 # Clone repository
-git clone https://github.com/DrHazemAli/azure-image-studio.git
-cd azure-image-studio
+git clone https://github.com/DrHazemAli/image-studio.git
+cd image-studio
 
 # Install dependencies
 npm install
@@ -161,8 +161,8 @@ node --version
 npm --version
 
 # Clone repository
-git clone https://github.com/DrHazemAli/azure-image-studio.git
-cd azure-image-studio
+git clone https://github.com/DrHazemAli/image-studio.git
+cd image-studio
 
 # Install dependencies
 npm install
@@ -177,7 +177,7 @@ npm install
 ```yaml
 version: "3.8"
 services:
-  azure-image-studio:
+  image-studio:
     build: .
     ports:
       - "3000:3000"
@@ -225,7 +225,7 @@ docker-compose logs -f
 #### 1. Build Image
 
 ```bash
-docker build -t azure-image-studio .
+docker build -t image-studio .
 ```
 
 #### 2. Run Container
@@ -234,7 +234,7 @@ docker build -t azure-image-studio .
 docker run -p 3000:3000 \
   -e AZURE_API_KEY=your_api_key_here \
   -v $(pwd)/src/app/config:/app/src/app/config \
-  azure-image-studio
+  image-studio
 ```
 
 ## 🔧 Development Installation
@@ -244,8 +244,8 @@ docker run -p 3000:3000 \
 #### 1. Clone Repository
 
 ```bash
-git clone https://github.com/DrHazemAli/azure-image-studio.git
-cd azure-image-studio
+git clone https://github.com/DrHazemAli/image-studio.git
+cd image-studio
 ```
 
 #### 2. Install Dependencies
@@ -308,7 +308,7 @@ npm link
 
 ```bash
 # Test CLI installation
-azure-image-studio --help
+image-studio --help
 
 # Or use npm script
 npm run cli -- --help
@@ -424,7 +424,7 @@ npm start
 
 - Open your browser
 - Navigate to `http://localhost:3000`
-- You should see the Azure Image Studio home page
+- You should see the AI Image Studio home page
 
 ### 4. Test Configuration
 
@@ -568,18 +568,18 @@ npm run lint -- --fix
 
 - Check this installation guide
 - Review the [troubleshooting section](#troubleshooting)
-- Check the [GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
+- Check the [GitHub Issues](https://github.com/DrHazemAli/image-studio/issues)
 
 ### Community Support
 
-- [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
-- [GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
+- [GitHub Discussions](https://github.com/DrHazemAli/image-studio/discussions)
+- [GitHub Issues](https://github.com/DrHazemAli/image-studio/issues)
 
 ### Contact
 
 - **Author**: Hazem Ali (Microsoft MVP)
 - **GitHub**: [@DrHazemAli](https://github.com/DrHazemAli)
-- **LinkedIn**: [Hazem Ali](https://linkedin.com/in/hazemali)
+- **LinkedIn**: [Hazem Ali](https://linkedin.com/in/drhazemali)
 
 ---
 

@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { NextResponse } from "next/server";
+import fs from "fs";
+import path from "path";
 
 export interface ModelInfo {
   id: string;
@@ -34,9 +34,9 @@ export async function GET() {
     // Read the models configuration from the JSON file
     const configPath = path.join(
       process.cwd(),
-      'src/app/config/azure-models.json'
+      "src/app/config/azure-models.json",
     );
-    const configData = fs.readFileSync(configPath, 'utf8');
+    const configData = fs.readFileSync(configPath, "utf8");
     const config = JSON.parse(configData);
 
     // Extract all models from the configuration
@@ -49,7 +49,7 @@ export async function GET() {
           id: model.id,
           name: model.name,
           provider: model.provider,
-          supportsInpaint: model.capabilities?.includes('inpainting') || false,
+          supportsInpaint: model.capabilities?.includes("inpainting") || false,
           primary: model.primary || false,
           premium: model.premium || false,
           supportedSizes: model.supportedSizes || [],
@@ -66,12 +66,12 @@ export async function GET() {
             name: model.name,
             provider: model.provider,
             supportsInpaint:
-              model.capabilities?.includes('inpainting') || false,
+              model.capabilities?.includes("inpainting") || false,
             primary: model.primary || false,
             premium: model.premium || false,
             supportedSizes: model.supportedSizes || [],
           });
-        }
+        },
       );
     }
 
@@ -82,7 +82,7 @@ export async function GET() {
           id: model.id,
           name: model.name,
           provider: model.provider,
-          supportsInpaint: model.capabilities?.includes('inpainting') || false,
+          supportsInpaint: model.capabilities?.includes("inpainting") || false,
           primary: model.primary || false,
           premium: model.premium || false,
           supportedSizes: model.supportedSizes || [],
@@ -92,14 +92,14 @@ export async function GET() {
 
     return NextResponse.json({
       models,
-      defaultModel: 'FLUX.1-Kontext-pro',
-      defaultSize: '1024x1024',
+      defaultModel: "FLUX.1-Kontext-pro",
+      defaultSize: "1024x1024",
     });
   } catch (error) {
-    console.error('Error reading models configuration:', error);
+    console.error("Error reading models configuration:", error);
     return NextResponse.json(
-      { error: 'Failed to load models configuration' },
-      { status: 500 }
+      { error: "Failed to load models configuration" },
+      { status: 500 },
     );
   }
 }

@@ -3,10 +3,16 @@
  * Unified interface for managing all asset providers and local assets
  */
 
-import { Asset, AssetSearchParams, AssetApiResponse, AssetStoreConfig, AssetType } from '@/types/asset-store';
-import { UnsplashProvider } from './unsplash';
-import { PexelsProvider } from './pexels';
-import { config } from '@/lib/settings';
+import {
+  Asset,
+  AssetSearchParams,
+  AssetApiResponse,
+  AssetStoreConfig,
+  AssetType,
+} from "@/types/asset-store";
+import { UnsplashProvider } from "./unsplash";
+import { PexelsProvider } from "./pexels";
+import { config } from "@/lib/settings";
 
 export class AssetManager {
   private unsplashProvider: UnsplashProvider;
@@ -15,7 +21,9 @@ export class AssetManager {
 
   constructor() {
     this.config = this.loadConfig();
-    this.unsplashProvider = new UnsplashProvider(this.config.providers.unsplash);
+    this.unsplashProvider = new UnsplashProvider(
+      this.config.providers.unsplash,
+    );
     this.pexelsProvider = new PexelsProvider(this.config.providers.pexels);
   }
 
@@ -28,17 +36,17 @@ export class AssetManager {
       providers: {
         unsplash: {
           enabled: false,
-          apiKey: '',
+          apiKey: "",
           rateLimit: 50, // 50 requests per hour for free tier
         },
         pexels: {
           enabled: false,
-          apiKey: '',
+          apiKey: "",
           rateLimit: 200, // 200 requests per hour for free tier
         },
       },
       ui: {
-        defaultView: 'grid',
+        defaultView: "grid",
         itemsPerPage: 20,
         showAttribution: true,
       },
@@ -50,12 +58,16 @@ export class AssetManager {
     };
 
     try {
-      const savedConfig = config('assetStore', defaultConfig, 'cookies') as AssetStoreConfig;
-      
+      const savedConfig = config(
+        "assetStore",
+        defaultConfig,
+        "cookies",
+      ) as AssetStoreConfig;
+
       // Load API keys from cookies
-      const unsplashKey = this.getApiKeyFromCookie('unsplash_api_key');
-      const pexelsKey = this.getApiKeyFromCookie('pexels_api_key');
-      
+      const unsplashKey = this.getApiKeyFromCookie("unsplash_api_key");
+      const pexelsKey = this.getApiKeyFromCookie("pexels_api_key");
+
       return {
         ...defaultConfig,
         ...savedConfig,
@@ -72,7 +84,7 @@ export class AssetManager {
         },
       };
     } catch (error) {
-      console.warn('Failed to load asset store config:', error);
+      console.warn("Failed to load asset store config:", error);
       return defaultConfig;
     }
   }
@@ -81,18 +93,18 @@ export class AssetManager {
    * Get API key from cookie
    */
   private getApiKeyFromCookie(cookieName: string): string {
-    if (typeof document === 'undefined') return '';
-    
+    if (typeof document === "undefined") return "";
+
     const cookie = document.cookie
-      .split('; ')
-      .find(row => row.startsWith(`${cookieName}=`));
-    
+      .split("; ")
+      .find((row) => row.startsWith(`${cookieName}=`));
+
     if (cookie) {
-      const value = cookie.split('=')[1];
-      return value ? decodeURIComponent(value) : '';
+      const value = cookie.split("=")[1];
+      return value ? decodeURIComponent(value) : "";
     }
-    
-    return '';
+
+    return "";
   }
 
   /**
@@ -100,13 +112,14 @@ export class AssetManager {
    */
   updateConfig(newConfig: Partial<AssetStoreConfig>): void {
     this.config = { ...this.config, ...newConfig };
-    config('assetStore', this.config, 'cookies');
-    
+    config("assetStore", this.config, "cookies");
+
     // Update provider configs
-    this.unsplashProvider = new UnsplashProvider(this.config.providers.unsplash);
+    this.unsplashProvider = new UnsplashProvider(
+      this.config.providers.unsplash,
+    );
     this.pexelsProvider = new PexelsProvider(this.config.providers.pexels);
   }
-
 
   /**
    * Get current configuration
@@ -125,7 +138,10 @@ export class AssetManager {
   /**
    * Search for assets across all enabled providers
    */
-  async searchAssets(params: AssetSearchParams, assetType: AssetType = 'photo'): Promise<AssetApiResponse> {
+  async searchAssets(
+    params: AssetSearchParams,
+    assetType: AssetType = "photo",
+  ): Promise<AssetApiResponse> {
     if (!this.isEnabled()) {
       return {
         success: false,
@@ -134,7 +150,7 @@ export class AssetManager {
         page: params.page || 1,
         perPage: params.perPage || 20,
         hasMore: false,
-        error: 'Asset store is disabled',
+        error: "Asset store is disabled",
       };
     }
 
@@ -144,45 +160,51 @@ export class AssetManager {
     let lastError: string | null = null;
 
     // Search photos from enabled providers
-    if (assetType === 'photo' || assetType === 'video') {
+    if (assetType === "photo" || assetType === "video") {
       if (this.config.providers.unsplash.enabled) {
         try {
-          const unsplashResults = await this.unsplashProvider.searchAssets(params);
+          const unsplashResults =
+            await this.unsplashProvider.searchAssets(params);
           if (unsplashResults.success) {
             results.push(...unsplashResults.data);
             totalResults += unsplashResults.total;
             hasMore = hasMore || unsplashResults.hasMore;
           } else {
-            lastError = unsplashResults.error || 'Unsplash search failed';
+            lastError = unsplashResults.error || "Unsplash search failed";
           }
         } catch (error) {
-          console.error('Unsplash search error:', error);
-          lastError = 'Unsplash search failed';
+          console.error("Unsplash search error:", error);
+          lastError = "Unsplash search failed";
         }
       }
 
       if (this.config.providers.pexels.enabled) {
         try {
-          const pexelsResults = assetType === 'video' 
-            ? await this.pexelsProvider.searchVideos(params)
-            : await this.pexelsProvider.searchAssets(params);
-          
+          const pexelsResults =
+            assetType === "video"
+              ? await this.pexelsProvider.searchVideos(params)
+              : await this.pexelsProvider.searchAssets(params);
+
           if (pexelsResults.success) {
             results.push(...pexelsResults.data);
             totalResults += pexelsResults.total;
             hasMore = hasMore || pexelsResults.hasMore;
           } else {
-            lastError = pexelsResults.error || 'Pexels search failed';
+            lastError = pexelsResults.error || "Pexels search failed";
           }
         } catch (error) {
-          console.error('Pexels search error:', error);
-          lastError = 'Pexels search failed';
+          console.error("Pexels search error:", error);
+          lastError = "Pexels search failed";
         }
       }
     }
 
     // Add local assets (shapes, frames, icons)
-    if (assetType === 'shape' || assetType === 'frame' || assetType === 'icon') {
+    if (
+      assetType === "shape" ||
+      assetType === "frame" ||
+      assetType === "icon"
+    ) {
       const localAssets = await this.getLocalAssets();
       results.push(...localAssets);
       totalResults += localAssets.length;
@@ -202,7 +224,10 @@ export class AssetManager {
   /**
    * Get featured assets from all enabled providers
    */
-  async getFeaturedAssets(params: Omit<AssetSearchParams, 'query'> = {}, assetType: AssetType = 'photo'): Promise<AssetApiResponse> {
+  async getFeaturedAssets(
+    params: Omit<AssetSearchParams, "query"> = {},
+    assetType: AssetType = "photo",
+  ): Promise<AssetApiResponse> {
     if (!this.isEnabled()) {
       return {
         success: false,
@@ -211,7 +236,7 @@ export class AssetManager {
         page: params.page || 1,
         perPage: params.perPage || 20,
         hasMore: false,
-        error: 'Asset store is disabled',
+        error: "Asset store is disabled",
       };
     }
 
@@ -221,42 +246,48 @@ export class AssetManager {
     let lastError: string | null = null;
 
     // Get featured photos from enabled providers
-    if (assetType === 'photo' || assetType === 'video') {
+    if (assetType === "photo" || assetType === "video") {
       if (this.config.providers.unsplash.enabled) {
         try {
-          const unsplashResults = await this.unsplashProvider.getFeaturedAssets(params);
+          const unsplashResults =
+            await this.unsplashProvider.getFeaturedAssets(params);
           if (unsplashResults.success) {
             results.push(...unsplashResults.data);
             totalResults += unsplashResults.total;
             hasMore = hasMore || unsplashResults.hasMore;
           } else {
-            lastError = unsplashResults.error || 'Unsplash featured failed';
+            lastError = unsplashResults.error || "Unsplash featured failed";
           }
         } catch (error) {
-          console.error('Unsplash featured error:', error);
-          lastError = 'Unsplash featured failed';
+          console.error("Unsplash featured error:", error);
+          lastError = "Unsplash featured failed";
         }
       }
 
       if (this.config.providers.pexels.enabled) {
         try {
-          const pexelsResults = await this.pexelsProvider.getFeaturedAssets(params);
+          const pexelsResults =
+            await this.pexelsProvider.getFeaturedAssets(params);
           if (pexelsResults.success) {
             results.push(...pexelsResults.data);
             totalResults += pexelsResults.total;
             hasMore = hasMore || pexelsResults.hasMore;
           } else {
-            lastError = pexelsResults.error || 'Pexels featured failed';
+            lastError = pexelsResults.error || "Pexels featured failed";
           }
         } catch (error) {
-          console.error('Pexels featured error:', error);
-          lastError = 'Pexels featured failed';
+          console.error("Pexels featured error:", error);
+          lastError = "Pexels featured failed";
         }
       }
     }
 
     // Add local assets
-    if (assetType === 'shape' || assetType === 'frame' || assetType === 'icon') {
+    if (
+      assetType === "shape" ||
+      assetType === "frame" ||
+      assetType === "icon"
+    ) {
       const localAssets = await this.getLocalAssets();
       results.push(...localAssets);
       totalResults += localAssets.length;
@@ -276,33 +307,38 @@ export class AssetManager {
   /**
    * Get all available categories
    */
-  async getCategories(assetType: AssetType = 'photo'): Promise<string[]> {
+  async getCategories(assetType: AssetType = "photo"): Promise<string[]> {
     const categories = new Set<string>();
 
-    if (assetType === 'photo' || assetType === 'video') {
+    if (assetType === "photo" || assetType === "video") {
       if (this.config.providers.unsplash.enabled) {
         try {
-          const unsplashCategories = await this.unsplashProvider.getCategories();
-          unsplashCategories.forEach(cat => categories.add(cat));
+          const unsplashCategories =
+            await this.unsplashProvider.getCategories();
+          unsplashCategories.forEach((cat) => categories.add(cat));
         } catch (error) {
-          console.error('Failed to get Unsplash categories:', error);
+          console.error("Failed to get Unsplash categories:", error);
         }
       }
 
       if (this.config.providers.pexels.enabled) {
         try {
           const pexelsCategories = await this.pexelsProvider.getCategories();
-          pexelsCategories.forEach(cat => categories.add(cat));
+          pexelsCategories.forEach((cat) => categories.add(cat));
         } catch (error) {
-          console.error('Failed to get Pexels categories:', error);
+          console.error("Failed to get Pexels categories:", error);
         }
       }
     }
 
     // Add local asset categories
-    if (assetType === 'shape' || assetType === 'frame' || assetType === 'icon') {
+    if (
+      assetType === "shape" ||
+      assetType === "frame" ||
+      assetType === "icon"
+    ) {
       const localCategories = this.getLocalCategories(assetType);
-      localCategories.forEach(cat => categories.add(cat));
+      localCategories.forEach((cat) => categories.add(cat));
     }
 
     return Array.from(categories).sort();
@@ -318,7 +354,7 @@ export class AssetManager {
       try {
         results.unsplash = await this.unsplashProvider.validateApiKey();
       } catch (error) {
-        console.error('Unsplash API key validation failed:', error);
+        console.error("Unsplash API key validation failed:", error);
         results.unsplash = false;
       }
     }
@@ -327,7 +363,7 @@ export class AssetManager {
       try {
         results.pexels = await this.pexelsProvider.validateApiKey();
       } catch (error) {
-        console.error('Pexels API key validation failed:', error);
+        console.error("Pexels API key validation failed:", error);
         results.pexels = false;
       }
     }
@@ -349,12 +385,12 @@ export class AssetManager {
    */
   private getLocalCategories(assetType: AssetType): string[] {
     switch (assetType) {
-      case 'shape':
-        return ['basic', 'arrows', 'symbols', 'decorative'];
-      case 'frame':
-        return ['modern', 'vintage', 'minimalist', 'ornate'];
-      case 'icon':
-        return ['ui', 'social', 'business', 'navigation'];
+      case "shape":
+        return ["basic", "arrows", "symbols", "decorative"];
+      case "frame":
+        return ["modern", "vintage", "minimalist", "ornate"];
+      case "icon":
+        return ["ui", "social", "business", "navigation"];
       default:
         return [];
     }

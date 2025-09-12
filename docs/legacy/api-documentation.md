@@ -1,8 +1,8 @@
 # API Documentation
 
-**Last Updated**: September 8, 2025  
+**Last Updated**: September 8, 2025
 
-This document provides comprehensive API documentation for Azure GenAI Image Studio.
+This document provides comprehensive API documentation for Azure GenAI AI Image Studio.
 
 ## Table of Contents
 
@@ -14,7 +14,7 @@ This document provides comprehensive API documentation for Azure GenAI Image Stu
 
 ## API Overview
 
-The Azure GenAI Image Studio API provides programmatic access to AI-powered image generation and editing capabilities through RESTful endpoints.
+The Azure GenAI AI Image Studio API provides programmatic access to AI-powered image generation and editing capabilities through RESTful endpoints.
 
 ### Key Features
 
@@ -106,7 +106,7 @@ Retrieves current application configuration.
       "baseUrl": "https://your-resource.openai.azure.com"
     },
     "app": {
-      "version": "1.0.2",
+      "version": "1.0.3",
       "features": ["image_generation", "image_editing"]
     }
   }

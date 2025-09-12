@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { verifyPassword, createAuthToken, getUserInfo } from '@/lib/auth';
+import { NextRequest, NextResponse } from "next/server";
+import { verifyPassword, createAuthToken, getUserInfo } from "@/lib/auth";
 
 export async function POST(request: NextRequest) {
   try {
@@ -7,17 +7,14 @@ export async function POST(request: NextRequest) {
 
     if (!password) {
       return NextResponse.json(
-        { error: 'Password is required' },
-        { status: 400 }
+        { error: "Password is required" },
+        { status: 400 },
       );
     }
 
     // Verify password
     if (!verifyPassword(password)) {
-      return NextResponse.json(
-        { error: 'Invalid password' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Invalid password" }, { status: 401 });
     }
 
     // Get user info and create token
@@ -32,20 +29,20 @@ export async function POST(request: NextRequest) {
     });
 
     // Set token in cookie for persistence across requests
-    response.cookies.set('authToken', token, {
-      path: '/',
+    response.cookies.set("authToken", token, {
+      path: "/",
       maxAge: 60 * 60, // 1 hour
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
     });
 
     return response;
   } catch (error) {
-    console.error('Authentication error:', error);
+    console.error("Authentication error:", error);
     return NextResponse.json(
-      { error: 'Authentication failed' },
-      { status: 500 }
+      { error: "Authentication failed" },
+      { status: 500 },
     );
   }
 }

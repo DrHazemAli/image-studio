@@ -1,14 +1,14 @@
-import { ConfigStorage, ConfigOptions } from '../types';
+import { ConfigStorage, ConfigOptions } from "../types";
 
 export class LocalStorage implements ConfigStorage {
-  private prefix = '';
+  private prefix = "";
 
   private getKey(key: string): string {
     return `${this.prefix}${key}`;
   }
 
   get(key: string): string | null {
-    if (typeof window === 'undefined') return null;
+    if (typeof window === "undefined") return null;
 
     try {
       return localStorage.getItem(this.getKey(key));
@@ -19,7 +19,7 @@ export class LocalStorage implements ConfigStorage {
   }
 
   set(key: string, value: string, _options?: ConfigOptions): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     try {
       localStorage.setItem(this.getKey(key), value);
@@ -29,7 +29,7 @@ export class LocalStorage implements ConfigStorage {
   }
 
   remove(key: string): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     try {
       localStorage.removeItem(this.getKey(key));
@@ -39,7 +39,7 @@ export class LocalStorage implements ConfigStorage {
   }
 
   clear(): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     try {
       const keys = this.keys();
@@ -47,12 +47,12 @@ export class LocalStorage implements ConfigStorage {
         localStorage.removeItem(key);
       });
     } catch (error) {
-      console.warn('Failed to clear localStorage:', error);
+      console.warn("Failed to clear localStorage:", error);
     }
   }
 
   keys(): string[] {
-    if (typeof window === 'undefined') return [];
+    if (typeof window === "undefined") return [];
 
     try {
       const keys: string[] = [];
@@ -64,7 +64,7 @@ export class LocalStorage implements ConfigStorage {
       }
       return keys;
     } catch (error) {
-      console.warn('Failed to get localStorage keys:', error);
+      console.warn("Failed to get localStorage keys:", error);
       return [];
     }
   }

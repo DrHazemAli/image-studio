@@ -2,7 +2,7 @@
  * Laravel-style config system types
  */
 
-export type StorageType = 'localStorage' | 'cookies' | 'sessionStorage';
+export type StorageType = "localStorage" | "cookies" | "sessionStorage";
 
 /**
  * Unified settings structure - all settings under az_settings key
@@ -45,7 +45,7 @@ export interface UnifiedSettings {
       };
     };
     ui: {
-      defaultView: 'grid' | 'list';
+      defaultView: "grid" | "list";
       itemsPerPage: number;
       showAttribution: boolean;
     };
@@ -86,13 +86,13 @@ export interface ConfigManager {
     key: string,
     defaultValue?: unknown,
     storage?: StorageType,
-    encrypted?: boolean
+    encrypted?: boolean,
   ): unknown;
   set(
     key: string,
     value: unknown,
     storage?: StorageType,
-    encrypted?: boolean
+    encrypted?: boolean,
   ): void;
   has(key: string, storage?: StorageType): boolean;
   remove(key: string, storage?: StorageType): void;

@@ -1,8 +1,8 @@
-# Support Guide - Azure Image Studio
+# Support Guide - AI Image Studio
 
-**Last Updated**: September 8, 2025  
+**Last Updated**: September 8, 2025
 
-Need help with Azure Image Studio? This guide will help you find the right resources and get the support you need.
+Need help with AI Image Studio? This guide will help you find the right resources and get the support you need.
 
 > ⚠️ **Important**: This is a **community project** and is not affiliated with or endorsed by Microsoft or Azure. It's an independent project that uses Azure AI services.
 
@@ -26,13 +26,13 @@ Need help with Azure Image Studio? This guide will help you find the right resou
 
 ### GitHub Issues
 
-- **Bug Reports**: [Report bugs](https://github.com/DrHazemAli/azure-image-studio/issues)
-- **Feature Requests**: [Request features](https://github.com/DrHazemAli/azure-image-studio/issues)
-- **General Questions**: [Ask questions](https://github.com/DrHazemAli/azure-image-studio/discussions)
+- **Bug Reports**: [Report bugs](https://github.com/DrHazemAli/image-studio/issues)
+- **Feature Requests**: [Request features](https://github.com/DrHazemAli/image-studio/issues)
+- **General Questions**: [Ask questions](https://github.com/DrHazemAli/image-studio/discussions)
 
 ### Direct Contact
 
-- **LinkedIn**: [LinkedIn](https://www.linkedin.com/in/hazemali/)
+- **LinkedIn**: [LinkedIn](https://www.linkedin.com/in/drhazemali/)
 - **GitHub**: [@DrHazemAli](https://github.com/DrHazemAli)
 - **Response Time**: Within 48 hours
 
@@ -124,7 +124,7 @@ Need help with Azure Image Studio? This guide will help you find the right resou
 
 ### General Questions
 
-**Q: Is Azure Image Studio free to use?**
+**Q: Is AI Image Studio free to use?**
 A: The application is free and open-source, but you need Azure AI services which have their own pricing. This is a community project, not an official Microsoft product. Check Azure pricing for details.
 
 **Q: What browsers are supported?**
@@ -257,8 +257,8 @@ Add any other context or screenshots about the feature request here.
 
 ### Community
 
-- **[GitHub Repository](https://github.com/DrHazemAli/azure-image-studio)** - Source code and issues
-- **[GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)** - Community discussions
+- **[GitHub Repository](https://github.com/DrHazemAli/image-studio)** - Source code and issues
+- **[GitHub Discussions](https://github.com/DrHazemAli/image-studio/discussions)** - Community discussions
 - **[Contributing Guide](docs/contributing.md)** - How to contribute
 - **[Code of Conduct](CODE_OF_CONDUCT.md)** - Community guidelines
 
@@ -274,7 +274,7 @@ Add any other context or screenshots about the feature request here.
 
 For critical security issues or major bugs:
 
-- **LinkedIn**: [LinkedIn](https://www.linkedin.com/in/hazemali/)
+- **LinkedIn**: [LinkedIn](https://www.linkedin.com/in/drhazemali/)
 - **Subject**: "URGENT: [Issue Description]"
 - **Response**: Within 24 hours
 
@@ -283,12 +283,12 @@ For critical security issues or major bugs:
 If the service is down:
 
 - Check [Azure Status](https://status.azure.com/)
-- Check [GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
-- Follow updates on [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
+- Check [GitHub Issues](https://github.com/DrHazemAli/image-studio/issues)
+- Follow updates on [GitHub Discussions](https://github.com/DrHazemAli/image-studio/discussions)
 
 ## 🙏 Thank You
 
-Thank you for using Azure Image Studio! Your feedback and contributions help make this project better for everyone.
+Thank you for using AI Image Studio! Your feedback and contributions help make this project better for everyone.
 
 ---
 

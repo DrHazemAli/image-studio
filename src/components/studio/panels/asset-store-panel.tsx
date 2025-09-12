@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Cross2Icon,
   MagnifyingGlassIcon,
@@ -15,11 +15,16 @@ import {
   UploadIcon,
   ChevronDownIcon,
   CheckIcon,
-} from '@radix-ui/react-icons';
-import { Button, TextField, Badge } from '@radix-ui/themes';
-import * as Select from '@radix-ui/react-select';
-import { Asset, AssetType, ViewMode, AssetSearchParams } from '@/types/asset-store';
-import { config } from '@/lib/settings';
+} from "@radix-ui/react-icons";
+import { Button, TextField, Badge } from "@radix-ui/themes";
+import * as Select from "@radix-ui/react-select";
+import {
+  Asset,
+  AssetType,
+  ViewMode,
+  AssetSearchParams,
+} from "@/types/asset-store";
+import { config } from "@/lib/settings";
 
 interface AssetStorePanelProps {
   isOpen: boolean;
@@ -28,15 +33,45 @@ interface AssetStorePanelProps {
   projectId?: string;
 }
 
-type TabType = 'photos' | 'videos' | 'shapes' | 'frames' | 'icons' | 'uploads';
+type TabType = "photos" | "videos" | "shapes" | "frames" | "icons" | "uploads";
 
 const TABS = [
-  { id: 'photos' as TabType, label: 'Photos', icon: ImageIcon, assetType: 'photo' as AssetType },
-  { id: 'videos' as TabType, label: 'Videos', icon: VideoIcon, assetType: 'video' as AssetType },
-  { id: 'shapes' as TabType, label: 'Shapes', icon: SquareIcon, assetType: 'shape' as AssetType },
-  { id: 'frames' as TabType, label: 'Frames', icon: FrameIcon, assetType: 'frame' as AssetType },
-  { id: 'icons' as TabType, label: 'Icons', icon: SymbolIcon, assetType: 'icon' as AssetType },
-  { id: 'uploads' as TabType, label: 'Uploads', icon: UploadIcon, assetType: 'upload' as AssetType },
+  {
+    id: "photos" as TabType,
+    label: "Photos",
+    icon: ImageIcon,
+    assetType: "photo" as AssetType,
+  },
+  {
+    id: "videos" as TabType,
+    label: "Videos",
+    icon: VideoIcon,
+    assetType: "video" as AssetType,
+  },
+  {
+    id: "shapes" as TabType,
+    label: "Shapes",
+    icon: SquareIcon,
+    assetType: "shape" as AssetType,
+  },
+  {
+    id: "frames" as TabType,
+    label: "Frames",
+    icon: FrameIcon,
+    assetType: "frame" as AssetType,
+  },
+  {
+    id: "icons" as TabType,
+    label: "Icons",
+    icon: SymbolIcon,
+    assetType: "icon" as AssetType,
+  },
+  {
+    id: "uploads" as TabType,
+    label: "Uploads",
+    icon: UploadIcon,
+    assetType: "upload" as AssetType,
+  },
 ];
 
 export function AssetStorePanel({
@@ -45,15 +80,15 @@ export function AssetStorePanel({
   onAssetSelect,
   projectId,
 }: AssetStorePanelProps) {
-  const [activeTab, setActiveTab] = useState<TabType>('photos');
+  const [activeTab, setActiveTab] = useState<TabType>("photos");
   const [assets, setAssets] = useState<Asset[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [selectedColor, setSelectedColor] = useState<string>('all');
-  const [selectedOrientation, setSelectedOrientation] = useState<string>('all');
-  const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedColor, setSelectedColor] = useState<string>("all");
+  const [selectedOrientation, setSelectedOrientation] = useState<string>("all");
+  const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
   const [categories, setCategories] = useState<string[]>([]);
@@ -61,19 +96,19 @@ export function AssetStorePanel({
 
   // Load settings from config
   const assetStoreEnabled = useMemo(() => {
-    return config('assetStore.enabled', true) as boolean;
+    return config("assetStore.enabled", true) as boolean;
   }, []);
 
   const defaultView = useMemo(() => {
-    return config('assetStore.ui.defaultView', 'grid') as ViewMode;
+    return config("assetStore.ui.defaultView", "grid") as ViewMode;
   }, []);
 
   const itemsPerPage = useMemo(() => {
-    return config('assetStore.ui.itemsPerPage', 20) as number;
+    return config("assetStore.ui.itemsPerPage", 20) as number;
   }, []);
 
   const showAttribution = useMemo(() => {
-    return config('assetStore.ui.showAttribution', true) as boolean;
+    return config("assetStore.ui.showAttribution", true) as boolean;
   }, []);
 
   // Initialize view mode from settings
@@ -85,13 +120,15 @@ export function AssetStorePanel({
   useEffect(() => {
     const loadCategories = async () => {
       try {
-        const response = await fetch(`/api/asset-store/categories?assetType=${TABS.find(t => t.id === activeTab)?.assetType || 'photo'}`);
+        const response = await fetch(
+          `/api/asset-store/categories?assetType=${TABS.find((t) => t.id === activeTab)?.assetType || "photo"}`,
+        );
         const data = await response.json();
         if (data.success) {
-          setCategories(['all', ...data.categories]);
+          setCategories(["all", ...data.categories]);
         }
       } catch (error) {
-        console.error('Failed to load categories:', error);
+        console.error("Failed to load categories:", error);
       }
     };
 
@@ -101,71 +138,85 @@ export function AssetStorePanel({
   }, [activeTab, isOpen]);
 
   // Load assets when tab or filters change
-  const loadAssets = useCallback(async (page = 1, reset = false) => {
-    if (!assetStoreEnabled) {
-      setError('Asset store is disabled. Please enable it in settings.');
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      const currentTab = TABS.find(t => t.id === activeTab);
-      if (!currentTab) return;
-
-      const searchParams: AssetSearchParams = {
-        query: searchQuery || undefined,
-        category: selectedCategory !== 'all' ? selectedCategory : undefined,
-        color: selectedColor !== 'all' ? selectedColor : undefined,
-        orientation: selectedOrientation !== 'all' ? selectedOrientation as 'landscape' | 'portrait' | 'square' : undefined,
-        page,
-        perPage: itemsPerPage,
-        sortBy: 'relevant',
-      };
-
-      const response = await fetch('/api/asset-store/search', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...searchParams,
-          assetType: currentTab.assetType,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        if (reset) {
-          setAssets(data.data);
-        } else {
-          setAssets(prev => [...prev, ...data.data]);
-        }
-        setHasMore(data.hasMore);
-        setTotalResults(data.total);
-        setCurrentPage(page);
-      } else {
-        setError(data.error || 'Failed to load assets');
+  const loadAssets = useCallback(
+    async (page = 1, reset = false) => {
+      if (!assetStoreEnabled) {
+        setError("Asset store is disabled. Please enable it in settings.");
+        return;
       }
-    } catch (error) {
-      console.error('Failed to load assets:', error);
-      setError('Failed to load assets');
-    } finally {
-      setLoading(false);
-    }
-  }, [activeTab, searchQuery, selectedCategory, selectedColor, selectedOrientation, itemsPerPage, assetStoreEnabled]);
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        const currentTab = TABS.find((t) => t.id === activeTab);
+        if (!currentTab) return;
+
+        const searchParams: AssetSearchParams = {
+          query: searchQuery || undefined,
+          category: selectedCategory !== "all" ? selectedCategory : undefined,
+          color: selectedColor !== "all" ? selectedColor : undefined,
+          orientation:
+            selectedOrientation !== "all"
+              ? (selectedOrientation as "landscape" | "portrait" | "square")
+              : undefined,
+          page,
+          perPage: itemsPerPage,
+          sortBy: "relevant",
+        };
+
+        const response = await fetch("/api/asset-store/search", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...searchParams,
+            assetType: currentTab.assetType,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          if (reset) {
+            setAssets(data.data);
+          } else {
+            setAssets((prev) => [...prev, ...data.data]);
+          }
+          setHasMore(data.hasMore);
+          setTotalResults(data.total);
+          setCurrentPage(page);
+        } else {
+          setError(data.error || "Failed to load assets");
+        }
+      } catch (error) {
+        console.error("Failed to load assets:", error);
+        setError("Failed to load assets");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [
+      activeTab,
+      searchQuery,
+      selectedCategory,
+      selectedColor,
+      selectedOrientation,
+      itemsPerPage,
+      assetStoreEnabled,
+    ],
+  );
 
   // Load featured assets on tab change
   useEffect(() => {
     if (isOpen) {
       setAssets([]);
       setCurrentPage(1);
-      setSearchQuery('');
-      setSelectedCategory('all');
-      setSelectedColor('all');
-      setSelectedOrientation('all');
+      setSearchQuery("");
+      setSelectedCategory("all");
+      setSelectedColor("all");
+      setSelectedOrientation("all");
       loadAssets(1, true);
     }
   }, [activeTab, isOpen, loadAssets]);
@@ -184,10 +235,13 @@ export function AssetStorePanel({
   }, [loading, hasMore, currentPage, loadAssets]);
 
   // Handle asset selection
-  const handleAssetSelect = useCallback((asset: Asset) => {
-    onAssetSelect?.(asset);
-    onClose();
-  }, [onAssetSelect, onClose]);
+  const handleAssetSelect = useCallback(
+    (asset: Asset) => {
+      onAssetSelect?.(asset);
+      onClose();
+    },
+    [onAssetSelect, onClose],
+  );
 
   // Handle tab change
   const handleTabChange = useCallback((tab: TabType) => {
@@ -196,13 +250,13 @@ export function AssetStorePanel({
 
   if (!isOpen) return null;
 
-  const currentTabInfo = TABS.find(t => t.id === activeTab);
-  const filteredAssets = assets.filter(asset => {
+  const currentTabInfo = TABS.find((t) => t.id === activeTab);
+  const filteredAssets = assets.filter((asset) => {
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       return (
         asset.name.toLowerCase().includes(query) ||
-        asset.tags.some(tag => tag.toLowerCase().includes(query)) ||
+        asset.tags.some((tag) => tag.toLowerCase().includes(query)) ||
         asset.category.toLowerCase().includes(query)
       );
     }
@@ -236,7 +290,9 @@ export function AssetStorePanel({
                   Asset Store
                 </h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {totalResults > 0 ? `${totalResults} assets` : 'Browse assets'}
+                  {totalResults > 0
+                    ? `${totalResults} assets`
+                    : "Browse assets"}
                 </p>
               </div>
             </div>
@@ -256,8 +312,8 @@ export function AssetStorePanel({
                   onClick={() => handleTabChange(tab.id)}
                   className={`flex items-center gap-2 px-4 py-3 text-sm font-medium transition-colors ${
                     activeTab === tab.id
-                      ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400 bg-white dark:bg-black'
-                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                      ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400 bg-white dark:bg-black"
+                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -278,7 +334,7 @@ export function AssetStorePanel({
                   setSearchQuery(e.target.value)
                 }
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
+                  if (e.key === "Enter") {
                     handleSearch();
                   }
                 }}
@@ -307,7 +363,7 @@ export function AssetStorePanel({
               </Select.Root>
 
               {/* Color Filter (only for photos) */}
-              {activeTab === 'photos' && (
+              {activeTab === "photos" && (
                 <Select.Root
                   value={selectedColor}
                   onValueChange={setSelectedColor}
@@ -333,7 +389,7 @@ export function AssetStorePanel({
               )}
 
               {/* Orientation Filter (only for photos) */}
-              {activeTab === 'photos' && (
+              {activeTab === "photos" && (
                 <Select.Root
                   value={selectedOrientation}
                   onValueChange={setSelectedOrientation}
@@ -359,21 +415,21 @@ export function AssetStorePanel({
             {/* View Mode Toggle */}
             <div className="flex gap-1 bg-gray-200 dark:bg-gray-800 rounded-lg p-1">
               <button
-                onClick={() => setViewMode('grid')}
+                onClick={() => setViewMode("grid")}
                 className={`p-2 rounded-md transition-colors ${
-                  viewMode === 'grid'
-                    ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  viewMode === "grid"
+                    ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                 }`}
               >
                 <GridIcon className="w-4 h-4" />
               </button>
               <button
-                onClick={() => setViewMode('list')}
+                onClick={() => setViewMode("list")}
                 className={`p-2 rounded-md transition-colors ${
-                  viewMode === 'list'
-                    ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  viewMode === "list"
+                    ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                 }`}
               >
                 <ListBulletIcon className="w-4 h-4" />
@@ -387,7 +443,9 @@ export function AssetStorePanel({
               <div className="flex items-center justify-center py-16">
                 <div className="text-center">
                   <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                  <p className="text-gray-500 dark:text-gray-400">Loading assets...</p>
+                  <p className="text-gray-500 dark:text-gray-400">
+                    Loading assets...
+                  </p>
                 </div>
               </div>
             ) : error ? (
@@ -401,9 +459,7 @@ export function AssetStorePanel({
                 <p className="text-gray-500 dark:text-gray-400 max-w-sm mb-4">
                   {error}
                 </p>
-                <Button onClick={() => loadAssets(1, true)}>
-                  Try Again
-                </Button>
+                <Button onClick={() => loadAssets(1, true)}>Try Again</Button>
               </div>
             ) : filteredAssets.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-16 text-center">
@@ -414,13 +470,12 @@ export function AssetStorePanel({
                   No assets found
                 </h3>
                 <p className="text-gray-500 dark:text-gray-400 max-w-sm">
-                  {searchQuery 
-                    ? 'Try adjusting your search terms or filters'
-                    : 'No assets available for this category'
-                  }
+                  {searchQuery
+                    ? "Try adjusting your search terms or filters"
+                    : "No assets available for this category"}
                 </p>
               </div>
-            ) : viewMode === 'grid' ? (
+            ) : viewMode === "grid" ? (
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 {filteredAssets.map((asset) => (
                   <motion.div
@@ -439,7 +494,9 @@ export function AssetStorePanel({
                     {/* Overlay */}
                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                       <div className="text-center text-white p-2">
-                        <p className="text-sm font-medium truncate">{asset.name}</p>
+                        <p className="text-sm font-medium truncate">
+                          {asset.name}
+                        </p>
                         {showAttribution && asset.metadata.attribution && (
                           <p className="text-xs opacity-75 truncate">
                             {asset.metadata.attribution}
@@ -451,7 +508,13 @@ export function AssetStorePanel({
                     {/* Provider Badge */}
                     <div className="absolute top-2 left-2">
                       <Badge
-                        color={asset.provider === 'unsplash' ? 'blue' : asset.provider === 'pexels' ? 'green' : 'gray'}
+                        color={
+                          asset.provider === "unsplash"
+                            ? "blue"
+                            : asset.provider === "pexels"
+                              ? "green"
+                              : "gray"
+                        }
                         variant="soft"
                       >
                         {asset.provider}
@@ -480,7 +543,8 @@ export function AssetStorePanel({
                         {asset.name}
                       </div>
                       <div className="text-sm text-gray-500 dark:text-gray-400">
-                        {asset.category} • {asset.metadata.width}×{asset.metadata.height}
+                        {asset.category} • {asset.metadata.width}×
+                        {asset.metadata.height}
                         {showAttribution && asset.metadata.attribution && (
                           <span className="block text-xs">
                             {asset.metadata.attribution}
@@ -490,7 +554,13 @@ export function AssetStorePanel({
                     </div>
 
                     <Badge
-                      color={asset.provider === 'unsplash' ? 'blue' : asset.provider === 'pexels' ? 'green' : 'gray'}
+                      color={
+                        asset.provider === "unsplash"
+                          ? "blue"
+                          : asset.provider === "pexels"
+                            ? "green"
+                            : "gray"
+                      }
                       variant="soft"
                     >
                       {asset.provider}

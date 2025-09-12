@@ -1,41 +1,41 @@
-'use client';
+"use client";
 
-import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { Toolbar, Tool } from '@/components/studio/toolbar';
-import { Canvas } from '@/components/studio/canvas';
-import logger from '@/lib/logger';
-import { type MainCanvasRef } from '@/components/studio/canvas/main-canvas';
-import EnhancedPromptBox from '@/components/studio/enhanced-prompt-box';
+import { useState, useCallback, useEffect, useRef, useMemo } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { Toolbar, Tool } from "@/components/studio/toolbar";
+import { Canvas } from "@/components/studio/canvas";
+import logger from "@/lib/logger";
+import { type MainCanvasRef } from "@/components/studio/canvas/main-canvas";
+import EnhancedPromptBox from "@/components/studio/enhanced-prompt-box";
 import {
   GenerationPanel,
   AssetsPanel,
   HistoryPanel,
-} from '@/components/studio/panels';
-import { ConsoleSidebar } from '@/components/ui/console-sidebar';
+} from "@/components/studio/panels";
+import { ConsoleSidebar } from "@/components/ui/console-sidebar";
 import {
   SizeModal,
   ErrorNotification,
   AboutModal,
   ShortcutsModal,
-} from '@/components/modals';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
-import { SettingsDialog } from '@/components/settings';
-import { SyncManager } from '@/components/studio/sync-manager';
-import { StudioLoading } from '@/components/studio/studio-loading';
-import { MenuBar, MenuProvider } from '@/components/studio/menu-bar';
-import { AppSettings } from '@/lib/settings/app-settings';
-import type { ModelInfo } from '@/app/api/models/route';
+} from "@/components/modals";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { SettingsDialog } from "@/components/settings";
+import { SyncManager } from "@/components/studio/sync-manager";
+import { StudioLoading } from "@/components/studio/studio-loading";
+import { MenuBar, MenuProvider } from "@/components/studio/menu-bar";
+import { AppSettings } from "@/lib/settings/app-settings";
+import type { ModelInfo } from "@/app/api/models/route";
 import {
   dbManager,
   type Asset,
   type HistoryEntry,
   type Project,
-} from '@/lib/indexeddb';
-import { ProjectManager } from '@/lib/project-manager';
-import { syncHelper } from '@/lib/sync-helper';
-import { ZOOM_CONSTANTS, CANVAS_CONSTANTS } from '@/lib/constants';
+} from "@/lib/indexeddb";
+import { ProjectManager } from "@/lib/project-manager";
+import { syncHelper } from "@/lib/sync-helper";
+import { ZOOM_CONSTANTS, CANVAS_CONSTANTS } from "@/lib/constants";
 import {
   DownloadIcon,
   UploadIcon,
@@ -45,9 +45,9 @@ import {
   GitHubLogoIcon,
   LinkedInLogoIcon,
   GearIcon,
-} from '@radix-ui/react-icons';
-import { Code } from 'lucide-react';
-import appConfig from '@/app/config/app-config.json';
+} from "@radix-ui/react-icons";
+import { Code } from "lucide-react";
+import appConfig from "@/app/config/app-config.json";
 
 interface GenerationParams {
   prompt: string;
@@ -69,7 +69,7 @@ export default function ProjectStudioPage() {
   const appSettings = useMemo(() => new AppSettings(), []);
 
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTool, setActiveTool] = useState<Tool>('select');
+  const [activeTool, setActiveTool] = useState<Tool>("select");
   const [showGenerationPanel, setShowGenerationPanel] = useState(false);
   const [showPromptBox, setShowPromptBox] = useState(true);
   const [showAssetsPanel, setShowAssetsPanel] = useState(false);
@@ -82,13 +82,13 @@ export default function ProjectStudioPage() {
   const [generationProgress, setGenerationProgress] = useState(0);
   const [requestLog, setRequestLog] = useState<unknown>(null);
   const [responseLog, setResponseLog] = useState<unknown>(null);
-  const [projectName, setProjectName] = useState('Untitled Project');
+  const [projectName, setProjectName] = useState("Untitled Project");
   const [isEditingProjectName, setIsEditingProjectName] = useState(false);
-  const [tempProjectName, setTempProjectName] = useState('Untitled Project');
+  const [tempProjectName, setTempProjectName] = useState("Untitled Project");
   const [error, setError] = useState<string | null>(null);
-  const [currentModel, setCurrentModel] = useState('flux-kontext-pro');
+  const [currentModel, setCurrentModel] = useState("flux-kontext-pro");
   const [isInpaintMode, setIsInpaintMode] = useState(false);
-  const [currentSize, setCurrentSize] = useState('1024x1024');
+  const [currentSize, setCurrentSize] = useState("1024x1024");
   const [showSizeModal, setShowSizeModal] = useState(false);
   const [attachedImage, setAttachedImage] = useState<string | null>(null);
   const [models, setModels] = useState<ModelInfo[]>([]);
@@ -113,11 +113,14 @@ export default function ProjectStudioPage() {
 
   // Auto-save functionality (Sync) - integrated with app settings
   const [autoSave, setAutoSave] = useState(() => {
-    return appSettings.getUnifiedSetting('autoSave.enabled', true) as boolean;
+    return appSettings.getUnifiedSetting("autoSave.enabled", true) as boolean;
   });
   // Auto-save duration settings - default 60s, minimum 30s
   const [autoSaveDuration, setAutoSaveDuration] = useState(() => {
-    const duration = appSettings.getUnifiedSetting('autoSave.duration', 60) as number;
+    const duration = appSettings.getUnifiedSetting(
+      "autoSave.duration",
+      60,
+    ) as number;
     return Math.max(duration, 30); // Ensure minimum 30 seconds
   });
 
@@ -127,46 +130,49 @@ export default function ProjectStudioPage() {
   const toggleAutoSave = useCallback(() => {
     const newAutoSave = !autoSave;
     setAutoSave(newAutoSave);
-    
+
     // Update app settings
-    appSettings.updateUnifiedSetting('autoSave.enabled', newAutoSave);
+    appSettings.updateUnifiedSetting("autoSave.enabled", newAutoSave);
 
     // Update sync helper
     syncHelper.setEnabled(newAutoSave);
 
     if (newAutoSave) {
-      logger.info('Auto-save (Sync) enabled');
+      logger.info("Auto-save (Sync) enabled");
     } else {
-      logger.info('Auto-save (Sync) disabled');
+      logger.info("Auto-save (Sync) disabled");
       syncHelper.cancelSync(); // Cancel any pending auto-save
     }
   }, [autoSave, appSettings]);
 
   // Duration control for auto-save - minimum 30 seconds
-  const updateAutoSaveDuration = useCallback((duration: number) => {
-    const validatedDuration = Math.max(duration, 30); // Ensure minimum 30 seconds
-    setAutoSaveDuration(validatedDuration);
-    
-    // Update app settings
-    appSettings.updateUnifiedSetting('autoSave.duration', validatedDuration);
-    
-    syncHelper.setDuration(validatedDuration);
-  }, [appSettings]);
+  const updateAutoSaveDuration = useCallback(
+    (duration: number) => {
+      const validatedDuration = Math.max(duration, 30); // Ensure minimum 30 seconds
+      setAutoSaveDuration(validatedDuration);
+
+      // Update app settings
+      appSettings.updateUnifiedSetting("autoSave.duration", validatedDuration);
+
+      syncHelper.setDuration(validatedDuration);
+    },
+    [appSettings],
+  );
 
   // Unified function to update page title
   const updatePageTitle = useCallback(
     (projectNameParam?: string) => {
       const name = projectNameParam || projectName;
-      if (name && name !== 'Untitled Project') {
+      if (name && name !== "Untitled Project") {
         const newTitle = `${name} - ${appConfig.app.name}`;
         document.title = newTitle;
-        logger.log('Page title updated to:', newTitle);
+        logger.log("Page title updated to:", newTitle);
       } else {
         document.title = appConfig.app.name;
-        logger.log('Page title updated to:', appConfig.app.name);
+        logger.log("Page title updated to:", appConfig.app.name);
       }
     },
-    [projectName]
+    [projectName],
   );
 
   // Update page title when projectName state changes (additional safety)
@@ -182,30 +188,30 @@ export default function ProjectStudioPage() {
 
   // Sync settings changes with app settings
   useEffect(() => {
-    appSettings.updateUnifiedSetting('autoSave.enabled', autoSave);
+    appSettings.updateUnifiedSetting("autoSave.enabled", autoSave);
   }, [autoSave, appSettings]);
 
   // Load asset store configuration
   useEffect(() => {
     try {
-      const assetStoreConfig = appSettings.getUnifiedSetting('assetStore', {
+      const assetStoreConfig = appSettings.getUnifiedSetting("assetStore", {
         enabled: false,
         providers: {
-          unsplash: { enabled: false, apiKey: '', rateLimit: 50 },
-          pexels: { enabled: false, apiKey: '', rateLimit: 200 },
+          unsplash: { enabled: false, apiKey: "", rateLimit: 50 },
+          pexels: { enabled: false, apiKey: "", rateLimit: 200 },
         },
-        ui: { defaultView: 'grid', itemsPerPage: 20, showAttribution: true },
+        ui: { defaultView: "grid", itemsPerPage: 20, showAttribution: true },
         cache: { enabled: true, maxItems: 1000, ttl: 60 },
       }) as { enabled: boolean };
       setIsAssetStoreEnabled(assetStoreConfig.enabled);
     } catch (error) {
-      logger.error('Failed to load asset store config:', error);
+      logger.error("Failed to load asset store config:", error);
       setIsAssetStoreEnabled(false);
     }
   }, [appSettings]);
 
   useEffect(() => {
-    appSettings.updateUnifiedSetting('autoSave.duration', autoSaveDuration);
+    appSettings.updateUnifiedSetting("autoSave.duration", autoSaveDuration);
   }, [autoSaveDuration, appSettings]);
 
   // Load project on mount
@@ -259,9 +265,9 @@ export default function ProjectStudioPage() {
             // Update page title with project name
             updatePageTitle(project.name);
           } else {
-            setError('Project not found');
+            setError("Project not found");
             // Redirect to studio without project ID
-            router.push('/studio');
+            router.push("/studio");
             return;
           }
         } else {
@@ -269,18 +275,18 @@ export default function ProjectStudioPage() {
           const userId = appConfig.admin.user_id;
           const newProject = await ProjectManager.createProject(
             userId,
-            'Untitled Project',
+            "Untitled Project",
             undefined,
             {
-              currentModel: 'FLUX.1-Kontext-pro',
-              currentSize: '1024x1024',
+              currentModel: "FLUX.1-Kontext-pro",
+              currentSize: "1024x1024",
               isInpaintMode: false,
             },
             {
               currentImage: null,
               generatedImage: null,
               attachedImage: null,
-            }
+            },
           );
           setCurrentProject(newProject);
           // Redirect to the new project
@@ -288,8 +294,8 @@ export default function ProjectStudioPage() {
           return;
         }
       } catch (error) {
-        logger.error('Failed to load project:', error);
-        setError('Failed to load project');
+        logger.error("Failed to load project:", error);
+        setError("Failed to load project");
       } finally {
         setIsLoading(false);
       }
@@ -322,8 +328,8 @@ export default function ProjectStudioPage() {
       await ProjectManager.saveProject(updatedProject);
       setCurrentProject(updatedProject);
     } catch (error) {
-      logger.error('Failed to save project:', error);
-      setError('Failed to save project');
+      logger.error("Failed to save project:", error);
+      setError("Failed to save project");
     }
   }, [
     currentProject,
@@ -364,25 +370,25 @@ export default function ProjectStudioPage() {
 
     // Handle panel opening for different tools
     switch (tool) {
-      case 'generate':
+      case "generate":
         setShowPromptBox(true);
         setIsInpaintMode(false);
         break;
-      case 'inpaint':
+      case "inpaint":
         setShowPromptBox(true);
         setIsInpaintMode(true);
         break;
-      case 'assets':
+      case "assets":
         setShowAssetsPanel(true);
         break;
-      case 'assetStore':
+      case "assetStore":
         setShowAssetStorePanel(true);
         break;
-      case 'history':
+      case "history":
         setShowHistoryPanel(true);
         break;
-      case 'prompt':
-        setShowPromptBox(prev => !prev);
+      case "prompt":
+        setShowPromptBox((prev) => !prev);
         break;
     }
   }, []);
@@ -397,14 +403,14 @@ export default function ProjectStudioPage() {
       timestamp: Date.now(),
     };
 
-    setHistory(prev => {
+    setHistory((prev) => {
       const newHistory = prev.slice(0, historyIndex + 1);
       newHistory.push(newState);
       // Keep only last N states to prevent memory issues
       return newHistory.slice(-CANVAS_CONSTANTS.MAX_HISTORY_STATES);
     });
-    setHistoryIndex(prev =>
-      Math.min(prev + 1, CANVAS_CONSTANTS.MAX_HISTORY_STATES - 1)
+    setHistoryIndex((prev) =>
+      Math.min(prev + 1, CANVAS_CONSTANTS.MAX_HISTORY_STATES - 1),
     );
   }, [currentImage, generatedImage, attachedImage, zoom, historyIndex]);
 
@@ -415,13 +421,13 @@ export default function ProjectStudioPage() {
       saveToHistory();
 
       const reader = new FileReader();
-      reader.onload = event => {
+      reader.onload = (event) => {
         const imageData = event.target?.result as string;
         setAttachedImage(imageData);
       };
       reader.readAsDataURL(file);
     },
-    [saveToHistory]
+    [saveToHistory],
   );
 
   // Fetch models on component mount (only once)
@@ -431,7 +437,7 @@ export default function ProjectStudioPage() {
       if (modelsFetched) return; // Prevent multiple fetches
 
       try {
-        const response = await fetch('/api/models');
+        const response = await fetch("/api/models");
         const data = await response.json();
         setModels(data.models);
 
@@ -442,11 +448,11 @@ export default function ProjectStudioPage() {
         }
         setModelsFetched(true);
       } catch (error) {
-        logger.error('Failed to fetch models:', error);
+        logger.error("Failed to fetch models:", error);
         // Fallback to default values if API fails
         if (!currentProject && !currentModel) {
-          setCurrentModel('FLUX.1-Kontext-pro');
-          setCurrentSize('1024x1024');
+          setCurrentModel("FLUX.1-Kontext-pro");
+          setCurrentSize("1024x1024");
         }
         setModelsFetched(true);
       }
@@ -458,10 +464,10 @@ export default function ProjectStudioPage() {
   // Get model name helper - memoized to prevent unnecessary recalculations
   const getModelName = useCallback(
     (modelId: string) => {
-      const model = models.find(m => m.id === modelId);
+      const model = models.find((m) => m.id === modelId);
       return model ? model.name : modelId;
     },
-    [models]
+    [models],
   );
 
   // Memoized error dismiss handler to prevent unnecessary rerenders
@@ -525,8 +531,8 @@ export default function ProjectStudioPage() {
           await ProjectManager.saveProject(updatedProject);
           setCurrentProject(updatedProject);
         } catch (error) {
-          logger.error('Failed to save project name:', error);
-          setError('Failed to save project name');
+          logger.error("Failed to save project name:", error);
+          setError("Failed to save project name");
         }
       }
     }
@@ -540,13 +546,13 @@ export default function ProjectStudioPage() {
 
   const handleProjectNameKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      if (e.key === 'Enter') {
+      if (e.key === "Enter") {
         handleProjectNameSave();
-      } else if (e.key === 'Escape') {
+      } else if (e.key === "Escape") {
         handleProjectNameCancel();
       }
     },
-    [handleProjectNameSave, handleProjectNameCancel]
+    [handleProjectNameSave, handleProjectNameCancel],
   );
 
   // Menu bar handlers
@@ -555,42 +561,42 @@ export default function ProjectStudioPage() {
       const userId = appConfig.admin.user_id;
       const newProject = await ProjectManager.createProject(
         userId,
-        'Untitled Project',
+        "Untitled Project",
         undefined,
         {
-          currentModel: 'FLUX.1-Kontext-pro',
-          currentSize: '1024x1024',
+          currentModel: "FLUX.1-Kontext-pro",
+          currentSize: "1024x1024",
           isInpaintMode: false,
         },
         {
           currentImage: null,
           generatedImage: null,
           attachedImage: null,
-        }
+        },
       );
 
       // Redirect to new project
       router.push(`/studio/${newProject.id}`);
     } catch (error) {
-      logger.error('Failed to create new project:', error);
-      setError('Failed to create new project');
+      logger.error("Failed to create new project:", error);
+      setError("Failed to create new project");
     }
   }, [router]);
 
   const handleClose = useCallback(() => {
     // In a real app, this would close the window/tab
-    logger.log('Close application');
+    logger.log("Close application");
   }, []);
 
   const handleZoomIn = useCallback(() => {
-    setZoom(prev =>
-      Math.min(prev + ZOOM_CONSTANTS.ZOOM_STEP, ZOOM_CONSTANTS.MAX_ZOOM)
+    setZoom((prev) =>
+      Math.min(prev + ZOOM_CONSTANTS.ZOOM_STEP, ZOOM_CONSTANTS.MAX_ZOOM),
     );
   }, []);
 
   const handleZoomOut = useCallback(() => {
-    setZoom(prev =>
-      Math.max(prev - ZOOM_CONSTANTS.ZOOM_STEP, ZOOM_CONSTANTS.MIN_ZOOM)
+    setZoom((prev) =>
+      Math.max(prev - ZOOM_CONSTANTS.ZOOM_STEP, ZOOM_CONSTANTS.MIN_ZOOM),
     );
   }, []);
 
@@ -622,7 +628,7 @@ export default function ProjectStudioPage() {
       setGeneratedImage(prevState.generatedImage);
       setAttachedImage(prevState.attachedImage);
       setZoom(prevState.zoom);
-      setHistoryIndex(prev => prev - 1);
+      setHistoryIndex((prev) => prev - 1);
     }
   }, [history, historyIndex]);
 
@@ -633,7 +639,7 @@ export default function ProjectStudioPage() {
       setGeneratedImage(nextState.generatedImage);
       setAttachedImage(nextState.attachedImage);
       setZoom(nextState.zoom);
-      setHistoryIndex(prev => prev + 1);
+      setHistoryIndex((prev) => prev + 1);
     }
   }, [history, historyIndex]);
 
@@ -646,32 +652,29 @@ export default function ProjectStudioPage() {
   }, []);
 
   const handleShowDocumentation = useCallback(() => {
-    window.open('https://github.com/DrHazemAli/azure-image-studio', '_blank');
+    window.open("https://github.com/DrHazemAli/image-studio", "_blank");
   }, []);
 
   const handleShowGitHub = useCallback(() => {
-    window.open('https://github.com/DrHazemAli/azure-image-studio', '_blank');
+    window.open("https://github.com/DrHazemAli/image-studio", "_blank");
   }, []);
 
   const handleShowSupport = useCallback(() => {
-    window.open(
-      'https://github.com/DrHazemAli/azure-image-studio/issues',
-      '_blank'
-    );
+    window.open("https://github.com/DrHazemAli/image-studio/issues", "_blank");
   }, []);
 
   // Insert menu handlers
   const handleInsertImage = useCallback(() => {
     // Trigger file upload for image
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-    input.onchange = event => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = (event) => {
       const file = (event.target as HTMLInputElement).files?.[0];
       if (file) {
         // Convert file to base64 and add to canvas
         const reader = new FileReader();
-        reader.onload = e => {
+        reader.onload = (e) => {
           const imageData = e.target?.result as string;
           if (imageData && canvasRef.current) {
             canvasRef.current.addImageToCanvas(imageData);
@@ -685,42 +688,42 @@ export default function ProjectStudioPage() {
 
   const handleInsertLayer = useCallback(() => {
     // Create a new layer - for now just show a notification
-    logger.log('Insert new layer');
+    logger.log("Insert new layer");
     // TODO: Implement layer creation logic
   }, []);
 
   const handleInsertText = useCallback(() => {
     // Switch to text tool
-    setActiveTool('text');
+    setActiveTool("text");
   }, []);
 
   const handleInsertShape = useCallback(() => {
     // Switch to shape tool
-    setActiveTool('shape');
+    setActiveTool("shape");
   }, []);
 
   const handleInsertRectangle = useCallback(() => {
     // Switch to shape tool and set rectangle mode
-    setActiveTool('shape');
+    setActiveTool("shape");
     // TODO: Set specific shape mode to rectangle
   }, []);
 
   const handleInsertCircle = useCallback(() => {
     // Switch to shape tool and set circle mode
-    setActiveTool('shape');
+    setActiveTool("shape");
     // TODO: Set specific shape mode to circle
   }, []);
 
   const handleInsertLine = useCallback(() => {
     // Switch to shape tool and set line mode
-    setActiveTool('shape');
+    setActiveTool("shape");
     // TODO: Set specific shape mode to line
   }, []);
 
   const handleInsertFromAssetStore = useCallback(() => {
-    setActiveTool('assetStore');
+    setActiveTool("assetStore");
     setShowAssetStorePanel(true);
-    logger.info('Insert from asset store requested');
+    logger.info("Insert from asset store requested");
   }, []);
 
   // Handle project export
@@ -732,8 +735,8 @@ export default function ProjectStudioPage() {
         await ProjectManager.exportProjectFromDB(currentProject);
       ProjectManager.downloadProject(projectData);
     } catch (error) {
-      logger.error('Export failed:', error);
-      setError('Failed to export project');
+      logger.error("Export failed:", error);
+      setError("Failed to export project");
     }
   }, [currentProject]);
 
@@ -743,10 +746,10 @@ export default function ProjectStudioPage() {
 
   // Handle project import
   const handleImportProject = useCallback(() => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.json';
-    input.onchange = async event => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".json";
+    input.onchange = async (event) => {
       const file = (event.target as HTMLInputElement).files?.[0];
       if (!file) return;
 
@@ -755,7 +758,7 @@ export default function ProjectStudioPage() {
         const userId = appConfig.admin.user_id;
         const result = await ProjectManager.importProjectToDB(
           projectData,
-          userId
+          userId,
         );
 
         if (result.success && result.project) {
@@ -765,8 +768,8 @@ export default function ProjectStudioPage() {
           setError(result.message);
         }
       } catch (error) {
-        logger.error('Import failed:', error);
-        setError('Failed to import project');
+        logger.error("Import failed:", error);
+        setError("Failed to import project");
       }
     };
     input.click();
@@ -786,25 +789,25 @@ export default function ProjectStudioPage() {
       try {
         // Simulate progress
         const progressInterval = setInterval(() => {
-          setGenerationProgress(prev => Math.min(prev + 10, 90));
+          setGenerationProgress((prev) => Math.min(prev + 10, 90));
         }, 500);
 
-        const response = await fetch('/api/generate', {
-          method: 'POST',
+        const response = await fetch("/api/generate", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             deploymentId: params.model,
             prompt: params.prompt,
             size: params.size,
-            outputFormat: 'png',
+            outputFormat: "png",
             count: params.count,
             quality: params.quality,
             style: params.style,
             seed: params.seed,
             negativePrompt: params.negativePrompt,
-            mode: isInpaintMode ? 'edit' : 'generate',
+            mode: isInpaintMode ? "edit" : "generate",
             image: isInpaintMode ? attachedImage : undefined,
             mask: undefined, // Could be added later for mask support
           }),
@@ -815,7 +818,7 @@ export default function ProjectStudioPage() {
         const data = await response.json();
 
         if (!response.ok || !data.success) {
-          throw new Error(data.error || 'Generation failed');
+          throw new Error(data.error || "Generation failed");
         }
 
         setGenerationProgress(100);
@@ -829,12 +832,12 @@ export default function ProjectStudioPage() {
           // Validate that b64_json exists and is not undefined
           if (!imageItem.b64_json) {
             logger.error(
-              'Generated image data is missing b64_json field:',
-              imageItem
+              "Generated image data is missing b64_json field:",
+              imageItem,
             );
-            setError('Generated image data is invalid - missing image content');
+            setError("Generated image data is invalid - missing image content");
             setResponseLog(
-              'Error: Generated image data is missing b64_json field'
+              "Error: Generated image data is missing b64_json field",
             );
             return;
           }
@@ -846,10 +849,10 @@ export default function ProjectStudioPage() {
           // Save to assets using IndexedDB
           const asset: Asset = {
             id: Date.now().toString(),
-            project_id: currentProject?.id || '',
+            project_id: currentProject?.id || "",
             url: imageData,
             name: `Generated-${new Date().toISOString().slice(0, 16)}`,
-            type: 'generation' as const,
+            type: "generation" as const,
             timestamp: new Date(),
             prompt: params.prompt,
             model: params.model,
@@ -858,33 +861,33 @@ export default function ProjectStudioPage() {
           try {
             await dbManager.saveAsset(asset);
           } catch (error) {
-            logger.warn('Failed to save to assets:', error);
+            logger.warn("Failed to save to assets:", error);
           }
 
           // Save to history using IndexedDB
           const historyEntry: HistoryEntry = {
             id: Date.now().toString(),
-            project_id: currentProject?.id || '',
-            type: 'generation' as const,
+            project_id: currentProject?.id || "",
+            type: "generation" as const,
             timestamp: new Date(),
             prompt: params.prompt,
             model: params.model,
             settings: { size: params.size, quality: params.quality },
             imageUrl: imageData,
             thumbnailUrl: imageData,
-            status: 'completed' as const,
+            status: "completed" as const,
           };
 
           try {
             await dbManager.saveHistoryEntry(historyEntry);
           } catch (error) {
-            logger.warn('Failed to save to history:', error);
+            logger.warn("Failed to save to history:", error);
           }
         }
       } catch (error) {
-        logger.error('Generation error:', error);
+        logger.error("Generation error:", error);
         const errorMessage =
-          error instanceof Error ? error.message : 'Unknown error occurred';
+          error instanceof Error ? error.message : "Unknown error occurred";
         setError(errorMessage);
         setResponseLog(errorMessage);
       } finally {
@@ -892,7 +895,7 @@ export default function ProjectStudioPage() {
         setTimeout(() => setGenerationProgress(0), 2000);
       }
     },
-    [isInpaintMode, attachedImage, saveToHistory, currentProject?.id]
+    [isInpaintMode, attachedImage, saveToHistory, currentProject?.id],
   );
 
   // Migrate from localStorage to IndexedDB on mount
@@ -901,7 +904,7 @@ export default function ProjectStudioPage() {
       try {
         await dbManager.migrateFromLocalStorage();
       } catch (error) {
-        logger.error('Migration failed:', error);
+        logger.error("Migration failed:", error);
       }
     };
     migrateData();
@@ -919,19 +922,19 @@ export default function ProjectStudioPage() {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.metaKey || event.ctrlKey) {
         switch (event.key) {
-          case 's':
+          case "s":
             event.preventDefault();
             handleExportProject();
             break;
-          case 'o':
+          case "o":
             event.preventDefault();
             handleImportProject();
             break;
-          case 'e':
+          case "e":
             event.preventDefault();
             handleExportProject();
             break;
-          case 'z':
+          case "z":
             if (event.shiftKey) {
               event.preventDefault();
               handleRedo();
@@ -946,72 +949,72 @@ export default function ProjectStudioPage() {
       // Tool shortcuts - require Cmd key
       if (event.metaKey || event.ctrlKey) {
         switch (event.key) {
-          case '1':
+          case "1":
             event.preventDefault();
-            setActiveTool('select');
+            setActiveTool("select");
             break;
-          case 'm':
+          case "m":
             event.preventDefault();
-            setActiveTool('move');
+            setActiveTool("move");
             break;
-          case 'h':
+          case "h":
             event.preventDefault();
-            setActiveTool('hand');
+            setActiveTool("hand");
             break;
-          case '2':
+          case "2":
             event.preventDefault();
-            setActiveTool('zoom');
+            setActiveTool("zoom");
             break;
-          case 'g':
+          case "g":
             event.preventDefault();
-            setActiveTool('generate');
+            setActiveTool("generate");
             setShowPromptBox(true);
             break;
-          case '3':
+          case "3":
             event.preventDefault();
-            setActiveTool('assets');
+            setActiveTool("assets");
             setShowAssetsPanel(true);
             break;
-          case '4':
+          case "4":
             event.preventDefault();
-            setActiveTool('assetStore');
+            setActiveTool("assetStore");
             setShowAssetStorePanel(true);
             break;
-          case 'e':
+          case "e":
             event.preventDefault();
-            setActiveTool('edit');
+            setActiveTool("edit");
             break;
-          case 'b':
+          case "b":
             event.preventDefault();
-            setActiveTool('brush');
+            setActiveTool("brush");
             break;
-          case 'T':
+          case "T":
             if (event.shiftKey) {
               event.preventDefault();
-              setActiveTool('text');
+              setActiveTool("text");
             }
             break;
-          case '4':
+          case "4":
             event.preventDefault();
-            setActiveTool('crop');
+            setActiveTool("crop");
             break;
-          case 'i':
+          case "i":
             event.preventDefault();
-            setActiveTool('inpaint');
+            setActiveTool("inpaint");
             setShowPromptBox(true);
             break;
-          case 'p':
+          case "p":
             event.preventDefault();
-            setActiveTool('prompt');
-            setShowPromptBox(prev => !prev);
+            setActiveTool("prompt");
+            setShowPromptBox((prev) => !prev);
             break;
-          case 'u':
+          case "u":
             event.preventDefault();
-            setActiveTool('shape');
+            setActiveTool("shape");
             break;
-          case 'y':
+          case "y":
             event.preventDefault();
-            setActiveTool('history');
+            setActiveTool("history");
             setShowHistoryPanel(true);
             break;
         }
@@ -1020,33 +1023,33 @@ export default function ProjectStudioPage() {
       // Special tool shortcuts that don't use Cmd
       if (
         event.shiftKey &&
-        event.key === 'E' &&
+        event.key === "E" &&
         !event.metaKey &&
         !event.ctrlKey
       ) {
         event.preventDefault();
-        setActiveTool('eraser');
+        setActiveTool("eraser");
       }
 
       if (event.altKey && !event.metaKey && !event.ctrlKey && !event.shiftKey) {
         event.preventDefault();
-        setActiveTool('eyedropper');
+        setActiveTool("eyedropper");
       }
 
       if (
         event.shiftKey &&
         event.altKey &&
-        event.key === 'B' &&
+        event.key === "B" &&
         !event.metaKey &&
         !event.ctrlKey
       ) {
         event.preventDefault();
-        setActiveTool('blend');
+        setActiveTool("blend");
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown, { passive: false });
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown, { passive: false });
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleExportProject, handleImportProject, handleUndo, handleRedo]);
 
   if (isLoading) {
@@ -1055,389 +1058,390 @@ export default function ProjectStudioPage() {
 
   return (
     <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.5 }}
-        className="h-screen overflow-hidden studio-bg bg-gray-50 dark:bg-black flex flex-col"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      className="h-screen overflow-hidden studio-bg bg-gray-50 dark:bg-black flex flex-col"
+    >
+      {/* Top Menu Bar */}
+      <motion.header
+        initial={{ y: -60 }}
+        animate={{ y: 0 }}
+        className="studio-panel bg-white/80 dark:bg-black/80 backdrop-blur-xl border-b border-gray-200 dark:border-white/10 p-4 flex items-center justify-between z-40"
       >
-        {/* Top Menu Bar */}
-        <motion.header
-          initial={{ y: -60 }}
-          animate={{ y: 0 }}
-          className="studio-panel bg-white/80 dark:bg-black/80 backdrop-blur-xl border-b border-gray-200 dark:border-white/10 p-4 flex items-center justify-between z-40"
-        >
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
-                <LayersIcon className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h1 className="font-bold text-gray-900 dark:text-white">
-                  {appConfig.app.name}
-                </h1>
-                {isEditingProjectName ? (
-                  <input
-                    type="text"
-                    value={tempProjectName}
-                    onChange={e => setTempProjectName(e.target.value)}
-                    onBlur={handleProjectNameSave}
-                    onKeyDown={handleProjectNameKeyDown}
-                    className="text-xs text-gray-500 dark:text-gray-400 bg-transparent border-b border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 outline-none min-w-0"
-                    autoFocus
-                  />
-                ) : (
-                  <p
-                    className="text-xs text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
-                    onClick={handleProjectNameEdit}
-                    title="Click to rename project"
-                  >
-                    {projectName}
-                  </p>
-                )}
-              </div>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
+              <LayersIcon className="w-5 h-5 text-white" />
             </div>
-
-            {/* Menu Bar */}
-            <MenuProvider>
-              <MenuBar
-                onNewProject={handleNewProject}
-                onOpenProject={handleImportProject}
-                onSaveProject={handleSaveProject}
-                onExportProject={handleExportProject}
-                onImportProject={handleImportProject}
-                onClose={handleClose}
-                onInsertImage={handleInsertImage}
-                onInsertLayer={handleInsertLayer}
-                onInsertText={handleInsertText}
-                onInsertShape={handleInsertShape}
-                onInsertRectangle={handleInsertRectangle}
-                onInsertCircle={handleInsertCircle}
-                onInsertLine={handleInsertLine}
-                onInsertFromAssetStore={handleInsertFromAssetStore}
-                isAssetStoreEnabled={isAssetStoreEnabled}
-                showConsole={showConsole}
-                showAssetsPanel={showAssetsPanel}
-                showHistoryPanel={showHistoryPanel}
-                showPromptBox={showPromptBox}
-                onToggleConsole={() => setShowConsole(!showConsole)}
-                onToggleAssetsPanel={() => setShowAssetsPanel(!showAssetsPanel)}
-                onToggleHistoryPanel={() =>
-                  setShowHistoryPanel(!showHistoryPanel)
-                }
-                onTogglePromptBox={() => setShowPromptBox(!showPromptBox)}
-                onZoomIn={handleZoomIn}
-                onZoomOut={handleZoomOut}
-                onResetZoom={handleResetZoom}
-                onToggleFullscreen={handleToggleFullscreen}
-                activeTool={activeTool}
-                onToolChange={handleToolChange}
-                onShowSizeModal={handleSizeModalOpen}
-                onClearCanvas={handleClearCanvas}
-                onUndo={handleUndo}
-                onRedo={handleRedo}
-                onShowKeyboardShortcuts={handleShowKeyboardShortcuts}
-                onShowAbout={handleShowAbout}
-                onShowDocumentation={handleShowDocumentation}
-                onShowGitHub={handleShowGitHub}
-                onShowSupport={handleShowSupport}
-              />
-            </MenuProvider>
+            <div>
+              <h1 className="font-bold text-gray-900 dark:text-white">
+                {appConfig.app.name}
+              </h1>
+              {isEditingProjectName ? (
+                <input
+                  type="text"
+                  value={tempProjectName}
+                  onChange={(e) => setTempProjectName(e.target.value)}
+                  onBlur={handleProjectNameSave}
+                  onKeyDown={handleProjectNameKeyDown}
+                  className="text-xs text-gray-500 dark:text-gray-400 bg-transparent border-b border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 outline-none min-w-0"
+                  autoFocus
+                />
+              ) : (
+                <p
+                  className="text-xs text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                  onClick={handleProjectNameEdit}
+                  title="Click to rename project"
+                >
+                  {projectName}
+                </p>
+              )}
+            </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              title="Project Info"
-            >
-              <InfoCircledIcon className="w-4 h-4" />
-            </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleExportProject}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              title="Export Project (Cmd+S)"
-            >
-              <DownloadIcon className="w-4 h-4" />
-            </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleImportProject}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              title="Import Project (Cmd+O)"
-            >
-              <UploadIcon className="w-4 h-4" />
-            </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              title="Share"
-            >
-              <Share1Icon className="w-4 h-4" />
-            </motion.button>
-
-            <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-2" />
-
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setShowConsole(!showConsole)}
-              className={`p-2 rounded-lg transition-colors ${
-                showConsole
-                  ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
-                  : 'hover:bg-gray-100 dark:hover:bg-gray-800'
-              }`}
-              title="Toggle Console"
-            >
-              <Code className="w-4 h-4" />
-            </motion.button>
-
-            {/* Sync Manager */}
-            <SyncManager
-              currentProject={currentProject}
-              projectName={projectName}
-              currentModel={currentModel}
-              currentSize={currentSize}
-              isInpaintMode={isInpaintMode}
-              currentImage={currentImage}
-              generatedImage={generatedImage}
-              attachedImage={attachedImage}
-              activeTool={activeTool}
-              showGenerationPanel={showGenerationPanel}
-              showPromptBox={showPromptBox}
+          {/* Menu Bar */}
+          <MenuProvider>
+            <MenuBar
+              onNewProject={handleNewProject}
+              onOpenProject={handleImportProject}
+              onSaveProject={handleSaveProject}
+              onExportProject={handleExportProject}
+              onImportProject={handleImportProject}
+              onClose={handleClose}
+              onInsertImage={handleInsertImage}
+              onInsertLayer={handleInsertLayer}
+              onInsertText={handleInsertText}
+              onInsertShape={handleInsertShape}
+              onInsertRectangle={handleInsertRectangle}
+              onInsertCircle={handleInsertCircle}
+              onInsertLine={handleInsertLine}
+              onInsertFromAssetStore={handleInsertFromAssetStore}
+              isAssetStoreEnabled={isAssetStoreEnabled}
+              showConsole={showConsole}
               showAssetsPanel={showAssetsPanel}
               showHistoryPanel={showHistoryPanel}
-              showConsole={showConsole}
-              showSizeModal={showSizeModal}
-              showKeyboardShortcuts={showKeyboardShortcuts}
-              showAbout={showAbout}
-              zoom={zoom}
-              isGenerating={isGenerating}
-              generationProgress={generationProgress}
-              requestLog={requestLog}
-              responseLog={responseLog}
-              history={history}
-              historyIndex={historyIndex}
-              autoSave={autoSave}
-              autoSaveDuration={autoSaveDuration}
-              onToggleAutoSave={toggleAutoSave}
-              onUpdateAutoSaveDuration={updateAutoSaveDuration}
+              showPromptBox={showPromptBox}
+              onToggleConsole={() => setShowConsole(!showConsole)}
+              onToggleAssetsPanel={() => setShowAssetsPanel(!showAssetsPanel)}
+              onToggleHistoryPanel={() =>
+                setShowHistoryPanel(!showHistoryPanel)
+              }
+              onTogglePromptBox={() => setShowPromptBox(!showPromptBox)}
+              onZoomIn={handleZoomIn}
+              onZoomOut={handleZoomOut}
+              onResetZoom={handleResetZoom}
+              onToggleFullscreen={handleToggleFullscreen}
+              activeTool={activeTool}
+              onToolChange={handleToolChange}
+              onShowSizeModal={handleSizeModalOpen}
+              onClearCanvas={handleClearCanvas}
+              onUndo={handleUndo}
+              onRedo={handleRedo}
+              onShowKeyboardShortcuts={handleShowKeyboardShortcuts}
+              onShowAbout={handleShowAbout}
+              onShowDocumentation={handleShowDocumentation}
+              onShowGitHub={handleShowGitHub}
+              onShowSupport={handleShowSupport}
             />
-
-            <ThemeToggle />
-          </div>
-        </motion.header>
-
-        {/* Main Studio Area */}
-        <div className="flex-1 flex relative overflow-hidden">
-          {/* Left Toolbar */}
-          <Toolbar activeTool={activeTool} onToolChange={handleToolChange} />
-
-          <Canvas
-            ref={canvasRef}
-            activeTool={activeTool}
-            currentImage={currentImage}
-            onImageLoad={setCurrentImage}
-            isGenerating={isGenerating}
-            isInpaintMode={isInpaintMode}
-            generatedImage={generatedImage}
-            zoom={zoom}
-            onZoomChange={setZoom}
-            showAssetStore={showAssetStorePanel}
-            onAssetStoreToggle={() => setShowAssetStorePanel(!showAssetStorePanel)}
-            onAssetSelect={(asset) => {
-              setCurrentImage(asset.url);
-              setShowAssetStorePanel(false);
-            }}
-            projectId={currentProject?.id}
-          />
-
-          {/* Console Sidebar */}
-          <ConsoleSidebar
-            requestLog={requestLog as Record<string, unknown> | null}
-            responseLog={responseLog as Record<string, unknown> | null}
-            isOpen={showConsole}
-            onToggle={() => setShowConsole(!showConsole)}
-          />
+          </MenuProvider>
         </div>
 
-        {/* Assets Panel */}
-        <AssetsPanel
-          isOpen={showAssetsPanel}
-          onClose={() => setShowAssetsPanel(false)}
-          onAssetSelect={asset => {
-            setCurrentImage(asset.url);
-            setShowAssetsPanel(false);
-          }}
-          projectId={currentProject?.id}
-        />
+        <div className="flex items-center gap-2">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            title="Project Info"
+          >
+            <InfoCircledIcon className="w-4 h-4" />
+          </motion.button>
 
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleExportProject}
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            title="Export Project (Cmd+S)"
+          >
+            <DownloadIcon className="w-4 h-4" />
+          </motion.button>
 
-        {/* History Panel */}
-        <HistoryPanel
-          isOpen={showHistoryPanel}
-          onClose={() => setShowHistoryPanel(false)}
-          onReplay={entry => {
-            if (entry.prompt) {
-              // Re-run the generation with the same parameters
-              setShowHistoryPanel(false);
-              setShowPromptBox(true);
-            }
-          }}
-          projectId={currentProject?.id}
-        />
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleImportProject}
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            title="Import Project (Cmd+O)"
+          >
+            <UploadIcon className="w-4 h-4" />
+          </motion.button>
 
-        {/* Generation Panel */}
-        <GenerationPanel
-          isOpen={showGenerationPanel}
-          onClose={() => setShowGenerationPanel(false)}
-          onGenerate={handleGenerate}
-          isGenerating={isGenerating}
-          progress={generationProgress}
-        />
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            title="Share"
+          >
+            <Share1Icon className="w-4 h-4" />
+          </motion.button>
 
-        {/* Status Bar */}
-        <motion.div
-          initial={{ y: 60 }}
-          animate={{ y: 0 }}
-          className="studio-panel bg-white/80 dark:bg-black/80 backdrop-blur-xl border-t border-gray-200 dark:border-white/10 p-2 flex items-center justify-between text-xs text-gray-500 dark:text-gray-400"
-        >
-          <div className="flex items-center gap-4 pl-2">
-            <span>Tool: {activeTool}</span>
-            <span>Model: {currentModel}</span>
+          <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-2" />
 
-            {isGenerating ? (
-              <span className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-                Generating... {Math.round(generationProgress)}%
-              </span>
-            ) : (
-              <span className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                Ready
-              </span>
-            )}
-          </div>
-          <div className="flex items-center gap-4">
-            <span>
-              {appConfig.app.name} v{appConfig.app.version}
-            </span>
-            <button
-              onClick={handleSettingsModalOpen}
-              className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
-              title="Settings"
-            >
-              <GearIcon className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-            </button>
-            <a
-              href="https://github.com/DrHazemAli/azure-image-studio"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <GitHubLogoIcon className="w-4 h-4" />
-            </a>
-            <a
-              href="https://linkedin.com/in/hazemali"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <LinkedInLogoIcon className="w-4 h-4" />
-            </a>
-          </div>
-        </motion.div>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setShowConsole(!showConsole)}
+            className={`p-2 rounded-lg transition-colors ${
+              showConsole
+                ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+                : "hover:bg-gray-100 dark:hover:bg-gray-800"
+            }`}
+            title="Toggle Console"
+          >
+            <Code className="w-4 h-4" />
+          </motion.button>
 
-        {/* Error Notification */}
-        <ErrorNotification error={error} onDismiss={handleErrorDismiss} />
-
-        {/* Enhanced Prompt Box */}
-        {showPromptBox && (
-          <EnhancedPromptBox
-            onGenerate={prompt => {
-              handleGenerate({
-                prompt,
-                model: currentModel,
-                size: '1024x1024',
-                quality: 'standard',
-                count: 1,
-              });
-            }}
-            onRandomPrompt={() => {
-              const prompts = [
-                'A majestic mountain landscape at sunrise with golden light',
-                'A futuristic city with flying cars and neon lights',
-                'A cozy coffee shop on a rainy day with warm lighting',
-                'An underwater scene with colorful coral and tropical fish',
-                'A magical forest with glowing mushrooms and fairy lights',
-                'A beautiful sunset over a calm ocean with a yacht in the foreground',
-                'A man with a beard and a beard',
-              ];
-              return prompts[Math.floor(Math.random() * prompts.length)];
-            }}
-            isGenerating={isGenerating}
-            progress={
-              generationProgress
-                ? {
-                    stage: 'Generating',
-                    progress: generationProgress,
-                    message: 'Creating your image...',
-                    estimatedTime: Math.max(
-                      0,
-                      Math.round((100 - generationProgress) * 0.3)
-                    ),
-                  }
-                : null
-            }
-            error={error}
-            generatedImages={[]}
-            onShowImages={() => setShowAssetsPanel(true)}
-            count={1}
+          {/* Sync Manager */}
+          <SyncManager
+            currentProject={currentProject}
+            projectName={projectName}
             currentModel={currentModel}
-            onModelChange={setCurrentModel}
+            currentSize={currentSize}
             isInpaintMode={isInpaintMode}
-            size={currentSize}
-            onSizeChange={setCurrentSize}
+            currentImage={currentImage}
+            generatedImage={generatedImage}
             attachedImage={attachedImage}
-            onAttachedImageRemove={handleAttachedImageRemove}
-            onShowSizeModal={handleSizeModalOpen}
-            onImageUpload={handleImageUpload}
-            models={models}
-            getModelName={getModelName}
+            activeTool={activeTool}
+            showGenerationPanel={showGenerationPanel}
+            showPromptBox={showPromptBox}
+            showAssetsPanel={showAssetsPanel}
+            showHistoryPanel={showHistoryPanel}
+            showConsole={showConsole}
+            showSizeModal={showSizeModal}
+            showKeyboardShortcuts={showKeyboardShortcuts}
+            showAbout={showAbout}
+            zoom={zoom}
+            isGenerating={isGenerating}
+            generationProgress={generationProgress}
+            requestLog={requestLog}
+            responseLog={responseLog}
+            history={history}
+            historyIndex={historyIndex}
+            autoSave={autoSave}
+            autoSaveDuration={autoSaveDuration}
+            onToggleAutoSave={toggleAutoSave}
+            onUpdateAutoSaveDuration={updateAutoSaveDuration}
           />
-        )}
 
-        {/* Size Modal */}
-        <SizeModal
-          isOpen={showSizeModal}
-          onClose={handleSizeModalClose}
-          currentSize={currentSize}
-          currentModel={currentModel}
-          onSizeChange={setCurrentSize}
-          getModelName={getModelName}
-          models={models}
+          <ThemeToggle />
+        </div>
+      </motion.header>
+
+      {/* Main Studio Area */}
+      <div className="flex-1 flex relative overflow-hidden">
+        {/* Left Toolbar */}
+        <Toolbar activeTool={activeTool} onToolChange={handleToolChange} />
+
+        <Canvas
+          ref={canvasRef}
+          activeTool={activeTool}
+          currentImage={currentImage}
+          onImageLoad={setCurrentImage}
+          isGenerating={isGenerating}
+          isInpaintMode={isInpaintMode}
+          generatedImage={generatedImage}
+          zoom={zoom}
+          onZoomChange={setZoom}
+          showAssetStore={showAssetStorePanel}
+          onAssetStoreToggle={() =>
+            setShowAssetStorePanel(!showAssetStorePanel)
+          }
+          onAssetSelect={(asset) => {
+            setCurrentImage(asset.url);
+            setShowAssetStorePanel(false);
+          }}
+          projectId={currentProject?.id}
         />
 
-        {/* About Modal */}
-        <AboutModal isOpen={showAbout} onClose={handleAboutModalClose} />
-
-        {/* Shortcuts Modal */}
-        <ShortcutsModal
-          isOpen={showKeyboardShortcuts}
-          onClose={handleShortcutsModalClose}
+        {/* Console Sidebar */}
+        <ConsoleSidebar
+          requestLog={requestLog as Record<string, unknown> | null}
+          responseLog={responseLog as Record<string, unknown> | null}
+          isOpen={showConsole}
+          onToggle={() => setShowConsole(!showConsole)}
         />
+      </div>
 
-        {/* Settings Dialog */}
-        <SettingsDialog
-          isOpen={showSettings}
-          onClose={handleSettingsModalClose}
-        />
+      {/* Assets Panel */}
+      <AssetsPanel
+        isOpen={showAssetsPanel}
+        onClose={() => setShowAssetsPanel(false)}
+        onAssetSelect={(asset) => {
+          setCurrentImage(asset.url);
+          setShowAssetsPanel(false);
+        }}
+        projectId={currentProject?.id}
+      />
+
+      {/* History Panel */}
+      <HistoryPanel
+        isOpen={showHistoryPanel}
+        onClose={() => setShowHistoryPanel(false)}
+        onReplay={(entry) => {
+          if (entry.prompt) {
+            // Re-run the generation with the same parameters
+            setShowHistoryPanel(false);
+            setShowPromptBox(true);
+          }
+        }}
+        projectId={currentProject?.id}
+      />
+
+      {/* Generation Panel */}
+      <GenerationPanel
+        isOpen={showGenerationPanel}
+        onClose={() => setShowGenerationPanel(false)}
+        onGenerate={handleGenerate}
+        isGenerating={isGenerating}
+        progress={generationProgress}
+      />
+
+      {/* Status Bar */}
+      <motion.div
+        initial={{ y: 60 }}
+        animate={{ y: 0 }}
+        className="studio-panel bg-white/80 dark:bg-black/80 backdrop-blur-xl border-t border-gray-200 dark:border-white/10 p-2 flex items-center justify-between text-xs text-gray-500 dark:text-gray-400"
+      >
+        <div className="flex items-center gap-4 pl-2">
+          <span>Tool: {activeTool}</span>
+          <span>Model: {currentModel}</span>
+
+          {isGenerating ? (
+            <span className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+              Generating... {Math.round(generationProgress)}%
+            </span>
+          ) : (
+            <span className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              Ready
+            </span>
+          )}
+        </div>
+        <div className="flex items-center gap-4">
+          <span>
+            {appConfig.app.name} v{appConfig.app.version}
+          </span>
+          <button
+            onClick={handleSettingsModalOpen}
+            className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+            title="Settings"
+          >
+            <GearIcon className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+          </button>
+          <a
+            href="https://github.com/DrHazemAli/image-studio"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <GitHubLogoIcon className="w-4 h-4" />
+          </a>
+          <a
+            href="https://linkedin.com/in/drhazemali"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <LinkedInLogoIcon className="w-4 h-4" />
+          </a>
+        </div>
       </motion.div>
+
+      {/* Error Notification */}
+      <ErrorNotification error={error} onDismiss={handleErrorDismiss} />
+
+      {/* Enhanced Prompt Box */}
+      {showPromptBox && (
+        <EnhancedPromptBox
+          onGenerate={(prompt) => {
+            handleGenerate({
+              prompt,
+              model: currentModel,
+              size: "1024x1024",
+              quality: "standard",
+              count: 1,
+            });
+          }}
+          onRandomPrompt={() => {
+            const prompts = [
+              "A majestic mountain landscape at sunrise with golden light",
+              "A futuristic city with flying cars and neon lights",
+              "A cozy coffee shop on a rainy day with warm lighting",
+              "An underwater scene with colorful coral and tropical fish",
+              "A magical forest with glowing mushrooms and fairy lights",
+              "A beautiful sunset over a calm ocean with a yacht in the foreground",
+              "A man with a beard and a beard",
+            ];
+            return prompts[Math.floor(Math.random() * prompts.length)];
+          }}
+          isGenerating={isGenerating}
+          progress={
+            generationProgress
+              ? {
+                  stage: "Generating",
+                  progress: generationProgress,
+                  message: "Creating your image...",
+                  estimatedTime: Math.max(
+                    0,
+                    Math.round((100 - generationProgress) * 0.3),
+                  ),
+                }
+              : null
+          }
+          error={error}
+          generatedImages={[]}
+          onShowImages={() => setShowAssetsPanel(true)}
+          count={1}
+          currentModel={currentModel}
+          onModelChange={setCurrentModel}
+          isInpaintMode={isInpaintMode}
+          size={currentSize}
+          onSizeChange={setCurrentSize}
+          attachedImage={attachedImage}
+          onAttachedImageRemove={handleAttachedImageRemove}
+          onShowSizeModal={handleSizeModalOpen}
+          onImageUpload={handleImageUpload}
+          models={models}
+          getModelName={getModelName}
+        />
+      )}
+
+      {/* Size Modal */}
+      <SizeModal
+        isOpen={showSizeModal}
+        onClose={handleSizeModalClose}
+        currentSize={currentSize}
+        currentModel={currentModel}
+        onSizeChange={setCurrentSize}
+        getModelName={getModelName}
+        models={models}
+      />
+
+      {/* About Modal */}
+      <AboutModal isOpen={showAbout} onClose={handleAboutModalClose} />
+
+      {/* Shortcuts Modal */}
+      <ShortcutsModal
+        isOpen={showKeyboardShortcuts}
+        onClose={handleShortcutsModalClose}
+      />
+
+      {/* Settings Dialog */}
+      <SettingsDialog
+        isOpen={showSettings}
+        onClose={handleSettingsModalClose}
+      />
+    </motion.div>
   );
 }

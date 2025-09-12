@@ -1,11 +1,11 @@
-# Contributing Guide - Azure Image Studio
+# Contributing Guide - AI Image Studio
 
-Thank you for your interest in contributing to Azure Image Studio! This guide will help you get started with contributing to our community project.
+Thank you for your interest in contributing to AI Image Studio! This guide will help you get started with contributing to our community project.
 
 > ⚠️ **Important**: This is a **community project** and is not affiliated with or endorsed by Microsoft or Azure. It's an independent project that uses Azure AI services.
 
 **Last Updated**: September 8, 2025  
-**Version**: 1.0.2
+**Version**: 1.0.3
 
 ## 🤝 How to Contribute
 
@@ -36,11 +36,11 @@ Before contributing, make sure you have:
 
 ```bash
 # Fork the repository on GitHub, then clone your fork
-git clone https://github.com/YOUR_USERNAME/azure-image-studio.git
-cd azure-image-studio
+git clone https://github.com/YOUR_USERNAME/image-studio.git
+cd image-studio
 
 # Add upstream remote
-git remote add upstream https://github.com/DrHazemAli/azure-image-studio.git
+git remote add upstream https://github.com/DrHazemAli/image-studio.git
 ```
 
 #### 2. Install Dependencies
@@ -500,8 +500,8 @@ Contributors are recognized in:
 ## 📞 Contact
 
 - **Maintainer**: [Hazem Ali](https://github.com/DrHazemAli)
-- **GitHub Issues**: [Report Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
-- **GitHub Discussions**: [Join Discussion](https://github.com/DrHazemAli/azure-image-studio/discussions)
+- **GitHub Issues**: [Report Issues](https://github.com/DrHazemAli/image-studio/issues)
+- **GitHub Discussions**: [Join Discussion](https://github.com/DrHazemAli/image-studio/discussions)
 
 ## 📚 Additional Resources
 
@@ -531,6 +531,6 @@ Contributors are recognized in:
 
 ---
 
-**Thank you for contributing to Azure Image Studio! Together, we can build something amazing.** 🚀
+**Thank you for contributing to AI Image Studio! Together, we can build something amazing.** 🚀
 
 Made with ❤️ by the community

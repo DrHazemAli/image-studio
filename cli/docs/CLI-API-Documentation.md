@@ -1,6 +1,6 @@
-# Azure Image Studio CLI - API Documentation
+# AI Image Studio CLI - API Documentation
 
-This document provides comprehensive technical documentation for the Azure Image Studio CLI, including command specifications, configuration schemas, and integration details.
+This document provides comprehensive technical documentation for the AI Image Studio CLI, including command specifications, configuration schemas, and integration details.
 
 ## 📋 Table of Contents
 
@@ -20,7 +20,7 @@ This document provides comprehensive technical documentation for the Azure Image
 All commands support these global options:
 
 ```bash
-azure-image-studio [command] [options] [--global-options]
+image-studio [command] [options] [--global-options]
 ```
 
 **Global Options:**
@@ -38,7 +38,7 @@ azure-image-studio [command] [options] [--global-options]
 Initialize Azure configuration with default settings.
 
 ```bash
-azure-image-studio config init [options]
+image-studio config init [options]
 ```
 
 **Options:**
@@ -54,7 +54,7 @@ azure-image-studio config init [options]
 **Example:**
 
 ```bash
-azure-image-studio config init --force
+image-studio config init --force
 ```
 
 #### `config validate`
@@ -62,7 +62,7 @@ azure-image-studio config init --force
 Validate current configuration and check for errors.
 
 ```bash
-azure-image-studio config validate
+image-studio config validate
 ```
 
 **Exit Codes:**
@@ -84,7 +84,7 @@ azure-image-studio config validate
 Set Azure API key securely.
 
 ```bash
-azure-image-studio config set-api-key [options]
+image-studio config set-api-key [options]
 ```
 
 **Options:**
@@ -101,7 +101,7 @@ azure-image-studio config set-api-key [options]
 Display current configuration.
 
 ```bash
-azure-image-studio config show [options]
+image-studio config show [options]
 ```
 
 **Options:**
@@ -124,7 +124,7 @@ azure-image-studio config show [options]
 Test configuration by making a simple API call.
 
 ```bash
-azure-image-studio config test [options]
+image-studio config test [options]
 ```
 
 **Options:**
@@ -143,7 +143,7 @@ azure-image-studio config test [options]
 Generate a single image from a text prompt.
 
 ```bash
-azure-image-studio generate single [options]
+image-studio generate single [options]
 ```
 
 **Options:**
@@ -176,7 +176,7 @@ azure-image-studio generate single [options]
 Generate multiple images from a file containing prompts.
 
 ```bash
-azure-image-studio generate batch [options]
+image-studio generate batch [options]
 ```
 
 **Options:**
@@ -209,7 +209,7 @@ A peaceful lake with swans
 Interactive image generation with guided prompts.
 
 ```bash
-azure-image-studio generate interactive
+image-studio generate interactive
 ```
 
 **Interactive Prompts:**
@@ -233,7 +233,7 @@ azure-image-studio generate interactive
 List all available AI models.
 
 ```bash
-azure-image-studio models list [options]
+image-studio models list [options]
 ```
 
 **Options:**
@@ -271,7 +271,7 @@ azure-image-studio models list [options]
 Show detailed information about a specific model.
 
 ```bash
-azure-image-studio models info --model <model-id>
+image-studio models info --model <model-id>
 ```
 
 **Output Format:**
@@ -295,7 +295,7 @@ azure-image-studio models info --model <model-id>
 Test a model with a simple generation request.
 
 ```bash
-azure-image-studio models test [options]
+image-studio models test [options]
 ```
 
 **Options:**
@@ -315,7 +315,7 @@ azure-image-studio models test [options]
 Check the status of all configured models.
 
 ```bash
-azure-image-studio models status
+image-studio models status
 ```
 
 **Output Format:**
@@ -341,7 +341,7 @@ azure-image-studio models status
 List all generated assets.
 
 ```bash
-azure-image-studio assets list [options]
+image-studio assets list [options]
 ```
 
 **Options:**
@@ -378,7 +378,7 @@ azure-image-studio assets list [options]
 Export assets to different formats or locations.
 
 ```bash
-azure-image-studio assets export [options]
+image-studio assets export [options]
 ```
 
 **Options:**
@@ -400,7 +400,7 @@ azure-image-studio assets export [options]
 Clean up old or unused assets.
 
 ```bash
-azure-image-studio assets clean [options]
+image-studio assets clean [options]
 ```
 
 **Options:**
@@ -427,7 +427,7 @@ azure-image-studio assets clean [options]
 Organize assets into folders.
 
 ```bash
-azure-image-studio assets organize [options]
+image-studio assets organize [options]
 ```
 
 **Options:**
@@ -447,10 +447,10 @@ azure-image-studio assets organize [options]
 
 #### `dev start`
 
-Start the Azure Image Studio development server.
+Start the AI Image Studio development server.
 
 ```bash
-azure-image-studio dev start [options]
+image-studio dev start [options]
 ```
 
 **Options:**
@@ -469,7 +469,7 @@ azure-image-studio dev start [options]
 Set up development environment.
 
 ```bash
-azure-image-studio dev setup [options]
+image-studio dev setup [options]
 ```
 
 **Options:**
@@ -487,7 +487,7 @@ azure-image-studio dev setup [options]
 Test Azure endpoint connectivity.
 
 ```bash
-azure-image-studio dev test [options]
+image-studio dev test [options]
 ```
 
 **Options:**
@@ -506,7 +506,7 @@ azure-image-studio dev test [options]
 Show development logs.
 
 ```bash
-azure-image-studio dev logs [options]
+image-studio dev logs [options]
 ```
 
 **Options:**
@@ -825,7 +825,7 @@ class AzureImageStudioCLI {
       if (options.output) args.push("--output", options.output);
       if (options.format) args.push("--format", options.format);
 
-      const child = spawn("azure-image-studio", args, {
+      const child = spawn("image-studio", args, {
         stdio: ["pipe", "pipe", "pipe"],
       });
 
@@ -853,7 +853,7 @@ class AzureImageStudioCLI {
   async listModels() {
     return new Promise((resolve, reject) => {
       const child = spawn(
-        "azure-image-studio",
+        "image-studio",
         ["models", "list", "--format", "json"],
         {
           stdio: ["pipe", "pipe", "pipe"],
@@ -910,7 +910,7 @@ class AzureImageStudioCLI:
             self.env['AZURE_IMAGE_STUDIO_CONFIG_PATH'] = config_path
 
     def generate_image(self, prompt, **options):
-        args = ['azure-image-studio', 'generate', 'single', '--prompt', prompt]
+        args = ['image-studio', 'generate', 'single', '--prompt', prompt]
 
         if 'model' in options:
             args.extend(['--model', options['model']])
@@ -933,7 +933,7 @@ class AzureImageStudioCLI:
             return {'success': False, 'error': str(e)}
 
     def list_models(self):
-        args = ['azure-image-studio', 'models', 'list', '--format', 'json']
+        args = ['image-studio', 'models', 'list', '--format', 'json']
 
         try:
             result = subprocess.run(args, capture_output=True, text=True, env=self.env)
@@ -958,8 +958,8 @@ else:
 ```bash
 #!/bin/bash
 
-# Azure Image Studio CLI wrapper script
-CLI="azure-image-studio"
+# AI Image Studio CLI wrapper script
+CLI="image-studio"
 OUTPUT_DIR="./generated-images"
 
 # Function to generate image
@@ -1020,7 +1020,7 @@ esac
 
 ---
 
-This API documentation provides comprehensive technical details for integrating with the Azure Image Studio CLI. For more information, see:
+This API documentation provides comprehensive technical details for integrating with the AI Image Studio CLI. For more information, see:
 
 - [CLI User Guide](./CLI-User-Guide.md) - User-focused documentation
 - [CLI README](../README.md) - Installation and quick start

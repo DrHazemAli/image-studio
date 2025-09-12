@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { ContextMenu, type ContextMenuItem } from './context-menu';
-import { useMenuContext } from './menu-context';
+import { useState } from "react";
+import { ContextMenu, type ContextMenuItem } from "./context-menu";
+import { useMenuContext } from "./menu-context";
 
 interface InsertMenuProps {
   onInsertImage: () => void;
@@ -29,7 +29,7 @@ export function InsertMenu({
 }: InsertMenuProps) {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const { activeMenu, setActiveMenu } = useMenuContext();
-  const menuId = 'insert';
+  const menuId = "insert";
   const isOpen = activeMenu === menuId;
 
   const handleClick = (event: React.MouseEvent) => {
@@ -43,48 +43,52 @@ export function InsertMenu({
 
   const menuItems: ContextMenuItem[] = [
     {
-      label: 'Image',
+      label: "Image",
       action: onInsertImage,
-      shortcut: 'Cmd+I',
+      shortcut: "Cmd+I",
     },
     {
-      label: 'Layer',
+      label: "Layer",
       action: onInsertLayer,
-      shortcut: 'Cmd+L',
+      shortcut: "Cmd+L",
     },
     {
-      label: 'Text',
+      label: "Text",
       action: onInsertText,
-      shortcut: 'Cmd+T',
+      shortcut: "Cmd+T",
     },
-    ...(isAssetStoreEnabled && onInsertFromAssetStore ? [{
-      label: 'From Asset Store',
-      action: onInsertFromAssetStore,
-      shortcut: 'Cmd+4',
-    }] : []),
+    ...(isAssetStoreEnabled && onInsertFromAssetStore
+      ? [
+          {
+            label: "From Asset Store",
+            action: onInsertFromAssetStore,
+            shortcut: "Cmd+4",
+          },
+        ]
+      : []),
     {
       separator: true,
-      label: '',
+      label: "",
       action: () => {},
     },
     {
-      label: 'Shape',
+      label: "Shape",
       action: onInsertShape,
     },
     {
-      label: 'Rectangle',
+      label: "Rectangle",
       action: onInsertRectangle,
-      shortcut: 'Cmd+R',
+      shortcut: "Cmd+R",
     },
     {
-      label: 'Circle',
+      label: "Circle",
       action: onInsertCircle,
-      shortcut: 'Cmd+C',
+      shortcut: "Cmd+C",
     },
     {
-      label: 'Line',
+      label: "Line",
       action: onInsertLine,
-      shortcut: 'Cmd+Shift+L',
+      shortcut: "Cmd+Shift+L",
     },
   ];
 
@@ -94,8 +98,8 @@ export function InsertMenu({
         onClick={handleClick}
         className={`px-3 py-1 text-sm rounded transition-colors ${
           isOpen
-            ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
-            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+            ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
         }`}
       >
         Insert

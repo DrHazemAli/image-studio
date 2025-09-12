@@ -1,9 +1,9 @@
 # User Guide
 
 **Last Updated**: September 8, 2025  
-**Version**: 1.0.2
+**Version**: 1.0.3
 
-Welcome to the Azure GenAI Image Studio User Guide! This comprehensive guide will help you master all the features and capabilities of our AI-powered image generation and editing platform.
+Welcome to the Azure GenAI AI Image Studio User Guide! This comprehensive guide will help you master all the features and capabilities of our AI-powered image generation and editing platform.
 
 ## Table of Contents
 
@@ -22,7 +22,7 @@ Welcome to the Azure GenAI Image Studio User Guide! This comprehensive guide wil
 
 ## Overview
 
-Azure GenAI Image Studio is a powerful web-based application that leverages Azure's AI services to provide:
+Azure GenAI AI Image Studio is a powerful web-based application that leverages Azure's AI services to provide:
 
 - **AI Image Generation**: Create images from text prompts using DALL-E 3, FLUX, and other models
 - **Advanced Editing**: Professional-grade editing tools with AI assistance

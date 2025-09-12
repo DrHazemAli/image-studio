@@ -1,15 +1,15 @@
-# Image Generation Guide - Azure Image Studio
+# Image Generation Guide - AI Image Studio
 
-This comprehensive guide covers AI-powered image generation capabilities in Azure Image Studio.
+This comprehensive guide covers AI-powered image generation capabilities in AI Image Studio.
 
 > ⚠️ **Important**: This is a **community project** and is not affiliated with or endorsed by Microsoft or Azure. It's an independent project that uses Azure AI services.
 
 **Last Updated**: September 8, 2025  
-**Version**: 1.0.2
+**Version**: 1.0.3
 
 ## 🎨 Overview
 
-Azure Image Studio provides powerful AI-driven image generation capabilities through multiple Azure AI services. This guide covers everything from basic text-to-image generation to advanced techniques and best practices.
+AI Image Studio provides powerful AI-driven image generation capabilities through multiple Azure AI services. This guide covers everything from basic text-to-image generation to advanced techniques and best practices.
 
 ## 🤖 Supported AI Models
 
@@ -557,4 +557,4 @@ For reproducible results, use seed values:
 
 ---
 
-This guide provides comprehensive information about image generation in Azure Image Studio. For more specific information, refer to the individual guides for each component.
+This guide provides comprehensive information about image generation in AI Image Studio. For more specific information, refer to the individual guides for each component.

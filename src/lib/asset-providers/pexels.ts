@@ -3,9 +3,15 @@
  * Handles integration with Pexels API for stock photos and videos
  */
 
-import { BaseAssetProvider } from './base-provider';
-import { AssetSearchParams, AssetApiResponse, PhotoAsset, VideoAsset, AssetProviderConfig } from '@/types/asset-store';
-import { createClient } from 'pexels';
+import { BaseAssetProvider } from "./base-provider";
+import {
+  AssetSearchParams,
+  AssetApiResponse,
+  PhotoAsset,
+  VideoAsset,
+  AssetProviderConfig,
+} from "@/types/asset-store";
+import { createClient } from "pexels";
 
 interface PexelsPhoto {
   id: number;
@@ -84,12 +90,12 @@ export class PexelsProvider extends BaseAssetProvider {
   private client: any;
 
   constructor(config: AssetProviderConfig) {
-    super(config, 'https://api.pexels.com/v1');
+    super(config, "https://api.pexels.com/v1");
     this.client = this.config.apiKey ? createClient(this.config.apiKey) : null;
   }
 
   getProviderName(): string {
-    return 'Pexels';
+    return "Pexels";
   }
 
   getAuthHeader(): string {
@@ -108,7 +114,7 @@ export class PexelsProvider extends BaseAssetProvider {
           page: params.page || 1,
           perPage: params.perPage || 20,
           hasMore: false,
-          error: 'Pexels API key not configured',
+          error: "Pexels API key not configured",
         };
       }
       this.client = createClient(this.config.apiKey);
@@ -116,7 +122,7 @@ export class PexelsProvider extends BaseAssetProvider {
 
     try {
       const searchOptions: any = {
-        query: params.query || 'nature',
+        query: params.query || "nature",
         page: params.page || 1,
         per_page: Math.min(params.perPage || 20, 80), // Pexels max is 80
       };
@@ -134,7 +140,11 @@ export class PexelsProvider extends BaseAssetProvider {
 
       const response = await this.client.photos.search(searchOptions);
 
-      return this.transformResponse(response, params.page || 1, searchOptions.per_page);
+      return this.transformResponse(
+        response,
+        params.page || 1,
+        searchOptions.per_page,
+      );
     } catch (error) {
       return {
         success: false,
@@ -160,7 +170,7 @@ export class PexelsProvider extends BaseAssetProvider {
           page: params.page || 1,
           perPage: params.perPage || 20,
           hasMore: false,
-          error: 'Pexels API key not configured',
+          error: "Pexels API key not configured",
         };
       }
       this.client = createClient(this.config.apiKey);
@@ -168,7 +178,7 @@ export class PexelsProvider extends BaseAssetProvider {
 
     try {
       const searchOptions: any = {
-        query: params.query || 'nature',
+        query: params.query || "nature",
         page: params.page || 1,
         per_page: Math.min(params.perPage || 20, 80),
       };
@@ -183,7 +193,11 @@ export class PexelsProvider extends BaseAssetProvider {
 
       const response = await this.client.videos.search(searchOptions);
 
-      return this.transformVideoResponse(response, params.page || 1, searchOptions.per_page);
+      return this.transformVideoResponse(
+        response,
+        params.page || 1,
+        searchOptions.per_page,
+      );
     } catch (error) {
       return {
         success: false,
@@ -197,11 +211,13 @@ export class PexelsProvider extends BaseAssetProvider {
     }
   }
 
-  async getFeaturedAssets(params: Omit<AssetSearchParams, 'query'> = {}): Promise<AssetApiResponse> {
+  async getFeaturedAssets(
+    params: Omit<AssetSearchParams, "query"> = {},
+  ): Promise<AssetApiResponse> {
     await this.handleRateLimit();
 
     if (!this.client) {
-      if (!this.config.apiKey || this.config.apiKey.trim() === '') {
+      if (!this.config.apiKey || this.config.apiKey.trim() === "") {
         return {
           success: false,
           data: [],
@@ -209,7 +225,7 @@ export class PexelsProvider extends BaseAssetProvider {
           page: params.page || 1,
           perPage: params.perPage || 20,
           hasMore: false,
-          error: 'Pexels API key not configured',
+          error: "Pexels API key not configured",
         };
       }
       this.client = createClient(this.config.apiKey);
@@ -223,7 +239,11 @@ export class PexelsProvider extends BaseAssetProvider {
 
       const response = await this.client.photos.curated(searchOptions);
 
-      return this.transformResponse(response, params.page || 1, searchOptions.per_page);
+      return this.transformResponse(
+        response,
+        params.page || 1,
+        searchOptions.per_page,
+      );
     } catch (error) {
       return {
         success: false,
@@ -239,21 +259,21 @@ export class PexelsProvider extends BaseAssetProvider {
 
   async getCategories(): Promise<string[]> {
     return [
-      'nature',
-      'business',
-      'people',
-      'technology',
-      'architecture',
-      'food',
-      'travel',
-      'animals',
-      'abstract',
-      'minimal',
-      'sports',
-      'music',
-      'art',
-      'fashion',
-      'health',
+      "nature",
+      "business",
+      "people",
+      "technology",
+      "architecture",
+      "food",
+      "travel",
+      "animals",
+      "abstract",
+      "minimal",
+      "sports",
+      "music",
+      "art",
+      "fashion",
+      "health",
     ];
   }
 
@@ -269,17 +289,17 @@ export class PexelsProvider extends BaseAssetProvider {
   protected transformAsset(apiAsset: PexelsPhoto): PhotoAsset {
     return {
       id: `pexels_${apiAsset.id}`,
-      name: apiAsset.alt || 'Pexels Photo',
-      type: 'photo',
+      name: apiAsset.alt || "Pexels Photo",
+      type: "photo",
       category: this.getCategoryFromAlt(apiAsset.alt),
       url: apiAsset.src.large,
       thumbnail: apiAsset.src.medium,
       metadata: {
         width: apiAsset.width,
         height: apiAsset.height,
-        format: 'jpg',
+        format: "jpg",
         attribution: `Photo by ${apiAsset.photographer} on Pexels`,
-        license: 'Pexels License',
+        license: "Pexels License",
         photographer: apiAsset.photographer,
         photographerUrl: apiAsset.photographer_url,
         downloadUrl: apiAsset.src.original,
@@ -287,42 +307,44 @@ export class PexelsProvider extends BaseAssetProvider {
         orientation: this.getOrientation(apiAsset.width, apiAsset.height),
       },
       tags: this.extractTagsFromAlt(apiAsset.alt),
-      provider: 'pexels',
+      provider: "pexels",
     };
   }
 
   protected transformVideoAsset(apiAsset: PexelsVideo): VideoAsset {
-    const videoFile = apiAsset.video_files.find(f => f.quality === 'hd') || apiAsset.video_files[0];
-    
+    const videoFile =
+      apiAsset.video_files.find((f) => f.quality === "hd") ||
+      apiAsset.video_files[0];
+
     return {
       id: `pexels_video_${apiAsset.id}`,
       name: `Pexels Video ${apiAsset.id}`,
-      type: 'video',
-      category: 'video',
+      type: "video",
+      category: "video",
       url: videoFile?.link || apiAsset.url,
       thumbnail: apiAsset.image,
       metadata: {
         width: apiAsset.width,
         height: apiAsset.height,
-        format: videoFile?.file_type || 'mp4',
+        format: videoFile?.file_type || "mp4",
         attribution: `Video by ${apiAsset.user.name} on Pexels`,
-        license: 'Pexels License',
+        license: "Pexels License",
         photographer: apiAsset.user.name,
         photographerUrl: apiAsset.user.url,
         duration: apiAsset.duration,
         videoUrl: videoFile?.link || apiAsset.url,
       },
-      tags: ['video'],
-      provider: 'pexels',
+      tags: ["video"],
+      provider: "pexels",
     };
   }
 
   protected transformResponse(
     apiResponse: PexelsSearchResponse | PexelsFeaturedResponse,
     currentPage: number,
-    perPage: number
+    perPage: number,
   ): AssetApiResponse {
-    const isSearchResponse = 'total_results' in apiResponse;
+    const isSearchResponse = "total_results" in apiResponse;
     const photos = isSearchResponse ? apiResponse.photos : apiResponse.photos;
     const total = isSearchResponse ? apiResponse.total_results : photos.length;
     const hasMore = isSearchResponse ? !!apiResponse.next_page : false;
@@ -340,11 +362,11 @@ export class PexelsProvider extends BaseAssetProvider {
   protected transformVideoResponse(
     apiResponse: PexelsVideoSearchResponse,
     currentPage: number,
-    perPage: number
+    perPage: number,
   ): AssetApiResponse {
     return {
       success: true,
-      data: apiResponse.videos.map(video => this.transformVideoAsset(video)),
+      data: apiResponse.videos.map((video) => this.transformVideoAsset(video)),
       total: apiResponse.total_results,
       page: currentPage,
       perPage,
@@ -354,34 +376,82 @@ export class PexelsProvider extends BaseAssetProvider {
 
   private getCategoryFromAlt(alt: string): string {
     const altLower = alt.toLowerCase();
-    
-    if (altLower.includes('nature') || altLower.includes('landscape') || altLower.includes('forest')) return 'nature';
-    if (altLower.includes('business') || altLower.includes('office') || altLower.includes('meeting')) return 'business';
-    if (altLower.includes('people') || altLower.includes('person') || altLower.includes('portrait')) return 'people';
-    if (altLower.includes('technology') || altLower.includes('computer') || altLower.includes('laptop')) return 'technology';
-    if (altLower.includes('architecture') || altLower.includes('building') || altLower.includes('city')) return 'architecture';
-    if (altLower.includes('food') || altLower.includes('restaurant') || altLower.includes('cooking')) return 'food';
-    if (altLower.includes('travel') || altLower.includes('vacation') || altLower.includes('trip')) return 'travel';
-    if (altLower.includes('animal') || altLower.includes('pet') || altLower.includes('wildlife')) return 'animals';
-    if (altLower.includes('abstract') || altLower.includes('art')) return 'abstract';
-    if (altLower.includes('minimal') || altLower.includes('simple')) return 'minimal';
-    
-    return 'general';
+
+    if (
+      altLower.includes("nature") ||
+      altLower.includes("landscape") ||
+      altLower.includes("forest")
+    )
+      return "nature";
+    if (
+      altLower.includes("business") ||
+      altLower.includes("office") ||
+      altLower.includes("meeting")
+    )
+      return "business";
+    if (
+      altLower.includes("people") ||
+      altLower.includes("person") ||
+      altLower.includes("portrait")
+    )
+      return "people";
+    if (
+      altLower.includes("technology") ||
+      altLower.includes("computer") ||
+      altLower.includes("laptop")
+    )
+      return "technology";
+    if (
+      altLower.includes("architecture") ||
+      altLower.includes("building") ||
+      altLower.includes("city")
+    )
+      return "architecture";
+    if (
+      altLower.includes("food") ||
+      altLower.includes("restaurant") ||
+      altLower.includes("cooking")
+    )
+      return "food";
+    if (
+      altLower.includes("travel") ||
+      altLower.includes("vacation") ||
+      altLower.includes("trip")
+    )
+      return "travel";
+    if (
+      altLower.includes("animal") ||
+      altLower.includes("pet") ||
+      altLower.includes("wildlife")
+    )
+      return "animals";
+    if (altLower.includes("abstract") || altLower.includes("art"))
+      return "abstract";
+    if (altLower.includes("minimal") || altLower.includes("simple"))
+      return "minimal";
+
+    return "general";
   }
 
   private extractTagsFromAlt(alt: string): string[] {
-    return alt.toLowerCase().split(/[\s,.-]+/).filter(word => word.length > 2);
+    return alt
+      .toLowerCase()
+      .split(/[\s,.-]+/)
+      .filter((word) => word.length > 2);
   }
 
-  private getOrientation(width: number, height: number): 'landscape' | 'portrait' | 'square' {
-    if (width > height) return 'landscape';
-    if (height > width) return 'portrait';
-    return 'square';
+  private getOrientation(
+    width: number,
+    height: number,
+  ): "landscape" | "portrait" | "square" {
+    if (width > height) return "landscape";
+    if (height > width) return "portrait";
+    return "square";
   }
 
   private getSizeParam(orientation?: string): string | undefined {
-    if (orientation === 'landscape') return 'large';
-    if (orientation === 'portrait') return 'medium';
+    if (orientation === "landscape") return "large";
+    if (orientation === "portrait") return "medium";
     return undefined;
   }
 }

@@ -1,9 +1,9 @@
 # Getting Started Guide
 
 **Last Updated**: September 8, 2025  
-**Version**: 1.0.2
+**Version**: 1.0.3
 
-Welcome to Azure GenAI Image Studio! This guide will help you get up and running quickly with our AI-powered image generation and editing platform.
+Welcome to Azure GenAI AI Image Studio! This guide will help you get up and running quickly with our AI-powered image generation and editing platform.
 
 ## Table of Contents
 
@@ -45,8 +45,8 @@ Before you begin, ensure you have:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/azure-image-studio.git
-cd azure-image-studio
+git clone https://github.com/your-username/image-studio.git
+cd image-studio
 ```
 
 ### 2. Install Dependencies
@@ -193,8 +193,8 @@ Now that you have the basics working, explore these advanced features:
 For additional help:
 
 - **Documentation**: [Complete Documentation Index](README.md)
-- **Issues**: [GitHub Issues](https://github.com/your-username/azure-image-studio/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-username/azure-image-studio/discussions)
+- **Issues**: [GitHub Issues](https://github.com/your-username/image-studio/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/your-username/image-studio/discussions)
 
 ---
 

@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { Terminal, Settings, Clock, Tag, AlertCircle } from 'lucide-react';
-import { logger, LoggerConfig } from '@/lib/logger';
-import { config } from '@/lib/settings';
+import React, { useState, useEffect } from "react";
+import { Terminal, Settings, Clock, Tag, AlertCircle } from "lucide-react";
+import { logger, LoggerConfig } from "@/lib/logger";
+import { config } from "@/lib/settings";
 
 interface LoggerSettingsProps {
   className?: string;
@@ -13,14 +13,14 @@ export function LoggerSettings({ className }: LoggerSettingsProps) {
   const [loggerConfig, setLoggerConfig] = useState<LoggerConfig>({
     enabled: true,
     developmentOnly: true,
-    prefix: '[Logger]',
+    prefix: "[Logger]",
     timestamp: true,
-    level: 'debug'
+    level: "debug",
   });
 
   useEffect(() => {
     // Load current logger configuration
-    const savedConfig = config('logger.config');
+    const savedConfig = config("logger.config");
     if (savedConfig) {
       setLoggerConfig({ ...loggerConfig, ...savedConfig });
     }
@@ -29,7 +29,7 @@ export function LoggerSettings({ className }: LoggerSettingsProps) {
   const updateConfig = (updates: Partial<LoggerConfig>) => {
     const newConfig = { ...loggerConfig, ...updates };
     setLoggerConfig(newConfig);
-    config('logger.config', newConfig);
+    config("logger.config", newConfig);
     logger.updateConfig(newConfig);
   };
 
@@ -50,18 +50,18 @@ export function LoggerSettings({ className }: LoggerSettingsProps) {
   };
 
   const handleLevelChange = (level: string) => {
-    updateConfig({ level: level as LoggerConfig['level'] });
+    updateConfig({ level: level as LoggerConfig["level"] });
   };
 
   const testLogger = () => {
-    logger.info('This is a test info message');
-    logger.warn('This is a test warning message');
-    logger.error('This is a test error message');
-    logger.debug('This is a test debug message');
+    logger.info("This is a test info message");
+    logger.warn("This is a test warning message");
+    logger.error("This is a test error message");
+    logger.debug("This is a test debug message");
   };
 
   return (
-    <div className={`space-y-6 ${className || ''}`}>
+    <div className={`space-y-6 ${className || ""}`}>
       {/* Header */}
       <div className="space-y-1">
         <div className="flex items-center gap-2">
@@ -83,7 +83,7 @@ export function LoggerSettings({ className }: LoggerSettingsProps) {
             Logger Configuration
           </h4>
         </div>
-        
+
         <div className="space-y-4">
           {/* Enable Logger Toggle */}
           <div className="flex items-center justify-between p-4 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
@@ -99,13 +99,13 @@ export function LoggerSettings({ className }: LoggerSettingsProps) {
               onClick={() => handleToggleEnabled(!loggerConfig.enabled)}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                 loggerConfig.enabled
-                  ? 'bg-blue-600'
-                  : 'bg-gray-200 dark:bg-gray-700'
+                  ? "bg-blue-600"
+                  : "bg-gray-200 dark:bg-gray-700"
               }`}
             >
               <span
                 className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                  loggerConfig.enabled ? 'translate-x-6' : 'translate-x-1'
+                  loggerConfig.enabled ? "translate-x-6" : "translate-x-1"
                 }`}
               />
             </button>
@@ -122,17 +122,21 @@ export function LoggerSettings({ className }: LoggerSettingsProps) {
               </p>
             </div>
             <button
-              onClick={() => handleToggleDevelopmentOnly(!loggerConfig.developmentOnly)}
+              onClick={() =>
+                handleToggleDevelopmentOnly(!loggerConfig.developmentOnly)
+              }
               disabled={!loggerConfig.enabled}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                 loggerConfig.developmentOnly
-                  ? 'bg-blue-600'
-                  : 'bg-gray-200 dark:bg-gray-700'
-              } ${!loggerConfig.enabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  ? "bg-blue-600"
+                  : "bg-gray-200 dark:bg-gray-700"
+              } ${!loggerConfig.enabled ? "opacity-50 cursor-not-allowed" : ""}`}
             >
               <span
                 className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                  loggerConfig.developmentOnly ? 'translate-x-6' : 'translate-x-1'
+                  loggerConfig.developmentOnly
+                    ? "translate-x-6"
+                    : "translate-x-1"
                 }`}
               />
             </button>
@@ -170,7 +174,7 @@ export function LoggerSettings({ className }: LoggerSettingsProps) {
               </label>
               <input
                 type="text"
-                value={loggerConfig.prefix || ''}
+                value={loggerConfig.prefix || ""}
                 onChange={(e) => handlePrefixChange(e.target.value)}
                 placeholder="[Logger]"
                 disabled={!loggerConfig.enabled}
@@ -197,13 +201,13 @@ export function LoggerSettings({ className }: LoggerSettingsProps) {
               disabled={!loggerConfig.enabled}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                 loggerConfig.timestamp
-                  ? 'bg-blue-600'
-                  : 'bg-gray-200 dark:bg-gray-700'
-              } ${!loggerConfig.enabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  ? "bg-blue-600"
+                  : "bg-gray-200 dark:bg-gray-700"
+              } ${!loggerConfig.enabled ? "opacity-50 cursor-not-allowed" : ""}`}
             >
               <span
                 className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                  loggerConfig.timestamp ? 'translate-x-6' : 'translate-x-1'
+                  loggerConfig.timestamp ? "translate-x-6" : "translate-x-1"
                 }`}
               />
             </button>
@@ -219,7 +223,7 @@ export function LoggerSettings({ className }: LoggerSettingsProps) {
             Test Logger
           </h4>
         </div>
-        
+
         <div className="p-4 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
           <button
             onClick={testLogger}
@@ -229,7 +233,8 @@ export function LoggerSettings({ className }: LoggerSettingsProps) {
             Test Logger Output
           </button>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-            Click to test the logger with sample messages (check browser console)
+            Click to test the logger with sample messages (check browser
+            console)
           </p>
         </div>
       </div>
@@ -242,31 +247,53 @@ export function LoggerSettings({ className }: LoggerSettingsProps) {
             Current Status
           </h4>
         </div>
-        
+
         <div className="p-4 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
           <div className="space-y-2 text-sm">
             <div className="flex items-center justify-between">
-              <span className="font-medium text-gray-900 dark:text-white">Enabled:</span>
-              <span className={loggerConfig.enabled ? 'text-green-600' : 'text-red-600'}>
-                {loggerConfig.enabled ? 'Yes' : 'No'}
+              <span className="font-medium text-gray-900 dark:text-white">
+                Enabled:
+              </span>
+              <span
+                className={
+                  loggerConfig.enabled ? "text-green-600" : "text-red-600"
+                }
+              >
+                {loggerConfig.enabled ? "Yes" : "No"}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="font-medium text-gray-900 dark:text-white">Development Only:</span>
-              <span className={loggerConfig.developmentOnly ? 'text-blue-600' : 'text-orange-600'}>
-                {loggerConfig.developmentOnly ? 'Yes' : 'No'}
+              <span className="font-medium text-gray-900 dark:text-white">
+                Development Only:
+              </span>
+              <span
+                className={
+                  loggerConfig.developmentOnly
+                    ? "text-blue-600"
+                    : "text-orange-600"
+                }
+              >
+                {loggerConfig.developmentOnly ? "Yes" : "No"}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="font-medium text-gray-900 dark:text-white">Current Environment:</span>
+              <span className="font-medium text-gray-900 dark:text-white">
+                Current Environment:
+              </span>
               <span className="text-blue-600">
-                {process.env.NODE_ENV || 'development'}
+                {process.env.NODE_ENV || "development"}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="font-medium text-gray-900 dark:text-white">Logger Active:</span>
-              <span className={logger.isLoggerEnabled() ? 'text-green-600' : 'text-red-600'}>
-                {logger.isLoggerEnabled() ? 'Yes' : 'No'}
+              <span className="font-medium text-gray-900 dark:text-white">
+                Logger Active:
+              </span>
+              <span
+                className={
+                  logger.isLoggerEnabled() ? "text-green-600" : "text-red-600"
+                }
+              >
+                {logger.isLoggerEnabled() ? "Yes" : "No"}
               </span>
             </div>
           </div>

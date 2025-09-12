@@ -1,15 +1,15 @@
-# Azure Image Studio - Development Roadmap
+# AI Image Studio - Development Roadmap
 
-This document outlines the current development status and realistic plans for Azure Image Studio based on actual implementation progress.
+This document outlines the current development status and realistic plans for AI Image Studio based on actual implementation progress.
 
 > ⚠️ **Important**: This is a **community project** and is not affiliated with or endorsed by Microsoft or Azure. It's an independent project that uses Azure AI services.
 
 **Last Updated**: September 8, 2025  
-**Version**: 1.0.2
+**Version**: 1.0.3
 
 ## 🚧 Current Status: Production Ready (v1.0.1)
 
-**✅ Release Status**: Azure Image Studio is currently in **production-ready** state with comprehensive features implemented and documented.
+**✅ Release Status**: AI Image Studio is currently in **production-ready** state with comprehensive features implemented and documented.
 
 ### ✅ What's Currently Working
 
@@ -416,9 +416,9 @@ This roadmap is updated based on:
 
 ---
 
-**Note**: This roadmap reflects the actual current state of Azure Image Studio and realistic development plans based on existing implementation. All dates and timelines are based on actual progress and current development status.
+**Note**: This roadmap reflects the actual current state of AI Image Studio and realistic development plans based on existing implementation. All dates and timelines are based on actual progress and current development status.
 
-For the latest updates, follow our [GitHub repository](https://github.com/DrHazemAli/azure-image-studio) and join our [Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions) for community input.
+For the latest updates, follow our [GitHub repository](https://github.com/DrHazemAli/image-studio) and join our [Discussions](https://github.com/DrHazemAli/image-studio/discussions) for community input.
 
 ## 📚 Additional Resources
 
@@ -432,10 +432,10 @@ For the latest updates, follow our [GitHub repository](https://github.com/DrHaze
 
 ### Community
 
-- [GitHub Repository](https://github.com/DrHazemAli/azure-image-studio)
-- [GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
-- [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
+- [GitHub Repository](https://github.com/DrHazemAli/image-studio)
+- [GitHub Issues](https://github.com/DrHazemAli/image-studio/issues)
+- [GitHub Discussions](https://github.com/DrHazemAli/image-studio/discussions)
 
 ---
 
-Made with ❤️ by the Azure Image Studio community
+Made with ❤️ by the AI Image Studio community

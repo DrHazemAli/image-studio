@@ -1,15 +1,15 @@
-# Deployment Guide - Azure Image Studio
+# Deployment Guide - AI Image Studio
 
-This guide provides comprehensive deployment instructions for Azure Image Studio on various platforms and cloud services.
+This guide provides comprehensive deployment instructions for AI Image Studio on various platforms and cloud services.
 
 > ⚠️ **Important**: This is a **community project** and is not affiliated with or endorsed by Microsoft or Azure. It's an independent project that uses Azure AI services.
 
 **Last Updated**: September 8, 2025  
-**Version**: 1.0.2
+**Version**: 1.0.3
 
 ## 🚀 Deployment Overview
 
-Azure Image Studio can be deployed on various platforms including Azure Static Web Apps, Vercel, Netlify, and traditional hosting providers. This guide covers the most common deployment scenarios.
+AI Image Studio can be deployed on various platforms including Azure Static Web Apps, Vercel, Netlify, and traditional hosting providers. This guide covers the most common deployment scenarios.
 
 ## ☁️ Azure Static Web Apps Deployment
 
@@ -51,9 +51,9 @@ az group create --name myResourceGroup --location "East US"
 
 # Create static web app
 az staticwebapp create \
-  --name my-azure-image-studio \
+  --name my-image-studio \
   --resource-group myResourceGroup \
-  --source https://github.com/yourusername/azure-image-studio \
+  --source https://github.com/yourusername/image-studio \
   --location "East US 2" \
   --branch main \
   --app-location "/" \
@@ -114,7 +114,7 @@ jobs:
 ```bash
 # Set environment variables
 az staticwebapp appsettings set \
-  --name my-azure-image-studio \
+  --name my-image-studio \
   --setting-names AZURE_API_KEY=your_api_key_here
 ```
 
@@ -287,7 +287,7 @@ CMD ["node", "server.js"]
 version: "3.8"
 
 services:
-  azure-image-studio:
+  image-studio:
     build: .
     ports:
       - "3000:3000"
@@ -309,13 +309,13 @@ services:
 
 ```bash
 # Build the image
-docker build -t azure-image-studio .
+docker build -t image-studio .
 
 # Run the container
 docker run -p 3000:3000 \
   -e AZURE_API_KEY=your_api_key_here \
   -e NEXT_PUBLIC_APP_URL=http://localhost:3000 \
-  azure-image-studio
+  image-studio
 
 # Or use docker-compose
 docker-compose up -d
@@ -354,8 +354,8 @@ npm install -g pm2
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/azure-image-studio.git
-cd azure-image-studio
+git clone https://github.com/yourusername/image-studio.git
+cd image-studio
 
 # Install dependencies
 npm install
@@ -367,7 +367,7 @@ npm run build
 cat > ecosystem.config.js << EOF
 module.exports = {
   apps: [{
-    name: 'azure-image-studio',
+    name: 'image-studio',
     script: 'server.js',
     instances: 'max',
     exec_mode: 'cluster',
@@ -497,13 +497,13 @@ pm2 status
 
 ```bash
 # View logs
-pm2 logs azure-image-studio
+pm2 logs image-studio
 
 # View error logs
-pm2 logs azure-image-studio --err
+pm2 logs image-studio --err
 
 # View output logs
-pm2 logs azure-image-studio --out
+pm2 logs image-studio --out
 ```
 
 #### Nginx Logs
@@ -525,7 +525,7 @@ sudo tail -f /var/log/nginx/error.log
 pm2 monit
 
 # Show detailed information
-pm2 show azure-image-studio
+pm2 show image-studio
 ```
 
 #### System Monitoring
@@ -586,11 +586,11 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /path/to/azure-image-studio
+            cd /path/to/image-studio
             git pull origin main
             npm ci
             npm run build
-            pm2 restart azure-image-studio
+            pm2 restart image-studio
 ```
 
 ### Secrets Configuration
@@ -707,14 +707,14 @@ pm2 start ecosystem.config.js --instances max
 ### Getting Help
 
 - Check the [troubleshooting section](#troubleshooting)
-- Review the [GitHub Issues](https://github.com/DrHazemAli/azure-image-studio/issues)
-- Join [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
+- Review the [GitHub Issues](https://github.com/DrHazemAli/image-studio/issues)
+- Join [GitHub Discussions](https://github.com/DrHazemAli/image-studio/discussions)
 
 ### Contact
 
 - **Author**: Hazem Ali (Microsoft MVP)
 - **GitHub**: [@DrHazemAli](https://github.com/DrHazemAli)
-- **LinkedIn**: [Hazem Ali](https://linkedin.com/in/hazemali)
+- **LinkedIn**: [Hazem Ali](https://linkedin.com/in/drhazemali)
 
 ---
 
@@ -728,4 +728,4 @@ pm2 start ecosystem.config.js --instances max
 
 ---
 
-This guide provides comprehensive deployment instructions for Azure Image Studio. For more information, see the [Installation Guide](installation.md) or [Getting Started Guide](getting-started.md).
+This guide provides comprehensive deployment instructions for AI Image Studio. For more information, see the [Installation Guide](installation.md) or [Getting Started Guide](getting-started.md).

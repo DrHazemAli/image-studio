@@ -103,7 +103,7 @@ export interface AssetInfo {
   id: string;
   name: string;
   url: string;
-  type: 'generation' | 'upload' | 'edit';
+  type: "generation" | "upload" | "edit";
   timestamp: Date;
   prompt?: string;
   model?: string;

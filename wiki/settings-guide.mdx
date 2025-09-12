@@ -1,12 +1,12 @@
 # Settings & Configuration Guide
 
-*Master every aspect of Azure Image Studio's powerful configuration system*
+_Master every aspect of AI Image Studio's powerful configuration system_
 
 ---
 
 **Author:** Hazem Ali, Microsoft AI MVP  
-**Repository:** [Azure Image Studio](https://github.com/DrHazemAli/azure-image-studio)  
-**Documentation:** [Wiki](https://github.com/DrHazemAli/azure-image-studio/wiki)
+**Repository:** [AI Image Studio](https://github.com/DrHazemAli/image-studio)  
+**Documentation:** [Wiki](https://github.com/DrHazemAli/image-studio/wiki)
 
 [![GitHub](https://img.shields.io/badge/GitHub-DrHazemAli-blue)](https://github.com/DrHazemAli)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-drhazemali-blue)](https://linkedin.com/in/drhazemali)
@@ -16,17 +16,19 @@
 
 ## 🎯 Overview
 
-Azure Image Studio offers extensive customization through an intuitive Settings UI. Access settings by clicking the **Settings** button (⚙️) in the top-right corner of any screen.
+AI Image Studio offers extensive customization through an intuitive Settings UI. Access settings by clicking the **Settings** button (⚙️) in the top-right corner of any screen.
 
 ## 🔐 Authentication Settings
 
 ### Default Credentials
+
 **⚠️ SECURITY WARNING**: Change these immediately in production!
 
 - **Username**: `admin`
 - **Password**: `0000`
 
 ### Changing Authentication
+
 1. Go to **Settings** → **General**
 2. Click **"Change Credentials"**
 3. Enter new username and password
@@ -36,14 +38,17 @@ Azure Image Studio offers extensive customization through an intuitive Settings 
 ## ☁️ Azure Configuration
 
 ### Basic Azure Setup
+
 Navigate to **Settings** → **Azure** to configure your Azure AI services.
 
 #### Required Information
+
 - **Azure Endpoint**: Your Azure AI resource endpoint
 - **API Key**: Primary or secondary API key
 - **Region**: Azure region (e.g., East US, West Europe)
 
 #### Advanced Azure Settings
+
 - **Multiple Endpoints**: Add backup endpoints for reliability
 - **Custom Headers**: Add authentication headers
 - **Retry Logic**: Configure retry attempts and delays
@@ -52,6 +57,7 @@ Navigate to **Settings** → **Azure** to configure your Azure AI services.
 ### Model Configuration
 
 #### Adding Models
+
 1. Go to **Settings** → **Models**
 2. Click **"Add Model"**
 3. Select model type:
@@ -61,6 +67,7 @@ Navigate to **Settings** → **Azure** to configure your Azure AI services.
    - **GPT-Image-1**: Multimodal capabilities
 
 #### Model Settings
+
 - **Model Name**: Custom display name
 - **API Endpoint**: Specific model endpoint
 - **Parameters**: Custom generation parameters
@@ -69,9 +76,11 @@ Navigate to **Settings** → **Azure** to configure your Azure AI services.
 ## 🎨 Studio Settings
 
 ### Canvas Configuration
+
 **Settings** → **Studio** → **Canvas**
 
 #### Canvas Behavior
+
 - **Default Size**: Set default canvas dimensions
 - **Grid Settings**: Show/hide grid, set grid size
 - **Snap to Grid**: Enable/disable snapping
@@ -79,27 +88,32 @@ Navigate to **Settings** → **Azure** to configure your Azure AI services.
 - **Auto-Save**: Enable automatic project saving
 
 #### Zoom and Pan
+
 - **Zoom Limits**: Min/max zoom levels
 - **Zoom Speed**: Mouse wheel zoom sensitivity
 - **Pan Speed**: Mouse drag pan sensitivity
 - **Smooth Scrolling**: Enable smooth animations
 
 ### Tool Settings
+
 **Settings** → **Studio** → **Tools**
 
 #### Drawing Tools
+
 - **Brush Size**: Default brush size
 - **Brush Opacity**: Default brush opacity
 - **Brush Hardness**: Edge softness
 - **Pressure Sensitivity**: Enable for drawing tablets
 
 #### Selection Tools
+
 - **Selection Style**: Rectangle, freeform, or polygon
 - **Selection Tolerance**: Color matching tolerance
 - **Auto-Select**: Auto-select similar colors
 - **Selection Preview**: Show selection preview
 
 #### Text Tools
+
 - **Default Font**: System default font
 - **Font Size**: Default text size
 - **Text Color**: Default text color
@@ -108,36 +122,43 @@ Navigate to **Settings** → **Azure** to configure your Azure AI services.
 ## 🖼️ Image Generation Settings
 
 ### Generation Parameters
+
 **Settings** → **Generation**
 
 #### Default Settings
+
 - **Image Size**: Default generation size
 - **Quality**: Generation quality (standard, hd)
 - **Style**: Default artistic style
 - **Number of Images**: Images per generation
 
 #### Advanced Parameters
+
 - **Temperature**: Creativity level (0.0-1.0)
 - **Top P**: Nucleus sampling parameter
 - **Max Tokens**: Maximum prompt tokens
 - **Stop Sequences**: Generation stop conditions
 
 #### Batch Processing
+
 - **Batch Size**: Images per batch
 - **Concurrent Requests**: Parallel generation limit
 - **Queue Management**: Processing priority
 - **Error Handling**: Retry failed generations
 
 ### Prompt Engineering
+
 **Settings** → **Generation** → **Prompts**
 
 #### Prompt Templates
+
 - **Default Templates**: Pre-built prompt templates
 - **Custom Templates**: User-defined templates
 - **Template Variables**: Dynamic prompt elements
 - **Prompt History**: Save successful prompts
 
 #### Auto-Enhancement
+
 - **Auto-Capitalize**: Fix capitalization
 - **Grammar Check**: Improve grammar
 - **Style Suggestions**: Recommend improvements
@@ -146,27 +167,32 @@ Navigate to **Settings** → **Azure** to configure your Azure AI services.
 ## 🗂️ Asset Store Settings
 
 ### Provider Configuration
+
 **Settings** → **Asset Store**
 
 #### Pexels Integration
+
 - **API Key**: Pexels API key
 - **Search Quality**: Image quality preference
 - **Category Filters**: Default categories
 - **Download Settings**: Image resolution and format
 
 #### Unsplash Integration
+
 - **API Key**: Unsplash API key
 - **Access Key**: Unsplash access key
 - **Search Scope**: Search scope (public, private)
 - **Usage Tracking**: Monitor API usage
 
 #### Asset Management
+
 - **Cache Settings**: Local cache configuration
 - **Download Location**: Default download folder
 - **File Naming**: Custom file naming patterns
 - **Duplicate Handling**: Handle duplicate assets
 
 ### Library Settings
+
 - **Auto-Organize**: Automatic categorization
 - **Tag System**: Custom tagging system
 - **Search Indexing**: Full-text search settings
@@ -175,21 +201,25 @@ Navigate to **Settings** → **Azure** to configure your Azure AI services.
 ## 🔄 Sync and Backup Settings
 
 ### Auto-Sync Configuration
+
 **Settings** → **Sync**
 
 #### Sync Options
+
 - **Enable Auto-Sync**: Automatic synchronization
 - **Sync Frequency**: How often to sync (minutes)
 - **Sync Scope**: What to sync (projects, settings, assets)
 - **Conflict Resolution**: Handle sync conflicts
 
 #### Cloud Storage
+
 - **Provider**: Azure Blob, AWS S3, Google Drive
 - **Container/Bucket**: Storage location
 - **Authentication**: Cloud storage credentials
 - **Encryption**: Enable data encryption
 
 #### Backup Settings
+
 - **Backup Frequency**: Daily, weekly, monthly
 - **Retention Policy**: How long to keep backups
 - **Compression**: Enable backup compression
@@ -198,45 +228,54 @@ Navigate to **Settings** → **Azure** to configure your Azure AI services.
 ## 🎛️ Advanced Settings
 
 ### Performance Settings
+
 **Settings** → **Advanced** → **Performance**
 
 #### Rendering
+
 - **Hardware Acceleration**: Use GPU acceleration
 - **Memory Management**: RAM usage limits
 - **Cache Size**: Disk cache size
 - **Threading**: Multi-threaded processing
 
 #### Network
+
 - **Connection Timeout**: Request timeout (seconds)
 - **Retry Attempts**: Failed request retries
 - **Concurrent Connections**: Max parallel requests
 - **Proxy Settings**: HTTP/HTTPS proxy configuration
 
 ### Developer Settings
+
 **Settings** → **Advanced** → **Developer**
 
 #### Debugging
+
 - **Debug Mode**: Enable debug logging
 - **Console Logging**: Show console messages
 - **API Logging**: Log API requests/responses
 - **Performance Metrics**: Track performance data
 
 #### API Settings
+
 - **API Rate Limiting**: Request rate limits
 - **Custom Headers**: Additional HTTP headers
 - **Request Timeout**: API request timeout
 - **Response Caching**: Cache API responses
 
 ### Security Settings
+
 **Settings** → **Advanced** → **Security**
 
 #### Data Protection
+
 - **Encrypt Projects**: Encrypt saved projects
 - **Secure Storage**: Use secure storage for credentials
 - **Session Timeout**: Auto-logout after inactivity
 - **Audit Logging**: Log security events
 
 #### Network Security
+
 - **HTTPS Only**: Force HTTPS connections
 - **Certificate Validation**: Validate SSL certificates
 - **Content Security**: Content Security Policy
@@ -245,21 +284,25 @@ Navigate to **Settings** → **Azure** to configure your Azure AI services.
 ## 🎨 UI Customization
 
 ### Theme Settings
+
 **Settings** → **Appearance**
 
 #### Color Themes
+
 - **Light Theme**: Clean, bright interface
 - **Dark Theme**: Easy on the eyes
 - **Auto Theme**: Follow system preference
 - **Custom Theme**: Create your own theme
 
 #### Layout Customization
+
 - **Panel Layout**: Customize panel arrangement
 - **Toolbar Position**: Move toolbar location
 - **Sidebar Width**: Adjust sidebar size
 - **Font Size**: Interface font size
 
 #### Accessibility
+
 - **High Contrast**: High contrast mode
 - **Large Text**: Increase text size
 - **Keyboard Navigation**: Full keyboard support
@@ -268,21 +311,25 @@ Navigate to **Settings** → **Azure** to configure your Azure AI services.
 ## 📊 Monitoring and Analytics
 
 ### Usage Statistics
+
 **Settings** → **Analytics**
 
 #### Generation Metrics
+
 - **Images Generated**: Total count
 - **API Calls**: API usage statistics
 - **Generation Time**: Average generation time
 - **Success Rate**: Successful generation rate
 
 #### Performance Metrics
+
 - **Memory Usage**: RAM consumption
 - **CPU Usage**: Processor utilization
 - **Disk Usage**: Storage consumption
 - **Network Usage**: Bandwidth usage
 
 #### Cost Tracking
+
 - **API Costs**: Azure API costs
 - **Storage Costs**: Cloud storage costs
 - **Total Costs**: Overall usage costs
@@ -291,15 +338,18 @@ Navigate to **Settings** → **Azure** to configure your Azure AI services.
 ## 🔧 Troubleshooting Settings
 
 ### Diagnostic Tools
+
 **Settings** → **Troubleshooting**
 
 #### System Diagnostics
+
 - **System Info**: Hardware and software details
 - **Configuration Check**: Validate all settings
 - **Dependency Check**: Check required dependencies
 - **Performance Test**: Run performance benchmarks
 
 #### Log Management
+
 - **Log Level**: Debug, info, warning, error
 - **Log Retention**: How long to keep logs
 - **Log Export**: Export logs for support
@@ -308,6 +358,7 @@ Navigate to **Settings** → **Azure** to configure your Azure AI services.
 ## 💾 Settings Management
 
 ### Export/Import Settings
+
 1. Go to **Settings** → **General**
 2. Click **"Export Settings"**
 3. Choose what to export:
@@ -317,6 +368,7 @@ Navigate to **Settings** → **Azure** to configure your Azure AI services.
    - Custom selections
 
 ### Reset Settings
+
 1. Go to **Settings** → **General**
 2. Click **"Reset Settings"**
 3. Choose reset type:
@@ -325,6 +377,7 @@ Navigate to **Settings** → **Azure** to configure your Azure AI services.
    - **Selective Reset**: Reset specific categories
 
 ### Settings Backup
+
 - **Automatic Backup**: Daily settings backup
 - **Manual Backup**: On-demand backup
 - **Cloud Backup**: Sync settings to cloud
@@ -333,6 +386,7 @@ Navigate to **Settings** → **Azure** to configure your Azure AI services.
 ## 🎯 Best Practices
 
 ### Security Best Practices
+
 1. **Change Default Credentials**: Immediately change admin password
 2. **Use Strong Passwords**: Complex, unique passwords
 3. **Enable Encryption**: Encrypt sensitive data
@@ -340,6 +394,7 @@ Navigate to **Settings** → **Azure** to configure your Azure AI services.
 5. **Monitor Access**: Review access logs regularly
 
 ### Performance Optimization
+
 1. **Hardware Acceleration**: Enable GPU acceleration
 2. **Memory Management**: Set appropriate memory limits
 3. **Cache Optimization**: Optimize cache settings
@@ -347,6 +402,7 @@ Navigate to **Settings** → **Azure** to configure your Azure AI services.
 5. **Regular Cleanup**: Clean up temporary files
 
 ### Backup Strategy
+
 1. **Multiple Backups**: Use multiple backup locations
 2. **Regular Testing**: Test backup restoration
 3. **Version Control**: Keep multiple backup versions
@@ -356,18 +412,21 @@ Navigate to **Settings** → **Azure** to configure your Azure AI services.
 ## 🆘 Common Issues
 
 ### Settings Not Saving
+
 - Check file permissions
 - Verify disk space
 - Restart application
 - Check for conflicts
 
 ### Performance Issues
+
 - Reduce cache size
 - Disable hardware acceleration
 - Close other applications
 - Check system resources
 
 ### Sync Problems
+
 - Verify network connection
 - Check cloud credentials
 - Review sync settings
@@ -386,4 +445,4 @@ Navigate to **Settings** → **Azure** to configure your Azure AI services.
 **Author**: Hazem Ali - Microsoft AI MVP  
 **Last Updated**: September 2025
 
-*For additional support, visit our [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions) or [report issues](https://github.com/DrHazemAli/azure-image-studio/issues).*
+_For additional support, visit our [GitHub Discussions](https://github.com/DrHazemAli/image-studio/discussions) or [report issues](https://github.com/DrHazemAli/image-studio/issues)._

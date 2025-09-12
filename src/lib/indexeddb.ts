@@ -6,7 +6,7 @@ import {
   UI_CONSTANTS,
   MODEL_CONSTANTS,
   PROJECT_CONSTANTS,
-} from './constants';
+} from "./constants";
 interface Asset {
   id: string;
   project_id: string; // Foreign key to Project
@@ -130,7 +130,7 @@ const DEFAULT_PROJECT_VALUES = {
 // Helper function to create a project with fallback values using defined constants
 function createProjectWithDefaults(project: Partial<Project>): Project {
   const now = new Date();
-  
+
   return {
     id: project.id || crypto.randomUUID(),
     user_id: project.user_id || PROJECT_CONSTANTS.DEFAULT_USER_ID,
