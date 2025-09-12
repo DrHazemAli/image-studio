@@ -1,6 +1,6 @@
-# Contributing to Image Studio
+# Contributing to AI Image Studio
 
-Thank you for your interest in contributing to Image Studio! This document provides guidelines and information for contributors.
+Thank you for your interest in contributing to AI Image Studio! This document provides guidelines and information for contributors.
 
 ## 🤝 How to Contribute
 
@@ -302,8 +302,8 @@ Contributors will be recognized in:
 
 ## 📄 License
 
-By contributing to Image Studio, you agree that your contributions will be licensed under the MIT License.
+By contributing to AI Image Studio, you agree that your contributions will be licensed under the MIT License.
 
 ---
 
-Thank you for contributing to Image Studio! Your efforts help make this project better for everyone. 🎉
+Thank you for contributing to AI Image Studio! Your efforts help make this project better for everyone. 🎉

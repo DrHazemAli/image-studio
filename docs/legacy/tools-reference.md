@@ -1,6 +1,6 @@
-# Tools Reference - Image Studio
+# Tools Reference - AI Image Studio
 
-This comprehensive guide covers all available tools and their usage in Image Studio.
+This comprehensive guide covers all available tools and their usage in AI Image Studio.
 
 > ⚠️ **Important**: This is a **community project** and is not affiliated with or endorsed by Microsoft or Azure. It's an independent project that uses Azure AI services.
 
@@ -9,7 +9,7 @@ This comprehensive guide covers all available tools and their usage in Image Stu
 
 ## 🛠️ Tools Overview
 
-Image Studio provides a comprehensive set of tools for image generation, editing, and manipulation. All tools are accessible through the toolbar and can be used with keyboard shortcuts for efficient workflow.
+AI Image Studio provides a comprehensive set of tools for image generation, editing, and manipulation. All tools are accessible through the toolbar and can be used with keyboard shortcuts for efficient workflow.
 
 ## 🎨 Navigation Tools
 
@@ -661,4 +661,4 @@ Image Studio provides a comprehensive set of tools for image generation, editing
 
 ---
 
-This guide provides comprehensive information about all available tools in Image Studio. For more specific information, refer to the individual guides for each feature area.
+This guide provides comprehensive information about all available tools in AI Image Studio. For more specific information, refer to the individual guides for each feature area.

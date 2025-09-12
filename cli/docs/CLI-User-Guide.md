@@ -1,6 +1,6 @@
-# Image Studio CLI - User Guide
+# AI Image Studio CLI - User Guide
 
-This comprehensive guide will help you master the Image Studio CLI for AI-powered image generation and editing.
+This comprehensive guide will help you master the AI Image Studio CLI for AI-powered image generation and editing.
 
 ## 📋 Table of Contents
 
@@ -725,7 +725,7 @@ Common error codes and solutions:
 
 ---
 
-This guide covers the essential features and workflows of the Image Studio CLI. For more detailed information, see:
+This guide covers the essential features and workflows of the AI Image Studio CLI. For more detailed information, see:
 
 - [CLI README](../README.md) - Installation and quick start
 - [CLI API Documentation](./CLI-API-Documentation.md) - Technical reference

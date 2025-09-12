@@ -2,7 +2,7 @@
 
 **Last Updated**: September 8, 2025
 
-This comprehensive guide covers all aspects of configuring Image Studio, from basic setup to advanced customization options.
+This comprehensive guide covers all aspects of configuring AI Image Studio, from basic setup to advanced customization options.
 
 ## 📋 Table of Contents
 
@@ -295,7 +295,7 @@ This file controls application behavior, UI settings, and feature toggles:
 ```json
 {
   "app": {
-    "name": "Image Studio",
+    "name": "AI Image Studio",
     "version": "1.0.1",
     "description": "AI-powered image generation and editing platform",
     "environment": "development",
@@ -694,4 +694,4 @@ npm run cli -- generate --prompt "test image" --model dalle-3
 
 **Need help?** Check out our [Getting Started Guide](getting-started.md) for quick setup instructions or visit our [GitHub repository](https://github.com/DrHazemAli/image-studio) for the latest updates.
 
-Made with ❤️ by the Image Studio community
+Made with ❤️ by the AI Image Studio community

@@ -3,7 +3,7 @@
 **Last Updated**: September 8, 2025  
 **Version**: 1.0.3
 
-Welcome to Azure GenAI Image Studio! This guide will help you get up and running quickly with our AI-powered image generation and editing platform.
+Welcome to Azure GenAI AI Image Studio! This guide will help you get up and running quickly with our AI-powered image generation and editing platform.
 
 ## Table of Contents
 

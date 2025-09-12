@@ -1,6 +1,6 @@
-# Database Guide - Image Studio
+# Database Guide - AI Image Studio
 
-This comprehensive guide covers the data storage, management, and architecture of Image Studio's database system.
+This comprehensive guide covers the data storage, management, and architecture of AI Image Studio's database system.
 
 > ⚠️ **Important**: This is a **community project** and is not affiliated with or endorsed by Microsoft or Azure. It's an independent project that uses Azure AI services.
 
@@ -9,7 +9,7 @@ This comprehensive guide covers the data storage, management, and architecture o
 
 ## 🗄️ Database Overview
 
-Image Studio uses a client-side database architecture built on IndexedDB for storing user data, assets, and project information. This approach provides:
+AI Image Studio uses a client-side database architecture built on IndexedDB for storing user data, assets, and project information. This approach provides:
 
 - **Offline Capability**: Work without internet connection
 - **Performance**: Fast local data access
@@ -1075,4 +1075,4 @@ async debugDatabaseState(): Promise<{
 
 ---
 
-This guide provides comprehensive information about the database architecture and data management in Image Studio. For more specific information, refer to the individual guides for each component.
+This guide provides comprehensive information about the database architecture and data management in AI Image Studio. For more specific information, refer to the individual guides for each component.

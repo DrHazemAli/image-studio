@@ -1,4 +1,4 @@
-# Image Studio - Complete Azure Setup & Configuration Guide
+# AI Image Studio - Complete Azure Setup & Configuration Guide
 
 **Version:** 1.0.1  
 **Author:** Hazem Ali, Microsoft AI MVP  
@@ -64,7 +64,7 @@ Before deploying to any environment accessible by others:
 
 ### 1.1 Authentication System Overview
 
-Image Studio uses a token-based authentication system with the following components:
+AI Image Studio uses a token-based authentication system with the following components:
 
 - **Admin Authentication:** Simple username/password authentication
 - **Token Generation:** Secure random tokens with 1-hour expiration
@@ -176,7 +176,7 @@ CSRF_TOKEN_SECRET=your_csrf_secret_here
 
 ### 2.1 Azure Subscription Requirements
 
-Before configuring Image Studio, ensure you have:
+Before configuring AI Image Studio, ensure you have:
 
 - **Active Azure Subscription** with sufficient credits
 - **Contributor or Owner role** on the subscription
@@ -266,11 +266,11 @@ az ad sp create-for-rbac --name "image-studio-sp" \
 
 ## 3. Step-by-Step Azure Configuration
 
-### 3.1 Accessing Settings in Image Studio
+### 3.1 Accessing Settings in AI Image Studio
 
 #### Step 1: Application Login
 
-1. Start Image Studio application
+1. Start AI Image Studio application
 2. Navigate to the login screen
 3. Enter credentials:
    - **Username:** `hazem` (default)
@@ -336,7 +336,7 @@ Animations Enabled: true (improves user experience)
 
 #### Step 6: Adding Multiple Endpoints
 
-Image Studio supports multiple Azure endpoints for load balancing and redundancy:
+AI Image Studio supports multiple Azure endpoints for load balancing and redundancy:
 
 1. Scroll down to the "Endpoint Management" section
 2. Click "Add New Endpoint"
@@ -547,7 +547,7 @@ async function validateAzureConfig(config: AzureConfig) {
 
 ### 5.1 Adding Models via Settings UI
 
-The Image Studio supports multiple AI models for different use cases:
+The AI Image Studio supports multiple AI models for different use cases:
 
 #### Step 1: Navigate to Models Tab
 
@@ -781,7 +781,7 @@ Different providers have unique configuration requirements:
 
 ### 6.1 Auto-Sync Functionality Setup
 
-Image Studio includes advanced data synchronization capabilities:
+AI Image Studio includes advanced data synchronization capabilities:
 
 #### Configuration Storage:
 
@@ -896,7 +896,7 @@ Configure how data is stored and managed:
 
 ### 7.1 Multiple Endpoint Support
 
-Image Studio supports sophisticated endpoint management for enterprise environments:
+AI Image Studio supports sophisticated endpoint management for enterprise environments:
 
 #### Load Balancing Configuration:
 
@@ -1210,7 +1210,7 @@ Error: The API deployment for this resource does not exist
    - Go to Azure OpenAI Studio
    - Navigate to Deployments
    - Create new deployment with exact name used in config
-2. Update deployment name in Image Studio settings
+2. Update deployment name in AI Image Studio settings
 3. Verify API version is supported
 
 #### Issue: Endpoint Not Reachable
@@ -1725,7 +1725,7 @@ interface ScalingConfig {
 
 ## Conclusion
 
-This comprehensive guide provides all the necessary information to successfully configure and deploy Image Studio with Azure services. The application leverages cutting-edge AI models from Azure OpenAI and Azure AI Foundry to deliver professional-grade image generation capabilities.
+This comprehensive guide provides all the necessary information to successfully configure and deploy AI Image Studio with Azure services. The application leverages cutting-edge AI models from Azure OpenAI and Azure AI Foundry to deliver professional-grade image generation capabilities.
 
 ### Key Takeaways:
 
@@ -1753,8 +1753,8 @@ For additional support, please refer to the [Troubleshooting Guide](troubleshoot
 
 ---
 
-_This guide is part of the Image Studio documentation suite. For more guides and tutorials, visit the [wiki directory](.)._
+_This guide is part of the AI Image Studio documentation suite. For more guides and tutorials, visit the [wiki directory](.)._
 
 **Document Version:** 1.0.1  
 **Last Updated:** September 10, 2025  
-**Compatibility:** Image Studio v1.0.1+
+**Compatibility:** AI Image Studio v1.0.1+

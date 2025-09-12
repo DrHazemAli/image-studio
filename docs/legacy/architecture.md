@@ -2,7 +2,7 @@
 
 **Last Updated**: September 8, 2025
 
-This document provides a comprehensive overview of the Azure GenAI Image Studio architecture, including system design, component relationships, data flow, and technical implementation details.
+This document provides a comprehensive overview of the Azure GenAI AI Image Studio architecture, including system design, component relationships, data flow, and technical implementation details.
 
 ## Table of Contents
 
@@ -19,7 +19,7 @@ This document provides a comprehensive overview of the Azure GenAI Image Studio 
 
 ## System Overview
 
-Azure GenAI Image Studio is a modern web application built with a client-server architecture that leverages Azure's AI services for image generation and editing capabilities.
+Azure GenAI AI Image Studio is a modern web application built with a client-server architecture that leverages Azure's AI services for image generation and editing capabilities.
 
 ### High-Level Architecture
 

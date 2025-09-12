@@ -1,6 +1,6 @@
-# Developer Guide - Image Studio
+# Developer Guide - AI Image Studio
 
-This comprehensive guide provides everything developers need to understand, contribute to, and extend Image Studio.
+This comprehensive guide provides everything developers need to understand, contribute to, and extend AI Image Studio.
 
 > ⚠️ **Important**: This is a **community project** and is not affiliated with or endorsed by Microsoft or Azure. It's an independent project that uses Azure AI services.
 
@@ -814,6 +814,6 @@ changes
 
 ---
 
-This guide provides comprehensive information for developers working with Image Studio. For more specific information, refer to the individual guides for each component.
+This guide provides comprehensive information for developers working with AI Image Studio. For more specific information, refer to the individual guides for each component.
 
 Happy coding! 🚀

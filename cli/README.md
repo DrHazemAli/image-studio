@@ -1,15 +1,15 @@
-# Image Studio CLI
+# AI Image Studio CLI
 
-A powerful command-line interface for Image Studio - AI-powered image generation and editing platform.
+A powerful command-line interface for AI Image Studio - AI-powered image generation and editing platform.
 
-![Image Studio CLI](https://img.shields.io/badge/Azure-Image%20Studio%20CLI-blue?style=for-the-badge&logo=microsoft-azure)
+![AI Image Studio CLI](https://img.shields.io/badge/Azure-Image%20Studio%20CLI-blue?style=for-the-badge&logo=microsoft-azure)
 ![Version](https://img.shields.io/badge/Version-1.0.0-green?style=for-the-badge)
 ![Node.js](https://img.shields.io/badge/Node.js-18+-green?style=for-the-badge&logo=node.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)
 
 ## 🚀 Overview
 
-The Image Studio CLI provides a comprehensive command-line interface for interacting with Azure AI services for image generation and editing. It's designed for developers, content creators, and automation workflows who need programmatic access to AI image generation capabilities.
+The AI Image Studio CLI provides a comprehensive command-line interface for interacting with Azure AI services for image generation and editing. It's designed for developers, content creators, and automation workflows who need programmatic access to AI image generation capabilities.
 
 **Key Features:**
 
@@ -457,7 +457,7 @@ image-studio project delete [options]
 
 #### `dev start`
 
-Start the Image Studio development server.
+Start the AI Image Studio development server.
 
 ```bash
 image-studio dev start [options]

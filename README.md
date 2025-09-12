@@ -1,12 +1,12 @@
 # AI Image Studio
 
-AI Image Studio is a cutting-edge image generation and editing platform that harnesses the full power of Azure AI services. Built and maintained by Microsoft MVPs, this professional-grade solution delivers state-of-the-art AI capabilities through an intuitive, modern interface. Whether you're creating stunning visuals, editing professional content, or building automated image workflows, Image Studio provides the tools and performance you need to transform your creative vision into reality.
+AI Image Studio is a cutting-edge image generation and editing platform that harnesses the full power of Azure AI services. Built and maintained by Microsoft MVPs, this professional-grade solution delivers state-of-the-art AI capabilities through an intuitive, modern interface. Whether you're creating stunning visuals, editing professional content, or building automated image workflows, AI Image Studio provides the tools and performance you need to transform your creative vision into reality.
 
-![Image Studio](https://github.com/DrHazemAli/image-studio/blob/main/public/image-studio.jpg)
+![AI Image Studio](https://github.com/DrHazemAli/image-studio/blob/main/public/image-studio.jpg)
 
 <div align="center">
 
-![Image Studio](https://img.shields.io/badge/Azure-Image%20Studio-blue?style=for-the-badge&logo=microsoft-azure)
+![AI Image Studio](https://img.shields.io/badge/Azure-Image%20Studio-blue?style=for-the-badge&logo=microsoft-azure)
 ![Next.js](https://img.shields.io/badge/Next.js-15.5.2-black?style=for-the-badge&logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)
 ![React](https://img.shields.io/badge/React-19.1.0-blue?style=for-the-badge&logo=react)
@@ -50,15 +50,15 @@ AI Image Studio is a cutting-edge image generation and editing platform that har
 
 ## 🚀 Overview
 
-Image Studio is a community-developed, production-ready platform that integrates with Azure AI services to provide professional-grade image generation and editing capabilities. This independent project is built with modern web technologies and offers both a simple generation interface and a full-featured studio environment for advanced image manipulation.
+AI Image Studio is a community-developed, production-ready platform that integrates with Azure AI services to provide professional-grade image generation and editing capabilities. This independent project is built with modern web technologies and offers both a simple generation interface and a full-featured studio environment for advanced image manipulation.
 
 **Note**: This is not an official Microsoft or Azure product, but rather a community project that utilizes Azure's AI services.
 
-**✅ Production Status**: Image Studio is currently **production-ready** (v1.0.3) with comprehensive features implemented and documented. The platform is stable and ready for professional use. Please see our [Development Roadmap](docs/legacy/roadmap.md) for current status and planned features.
+**✅ Production Status**: AI Image Studio is currently **production-ready** (v1.0.3) with comprehensive features implemented and documented. The platform is stable and ready for professional use. Please see our [Development Roadmap](docs/legacy/roadmap.md) for current status and planned features.
 
 ## ✨ Features
 
-### 🎨 **Professional Image Studio**
+### 🎨 **Professional AI Image Studio**
 
 - **Advanced Canvas**: Full-featured image editing workspace with multiple tools
 - **Layer Management**: Professional layer-based editing system with Fabric.js
@@ -244,7 +244,7 @@ AZURE_API_BASE_URL=your_azure_api_base_url_here
 
 ### Professional Studio
 
-1. Click "Launch Image Studio"
+1. Click "Launch AI Image Studio"
 2. Use the toolbar to select tools
 3. Generate or import images
 4. Edit using the advanced canvas

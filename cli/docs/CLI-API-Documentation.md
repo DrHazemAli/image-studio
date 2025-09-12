@@ -1,6 +1,6 @@
-# Image Studio CLI - API Documentation
+# AI Image Studio CLI - API Documentation
 
-This document provides comprehensive technical documentation for the Image Studio CLI, including command specifications, configuration schemas, and integration details.
+This document provides comprehensive technical documentation for the AI Image Studio CLI, including command specifications, configuration schemas, and integration details.
 
 ## 📋 Table of Contents
 
@@ -447,7 +447,7 @@ image-studio assets organize [options]
 
 #### `dev start`
 
-Start the Image Studio development server.
+Start the AI Image Studio development server.
 
 ```bash
 image-studio dev start [options]
@@ -958,7 +958,7 @@ else:
 ```bash
 #!/bin/bash
 
-# Image Studio CLI wrapper script
+# AI Image Studio CLI wrapper script
 CLI="image-studio"
 OUTPUT_DIR="./generated-images"
 
@@ -1020,7 +1020,7 @@ esac
 
 ---
 
-This API documentation provides comprehensive technical details for integrating with the Image Studio CLI. For more information, see:
+This API documentation provides comprehensive technical details for integrating with the AI Image Studio CLI. For more information, see:
 
 - [CLI User Guide](./CLI-User-Guide.md) - User-focused documentation
 - [CLI README](../README.md) - Installation and quick start

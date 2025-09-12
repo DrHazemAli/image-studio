@@ -1,8 +1,8 @@
-# Support Guide - Image Studio
+# Support Guide - AI Image Studio
 
 **Last Updated**: September 8, 2025
 
-Need help with Image Studio? This guide will help you find the right resources and get the support you need.
+Need help with AI Image Studio? This guide will help you find the right resources and get the support you need.
 
 > ⚠️ **Important**: This is a **community project** and is not affiliated with or endorsed by Microsoft or Azure. It's an independent project that uses Azure AI services.
 
@@ -124,7 +124,7 @@ Need help with Image Studio? This guide will help you find the right resources a
 
 ### General Questions
 
-**Q: Is Image Studio free to use?**
+**Q: Is AI Image Studio free to use?**
 A: The application is free and open-source, but you need Azure AI services which have their own pricing. This is a community project, not an official Microsoft product. Check Azure pricing for details.
 
 **Q: What browsers are supported?**
@@ -288,7 +288,7 @@ If the service is down:
 
 ## 🙏 Thank You
 
-Thank you for using Image Studio! Your feedback and contributions help make this project better for everyone.
+Thank you for using AI Image Studio! Your feedback and contributions help make this project better for everyone.
 
 ---
 

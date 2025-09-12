@@ -1,6 +1,6 @@
-# CLI Documentation - Image Studio
+# CLI Documentation - AI Image Studio
 
-This comprehensive guide covers the Image Studio Command-Line Interface (CLI) for automation and scripting.
+This comprehensive guide covers the AI Image Studio Command-Line Interface (CLI) for automation and scripting.
 
 > ⚠️ **Important**: This is a **community project** and is not affiliated with or endorsed by Microsoft or Azure. It's an independent project that uses Azure AI services.
 
@@ -8,7 +8,7 @@ This comprehensive guide covers the Image Studio Command-Line Interface (CLI) fo
 
 ## 🚀 CLI Overview
 
-The Image Studio CLI provides a powerful command-line interface for interacting with Azure AI services for image generation and editing. It's designed for developers, content creators, and automation workflows who need programmatic access to AI image generation capabilities.
+The AI Image Studio CLI provides a powerful command-line interface for interacting with Azure AI services for image generation and editing. It's designed for developers, content creators, and automation workflows who need programmatic access to AI image generation capabilities.
 
 ### Key Features
 
@@ -456,7 +456,7 @@ image-studio project delete [options]
 
 #### `dev start`
 
-Start the Image Studio development server.
+Start the AI Image Studio development server.
 
 ```bash
 image-studio dev start [options]

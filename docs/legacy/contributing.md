@@ -1,6 +1,6 @@
-# Contributing Guide - Image Studio
+# Contributing Guide - AI Image Studio
 
-Thank you for your interest in contributing to Image Studio! This guide will help you get started with contributing to our community project.
+Thank you for your interest in contributing to AI Image Studio! This guide will help you get started with contributing to our community project.
 
 > ⚠️ **Important**: This is a **community project** and is not affiliated with or endorsed by Microsoft or Azure. It's an independent project that uses Azure AI services.
 
@@ -531,6 +531,6 @@ Contributors are recognized in:
 
 ---
 
-**Thank you for contributing to Image Studio! Together, we can build something amazing.** 🚀
+**Thank you for contributing to AI Image Studio! Together, we can build something amazing.** 🚀
 
 Made with ❤️ by the community
