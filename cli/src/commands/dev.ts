@@ -36,9 +36,7 @@ Examples:
         // Check if we're in the right directory
         const packageJsonPath = path.join(process.cwd(), "package.json");
         if (!(await fs.pathExists(packageJsonPath))) {
-          console.log(
-            chalk.red("❌ Not in Image Studio project directory."),
-          );
+          console.log(chalk.red("❌ Not in Image Studio project directory."));
           console.log(
             chalk.yellow(
               "Please run this command from the project root directory.",
@@ -226,17 +224,13 @@ Examples:
     .action(async (options) => {
       try {
         console.log(
-          chalk.blue(
-            "🛠️  Setting up Image Studio development environment...",
-          ),
+          chalk.blue("🛠️  Setting up Image Studio development environment..."),
         );
 
         // Check if we're in the right directory
         const packageJsonPath = path.join(process.cwd(), "package.json");
         if (!(await fs.pathExists(packageJsonPath))) {
-          console.log(
-            chalk.red("❌ Not in Image Studio project directory."),
-          );
+          console.log(chalk.red("❌ Not in Image Studio project directory."));
           console.log(
             chalk.yellow(
               "Please run this command from the project root directory.",
@@ -305,14 +299,10 @@ Examples:
           ),
         );
         console.log(
-          chalk.gray(
-            "2. Set your API key: image-studio config set-api-key",
-          ),
+          chalk.gray("2. Set your API key: image-studio config set-api-key"),
         );
         console.log(
-          chalk.gray(
-            "3. Start the development server: image-studio dev start",
-          ),
+          chalk.gray("3. Start the development server: image-studio dev start"),
         );
       } catch (error) {
         console.error(

@@ -660,10 +660,7 @@ export default function ProjectStudioPage() {
   }, []);
 
   const handleShowSupport = useCallback(() => {
-    window.open(
-      "https://github.com/DrHazemAli/image-studio/issues",
-      "_blank",
-    );
+    window.open("https://github.com/DrHazemAli/image-studio/issues", "_blank");
   }, []);
 
   // Insert menu handlers

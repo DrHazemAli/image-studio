@@ -9,18 +9,16 @@ export function createConfigCommand(): Command {
   const configCommand = new Command("config");
   const configManager = new ConfigManager();
 
-  configCommand
-    .description("Manage Image Studio configuration")
-    .addHelpText(
-      "after",
-      `
+  configCommand.description("Manage Image Studio configuration").addHelpText(
+    "after",
+    `
 Examples:
   $ image-studio config init
   $ image-studio config validate
   $ image-studio config set-api-key
   $ image-studio config show
     `,
-    );
+  );
 
   // Initialize configuration
   configCommand
@@ -40,9 +38,7 @@ Examples:
           return;
         }
 
-        console.log(
-          chalk.blue("Initializing Image Studio configuration..."),
-        );
+        console.log(chalk.blue("Initializing Image Studio configuration..."));
         await configManager.createDefaultConfig();
 
         console.log(chalk.green("✅ Configuration initialized successfully!"));
