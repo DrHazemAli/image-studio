@@ -32,7 +32,7 @@ Need help with Azure Image Studio? This guide will help you find the right resou
 
 ### Direct Contact
 
-- **LinkedIn**: [LinkedIn](https://www.linkedin.com/in/hazemali/)
+- **LinkedIn**: [LinkedIn](https://www.linkedin.com/in/drhazemali/)
 - **GitHub**: [@DrHazemAli](https://github.com/DrHazemAli)
 - **Response Time**: Within 48 hours
 
@@ -274,7 +274,7 @@ Add any other context or screenshots about the feature request here.
 
 For critical security issues or major bugs:
 
-- **LinkedIn**: [LinkedIn](https://www.linkedin.com/in/hazemali/)
+- **LinkedIn**: [LinkedIn](https://www.linkedin.com/in/drhazemali/)
 - **Subject**: "URGENT: [Issue Description]"
 - **Response**: Within 24 hours
 

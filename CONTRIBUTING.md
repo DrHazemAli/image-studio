@@ -290,7 +290,7 @@ If you have questions about contributing:
 
 - **GitHub Discussions**: Use the Discussions tab for general questions
 - **Issues**: Create an issue for specific problems
-- **LinkedIn**: Contact [LinkedIn](https://www.linkedin.com/in/hazemali/)
+- **LinkedIn**: Contact [LinkedIn](https://www.linkedin.com/in/drhazemali/)
 
 ## 🙏 Recognition
 

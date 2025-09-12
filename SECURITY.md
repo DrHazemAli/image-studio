@@ -23,7 +23,7 @@ We take security vulnerabilities seriously. If you discover a security vulnerabi
 
 Instead, please report them via one of the following methods:
 
-1. **LinkedIn**: Send details to [LinkedIn](https://www.linkedin.com/in/hazemali/)
+1. **LinkedIn**: Send details to [LinkedIn](https://www.linkedin.com/in/drhazemali/)
 2. **GitHub Security Advisories**: Use GitHub's private vulnerability reporting feature
 
 ### What to Include
@@ -197,7 +197,7 @@ NEXT_PUBLIC_APP_URL=https://your-domain.com
 
 For security-related questions or concerns:
 
-- **LinkedIn**: [LinkedIn](https://www.linkedin.com/in/hazemali/)
+- **LinkedIn**: [LinkedIn](https://www.linkedin.com/in/drhazemali/)
 - **GitHub**: [@DrHazemAli](https://github.com/DrHazemAli)
 - **Response Time**: Within 48 hours
 

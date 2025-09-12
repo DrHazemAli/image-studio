@@ -1352,7 +1352,7 @@ export default function ProjectStudioPage() {
             <GitHubLogoIcon className="w-4 h-4" />
           </a>
           <a
-            href="https://linkedin.com/in/hazemali"
+            href="https://linkedin.com/in/drhazemali"
             target="_blank"
             rel="noopener noreferrer"
           >

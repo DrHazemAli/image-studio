@@ -74,7 +74,7 @@ For questions about specific versions or migration issues:
 - **User Guide**: Complete [User Guide](docs/user-guide.md)
 - **Issues**: Report issues on [GitHub](https://github.com/DrHazemAli/azure-image-studio/issues)
 - **Discussions**: Join discussions on [GitHub Discussions](https://github.com/DrHazemAli/azure-image-studio/discussions)
-- **LinkedIn**: Contact [LinkedIn](https://www.linkedin.com/in/hazemali/)
+- **LinkedIn**: Contact [LinkedIn](https://www.linkedin.com/in/drhazemali/)
 
 ---
 

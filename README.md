@@ -401,7 +401,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **Hazem Ali** - Microsoft MVP
 
 - GitHub: [@DrHazemAli](https://github.com/DrHazemAli)
-- LinkedIn: [Hazem Ali](https://linkedin.com/in/hazemali)
+- LinkedIn: [Hazem Ali](https://linkedin.com/in/drhazemali)
 
 ## 🙏 Acknowledgments
 

@@ -62,7 +62,7 @@ export function AboutSettings() {
       description: "AI-powered image generation and editing platform",
       author: "Hazem Ali",
       github: "https://github.com/DrHazemAli/azure-image-studio",
-      linkedin: "https://linkedin.com/in/hazemali",
+      linkedin: "https://linkedin.com/in/drhazemali",
       website: "https://www.skytells.ai",
     }),
     [],

@@ -248,7 +248,7 @@ How to contribute covering:
 
 - **Author**: Hazem Ali (Microsoft MVP)
 - **GitHub**: [@DrHazemAli](https://github.com/DrHazemAli)
-- **LinkedIn**: [Hazem Ali](https://linkedin.com/in/hazemali)
+- **LinkedIn**: [Hazem Ali](https://linkedin.com/in/drhazemali)
 
 ## 📋 Project Information
 
