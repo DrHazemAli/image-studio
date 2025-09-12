@@ -211,6 +211,24 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
     };
   }, []);
 
+  // Listen for external requests to open a specific settings tab
+  useEffect(() => {
+    const handleOpenSettingsTab = (event: CustomEvent) => {
+      const tab = event.detail?.tab as SettingsTab | undefined;
+      if (tab) {
+        setActiveTab(tab);
+      }
+    };
+
+    window.addEventListener("openSettingsTab", handleOpenSettingsTab as EventListener);
+    return () => {
+      window.removeEventListener(
+        "openSettingsTab",
+        handleOpenSettingsTab as EventListener,
+      );
+    };
+  }, []);
+
   // Handle logger tab availability changes
   useEffect(() => {
     const isDevelopment = process.env.NODE_ENV === "development";

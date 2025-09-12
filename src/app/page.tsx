@@ -33,6 +33,17 @@ export default function Home() {
 
         if (data.configErrors.length > 0) {
           setConfigErrors(data.configErrors);
+          // If the config errors indicate no Azure endpoint / API key, open studio
+          // and request the settings dialog to be shown so user can configure endpoints.
+          const hasAzureKeyError = data.configErrors.some((e) =>
+            /azure api key/i.test(e) || /AZURE_API_KEY/i.test(e),
+          );
+          if (hasAzureKeyError) {
+            // Redirect to studio and request settings to open for Azure tab
+            router.push('/studio?openSettings=azure');
+            return;
+          }
+
           setShowConfigAlert(true);
         } else {
           // If no errors, redirect to studio
