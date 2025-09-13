@@ -598,7 +598,7 @@ export function CommandPalette({
 
     // Filter by search term
     if (!search) return true;
-    
+
     const searchTerm = search.toLowerCase();
     return (
       command.name.toLowerCase().includes(searchTerm) ||
@@ -608,13 +608,16 @@ export function CommandPalette({
   });
 
   // Group commands by category
-  const groupedCommands = filteredCommands.reduce((acc, command) => {
-    if (!acc[command.category]) {
-      acc[command.category] = [];
-    }
-    acc[command.category].push(command);
-    return acc;
-  }, {} as Record<string, typeof commands>);
+  const groupedCommands = filteredCommands.reduce(
+    (acc, command) => {
+      if (!acc[command.category]) {
+        acc[command.category] = [];
+      }
+      acc[command.category].push(command);
+      return acc;
+    },
+    {} as Record<string, typeof commands>,
+  );
 
   return (
     <AnimatePresence>
@@ -645,8 +648,12 @@ export function CommandPalette({
                   autoFocus
                 />
                 <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-zinc-300">
-                  <kbd className="px-2 py-1 bg-gray-100/80 dark:bg-zinc-800/80 rounded text-xs">⌘</kbd>
-                  <kbd className="px-2 py-1 bg-gray-100/80 dark:bg-zinc-800/80 rounded text-xs">K</kbd>
+                  <kbd className="px-2 py-1 bg-gray-100/80 dark:bg-zinc-800/80 rounded text-xs">
+                    ⌘
+                  </kbd>
+                  <kbd className="px-2 py-1 bg-gray-100/80 dark:bg-zinc-800/80 rounded text-xs">
+                    K
+                  </kbd>
                 </div>
               </div>
 
@@ -655,47 +662,51 @@ export function CommandPalette({
                   No commands found.
                 </Command.Empty>
 
-                {Object.entries(groupedCommands).map(([category, categoryCommands]) => (
-                  <Command.Group
-                    key={category}
-                    heading={category}
-                    className="px-3 py-2 text-xs font-medium text-gray-500 dark:text-zinc-300 uppercase tracking-wider"
-                  >
-                    {categoryCommands.map((command) => {
-                      const Icon = command.icon;
-                      return (
-                        <Command.Item
-                          key={command.id}
-                          value={`${command.name} ${command.description} ${command.category}`}
-                          onSelect={() => handleSelect(command.id)}
-                          className="flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer hover:bg-gray-100/80 dark:hover:bg-zinc-800/50 transition-colors mx-2"
-                        >
-                          <Icon className="w-4 h-4 text-gray-600 dark:text-zinc-300" />
-                          <div className="flex-1">
-                            <div className="font-medium text-gray-900 dark:text-white">
-                              {command.name}
+                {Object.entries(groupedCommands).map(
+                  ([category, categoryCommands]) => (
+                    <Command.Group
+                      key={category}
+                      heading={category}
+                      className="px-3 py-2 text-xs font-medium text-gray-500 dark:text-zinc-300 uppercase tracking-wider"
+                    >
+                      {categoryCommands.map((command) => {
+                        const Icon = command.icon;
+                        return (
+                          <Command.Item
+                            key={command.id}
+                            value={`${command.name} ${command.description} ${command.category}`}
+                            onSelect={() => handleSelect(command.id)}
+                            className="flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer hover:bg-gray-100/80 dark:hover:bg-zinc-800/50 transition-colors mx-2"
+                          >
+                            <Icon className="w-4 h-4 text-gray-600 dark:text-zinc-300" />
+                            <div className="flex-1">
+                              <div className="font-medium text-gray-900 dark:text-white">
+                                {command.name}
+                              </div>
+                              <div className="text-sm text-gray-500 dark:text-zinc-300">
+                                {command.description}
+                              </div>
                             </div>
-                            <div className="text-sm text-gray-500 dark:text-zinc-300">
-                              {command.description}
-                            </div>
-                          </div>
-                          {command.shortcut && (
-                            <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-zinc-300">
-                              {command.shortcut.split("+").map((key, index) => (
-                                <kbd
-                                  key={index}
-                                  className="px-1.5 py-0.5 bg-gray-100/80 dark:bg-zinc-800/80 rounded text-xs"
-                                >
-                                  {key}
-                                </kbd>
-                              ))}
-                            </div>
-                          )}
-                        </Command.Item>
-                      );
-                    })}
-                  </Command.Group>
-                ))}
+                            {command.shortcut && (
+                              <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-zinc-300">
+                                {command.shortcut
+                                  .split("+")
+                                  .map((key, index) => (
+                                    <kbd
+                                      key={index}
+                                      className="px-1.5 py-0.5 bg-gray-100/80 dark:bg-zinc-800/80 rounded text-xs"
+                                    >
+                                      {key}
+                                    </kbd>
+                                  ))}
+                              </div>
+                            )}
+                          </Command.Item>
+                        );
+                      })}
+                    </Command.Group>
+                  ),
+                )}
               </Command.List>
             </Command>
           </motion.div>

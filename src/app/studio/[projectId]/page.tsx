@@ -522,10 +522,13 @@ export default function ProjectStudioPage() {
     setShowProjects(false);
   }, []);
 
-  const handleProjectSelect = useCallback((project: Project) => {
-    // Navigate to the selected project
-    router.push(`/studio/${project.id}`);
-  }, [router]);
+  const handleProjectSelect = useCallback(
+    (project: Project) => {
+      // Navigate to the selected project
+      router.push(`/studio/${project.id}`);
+    },
+    [router],
+  );
 
   // Memoized attached image removal handler
   const handleAttachedImageRemove = useCallback(() => {
@@ -1079,7 +1082,13 @@ export default function ProjectStudioPage() {
 
     window.addEventListener("keydown", handleKeyDown, { passive: false });
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleCommandPaletteOpen, handleExportProject, handleImportProject, handleUndo, handleRedo]);
+  }, [
+    handleCommandPaletteOpen,
+    handleExportProject,
+    handleImportProject,
+    handleUndo,
+    handleRedo,
+  ]);
 
   if (isLoading) {
     return <StudioLoading isVisible={true} />;
@@ -1160,7 +1169,9 @@ export default function ProjectStudioPage() {
                 setShowHistoryPanel(!showHistoryPanel)
               }
               onTogglePromptBox={() => setShowPromptBox(!showPromptBox)}
-              onToggleAssetStorePanel={() => setShowAssetStorePanel(!showAssetStorePanel)}
+              onToggleAssetStorePanel={() =>
+                setShowAssetStorePanel(!showAssetStorePanel)
+              }
               onZoomIn={handleZoomIn}
               onZoomOut={handleZoomOut}
               onResetZoom={handleResetZoom}
@@ -1509,7 +1520,9 @@ export default function ProjectStudioPage() {
         onToggleAssetsPanel={() => setShowAssetsPanel(!showAssetsPanel)}
         onToggleHistoryPanel={() => setShowHistoryPanel(!showHistoryPanel)}
         onTogglePromptBox={() => setShowPromptBox(!showPromptBox)}
-        onToggleAssetStorePanel={() => setShowAssetStorePanel(!showAssetStorePanel)}
+        onToggleAssetStorePanel={() =>
+          setShowAssetStorePanel(!showAssetStorePanel)
+        }
         onInsertImage={handleInsertImage}
         onInsertText={handleInsertText}
         onInsertShape={handleInsertShape}
