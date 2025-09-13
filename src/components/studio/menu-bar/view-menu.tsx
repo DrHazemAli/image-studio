@@ -9,10 +9,12 @@ interface ViewMenuProps {
   showAssetsPanel: boolean;
   showHistoryPanel: boolean;
   showPromptBox: boolean;
+  showAssetStorePanel: boolean;
   onToggleConsole: () => void;
   onToggleAssetsPanel: () => void;
   onToggleHistoryPanel: () => void;
   onTogglePromptBox: () => void;
+  onToggleAssetStorePanel: () => void;
   onZoomIn: () => void;
   onZoomOut: () => void;
   onResetZoom: () => void;
@@ -24,10 +26,12 @@ export function ViewMenu({
   showAssetsPanel,
   showHistoryPanel,
   showPromptBox,
+  showAssetStorePanel,
   onToggleConsole,
   onToggleAssetsPanel,
   onToggleHistoryPanel,
   onTogglePromptBox,
+  onToggleAssetStorePanel,
   onZoomIn,
   onZoomOut,
   onResetZoom,
@@ -57,6 +61,11 @@ export function ViewMenu({
       label: "Assets Panel",
       action: onToggleAssetsPanel,
       shortcut: showAssetsPanel ? "Hide" : "Show",
+    },
+    {
+      label: "Asset Store",
+      action: onToggleAssetStorePanel,
+      shortcut: showAssetStorePanel ? "Hide" : "Show",
     },
     {
       label: "History Panel",

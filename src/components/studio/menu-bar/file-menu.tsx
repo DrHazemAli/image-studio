@@ -7,6 +7,7 @@ import { useMenuContext } from "./menu-context";
 interface FileMenuProps {
   onNewProject: () => void;
   onOpenProject: () => void;
+  onShowProjects: () => void;
   onSaveProject: () => void;
   onExportProject: () => void;
   onImportProject: () => void;
@@ -16,6 +17,7 @@ interface FileMenuProps {
 export function FileMenu({
   onNewProject,
   onOpenProject,
+  onShowProjects,
   onSaveProject,
   onExportProject,
   onImportProject,
@@ -45,6 +47,11 @@ export function FileMenu({
       label: "Open Project",
       action: onOpenProject,
       shortcut: "Cmd+O",
+    },
+    {
+      label: "Projects",
+      action: onShowProjects,
+      shortcut: "Cmd+Shift+P",
     },
     {
       separator: true,

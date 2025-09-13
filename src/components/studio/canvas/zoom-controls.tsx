@@ -28,7 +28,7 @@ export default function ZoomControls({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="absolute bottom-4 left-4 flex items-center gap-2 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-xl p-2 shadow-lg border border-gray-200 dark:border-gray-800"
+      className="absolute bottom-4 left-4 flex items-center gap-2 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-xl rounded-xl p-2 shadow-lg border border-gray-200 dark:border-zinc-800"
     >
       <Button
         variant="ghost"
@@ -40,7 +40,7 @@ export default function ZoomControls({
       </Button>
 
       <div className="px-3 py-1 text-sm font-mono min-w-[60px] text-center">
-        {zoom}%
+        {zoom.toFixed(2)}%
       </div>
 
       <Button

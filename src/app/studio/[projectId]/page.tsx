@@ -25,6 +25,8 @@ import { SettingsDialog } from "@/components/settings";
 import { SyncManager } from "@/components/studio/sync-manager";
 import { StudioLoading } from "@/components/studio/studio-loading";
 import { MenuBar, MenuProvider } from "@/components/studio/menu-bar";
+import { CommandPalette } from "@/components/studio/search";
+import { ProjectsDialog } from "@/components/projects";
 import { AppSettings } from "@/lib/settings/app-settings";
 import type { ModelInfo } from "@/app/api/models/route";
 import {
@@ -46,7 +48,7 @@ import {
   LinkedInLogoIcon,
   GearIcon,
 } from "@radix-ui/react-icons";
-import { Code } from "lucide-react";
+import { Code, Search } from "lucide-react";
 import appConfig from "@/app/config/app-config.json";
 
 interface GenerationParams {
@@ -95,6 +97,8 @@ export default function ProjectStudioPage() {
   const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showCommandPalette, setShowCommandPalette] = useState(false);
+  const [showProjects, setShowProjects] = useState(false);
   const [zoom, setZoom] = useState(ZOOM_CONSTANTS.INITIAL_ZOOM);
   const [currentProject, setCurrentProject] = useState<Project | null>(null);
   const [isAssetStoreEnabled, setIsAssetStoreEnabled] = useState(false);
@@ -501,6 +505,27 @@ export default function ProjectStudioPage() {
   const handleSettingsModalClose = useCallback(() => {
     setShowSettings(false);
   }, []);
+
+  const handleCommandPaletteOpen = useCallback(() => {
+    setShowCommandPalette(true);
+  }, []);
+
+  const handleCommandPaletteClose = useCallback(() => {
+    setShowCommandPalette(false);
+  }, []);
+
+  const handleProjectsOpen = useCallback(() => {
+    setShowProjects(true);
+  }, []);
+
+  const handleProjectsClose = useCallback(() => {
+    setShowProjects(false);
+  }, []);
+
+  const handleProjectSelect = useCallback((project: Project) => {
+    // Navigate to the selected project
+    router.push(`/studio/${project.id}`);
+  }, [router]);
 
   // Memoized attached image removal handler
   const handleAttachedImageRemove = useCallback(() => {
@@ -922,6 +947,10 @@ export default function ProjectStudioPage() {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.metaKey || event.ctrlKey) {
         switch (event.key) {
+          case "k":
+            event.preventDefault();
+            handleCommandPaletteOpen();
+            break;
           case "s":
             event.preventDefault();
             handleExportProject();
@@ -1050,7 +1079,7 @@ export default function ProjectStudioPage() {
 
     window.addEventListener("keydown", handleKeyDown, { passive: false });
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleExportProject, handleImportProject, handleUndo, handleRedo]);
+  }, [handleCommandPaletteOpen, handleExportProject, handleImportProject, handleUndo, handleRedo]);
 
   if (isLoading) {
     return <StudioLoading isVisible={true} />;
@@ -1106,6 +1135,7 @@ export default function ProjectStudioPage() {
             <MenuBar
               onNewProject={handleNewProject}
               onOpenProject={handleImportProject}
+              onShowProjects={handleProjectsOpen}
               onSaveProject={handleSaveProject}
               onExportProject={handleExportProject}
               onImportProject={handleImportProject}
@@ -1123,12 +1153,14 @@ export default function ProjectStudioPage() {
               showAssetsPanel={showAssetsPanel}
               showHistoryPanel={showHistoryPanel}
               showPromptBox={showPromptBox}
+              showAssetStorePanel={showAssetStorePanel}
               onToggleConsole={() => setShowConsole(!showConsole)}
               onToggleAssetsPanel={() => setShowAssetsPanel(!showAssetsPanel)}
               onToggleHistoryPanel={() =>
                 setShowHistoryPanel(!showHistoryPanel)
               }
               onTogglePromptBox={() => setShowPromptBox(!showPromptBox)}
+              onToggleAssetStorePanel={() => setShowAssetStorePanel(!showAssetStorePanel)}
               onZoomIn={handleZoomIn}
               onZoomOut={handleZoomOut}
               onResetZoom={handleResetZoom}
@@ -1149,6 +1181,16 @@ export default function ProjectStudioPage() {
         </div>
 
         <div className="flex items-center gap-2">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleCommandPaletteOpen}
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            title="Command Palette (⌘K)"
+          >
+            <Search className="w-4 h-4" />
+          </motion.button>
+
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -1441,6 +1483,46 @@ export default function ProjectStudioPage() {
       <SettingsDialog
         isOpen={showSettings}
         onClose={handleSettingsModalClose}
+      />
+
+      {/* Command Palette */}
+      <CommandPalette
+        isOpen={showCommandPalette}
+        onClose={handleCommandPaletteClose}
+        onToolChange={(tool) => handleToolChange(tool as Tool)}
+        onExportProject={handleExportProject}
+        onImportProject={handleImportProject}
+        onShowSettings={handleSettingsModalOpen}
+        onShowKeyboardShortcuts={handleShowKeyboardShortcuts}
+        onShowAbout={handleShowAbout}
+        onShowDocumentation={handleShowDocumentation}
+        onShowGitHub={handleShowGitHub}
+        onShowSupport={handleShowSupport}
+        onNewProject={handleNewProject}
+        onClearCanvas={handleClearCanvas}
+        onUndo={handleUndo}
+        onRedo={handleRedo}
+        onZoomIn={handleZoomIn}
+        onZoomOut={handleZoomOut}
+        onResetZoom={handleResetZoom}
+        onToggleFullscreen={handleToggleFullscreen}
+        onToggleAssetsPanel={() => setShowAssetsPanel(!showAssetsPanel)}
+        onToggleHistoryPanel={() => setShowHistoryPanel(!showHistoryPanel)}
+        onTogglePromptBox={() => setShowPromptBox(!showPromptBox)}
+        onToggleAssetStorePanel={() => setShowAssetStorePanel(!showAssetStorePanel)}
+        onInsertImage={handleInsertImage}
+        onInsertText={handleInsertText}
+        onInsertShape={handleInsertShape}
+        onInsertFromAssetStore={handleInsertFromAssetStore}
+        onShowProjects={handleProjectsOpen}
+        isAssetStoreEnabled={isAssetStoreEnabled}
+      />
+
+      {/* Projects Dialog */}
+      <ProjectsDialog
+        isOpen={showProjects}
+        onClose={handleProjectsClose}
+        onProjectSelect={handleProjectSelect}
       />
     </motion.div>
   );

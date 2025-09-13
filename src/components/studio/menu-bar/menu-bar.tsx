@@ -11,6 +11,7 @@ interface MenuBarProps {
   // File menu props
   onNewProject: () => void;
   onOpenProject: () => void;
+  onShowProjects: () => void;
   onSaveProject: () => void;
   onExportProject: () => void;
   onImportProject: () => void;
@@ -32,10 +33,12 @@ interface MenuBarProps {
   showAssetsPanel: boolean;
   showHistoryPanel: boolean;
   showPromptBox: boolean;
+  showAssetStorePanel: boolean;
   onToggleConsole: () => void;
   onToggleAssetsPanel: () => void;
   onToggleHistoryPanel: () => void;
   onTogglePromptBox: () => void;
+  onToggleAssetStorePanel: () => void;
   onZoomIn: () => void;
   onZoomOut: () => void;
   onResetZoom: () => void;
@@ -60,6 +63,7 @@ interface MenuBarProps {
 export function MenuBar({
   onNewProject,
   onOpenProject,
+  onShowProjects,
   onSaveProject,
   onExportProject,
   onImportProject,
@@ -77,10 +81,12 @@ export function MenuBar({
   showAssetsPanel,
   showHistoryPanel,
   showPromptBox,
+  showAssetStorePanel,
   onToggleConsole,
   onToggleAssetsPanel,
   onToggleHistoryPanel,
   onTogglePromptBox,
+  onToggleAssetStorePanel,
   onZoomIn,
   onZoomOut,
   onResetZoom,
@@ -102,6 +108,7 @@ export function MenuBar({
       <FileMenu
         onNewProject={onNewProject}
         onOpenProject={onOpenProject}
+        onShowProjects={onShowProjects}
         onSaveProject={onSaveProject}
         onExportProject={onExportProject}
         onImportProject={onImportProject}
@@ -125,10 +132,12 @@ export function MenuBar({
         showAssetsPanel={showAssetsPanel}
         showHistoryPanel={showHistoryPanel}
         showPromptBox={showPromptBox}
+        showAssetStorePanel={showAssetStorePanel}
         onToggleConsole={onToggleConsole}
         onToggleAssetsPanel={onToggleAssetsPanel}
         onToggleHistoryPanel={onToggleHistoryPanel}
         onTogglePromptBox={onTogglePromptBox}
+        onToggleAssetStorePanel={onToggleAssetStorePanel}
         onZoomIn={onZoomIn}
         onZoomOut={onZoomOut}
         onResetZoom={onResetZoom}
