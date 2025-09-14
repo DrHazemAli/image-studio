@@ -308,6 +308,92 @@ export default function ProjectStudioPage() {
     loadProject();
   }, [projectId, router, updatePageTitle]);
 
+  // Open settings automatically if requested via query param (e.g. /studio?openSettings=azure)
+  useEffect(() => {
+    try {
+      const searchParams = new URLSearchParams(window.location.search);
+      const openSettings = searchParams.get("openSettings");
+      if (openSettings) {
+        // If a tab is specified (azure), open settings and select that tab via a custom event
+        setShowSettings(true);
+        if (openSettings === "azure") {
+          // Dispatch an event so SettingsDialog can optionally switch to Azure tab
+          // Delay slightly to ensure SettingsDialog mounts and attaches its listener
+          requestAnimationFrame(() => {
+            setTimeout(() => {
+              window.dispatchEvent(
+                new CustomEvent("openSettingsTab", { detail: { tab: "azure" } }),
+              );
+            }, 50);
+          });
+        }
+      }
+    } catch (err) {
+      // ignore
+    }
+  }, []);
+
+  // Also check backend configuration on studio load; if Azure API key / endpoint is missing,
+  // open the settings dialog so the user can configure it.
+  useEffect(() => {
+    let mounted = true;
+    const checkBackendConfig = async () => {
+      try {
+        const res = await fetch("/api/config");
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!mounted) return;
+
+            if (data?.configErrors && data.configErrors.length > 0) {
+              const hasAzureError = data.configErrors.some((e: string) =>
+                /azure api key/i.test(e) || /AZURE_API_KEY/i.test(e),
+              );
+              if (hasAzureError) {
+                setShowSettings(true);
+                // Delay dispatch to ensure SettingsDialog listener is attached
+                requestAnimationFrame(() => {
+                  setTimeout(() => {
+                    window.dispatchEvent(
+                      new CustomEvent("openSettingsTab", { detail: { tab: "azure" } }),
+                    );
+                  }, 50);
+                });
+              }
+            }
+
+            // Also check if there are no properly configured endpoints, even if no errors
+            const hasValidEndpoints = data?.config && data.config.endpoints && 
+              data.config.endpoints.some((endpoint: any) => 
+                endpoint.baseUrl && 
+                !endpoint.baseUrl.includes('<env.') && 
+                endpoint.baseUrl !== '' &&
+                endpoint.apiKey && 
+                endpoint.apiKey !== ''
+              );
+            
+            if (!hasValidEndpoints) {
+              setShowSettings(true);
+              // Delay dispatch to ensure SettingsDialog listener is attached
+              requestAnimationFrame(() => {
+                setTimeout(() => {
+                  window.dispatchEvent(
+                    new CustomEvent("openSettingsTab", { detail: { tab: "azure" } }),
+                  );
+                }, 50);
+              });
+            }
+      } catch (err) {
+        // ignore network errors; do not block studio
+      }
+    };
+
+    checkBackendConfig();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   // Save project when state changes
   const saveProject = useCallback(async () => {
     if (!currentProject) return;
