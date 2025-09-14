@@ -46,7 +46,23 @@ export default function Home() {
 
           setShowConfigAlert(true);
         } else {
-          // If no errors, redirect to studio
+          // Check if there are no properly configured endpoints, even if no errors
+          const hasValidEndpoints = data.config && data.config.endpoints && 
+            data.config.endpoints.some(endpoint => 
+              endpoint.baseUrl && 
+              !endpoint.baseUrl.includes('<env.') && 
+              endpoint.baseUrl !== '' &&
+              endpoint.apiKey && 
+              endpoint.apiKey !== ''
+            );
+          
+          if (!hasValidEndpoints) {
+            // No properly configured endpoints - redirect to studio and open settings
+            router.push('/studio?openSettings=azure');
+            return;
+          }
+          
+          // If no errors and endpoints are properly configured, redirect to studio
           router.push("/studio");
           return;
         }
