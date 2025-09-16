@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  azure-genai-image:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - AZURE_API_BASE_URL=${AZURE_API_BASE_URL}
+      - AZURE_API_KEY=${AZURE_API_KEY}
+      - PORT=3000
+    volumes:
+      # Mount configuration files as read-only
+      - ./src/app/config:/app/src/app/config:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - "dokploy.app.name=azure-genai-image"
+      - "dokploy.app.description=Azure GenAI Image Studio - AI-powered image generation and editing"
+      - "dokploy.app.version=1.0.3"
+
+  # Optional CLI service for batch operations
+  cli:
+    build:
+      context: .
+      dockerfile: cli.Dockerfile
+    environment:
+      - AZURE_API_BASE_URL=${AZURE_API_BASE_URL}
+      - AZURE_API_KEY=${AZURE_API_KEY}
+    volumes:
+      - ./assets:/app/assets
+      - ./projects:/app/projects
+    profiles:
+      - cli
+    labels:
+      - "dokploy.app.name=azure-genai-cli"
+      - "dokploy.app.description=CLI tool for Azure GenAI Image Studio"

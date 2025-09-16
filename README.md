@@ -30,6 +30,12 @@ AI Image Studio is a cutting-edge image generation and editing platform that har
 
 **A community-built image editing and generation platform that leverages Azure AI services**
 
+<div align="center">
+
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.AppService/WebAppFromGitHub/name/ai-image-studio&repoUrl=https://github.com/DrHazemAli/image-studio)
+
+</div>
+
 ## 📋 Table of Contents
 
 - [🚀 Overview](#-overview)

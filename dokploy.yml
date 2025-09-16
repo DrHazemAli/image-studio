@@ -1,0 +1,61 @@
+# Dokploy Configuration for Azure GenAI Image Studio
+name: azure-genai-image
+description: Azure GenAI Image Studio - AI-powered image generation and editing
+version: 1.0.3
+
+# Application configuration
+app:
+  type: docker-compose
+  compose_file: docker-compose.yml
+  environment:
+    - NODE_ENV=production
+    - PORT=3000
+    - AZURE_API_BASE_URL
+    - AZURE_API_KEY
+
+# Health check configuration
+health_check:
+  enabled: true
+  path: /api/version
+  interval: 30s
+  timeout: 10s
+  retries: 3
+
+# Resource limits
+resources:
+  memory: 512Mi
+  cpu: 500m
+
+# Scaling configuration
+scaling:
+  min_replicas: 1
+  max_replicas: 3
+  target_cpu: 70
+
+# Network configuration
+network:
+  ports:
+    - 3000:3000
+  protocol: http
+
+# Volume mounts
+volumes:
+  - type: bind
+    source: ./src/app/config
+    target: /app/src/app/config
+    read_only: true
+
+# Environment variables (set in Dokploy UI)
+env_vars:
+  required:
+    - AZURE_API_BASE_URL
+    - AZURE_API_KEY
+  optional:
+    - DEBUG
+    - PORT
+
+# Labels for Dokploy
+labels:
+  - "dokploy.app.category=ai"
+  - "dokploy.app.framework=nextjs"
+  - "dokploy.app.language=typescript"
