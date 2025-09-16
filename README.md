@@ -387,7 +387,10 @@ This is a **community-driven project**! We welcome contributions from developers
 
 ### Thank you to all our amazing contributors! 🎉
 
-[![Contributors](https://contrib.rocks/image?repo=DrHazemAli/image-studio)](https://github.com/DrHazemAli/image-studio/graphs/contributors)
+<a href="https://github.com/DrHazemAli/image-studio/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=DrHazemAli/image-studio" />
+</a>
+
 
 </div>
 
