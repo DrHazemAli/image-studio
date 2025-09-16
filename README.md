@@ -391,7 +391,6 @@ This is a **community-driven project**! We welcome contributions from developers
   <img src="https://contrib.rocks/image?repo=DrHazemAli/image-studio" />
 </a>
 
-
 </div>
 
 ## 📞 Support
