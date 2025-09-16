@@ -322,7 +322,9 @@ export default function ProjectStudioPage() {
           requestAnimationFrame(() => {
             setTimeout(() => {
               window.dispatchEvent(
-                new CustomEvent("openSettingsTab", { detail: { tab: "azure" } }),
+                new CustomEvent("openSettingsTab", {
+                  detail: { tab: "azure" },
+                }),
               );
             }, 50);
           });
@@ -344,44 +346,51 @@ export default function ProjectStudioPage() {
         const data = await res.json();
         if (!mounted) return;
 
-            if (data?.configErrors && data.configErrors.length > 0) {
-              const hasAzureError = data.configErrors.some((e: string) =>
-                /azure api key/i.test(e) || /AZURE_API_KEY/i.test(e),
-              );
-              if (hasAzureError) {
-                setShowSettings(true);
-                // Delay dispatch to ensure SettingsDialog listener is attached
-                requestAnimationFrame(() => {
-                  setTimeout(() => {
-                    window.dispatchEvent(
-                      new CustomEvent("openSettingsTab", { detail: { tab: "azure" } }),
-                    );
-                  }, 50);
-                });
-              }
-            }
+        if (data?.configErrors && data.configErrors.length > 0) {
+          const hasAzureError = data.configErrors.some(
+            (e: string) => /azure api key/i.test(e) || /AZURE_API_KEY/i.test(e),
+          );
+          if (hasAzureError) {
+            setShowSettings(true);
+            // Delay dispatch to ensure SettingsDialog listener is attached
+            requestAnimationFrame(() => {
+              setTimeout(() => {
+                window.dispatchEvent(
+                  new CustomEvent("openSettingsTab", {
+                    detail: { tab: "azure" },
+                  }),
+                );
+              }, 50);
+            });
+          }
+        }
 
-            // Also check if there are no properly configured endpoints, even if no errors
-            const hasValidEndpoints = data?.config && data.config.endpoints && 
-              data.config.endpoints.some((endpoint: any) => 
-                endpoint.baseUrl && 
-                !endpoint.baseUrl.includes('<env.') && 
-                endpoint.baseUrl !== '' &&
-                endpoint.apiKey && 
-                endpoint.apiKey !== ''
+        // Also check if there are no properly configured endpoints, even if no errors
+        const hasValidEndpoints =
+          data?.config &&
+          data.config.endpoints &&
+          data.config.endpoints.some(
+            (endpoint: any) =>
+              endpoint.baseUrl &&
+              !endpoint.baseUrl.includes("<env.") &&
+              endpoint.baseUrl !== "" &&
+              endpoint.apiKey &&
+              endpoint.apiKey !== "",
+          );
+
+        if (!hasValidEndpoints) {
+          setShowSettings(true);
+          // Delay dispatch to ensure SettingsDialog listener is attached
+          requestAnimationFrame(() => {
+            setTimeout(() => {
+              window.dispatchEvent(
+                new CustomEvent("openSettingsTab", {
+                  detail: { tab: "azure" },
+                }),
               );
-            
-            if (!hasValidEndpoints) {
-              setShowSettings(true);
-              // Delay dispatch to ensure SettingsDialog listener is attached
-              requestAnimationFrame(() => {
-                setTimeout(() => {
-                  window.dispatchEvent(
-                    new CustomEvent("openSettingsTab", { detail: { tab: "azure" } }),
-                  );
-                }, 50);
-              });
-            }
+            }, 50);
+          });
+        }
       } catch (err) {
         // ignore network errors; do not block studio
       }

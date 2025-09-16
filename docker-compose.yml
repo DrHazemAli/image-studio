@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   azure-genai-image:
@@ -17,7 +17,15 @@ services:
       - ./src/app/config:/app/src/app/config:ro
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/version"]
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3000/api/version",
+        ]
       interval: 30s
       timeout: 10s
       retries: 3

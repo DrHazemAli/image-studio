@@ -220,7 +220,10 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
       }
     };
 
-    window.addEventListener("openSettingsTab", handleOpenSettingsTab as EventListener);
+    window.addEventListener(
+      "openSettingsTab",
+      handleOpenSettingsTab as EventListener,
+    );
     return () => {
       window.removeEventListener(
         "openSettingsTab",

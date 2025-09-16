@@ -9,9 +9,9 @@
  */
 export function looksLikeAzureConfigError(errorMessage: string): boolean {
   if (!errorMessage) return false;
-  
+
   const s = String(errorMessage).toLowerCase();
-  
+
   // Match common phrases that indicate missing Azure config
   return (
     /azure api key/.test(s) ||
