@@ -322,7 +322,9 @@ export default function ProjectStudioPage() {
           requestAnimationFrame(() => {
             setTimeout(() => {
               window.dispatchEvent(
-                new CustomEvent("openSettingsTab", { detail: { tab: "azure" } }),
+                new CustomEvent("openSettingsTab", {
+                  detail: { tab: "azure" },
+                }),
               );
             }, 50);
           });
